@@ -406,4 +406,9 @@ if (FALSE) {
   usethis::use_data(xgx_data_pkpd_mad,overwrite = TRUE)
 }
 
+#also add theophylline to the dataset
+nlmixr_theo_sd = read.csv("./inst/extdata/nlmixr_theo_sd.csv")
+usethis::use_data(nlmixr_theo_sd,overwrite=TRUE)
+
+
                      
