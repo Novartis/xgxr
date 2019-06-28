@@ -26,7 +26,7 @@ This document provides a template for exploring Single or Multiple Ascending Dos
 
 ```{r data_assignments, echo = TRUE, warning=FALSE, message=FALSE}
 #devtools::load_all()
-library(xgx)
+library(xgxr)
 library(gridExtra)
 library(ggplot2)
 library(dplyr)
@@ -63,7 +63,7 @@ Multiplying dose by weight to get a mg dosing.
   covariates = c("WT")
   
 #load dataset 
-  filename = system.file("extdata","nlmixr_theo_sd.csv",package = "xgx", mustWork = TRUE)
+  filename = nlmixr_theo_sd
   data     = read.csv(filename,stringsAsFactors = FALSE)
   
 #make sure that the necessary columns are assigned

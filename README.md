@@ -5,8 +5,12 @@ The xgx R package supports a structured approach for exploring PKPD data ([outli
 ## How to update/test/use package
 * **Developing the package:** Run [_Package_Setup.R](_Package_Setup.R).  This will update the documentation, reinstall the package, and rebuild the vignette.
 * **Installing the package for use in your project:** follow the directions below, also [here](_Package_Install_New_User.R).
-  * Download this package to your project folder and unzip it.
-  * Open R and type: `devtools::build("xgx_Rpackage-master")`
+  * Download this package as a zip file
+  * Place the zip file in your project folder, with your R code. (if you don't have a project folder... create one)
+  * Unzip the file.  
+  * Open R 
+  * Set the working directory to your project folder.
+  * Type: `devtools::build("xgx_Rpackage-master")` (if you don't have devtools, install that first using command: `install.packages("devtools")`)
   * Then type: `install.packages("xgx_Rpackage-master", repos = NULL, lib = "./", type = "source")`
   * To load the package, type: `library(xgx, lib.loc = "./")`
 
@@ -68,10 +72,3 @@ From [here](https://kbroman.org/pkg_primer/pages/cran.html)
     * This will create a .tar.gz file (e.g. `xgx_0.0.1.005.tar.gz`)
     * Then, type: `R CMD check xgx_0.0.1.005.tar.gz --as-cran`
     * The devtools::check() above does the same thing (I think)
-
-
-
-
-
-
-

@@ -254,8 +254,7 @@ grid.arrange(g1, g2, g3, g4, nrow=2)
 We've found that during exploration, it can be extremely important to check the dataset for issues.  This can be done using the `xgx_check_data` or `xgx_summarize_data` function (the two functions are identical).
 
 ```{r, message = FALSE}
-  filename   = system.file("extdata", "Multiple_Ascending_Dose_Missing_Duplicates.csv", package = "xgx", mustWork = TRUE)
-  data       = read.csv(filename,stringsAsFactors = FALSE) %>%
+  data       = Multiple_Ascending_Dose_Missing_Duplicates %>%
     filter(CMT %in% c(1,2,3)) %>%
     rename(DV      = LIDV,
            YTYPE   = CMT,

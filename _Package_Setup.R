@@ -37,11 +37,11 @@ writeLines(code,filename)
 
 
 #load libraries packages uses
-library(xgx)
+library(xgxr)
 library(ggplot2)
 library(dplyr)
 library(scales)
 library(gridExtra)
 
 #detaching package if needed
-#detach(package:xgx)
+#detach(package:xgxr)

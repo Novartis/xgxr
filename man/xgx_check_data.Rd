@@ -37,8 +37,6 @@ The dataset may also have additional columns
 }
 }
 \examples{
-filename = system.file("extdata","Multiple_Ascending_Dose_Missing_Duplicates.csv",package="xgx")
-data       = read.csv(filename,stringsAsFactors = FALSE) 
 covariates = c("WEIGHTB","SEX")
-check      = xgx_check_data(data,covariates)
+check      = xgx_check_data(Multiple_Ascending_Dose_Missing_Duplicates,covariates)
 }
