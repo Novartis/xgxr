@@ -4,15 +4,17 @@ The xgx R package supports a structured approach for exploring PKPD data ([outli
 
 ## How to update/test/use package
 * **Developing the package:** Run [_Package_Setup.R](_Package_Setup.R).  This will update the documentation, reinstall the package, and rebuild the vignette.
-* **Installing the package for use in your project:** follow the directions below, also [here](_Package_Install_New_User.R).
-  * Download this package as a zip file
-  * Place the zip file in your project folder, with your R code. (if you don't have a project folder... create one)
-  * Unzip the file.  
-  * Open R 
-  * Set the working directory to your project folder.
-  * Type: `devtools::build("xgx_Rpackage-master")` (if you don't have devtools, install that first using command: `install.packages("devtools")`)
-  * Then type: `install.packages("xgx_Rpackage-master", repos = NULL, lib = "./", type = "source")`
-  * To load the package, type: `library(xgx, lib.loc = "./")`
+* **Installing the package for use in your project:** follow the directions below, also [here](_Package_Install_New_User.R).  There are a few options.
+  * Install directly from Github to a local repository with the following command: `devtools::install_github("Novartis/xgxr", args = c('--library="./"'))`
+  * Download the package as a zip file and build and install it yourself, following the directions below.
+    * Download this package as a zip file
+    * Place the zip file in your project folder, with your R code. (if you don't have a project folder... create one)
+    * Unzip the file.  
+    * Open R 
+    * Set the working directory to your project folder.
+    * Type: `devtools::build("xgx_Rpackage-master")` (if you don't have devtools, install that first using command: `install.packages("devtools")`)
+    * Then type: `install.packages("xgx_Rpackage-master", repos = NULL, lib = "./", type = "source")`
+    * To load the package, type: `library(xgx, lib.loc = "./")`
 
 ## Overview for how R packages (including this one) are organized
 * Functions are located in the "R" folder.  
