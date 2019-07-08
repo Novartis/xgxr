@@ -19,19 +19,12 @@ knitr::opts_chunk$set(
 ```
 
 ## Overview
-The xGx R package supports a structured approach to exploring PKPD data ([outlined here](http://opensource.nibr.com/xgx)).  It also contains helper functions for enabling the modeler to follow best R practices (by appending the program name, figure name location, and draft status to each plot) and enabling the modeler to follow best graphical practices (by providing an xgx theme that reduces chart ink, and by providing time-scale, log-scale, and reverse-log-transform-scale functions for more readable axes).
-
-To use this package on your project, follow the firections below:
-
-* Download this package to your project folder and unzip it from [gitlab](https://gitlabce.statwb.eu.novartis.net/STEINANF/xgx_Rpackage)
-* Open R and type: `devtools::build("xgx_Rpackage-master")`
-* Then type: `install.packages("xgx_Rpackage-master", repos = NULL, lib = "./", type = "source")`
-* To load the package, type: `library(xgx, lib.loc = "./")`
+The xgxr package supports a structured approach to exploring PKPD data ([outlined here](http://opensource.nibr.com/xgx)).  It also contains helper functions for enabling the modeler to follow best R practices (by appending the program name, figure name location, and draft status to each plot) and enabling the modeler to follow best graphical practices (by providing an xgx theme that reduces chart ink, and by providing time-scale, log-scale, and reverse-log-transform-scale functions for more readable axes).
 
 ## Required Packages
 ```{r, message=FALSE}
   #devtools::load_all()
-  library(xgx)
+  library(xgxr)
   library(scales)
   library(stringr)
   library(grid)
