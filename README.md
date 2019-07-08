@@ -14,7 +14,7 @@ The xgxr package supports a structured approach for exploring PKPD data ([outlin
     * Set the working directory to your project folder.
     * Type: `devtools::build("xgxr-master")` (if you don't have devtools, install that first using command: `install.packages("devtools")`)
     * Then type: `install.packages("xgxr-master", repos = NULL, lib = "./", type = "source")`
-    * To load the package, type: `library(xgx, lib.loc = "./")`
+    * To load the package, type: `library(xgxr, lib.loc = "./")`
   * **Option 3:** Source the R files and read in the data files directly
     * Download this package as a zip file
     * Place the zip file in your project folder, with your R code. (if you don't have a project folder... create one)
