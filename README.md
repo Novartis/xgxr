@@ -25,6 +25,7 @@ The xgxr package supports a structured approach for exploring PKPD data ([outlin
       * `for(ifile in Rfiles) source(ifile)`
       * `Rdafiles = list.files(path = "xgxr-master/data", full.names = TRUE)`
       * `for(ifile in Rdafiles) load(ifile)
+  * **Last Resort Failsafe:** If you want to make use of the xGx exploratory graphics principles on the website but are unable to install this package, you can view an older version of the website that does not make use of the `xgxr` package.  http://opensource.nibr.com/xgx_v1
   
 
 ## Overview for how R packages (including this one) are organized
