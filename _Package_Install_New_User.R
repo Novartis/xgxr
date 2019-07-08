@@ -54,6 +54,12 @@ for(ifile in Rfiles){
   source(ifile)
 }
 
+# 3) Load in all the datasets manually
+Rdafiles = list.files(path = "xgxr-master/data", full.names = TRUE)
+for(ifile in Rdafiles){
+  load(ifile)
+}
+
 #example code ----  
 library(ggplot2)
 ggplot(data=data.frame(x=rlnorm(1000,0,1),y=rlnorm(1000,0,3)),aes(x=x,y=y)) + 
