@@ -51,8 +51,14 @@ xgx_breaks_time <-  function(data.range,units.plot){
   w.simple  = c(1,.2,.5,.05)
   
   
-  if (units.plot %in% c("h","m") && dspan >= 12)       { 
+  if (units.plot %in% c("h","m") && dspan >= 48)       { 
     Q = c(24,12,6,3) 
+    w = w.simple
+  } else if (units.plot %in% c("h","m") && dspan >= 24)  {
+    Q = c(3,12,6,2)
+    w = w.simple
+  } else if (units.plot %in% c("h","m") && dspan < 24) {
+    Q = c(6,3,2,1)
     w = w.simple
   } else if (units.plot == "d" && dspan >= 12)  { 
     Q = c(7,14,28)
