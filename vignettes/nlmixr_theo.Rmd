@@ -63,8 +63,7 @@ Multiplying dose by weight to get a mg dosing.
   covariates = c("WT")
   
 #load dataset 
-  filename = nlmixr_theo_sd
-  data     = read.csv(filename,stringsAsFactors = FALSE)
+  data = nlmixr_theo_sd
   
 #make sure that the necessary columns are assigned
 #five columns are required: TIME, LIDV, CMT, DOSE, DOSEREG
