@@ -1,6 +1,6 @@
-# xgx_Rpackage
+# xgxr
 
-The xgx R package supports a structured approach for exploring PKPD data ([outlined here](http://opensource.nibr.com/xgx)).  It also contains helper functions for enabling the modeler to follow best R practices (by appending the program name, figure name location, and draft status to each plot).  In addition, it enables the modeler to follow best graphical practices (by providing an xgx theme that reduces chart ink, and by providing time-scale, log-scale, and reverse-log-transform-scale functions for more readable axes).  Finally, it provides some data checking and summarizing functions for rapidly exploring a PKPD dataset.
+The xgxr package supports a structured approach for exploring PKPD data ([outlined here](http://opensource.nibr.com/xgx)).  It also contains helper functions for enabling the modeler to follow best R practices (by appending the program name, figure name location, and draft status to each plot).  In addition, it enables the modeler to follow best graphical practices (by providing an xgx theme that reduces chart ink, and by providing time-scale, log-scale, and reverse-log-transform-scale functions for more readable axes).  Finally, it provides some data checking and summarizing functions for rapidly exploring a PKPD dataset.
 
 ## How to update/test/use package
 * **Developing the package:** Run [_Package_Setup.R](_Package_Setup.R).  This will update the documentation, reinstall the package, and rebuild the vignette.
