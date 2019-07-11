@@ -4,8 +4,7 @@
 \alias{xgx_plot}
 \title{Create a new xgx plot}
 \usage{
-xgx_plot(data = NULL, mapping = aes(), ...,
-  environment = parent.frame())
+xgx_plot(data = NULL, mapping = aes(), ..., environment = parent.frame())
 }
 \arguments{
 \item{data}{Default dataset to use for plot. If not already a data.frame, will be converted to one by fortify.}
