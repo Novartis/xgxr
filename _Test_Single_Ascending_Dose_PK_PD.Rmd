@@ -50,7 +50,8 @@ data <- read.csv("data/Single_Ascending_Dose_PKPD_dpastoor.csv")
 
 pkpd_data <- data %>%
   arrange(DOSE) %>%
-  mutate(TRTACT = paste0(pkpd_data$DOSE, "mg"),factor(TRTACT, levels = unique(TRTACT))) 
+  mutate(TRTACT = paste0(data$DOSE, "mg"))%>%
+  mutate(TRTACT = factor(TRTACT, levels = unique(TRTACT))) 
  
 pkpd_data_revdose <- pkpd_data %>%
   mutate(TRTACT = factor(TRTACT, levels = rev(levels(TRTACT))))
