@@ -46,13 +46,9 @@ xgx_theme_set()
 ## Load Dataset
  
 ```{r, warning=FALSE, message=FALSE}
-
-pkpd_data <- read.csv("./data/Single_Ascending_Dose_PKPD_dpastoor.csv") 
-names(pkpd_data) 
-
-
 pkpd_data <- read.csv("./data/Single_Ascending_Dose_PKPD_dpastoor.csv") %>%
   arrange(DOSE) %>%
+  mutate(TRTACT = paste0(pkpd_data$DOSE, "mg")) %>%
   mutate(TRTACT = factor(TRTACT, levels = unique(TRTACT)))
  
 pk_data <- pkpd_data %>%
