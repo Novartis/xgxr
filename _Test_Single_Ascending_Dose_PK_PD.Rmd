@@ -51,17 +51,15 @@ pkpd_data <- read.csv("./data/Single_Ascending_Dose_PKPD_dpastoor.csv") %>%
   mutate(TRTACT = paste0(pkpd_data$DOSE, "mg")) %>%
   mutate(TRTACT = factor(TRTACT, levels = unique(TRTACT)))
  
-pk_data <- pkpd_data %>%
-  filter(CMT==2)
  
-pk_data_revdose <- pk_data %>%
+pkpd_data_revdose <- pkpd_data %>%
   mutate(TRTACT = factor(TRTACT, levels = rev(levels(TRTACT))))
  
-NCA = pk_data %>%
+NCA = pkpd_data %>%
   group_by(ID,DOSE) %>%
-  filter(!is.na(LIDV)) %>%
-  summarize(AUC_last = trapz(TIME,LIDV),
-            Cmax     = max(LIDV)) %>%
+  filter(!is.na(COBS)) %>%
+  summarize(AUC_last = trapz(TIME,COBS),
+            Cmax     = max(COBS)) %>%
   gather(PARAM,VALUE,-c(ID,DOSE)) %>%
   ungroup() %>%
   mutate(VALUE_NORM = VALUE/DOSE)
@@ -84,7 +82,7 @@ When looking at summaries of PK over time, there are several things to observe. 
  
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
  
-gg <- ggplot(data = pk_data_revdose, aes(x = NOMTIME, y = LIDV, group= DOSE, color = TRTACT))
+gg <- ggplot(data = pkpd_data_revdose, aes(x = TIME, y = COBS, group= DOSE, color = TRTACT))
  
 gg <- gg + xgx_geom_ci(percentile = .95, position = position_dodge(width = 1))
 gg <- gg + xgx_scale_y_log10()
