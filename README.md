@@ -5,7 +5,7 @@ The xgxr package supports a structured approach for exploring PKPD data ([outlin
 ## How to update/test/use package
 * **Developing the package:** Run [_Package_Setup.R](_Package_Setup.R).  This will update the documentation, reinstall the package, and rebuild the vignette.
 * **Installing the package for use in your project:** follow the directions below, also [here](_Package_Install_New_User.R).  There are a few options.
-  * **Option 1:** Install directly from Github to a local repository with the following command: `devtools::install_github("Novartis/xgxr", args = c('--library="./"'))`.  If you want to install it in your library path, you can delete the "args" optiono.
+  * **Option 1:** Install directly from Github to a local repository with the following command: `devtools::install_github("Novartis/xgxr", args = c('--library="./"'))`.  If you want to install it in your default library path, you can delete the "args" option.
   * **Option 2:** Download the package as a zip file and build and install it yourself, following the directions below.
     * Download this package as a zip file
     * Place the zip file in your project folder, with your R code. (if you don't have a project folder, then create one)
