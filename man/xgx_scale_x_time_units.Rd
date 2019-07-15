@@ -12,24 +12,22 @@ xgx_scale_x_time_units(units_dataset, units_plot = NULL,
 
 \item{units_plot}{units of the plot, will be units of the dataset if empty}
 
-\item{breaks}{One of:
-\itemize{
-\item \code{NULL} for no breaks
-\item \code{waiver()} for the default breaks computed by the
-transformation object
-\item A numeric vector of positions
-\item A function that takes the limits as input and returns breaks
-as output
+\item{breaks}{One of: \itemize{
+  \item \code{NULL} for no breaks
+  \item \code{waiver()} for the default breaks computed by the
+    transformation object
+  \item A numeric vector of positions
+  \item A function that takes the limits as input and returns breaks
+    as output
 }}
 
-\item{labels}{One of:
-\itemize{
-\item \code{NULL} for no labels
-\item \code{waiver()} for the default labels computed by the
-transformation object
-\item A character vector giving labels (must be same length as \code{breaks})
-\item A function that takes the breaks as input and returns labels
-as output
+\item{labels}{One of: \itemize{
+  \item \code{NULL} for no labels
+  \item \code{waiver()} for the default labels computed by the
+    transformation object
+  \item A character vector giving labels (must be same length as \code{breaks})
+  \item A function that takes the breaks as input and returns labels
+    as output
 }}
 
 \item{...}{other parameters for \code{ggplot2::scale_x_continuous}
