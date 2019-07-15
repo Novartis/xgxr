@@ -9,7 +9,7 @@ output:
  
 ## Overview
  
-This document contains exploratory plots for single ascending dose PK and PD data as well as the R code that generates these graphs. The plots presented here are based on simulated data ([see: ...)). You may also download the the dataset for your reference ([download dataset](data/Case1_PKPDdataset.csv)).
+This document contains exploratory plots for single ascending dose PK and PD data as well as the R code that generates these graphs. The plots presented here are based on simulated data. You may also download the the dataset for your reference ([download dataset](inst/extdata/401_case1_PKPDdataset.csv)).
  
 ## Setup
  
@@ -82,6 +82,7 @@ time_units_plot    = "days"
 trtact_label       = "Dose"
 dose_label         = "Dose (mg)"
 conc_label         = "Concentration (ng/ml)" 
+auc_label          = "AUCtau (h.(ng/ml))"
 concnorm_label     = "Normalized Concentration (ng/ml)/mg"
 sex_label          = "Sex"
 w100_label         = "WEIGHTB>100"
@@ -147,7 +148,8 @@ gg <- ggplot(data = NCA, aes(x = DOSE, y = VALUE_NORM))
 gg <- gg + geom_boxplot(aes(group = DOSE))
 gg <- gg + geom_smooth(method = "lm", color = "black")
 gg <- gg + facet_wrap(~PARAM, scales = "free_y")
-gg <- gg + labs(x = dose_label, y = concnorm_label)
+gg <- gg + labs(x = dose_label)
+gg <- gg + theme(axis.title.y=element_blank())
 gg <- gg + xgx_annotate_status(status)
 print(gg)
 ```
@@ -159,7 +161,8 @@ gg <- ggplot(data = NCA[!NCA$DOSE==3 & !NCA$DOSE==10 ,], aes(x = DOSE, y = VALUE
 gg <- gg + geom_boxplot(aes(group = DOSE))
 gg <- gg + geom_smooth(method = "lm", color = "black")
 gg <- gg + facet_wrap(~PARAM, scales = "free_y")
-gg <- gg + labs(x = dose_label, y = concnorm_label)
+gg <- gg + labs(x = dose_label)
+gg <- gg + theme(axis.title.y=element_blank())
 gg <- gg + xgx_annotate_status(status)
 print(gg)
 ```
@@ -331,8 +334,62 @@ gg <- gg + xgx_annotate_status(status)
 print(gg)
 ```
 
+Plotting AUC vs response instead of concentration vs response may make more sense in some situations. For example, when there is a large delay between PK and PD it would be diffcult to relate the time-varying concentration with the response. If rich sampling is only done at a particular point in the study, e.g. at steady state, then the AUC calculated on the rich profile could be used as the exposure variable for a number of PD visits. If PK samples are scarce, average Cmin could also be used as the exposure metric.
 
 
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+AUC_0_24 <- NCA[NCA$PARAM =="AUC_last", c("ID","VALUE")]
+
+names(AUC_0_24) <- c("ID","AUC")
+AUC_0_24$PROFDAY = 1
+if(length(AUC_0_24[is.na(AUC_0_24$AUC),]$AUC) > 0 ){
+AUC_0_24[is.na(AUC_0_24$AUC),]$AUC <-0
+}
+
+AUCtau <- pkpd_data[pkpd_data$CMT==2&pkpd_data$NOMTIME>=2015.9&pkpd_data$NOMTIME<=2039.9,]
+AUCtau <- data.frame(stack(sapply(split(AUCtau,AUCtau$ID),
+                                  function(df) trapz(df$TIME,df$LIDV))))
+names(AUCtau) <- c("AUC","ID")
+AUCtau$PROFDAY = 85
+if(length(AUCtau[is.na(AUCtau$AUC),]$AUC) > 0 ){
+AUCtau[is.na(AUCtau$AUC),]$AUC<-0
+}
+
+AUC <- rbind(AUC_0_24, AUCtau)
+AUC$ID <- as.numeric(as.character(AUC$ID))
+AUC <- AUC[order(AUC$ID,AUC$PROFDAY),]
+
+RESPONSE <- pkpd_data[pkpd_data$CMT==3&pkpd_data$PROFDAY%in%c(1,85),
+                    c("ID","PROFDAY","LIDV","DOSE","TRTACT")]
+names(RESPONSE) <- c("ID","PROFDAY","Response","DOSE","TRTACT")
+
+data_to_plot <- merge(AUC, RESPONSE, by = c("ID","PROFDAY"))
+data_to_plot$ID <- as.numeric(as.character(data_to_plot$ID))
+data_to_plot <- data_to_plot[order(data_to_plot$ID,data_to_plot$PROFDAY),]
+
+data_to_plot$DAY_label <- paste("Day", data_to_plot$PROFDAY)
+
+data_to_plot$AUC_bins <- cut(data_to_plot$AUC, 
+                               quantile(data_to_plot$AUC, na.rm=TRUE), na.rm=TRUE)
+data_to_plot = data_to_plot %>%
+  group_by(AUC_bins) %>%
+  mutate(AUC_midpoints = median(AUC))
+
+
+data_to_plot$TRTACT <- factor(data_to_plot$TRTACT, 
+                                   levels = rev(levels(data_to_plot$TRTACT)))
+
+gg <- ggplot(data = data_to_plot, aes(x = AUC, y = Response))
+gg <- gg + geom_point(aes(color = TRTACT)) + geom_smooth(color="black")
+gg <- gg + xgx_geom_ci(geom="pointrange", data = data_to_plot,
+                       mapping = aes(x=AUC_midpoints, y=Response), shape=0)
+gg <- gg + xgx_scale_x_log10()
+gg <- gg + guides(color=guide_legend(""),fill=guide_legend(""))
+gg <- gg + facet_grid(~DAY_label)
+gg <- gg + labs(y=pd_label,x=auc_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
 
 
 
