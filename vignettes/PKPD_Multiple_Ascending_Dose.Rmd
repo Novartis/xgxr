@@ -1,11 +1,17 @@
 ---
-title: "Test_PK_PD_Single Ascending Dose_Simulated_Dataset"
-output:
-  html_document:
+title: "PKPD Multiple Ascending Dose example"
+author: "Fariba Khanshan, Andrew Stein, Alison Margolskee"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
     toc: true
-    toc_float: true
-    code_folding: hide
+
+vignette: >
+  %\VignetteIndexEntry{xGx Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
  
 ## Overview
  
@@ -46,7 +52,8 @@ xgx_theme_set()
 ## Load Dataset
  
 ```{r, warning=FALSE, message=FALSE}
-pkpd_data <- read.csv("inst/extdata/401_case1_PKPDdataset.csv") %>%
+pkpd_data <- case1_PKPDdataset %>%
+#pkpd_data <- read.csv("inst/extdata/401_case1_PKPDdataset.csv") %>%
   arrange(DOSE) %>%
   mutate(TRTACT = factor(TRTACT, levels = unique(TRTACT)))
  
