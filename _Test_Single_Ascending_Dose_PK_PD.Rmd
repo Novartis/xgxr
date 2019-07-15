@@ -1,5 +1,5 @@
 ---
-title: "Test_PK_PD_Single Ascending Dose_Pastoor_Dataset"
+title: "Test_PK_PD_Single Ascending Dose_Simulated_Dataset"
 output:
   html_document:
     toc: true
@@ -9,7 +9,7 @@ output:
  
 ## Overview
  
-This document contains exploratory plots for single ascending dose PK data as well as the R code that generates these graphs. The plots presented here are based on simulated data ([see: PKPD Datasets](PKPD_Datasets.html)). You may also download the Single Ascending Dose PK dataset for your reference ([download dataset](Data/Single_Ascending_Dose_Dataset2.csv)). Data specifications can be accessed on [Datasets](Datasets.html) and Rmarkdown template to generate this page can be found on [Rmarkdown-Template](Rmarkdown/Single_Ascending_Dose_PK.Rmd).
+This document contains exploratory plots for single ascending dose PK and PD data as well as the R code that generates these graphs. The plots presented here are based on simulated data ([see: ...)). You may also download the the dataset for your reference ([download dataset](data/Case1_PKPDdataset.csv)).
  
 ## Setup
  
@@ -46,21 +46,33 @@ xgx_theme_set()
 ## Load Dataset
  
 ```{r, warning=FALSE, message=FALSE}
-data <- read.csv("data/Single_Ascending_Dose_PKPD_dpastoor.csv")
-
-pkpd_data <- data %>%
+pkpd_data <- read.csv("inst/extdata/401_case1_PKPDdataset.csv") %>%
   arrange(DOSE) %>%
-  mutate(TRTACT = paste0(data$DOSE, "mg"))%>%
-  mutate(TRTACT = factor(TRTACT, levels = unique(TRTACT))) 
+  mutate(TRTACT = factor(TRTACT, levels = unique(TRTACT)))
  
-pkpd_data_revdose <- pkpd_data %>%
+pk_data <- pkpd_data %>%
+  filter(CMT==2)
+
+pk_data_cycle1 <- pk_data %>%
+  filter(CYCLE==1)
+ 
+pk_data_revdose <- pk_data_cycle1 %>%
   mutate(TRTACT = factor(TRTACT, levels = rev(levels(TRTACT))))
+
+pd_data <- pkpd_data %>%
+  filter(CMT==3)
+
+# pd_data_cycle1 <- pd_data %>%
+#   filter(CYCLE==1)
  
-NCA = pkpd_data %>%
+pd_data_revdose <- pd_data %>%
+  mutate(TRTACT = factor(TRTACT, levels = rev(levels(TRTACT))))
+
+NCA = pk_data_cycle1 %>%
   group_by(ID,DOSE) %>%
-  filter(!is.na(COBS)) %>%
-  summarize(AUC_last = trapz(TIME,COBS),
-            Cmax     = max(COBS)) %>%
+  filter(!is.na(LIDV)) %>%
+  summarize(AUC_last = trapz(TIME,LIDV),
+            Cmax     = max(LIDV)) %>%
   gather(PARAM,VALUE,-c(ID,DOSE)) %>%
   ungroup() %>%
   mutate(VALUE_NORM = VALUE/DOSE)
@@ -71,6 +83,9 @@ trtact_label       = "Dose"
 dose_label         = "Dose (mg)"
 conc_label         = "Concentration (ng/ml)" 
 concnorm_label     = "Normalized Concentration (ng/ml)/mg"
+sex_label          = "Sex"
+w100_label         = "WEIGHTB>100"
+pd_label           = "FEV1 (mL)"
 ```
  
 ## Provide an overview of the data
@@ -82,10 +97,8 @@ When looking at summaries of PK over time, there are several things to observe. 
 ### Concentration over time, colored by Dose, mean +/- 95% CI
  
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
- 
-gg <- ggplot(data = pkpd_data_revdose, aes(x = TIME, y = COBS, group= DOSE, color = TRTACT))
- 
-gg <- gg + xgx_geom_ci(percentile = .95, position = position_dodge(width = 1))
+gg <- ggplot(data = pk_data_revdose, aes(x = NOMTIME, y = LIDV, group= DOSE, color = TRTACT))
+gg <- gg + xgx_geom_ci(percentile = .95)
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
 gg <- gg + labs(y=conc_label,color = trtact_label)
@@ -96,13 +109,11 @@ print(gg)
 ### Concentration over time, faceted by Dose, mean +/- 95% CI, overlaid on gray spaghetti plots
  
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 10, fig.height = 3}
- 
-gg <- ggplot(data = pkpd_data, aes(x = TIME, y = COBS))
+gg <- ggplot(data = pk_data_cycle1, aes(x = NOMTIME, y = LIDV))
 gg <- gg + geom_line(aes(group = ID), color = rgb(0.5,0.5,0.5), size = 1, alpha = 0.3) 
-#gg <- gg + geom_point(aes(color = factor(CENS), shape = factor(CENS), alpha = 0.3), size = 2, alpha = 0.3)
 gg <- gg + scale_shape_manual(values=c(1,8))
 gg <- gg + scale_color_manual(values=c("grey50","red"))
-gg <- gg + xgx_geom_ci(aes(x = TIME, color=NULL, group=NULL), percentile = 0.95)
+gg <- gg + xgx_geom_ci(aes(x = NOMTIME, color=NULL, group=NULL), percentile = 0.95)
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
 gg <- gg + labs(y=conc_label,color = trtact_label)
@@ -116,13 +127,13 @@ print(gg)
 ### Dose Normalized Concentration over time, colored by Dose, mean +/- 95% CI
  
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
-gg <- ggplot(data = pkpd_data_revdose,
-             aes(x = TIME, y = COBS/as.numeric(as.character(DOSE)),
+gg <- ggplot(data = pk_data_revdose,
+             aes(x = NOMTIME, y = LIDV/as.numeric(as.character(DOSE)),
                  group= DOSE, color = TRTACT))
 gg <- gg + xgx_geom_ci(percentile = 0.95, alpha = 0.5, position = position_dodge(1))
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
-gg <- gg + labs(y=conc_label,color = trtact_label)
+gg <- gg + labs(y=concnorm_label,color = trtact_label)
 gg <- gg + xgx_annotate_status(status)
 print(gg)
 ```
@@ -139,9 +150,193 @@ gg <- gg + facet_wrap(~PARAM, scales = "free_y")
 gg <- gg + labs(x = dose_label, y = concnorm_label)
 gg <- gg + xgx_annotate_status(status)
 print(gg)
- 
 ```
+
+
  
+```{r, cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+gg <- ggplot(data = NCA[!NCA$DOSE==3 & !NCA$DOSE==10 ,], aes(x = DOSE, y = VALUE_NORM))
+gg <- gg + geom_boxplot(aes(group = DOSE))
+gg <- gg + geom_smooth(method = "lm", color = "black")
+gg <- gg + facet_wrap(~PARAM, scales = "free_y")
+gg <- gg + labs(x = dose_label, y = concnorm_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+
+ 
+## Explore covariate effects on PK
+### Concentration over time, colored by categorical covariate, mean +/- 95% CI
+
+```{r, cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+gg <- ggplot(data = pk_data_revdose, aes(x = NOMTIME, y = LIDV, group= WEIGHTB>100, color = WEIGHTB>100)) 
+gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_scale_y_log10()
+gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
+gg <- gg + facet_grid(.~DOSE)
+gg <- gg + labs(y=conc_label,color = w100_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+
+## PD marker over time, colored by Dose, mean (95% CI) percentiles by nominal time
+
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+gg <- ggplot(data = pd_data_revdose, aes(x = NOMTIME/24, y = LIDV, group= DOSE, color = TRTACT))
+gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_scale_y_log10()
+gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_plot)
+gg <- gg + labs(y=pd_label,color = trtact_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+## PD marker over time, faceted by Dose, dots & lines grouped by individuals
+
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+gg <- ggplot(data = pd_data, aes(x = NOMTIME/24, y = LIDV))
+gg <- gg + geom_line(aes(group=ID),alpha = 0.5)
+gg <- gg + geom_point(alpha = 0.5)
+gg <- gg + xgx_scale_y_log10()
+gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_plot)
+gg <- gg + facet_grid(~TRTACT)
+gg <- gg + labs(y=pd_label,color = trtact_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+## Explore Dose-Response Relationship
+One of the key questions when looking at PD markers is to determine if there is a dose-response relationship, and if there is, what dose is necessary to achieve the desired effect? Simple dose-response plots can give insight into these questions.
+
+### PD marker by Dose, for endpoint of interest, mean (95% CI) by Dose
+Plot PD marker against dose. Using summary statistics can be helpful, e.g. Mean +/- SE, or median, 5th & 95th percentiles.
+
+Here are some questions to ask yourself when looking at Dose-Response plots: Do you see any relationship? Does response increase (decrease) with increasing dose? Are you able to detect a plateau or emax (emin) on the effect? If so, around what dose does this occur?
+
+Warning: Even if you don’t see an Emax, that doesn’t mean there isn’t one. Be very careful about using linear models for Dose-Response relationships. Extrapolation outside of the observed dose range could indicate a higher dose is always better (even if it isn’t).
+
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+pd_data$DAY_label <- paste("Day", pd_data$PROFDAY)
+pd_data$DAY_label[pd_data$DAY_label=="Day 0"] = "Baseline"
+pd_data_baseline_day85 <- pd_data[pd_data$DAY_label%in%c("Baseline","Day 85"),]
+
+gg <- ggplot(data = pd_data_baseline_day85, aes(x=DOSE,y=LIDV, group = DOSE))
+gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + stat_summary(geom="point", fun.y=mean)
+gg <- gg + guides(color=guide_legend(""),fill=guide_legend(""))
+gg <- gg + facet_grid(~DAY_label)
+gg <- gg + labs(y=pd_label,color = trtact_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+
+### PD marker by Dose, faceted by visit, mean (95% CI) by Dose
+
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+pd_data_visit <- pd_data[pd_data$DAY_label%in%c("Baseline","Day 14","Day 28","Day 56","Day 85"),]
+gg <- ggplot(data = pd_data_visit, aes(x=DOSE,y=LIDV, group = DOSE))
+gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + stat_summary(geom="point", fun.y=mean)
+gg <- gg + guides(color=guide_legend(""),fill=guide_legend(""))
+gg <- gg + facet_grid(~DAY_label)
+gg <- gg + labs(y=pd_label,color = trtact_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+
+### Explore covariate effects on Dose-Response relationship
+
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+gg <- ggplot(data = pd_data_baseline_day85, aes(x=DOSE,y=LIDV, group= WEIGHTB>100, color = WEIGHTB>100))
+gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + stat_summary(geom="point", fun.y=mean)
+gg <- gg + facet_grid(~DAY_label)
+gg <- gg + labs(y=pd_label,color = w100_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+
+## Explore Exposure-Response Relationship
+
+Plot PD marker against concentration. Do you see any relationship? Does response increase (decrease) with increasing dose? Are you able to detect a plateau or emax (emin) on the effect?
+
+Warning: Even if you don’t see an Emax, that doesn’t mean there isn’t one. Be very careful about using linear models for Dose-Response or Exposure-Response relationships. Extrapolation outside of the observed dose range could indicate a higher dose is always better (even if it isn’t).
+
+
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+pkpd_data$DAY_label <- paste("Day", pkpd_data$PROFDAY)
+pkpd_data$DAY_label[pkpd_data$DAY_label=="Day 0"] = "Baseline"
+pkpd_data_day85 <- pkpd_data[pkpd_data$DAY_label%in%c("Day 85"),]
+data_to_plot <- list()
+data_to_plot[[1]] <- pkpd_data_day85[pkpd_data_day85$CMT==2
+                                     &pkpd_data_day85$TRTACT!="Placebo"
+                                     &pkpd_data_day85$PROFDAY==85,
+                             c("TIME","LIDV","ID","TRTACT","CENS")]
+data_to_plot[[1]]$Concentration <- data_to_plot[[1]]$LIDV
+data_to_plot[[1]]$LIDV <- NULL
+
+data_to_plot[[2]] <- pkpd_data_day85[pkpd_data_day85$CMT==3
+                             &pkpd_data_day85$PROFDAY==85,
+                             c("TIME","LIDV","ID","TRTACT")]
+
+data_to_plot[[2]]$Response <- data_to_plot[[2]]$LIDV
+data_to_plot[[2]]$LIDV <- NULL
+data_to_plot2 <- merge(data_to_plot[[1]],data_to_plot[[2]],by=c("TIME","ID","TRTACT"))
+data_to_plot2$TRTACT <- factor(data_to_plot2$TRTACT, levels = rev(levels(data_to_plot2$TRTACT)))
+
+gg <- ggplot(data = data_to_plot2, aes(x=Concentration,y=Response))
+gg <- gg + geom_point(aes(color = TRTACT))
+gg <- gg + geom_point(data=data_to_plot2[data_to_plot2$CENS==1,], color="red", shape = 8)
+gg <- gg + guides(color=guide_legend(""),fill=guide_legend(""))
+gg <- gg + xgx_scale_x_log10()
+gg <- gg + labs(y=pd_label,x=conc_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
+pkpd_data$DAY_label <- paste("Day", pkpd_data$PROFDAY)
+data_to_plot <- list()
+data_to_plot[[1]] <- pkpd_data[pkpd_data$CMT==2&pkpd_data$PROFDAY%in%c(1,14,28,56,85),
+                             c("TIME","LIDV","ID","TRTACT","CENS","PROFDAY")]
+data_to_plot[[1]]$Concentration <- data_to_plot[[1]]$LIDV
+data_to_plot[[1]]$LIDV <- NULL
+
+data_to_plot[[2]] <- pkpd_data[pkpd_data$CMT==3&pkpd_data$PROFDAY%in%c(1,14,28,56,85),
+                             c("TIME","LIDV","ID","TRTACT","PROFDAY")]
+data_to_plot[[2]]$Response <- data_to_plot[[2]]$LIDV
+data_to_plot[[2]]$LIDV <- NULL
+
+data_to_plot2 <- merge(data_to_plot[[1]],data_to_plot[[2]],
+                       by=c("TIME","ID","TRTACT","PROFDAY"))
+data_to_plot2$DAY_label <- paste("Day", data_to_plot2$PROFDAY)
+data_to_plot2$TRTACT <- factor(data_to_plot2$TRTACT, 
+                                   levels = rev(levels(data_to_plot2$TRTACT)))
+
+
+
+gg <- ggplot(data = data_to_plot2, aes(x=Concentration,y=Response, color = TRTACT))
+gg <- gg + geom_point()
+gg <- gg + geom_point(data=data_to_plot2[data_to_plot2$CENS==1,], color="red", shape = 8)
+gg <- gg + xgx_scale_x_log10()
+gg <- gg + guides(color=guide_legend(""),fill=guide_legend(""))
+gg <- gg + facet_grid(~DAY_label)
+gg <- gg + labs(y=pd_label,x=conc_label)
+gg <- gg + xgx_annotate_status(status)
+print(gg)
+```
+
+
+
+
+
+
+
 
 ## R Session Info
 ```{r}
