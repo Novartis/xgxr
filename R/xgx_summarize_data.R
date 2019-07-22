@@ -1,11 +1,11 @@
 #' Check data for various issues
 #'
-#' Calls \code{xgx_check_data} 
+#' Calls \code{\link{xgx_check_data}}
 #' 
 #' @inheritParams xgx_check_data
 #' @param ... parameters from \code{\link{xgx_check_data}}
-#' 
+#' @aliases xgx_check_data
 #' @export
-xgx_summarize_data = function(...){
-  xgx_check_data(...)
+xgx_summarize_data = function(data,covariates = NULL,...){
+  xgx_check_data(data,covariates,...)
 }

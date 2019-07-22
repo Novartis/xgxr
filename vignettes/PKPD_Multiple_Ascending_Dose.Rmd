@@ -106,7 +106,7 @@ When looking at summaries of PK over time, there are several things to observe. 
  
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
 gg <- ggplot(data = pk_data_revdose, aes(x = NOMTIME, y = LIDV, group= DOSE, color = TRTACT))
-gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_geom_ci(conf_level = .95)
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
 gg <- gg + labs(y=conc_label,color = trtact_label)
@@ -121,7 +121,7 @@ gg <- ggplot(data = pk_data_cycle1, aes(x = NOMTIME, y = LIDV))
 gg <- gg + geom_line(aes(group = ID), color = rgb(0.5,0.5,0.5), size = 1, alpha = 0.3) 
 gg <- gg + scale_shape_manual(values=c(1,8))
 gg <- gg + scale_color_manual(values=c("grey50","red"))
-gg <- gg + xgx_geom_ci(aes(x = NOMTIME, color=NULL, group=NULL), percentile = 0.95)
+gg <- gg + xgx_geom_ci(aes(x = NOMTIME, color=NULL, group=NULL), conf_level = 0.95)
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
 gg <- gg + labs(y=conc_label,color = trtact_label)
@@ -138,7 +138,7 @@ print(gg)
 gg <- ggplot(data = pk_data_revdose,
              aes(x = NOMTIME, y = LIDV/as.numeric(as.character(DOSE)),
                  group= DOSE, color = TRTACT))
-gg <- gg + xgx_geom_ci(percentile = 0.95, alpha = 0.5, position = position_dodge(1))
+gg <- gg + xgx_geom_ci(conf_level = 0.95, alpha = 0.5, position = position_dodge(1))
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
 gg <- gg + labs(y=concnorm_label,color = trtact_label)
@@ -181,7 +181,7 @@ print(gg)
 
 ```{r, cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
 gg <- ggplot(data = pk_data_revdose, aes(x = NOMTIME, y = LIDV, group= WEIGHTB>100, color = WEIGHTB>100)) 
-gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_geom_ci(conf_level = .95)
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_dataset)
 gg <- gg + facet_grid(.~DOSE)
@@ -195,7 +195,7 @@ print(gg)
 
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
 gg <- ggplot(data = pd_data_revdose, aes(x = NOMTIME/24, y = LIDV, group= DOSE, color = TRTACT))
-gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_geom_ci(conf_level = .95)
 gg <- gg + xgx_scale_y_log10()
 gg <- gg + xgx_scale_x_time_units(units_dataset = time_units_plot)
 gg <- gg + labs(y=pd_label,color = trtact_label)
@@ -233,7 +233,7 @@ pd_data$DAY_label[pd_data$DAY_label=="Day 0"] = "Baseline"
 pd_data_baseline_day85 <- pd_data[pd_data$DAY_label%in%c("Baseline","Day 85"),]
 
 gg <- ggplot(data = pd_data_baseline_day85, aes(x=DOSE,y=LIDV, group = DOSE))
-gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_geom_ci(conf_level = .95)
 gg <- gg + stat_summary(geom="point", fun.y=mean)
 gg <- gg + guides(color=guide_legend(""),fill=guide_legend(""))
 gg <- gg + facet_grid(~DAY_label)
@@ -248,7 +248,7 @@ print(gg)
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
 pd_data_visit <- pd_data[pd_data$DAY_label%in%c("Baseline","Day 14","Day 28","Day 56","Day 85"),]
 gg <- ggplot(data = pd_data_visit, aes(x=DOSE,y=LIDV, group = DOSE))
-gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_geom_ci(conf_level = .95)
 gg <- gg + stat_summary(geom="point", fun.y=mean)
 gg <- gg + guides(color=guide_legend(""),fill=guide_legend(""))
 gg <- gg + facet_grid(~DAY_label)
@@ -262,7 +262,7 @@ print(gg)
 
 ```{r , cache = TRUE, echo = TRUE, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 4}
 gg <- ggplot(data = pd_data_baseline_day85, aes(x=DOSE,y=LIDV, group= WEIGHTB>100, color = WEIGHTB>100))
-gg <- gg + xgx_geom_ci(percentile = .95)
+gg <- gg + xgx_geom_ci(conf_level = .95)
 gg <- gg + stat_summary(geom="point", fun.y=mean)
 gg <- gg + facet_grid(~DAY_label)
 gg <- gg + labs(y=pd_label,color = w100_label)

@@ -2,13 +2,18 @@
 % Please edit documentation in R/xgx_summarize_data.R
 \name{xgx_summarize_data}
 \alias{xgx_summarize_data}
+\alias{xgx_check_data}
 \title{Check data for various issues}
 \usage{
-xgx_summarize_data(...)
+xgx_summarize_data(data, covariates = NULL, ...)
 }
 \arguments{
+\item{data}{the dataset to check.  Must contain the above columns}
+
+\item{covariates}{the column names of covariates, to explore}
+
 \item{...}{parameters from \code{\link{xgx_check_data}}}
 }
 \description{
-Calls \code{xgx_check_data}
+Calls \code{\link{xgx_check_data}}
 }
