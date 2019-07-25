@@ -4,14 +4,12 @@
 \alias{xgx_summarize_data}
 \title{Check data for various issues}
 \usage{
-xgx_summarize_data(data, covariates = NULL, ...)
+xgx_summarize_data(data, covariates = NULL)
 }
 \arguments{
 \item{data}{the dataset to check.  Must contain the above columns}
 
 \item{covariates}{the column names of covariates, to explore}
-
-\item{...}{parameters from \code{\link{xgx_check_data}}}
 }
 \description{
 Calls \code{\link{xgx_check_data}}

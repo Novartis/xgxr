@@ -3,8 +3,7 @@
 #' Calls \code{\link{xgx_check_data}}
 #' 
 #' @inheritParams xgx_check_data
-#' @param ... parameters from \code{\link{xgx_check_data}}
 #' @export
-xgx_summarize_data = function(data,covariates = NULL,...){
+xgx_summarize_data = function(data,covariates = NULL){
   xgx_check_data(data,covariates,...)
 }
