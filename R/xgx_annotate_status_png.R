@@ -112,12 +112,12 @@ xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
   }
   for(file in files){
     img<-png::readPNG(file,info=TRUE)
-    info <- attr(img,"info");
+    info <- attr(img,"info")
     dpi <- round(mean(c(0, info$dpi), na.rm=TRUE),0)
     if (dpi < 10){
       dpi <- 75
     }
-    metadata <- attr(img,"metadata");
+    metadata <- attr(img,"metadata")
     if (!identical(metadata,"I love xgx!")){
       message(sprintf("Add footnote to %s\n",file))
       ##get size
@@ -138,8 +138,8 @@ xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
       ## xpd=NA: all plotting is clipped to the device region
       ## mgp=c(0,0,0): margin line (in mex units) for the axis title.  I guess we don't care?
       ## oma=c(0,0,0,0): more margins # ann=FALSE: do not add extra annotation to the plot
-      old_par <- graphics::par();
-      on.exit(suppressWarnings({graphics::par(old_par)}));
+      old_par <- graphics::par()
+      on.exit(suppressWarnings({graphics::par(old_par)}))
       suppressWarnings(graphics::par(mar=c(0,0,0,0), xpd=NA, mgp=c(0,0,0), oma=c(0,0,0,0), ann=FALSE))
 
       ##THIS CREATES NEW PLOT.  I GUESS IT AUTOMATICALLY USES WHAT YOU SET WITH PAR?
@@ -169,7 +169,7 @@ xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
       ##close image
       invisible(grDevices::dev.off())
       img<-png::readPNG(file)
-      png::writePNG(img,file,metadata="I love xgx!");
+      png::writePNG(img,file,metadata="I love xgx!")
       if (x11){
         graphics::par(mar=c(0,0,0,0), xpd=NA, mgp=c(0,0,0), oma=c(0,0,0,0), ann=FALSE)
         lim <- graphics::par()

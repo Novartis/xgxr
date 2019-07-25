@@ -28,5 +28,5 @@ xgx_plot <-  function(data = NULL, mapping = ggplot2::aes(), ..., environment = 
   
   ret <- gg
   
-  return(ret);
+  return(ret)
 }

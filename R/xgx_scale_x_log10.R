@@ -16,13 +16,13 @@ xgx_scale_x_log10 <-  function(breaks       = xgx_breaks_log10,
                                labels       = xgx_labels_log10,
                                ...){
   xgx_log_breaks_minor <-  function(x){
-    r1 <- range(log10(x));
-    r <-  r1;
+    r1 <- range(log10(x))
+    r <-  r1
     r[1] <-  floor(r[1])
-    r[2] <-  ceiling(r[2])+1;
+    r[2] <-  ceiling(r[2])+1
     breaks <- c()
     for (i in seq(r[1],r[2])){
-      breaks <-  c(breaks,seq(2*10^(i-1),10^i-10^(i-1),by=10^(i-1)));
+      breaks <-  c(breaks,seq(2*10^(i-1),10^i-10^(i-1),by=10^(i-1)))
     }
     breaks <-  breaks[breaks <= 10^r1[2]]
     breaks <-  breaks[breaks >= 10^r1[1]]
@@ -32,5 +32,5 @@ xgx_scale_x_log10 <-  function(breaks       = xgx_breaks_log10,
   ret <- try(list(ggplot2::scale_x_log10(..., breaks=breaks, minor_breaks = minor_breaks, labels = labels)),
              silent=TRUE)
   if  (inherits(ret, "try-error")) return(ggplot2::scale_x_log10(...))
-  return(ret);
+  return(ret)
 }

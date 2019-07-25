@@ -25,5 +25,5 @@ xgx_spaghetti <-  function(data = NULL, mapping = ggplot2::aes(), ..., environme
   
   ret <- gg
   
-  return(ret);
+  return(ret)
 }
