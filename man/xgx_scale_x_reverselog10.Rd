@@ -7,7 +7,7 @@
 xgx_scale_x_reverselog10(...)
 }
 \arguments{
-\item{...}{other parameters passed to \code{ggplot2::scale_x_continuous}}
+\item{...}{other parameters passed to \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}}
 }
 \description{
 \code{xgx_scale_x_reverselog10} is designed to be used with data that approaches 100%.

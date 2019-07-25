@@ -7,7 +7,7 @@
 #' @param units_dataset units of the input dataset, must be specified by user as "h", "d", "w", "m", or "y"
 #' @param units_plot units of the plot, will be units of the dataset if empty
 #' @inheritParams ggplot2::continuous_scale
-#' @param ... other parameters for \code{ggplot2::scale_x_continuous}
+#' @param ... other parameters for \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}
 #' 
 #' @examples 
 #' data         = data.frame(x=1:1000,y=rnorm(1000))

@@ -1,13 +1,13 @@
 #' log10 scales the y axis with a "pretty" set of breaks
 #' 
-#' \code{xgx_scale_y_log10} is similar to \code{ggplot2::scale_y_log10}.  
+#' \code{xgx_scale_y_log10} is similar to \code{\link[ggplot2:scale_continuous]{scale_y_log10}}.  
 #' But it uses what we believe to be a nicer spacing and set of tick marks
-#' it can be used the same as scale_y_log10
+#' it can be used the same as \code{\link[ggplot2:scale_continuous]{scale_y_log10}}
 #'
 #' @param breaks major breaks, default is a function defined here
 #' @param minor_breaks minor breaks, default is a function defined here
 #' @param labels function for setting the labels, defined here 
-#' @param ... other arguments passed to \code{ggplot2::scale_y_log10}
+#' @param ... other arguments passed to \code{\link[ggplot2:scale_continuous]{scale_y_log10}}
 #'
 #' @importFrom ggplot2 scale_y_log10
 #' @export

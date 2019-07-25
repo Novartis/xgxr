@@ -27,7 +27,7 @@ xgx_annotate_status(status = "DRAFT", x = Inf, y = Inf,
 
 \item{alpha}{transparency, default is 0.5}
 
-\item{...}{other arguments passed on to \code{\link{layer}}}
+\item{...}{other arguments passed on to \code{\link[ggplot2]{layer}}}
 }
 \value{
 ggplot layer

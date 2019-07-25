@@ -6,10 +6,9 @@
 #' @param mapping As in ggplot2; Default list of aesthetic mappings to use for plot. Must define x, y, and group for xgx_spaghetti.
 #' @param ... Other arguments passed on to methods. Not currently used. 
 #' @param environment If an variable defined in the aesthetic mapping is not found in the data, 
-#' ggplot will look for it in this environment. It defaults to using the environment in which \code{\link{ggplot}} is called.
+#' ggplot will look for it in this environment. It defaults to using the environment in which \code{\link[ggplot2]{ggplot}} is called.
 #' 
 #' @examples 
-#' library(ggplot2)  
 #' time = rep(seq(1,10),5)
 #' id = sort(rep(seq(1,5), 10))
 #' conc = exp(-time)*sort(rep(rlnorm(5),10))

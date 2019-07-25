@@ -4,7 +4,7 @@
 #' A common example is receptor occupancy in drug development.  
 #' It is used when you want even spacing between 90, 99, 99.9, etc.
 #' 
-#' @param ... other parameters passed to \code{ggplot2::scale_y_continuous}
+#' @param ... other parameters passed to \code{\link[ggplot2:scale_continuous]{scale_y_continuous}}
 #' 
 #' @examples  
 #' conc = 10^(seq(-3,3,by = 0.1))

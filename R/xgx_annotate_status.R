@@ -13,7 +13,7 @@
 #' @param fontsize font size to use, default 7
 #' @param fontface font style to use, default "bold"
 #' @param alpha transparency, default is 0.5
-#' @param ... other arguments passed on to \code{\link{layer}}
+#' @param ... other arguments passed on to \code{\link[ggplot2]{layer}}
 #'
 #' @return ggplot layer
 #'
