@@ -45,10 +45,9 @@ ggplot2 plot layer
 Plot data with mean and confidence intervals
 }
 \examples{
-library(ggplot2)  
 data = data.frame(x = rep(c(1,2,3),each=20),
-y = rep(c(1,2,3),each=20) + rnorm(60))
-ggplot(data,aes(x=x,y=y)) + 
+y = rep(c(1,2,3),each=20) + stats::rnorm(60))
+ggplot2::ggplot(data,ggplot2::aes(x=x,y=y)) + 
  xgx_geom_ci(conf_level = .95)
  
 }

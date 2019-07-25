@@ -21,8 +21,7 @@
 #'
 #' @param data.range range of the data
 #'
-#' @examples
-#' library(ggplot2)  
+#' @examples 
 #' xgx_breaks_log10(c(1,1000))
 #' xgx_breaks_log10(c(.001,100))
 #' xgx_breaks_log10(c(1e-4,1e4))

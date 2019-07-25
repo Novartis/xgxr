@@ -24,20 +24,23 @@
 #'
 #' @examples
 #' 
-#' library(ggplot2)  
 #' dirs = list(
 #'   parent_dir= "./",
 #'   rscript_dir  = "./",
 #'   rscript_name = "Example.R",
 #'   results_dir  = "./",
 #'   filename_prefix   = "Task01_")
-#' data = data.frame(x=1:1000,y=rnorm(1000))
-#' ggplot(data=data,aes(x=x,y=y)) +
-#' geom_point()
+#' data = data.frame(x=1:1000,y=stats::rnorm(1000))
+#' ggplot2::ggplot(data=data,ggplot2::aes(x=x,y=y)) +
+#' ggplot2::geom_point()
 #' xgx_save(4,4,dirs,"Example","DRAFT")
 #' 
 #' @importFrom ggplot2 last_plot
 #' @importFrom ggplot2 ggsave
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_point
+#' @importFrom stats rnorm
 #' @export
 xgx_save = function(width,
                     height,

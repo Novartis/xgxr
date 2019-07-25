@@ -17,18 +17,20 @@
 #' 
 #' @return None
 #'
-#' @examples#' 
-#' library(ggplot2)  
+#' @examples#'  
 #' dirs = list(Parent_dir   = "/your/parent/path/",
 #'             rscript_dir  = "./Rscripts/",
 #'             rscript_name = "Example.R",
 #'             results_dir  = "./Results/",
 #'             filename     = "your_file_name.png")
 #' data = data.frame(x=1:1000,y=rnorm(1000))
-#' ggplot(data=data,aes(x=x,y=y)) + 
-#'   geom_point() +
+#' ggplot2::ggplot(data=data, ggplot2::aes(x=x,y=y)) + 
+#'   ggplot2::geom_point() +
 #'   xgx_annotate_filenames(dirs)
 #'
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_point
 #' @importFrom ggplot2 labs
 #' @importFrom ggplot2 theme
 #' @importFrom ggplot2 element_text

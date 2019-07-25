@@ -6,19 +6,22 @@
 #' 
 #' @param ... other parameters passed to \code{ggplot2::scale_y_continuous}
 #' 
-#' @examples 
-#' library(ggplot2)  
+#' @examples  
 #' conc = 10^(seq(-3,3,by = 0.1))
 #' EC50 = 1
 #' data = data.frame(concentration  = conc, bound_receptor = 1*conc/(conc+EC50))
-#' ggplot(data,aes(x=concentration,y=bound_receptor)) + 
-#' geom_point() + 
-#'  geom_line() + 
+#' ggplot2::ggplot(data,ggplot2::aes(x=concentration,y=bound_receptor)) + 
+#' ggplot2::geom_point() + 
+#'  ggplot2::geom_line() + 
 #'  xgx_scale_x_log10() +
 #'  xgx_scale_y_reverselog10()
 #'  
 #' @importFrom scales trans_new
 #' @importFrom scales percent_format
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_point
+#' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 scale_y_continuous
 #' @export
 xgx_scale_y_reverselog10 <- function(...) {

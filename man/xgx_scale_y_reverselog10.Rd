@@ -15,13 +15,13 @@ A common example is receptor occupancy in drug development.
 It is used when you want even spacing between 90, 99, 99.9, etc.
 }
 \examples{
-library(ggplot2)  
+ 
 conc = 10^(seq(-3,3,by = 0.1))
 EC50 = 1
 data = data.frame(concentration  = conc, bound_receptor = 1*conc/(conc+EC50))
-ggplot(data,aes(x=concentration,y=bound_receptor)) + 
-geom_point() + 
- geom_line() + 
+ggplot2::ggplot(data,ggplot2::aes(x=concentration,y=bound_receptor)) + 
+ggplot2::geom_point() + 
+ ggplot2::geom_line() + 
  xgx_scale_x_log10() +
  xgx_scale_y_reverselog10()
  

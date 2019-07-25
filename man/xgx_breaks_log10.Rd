@@ -26,7 +26,6 @@ w is a set of 4 weights for:
 }
 }
 \examples{
-library(ggplot2)  
 xgx_breaks_log10(c(1,1000))
 xgx_breaks_log10(c(.001,100))
 xgx_breaks_log10(c(1e-4,1e4))

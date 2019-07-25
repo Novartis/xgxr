@@ -27,7 +27,6 @@ The caption gives the filename
 }
 \examples{
 #' 
-library(ggplot2)  
 dirs = list(Parent_dir   = "/your/parent/path/",
             rscript_dir  = "./Rscripts/",
             rscript_name = "Example.R",

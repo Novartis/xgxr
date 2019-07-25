@@ -22,14 +22,14 @@ xgx_plot}
 Create a new xgx plot
 }
 \examples{
-library(ggplot2)  
+ 
 time = rep(seq(1,10),5)
 id = sort(rep(seq(1,5), 10))
-conc = exp(-time)*sort(rep(rlnorm(5),10))
+conc = exp(-time)*sort(rep(stats::rlnorm(5),10))
 
 data = data.frame(time = time, concentration  = conc, id = id)
-xgx_plot(data = data, mapping = aes(x = time, y = concentration, group = id)) + 
-  geom_line() + 
-  geom_point()
+xgx_plot(data = data, mapping = ggplot2::aes(x = time, y = concentration, group = id)) + 
+  ggplot2::geom_line() + 
+  ggplot2::geom_point()
   
 }

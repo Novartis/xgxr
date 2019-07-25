@@ -8,19 +8,21 @@
 #' xgx_plot
 #'
 #' 
-#' @examples 
-#' library(ggplot2)  
+#' @examples  
 #' time = rep(seq(1,10),5)
 #' id = sort(rep(seq(1,5), 10))
-#' conc = exp(-time)*sort(rep(rlnorm(5),10))
+#' conc = exp(-time)*sort(rep(stats::rlnorm(5),10))
 #' 
 #' data = data.frame(time = time, concentration  = conc, id = id)
-#' xgx_plot(data = data, mapping = aes(x = time, y = concentration, group = id)) + 
-#'   geom_line() + 
-#'   geom_point()
+#' xgx_plot(data = data, mapping = ggplot2::aes(x = time, y = concentration, group = id)) + 
+#'   ggplot2::geom_line() + 
+#'   ggplot2::geom_point()
 #'   
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 geom_line
+#' @importFrom ggplot2 geom_point
+#' @importFrom stats rlnorm
 #' @export
 xgx_plot <-  function(data = NULL, mapping = ggplot2::aes(), ..., environment = parent.frame()){
 

@@ -30,7 +30,6 @@ w is a set of 4 weights for
 }
 }
 \examples{
-library(ggplot2)  
 xgx_breaks_time(c(0,5),"h")
 xgx_breaks_time(c(0,6),"h")
 xgx_breaks_time(c(-3,5),"h")
