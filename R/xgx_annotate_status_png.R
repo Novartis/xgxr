@@ -33,6 +33,7 @@
 #'   annotation. By default 0.8
 #' @param status_angle Angle to rotate status
 #' @param x11 Display on the X11/Windows device
+#' 
 #' @return nothing
 #' 
 #' @examples

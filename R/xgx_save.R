@@ -23,7 +23,6 @@
 #' @return ggplot2 plot object
 #'
 #' @examples
-#' 
 #' dirs = list(
 #'   parent_dir= "./",
 #'   rscript_dir  = "./",

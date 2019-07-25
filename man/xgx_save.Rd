@@ -44,7 +44,6 @@ ggplot2 plot object
 Saving plot, automatically annotating the status and denoting the filenames
 }
 \examples{
-
 dirs = list(
   parent_dir= "./",
   rscript_dir  = "./",

@@ -2,7 +2,6 @@
 #'
 #' \code{xgx_summarize_covariates} 
 #'
-#'
 #' @param data, the dataset to check. must contain a USUBJID or ID column for subject id
 #' @param covariates, the column names of covariates, to explore
 #' @param n_cts, the number of unique values for a covariate to be treated as continuous, default is 8

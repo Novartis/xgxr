@@ -18,11 +18,8 @@
 #' algorithm for positioning tick labels on axes." IEEE Transactions on visualization and 
 #' computer graphics 16.6 (2010): 1036-1043.
 #' 
-#'
 #' @param data.range range of the data
 #' @param units.plot units to use in the plot
-#'
-#' xgx_breaks_time
 #'
 #' @examples
 #' xgx_breaks_time(c(0,5),"h")

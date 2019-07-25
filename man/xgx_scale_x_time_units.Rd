@@ -32,9 +32,7 @@ transformation object
 as output
 }}
 
-\item{...}{other parameters for \code{ggplot2::scale_x_continuous}
-
-xgx_scale_x_time_units}
+\item{...}{other parameters for \code{ggplot2::scale_x_continuous}}
 }
 \description{
 \code{xgx_scale_x_time_units} converts x axis scale from one time unit to another.  

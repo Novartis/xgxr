@@ -18,7 +18,6 @@
 #' algorithm for positioning tick labels on axes." IEEE Transactions on visualization and 
 #' computer graphics 16.6 (2010): 1036-1043.
 #' 
-#'
 #' @param data.range range of the data
 #'
 #' @examples 

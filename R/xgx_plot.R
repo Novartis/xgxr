@@ -5,9 +5,6 @@
 #' @param ... Other arguments passed on to methods. Not currently used. 
 #' @param environment If an variable defined in the aesthetic mapping is not found in the data, ggplot will look for it in this environment. It defaults to using the environment in which @ggplot() is called.
 #'
-#' xgx_plot
-#'
-#' 
 #' @examples  
 #' time = rep(seq(1,10),5)
 #' id = sort(rep(seq(1,5), 10))

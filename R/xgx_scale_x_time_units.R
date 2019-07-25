@@ -9,9 +9,6 @@
 #' @inheritParams ggplot2::continuous_scale
 #' @param ... other parameters for \code{ggplot2::scale_x_continuous}
 #' 
-#' xgx_scale_x_time_units
-#'
-#' 
 #' @examples 
 #' data         = data.frame(x=1:1000,y=rnorm(1000))
 #' ggplot(data=data,aes(x=x,y=y)) + 

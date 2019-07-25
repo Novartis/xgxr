@@ -4,7 +4,6 @@
 #' File details to append include the parent directory, the path of the R script which generated the plot, 
 #' and the path of the plot.
 #' 
-#'
 #' @param dirs list containing directories and filenames.  It must contain five fields
 #' \enumerate{
 #' \item parent_dir  = Parent directory containing the Rscript and the Results folder
@@ -17,7 +16,7 @@
 #' 
 #' @return None
 #'
-#' @examples#'  
+#' @examples
 #' dirs = list(Parent_dir   = "/your/parent/path/",
 #'             rscript_dir  = "./Rscripts/",
 #'             rscript_name = "Example.R",

@@ -9,9 +9,7 @@ xgx_breaks_time(data.range, units.plot)
 \arguments{
 \item{data.range}{range of the data}
 
-\item{units.plot}{units to use in the plot
-
-xgx_breaks_time}
+\item{units.plot}{units to use in the plot}
 }
 \description{
 \code{xgx_breaks_time} sets the default breaks for a time axis, 

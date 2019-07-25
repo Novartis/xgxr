@@ -14,7 +14,7 @@ xgx_dirs2char(dirs, include_time = TRUE)
 \item rscript_name= Name of the Rscript used to generate the figure
 \item results_dir = Subdirectory ofparent_dir where the figure is stored
 \item filename    = Filename
-}#'}
+}}
 
 \item{include_time}{is logical with default TRUE.  If TRUE, it includes date/time in the output character}
 }
@@ -26,7 +26,6 @@ character
 The caption gives the filename
 }
 \examples{
-#' 
 dirs = list(Parent_dir   = "/your/parent/path/",
             rscript_dir  = "./Rscripts/",
             rscript_name = "Example.R",

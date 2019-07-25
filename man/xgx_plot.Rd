@@ -14,9 +14,7 @@ xgx_plot(data = NULL, mapping = ggplot2::aes(), ...,
 
 \item{...}{Other arguments passed on to methods. Not currently used.}
 
-\item{environment}{If an variable defined in the aesthetic mapping is not found in the data, ggplot will look for it in this environment. It defaults to using the environment in which @ggplot() is called.
-
-xgx_plot}
+\item{environment}{If an variable defined in the aesthetic mapping is not found in the data, ggplot will look for it in this environment. It defaults to using the environment in which @ggplot() is called.}
 }
 \description{
 Create a new xgx plot
