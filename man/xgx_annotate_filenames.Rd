@@ -27,7 +27,7 @@ File details to append include the parent directory, the path of the R script wh
 and the path of the plot.
 }
 \examples{
-dirs = list(Parent_dir   = "/your/parent/path/",
+dirs = list(parent_dir   = "/your/parent/path/",
             rscript_dir  = "./Rscripts/",
             rscript_name = "Example.R",
             results_dir  = "./Results/",

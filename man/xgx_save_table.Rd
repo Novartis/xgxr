@@ -29,6 +29,6 @@ Saving table as an image, also labeling the program that created the table and w
 }
 \examples{
 data = data.frame(x=c(1,2),y=c(1,2))
-xgx_save_table(data)
+xgx_save_table(data, filename_main = "test")
 
 }

@@ -41,8 +41,8 @@ can also be called using just the first letter (h, d, w, m, y).
 }
 \examples{
 data         = data.frame(x=1:1000,y=rnorm(1000))
-ggplot(data=data,aes(x=x,y=y)) + 
-  geom_point() + 
+ggplot2::ggplot(data=data,ggplot2::aes(x=x,y=y)) + 
+  ggplot2::geom_point() + 
   xgx_scale_x_time_units(units_dataset="hours",units_plot="weeks")
   
 }

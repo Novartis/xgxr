@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' data = data.frame(x=c(1,2),y=c(1,2))
-#' xgx_save_table(data)
+#' xgx_save_table(data, filename_main = "test")
 #' 
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr mutate_all
