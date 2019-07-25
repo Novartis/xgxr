@@ -2,7 +2,6 @@
 % Please edit documentation in R/xgx_summarize_data.R
 \name{xgx_summarize_data}
 \alias{xgx_summarize_data}
-\alias{xgx_check_data}
 \title{Check data for various issues}
 \usage{
 xgx_summarize_data(data, covariates = NULL, ...)
