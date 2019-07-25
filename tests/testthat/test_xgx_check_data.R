@@ -1,5 +1,4 @@
-library(ggplot2)
-library(xgx)
+library(xgxr)
 context("Data Check")
 
 data_missing = data.frame(x = 1)

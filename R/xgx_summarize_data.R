@@ -5,5 +5,5 @@
 #' @inheritParams xgx_check_data
 #' @export
 xgx_summarize_data = function(data,covariates = NULL){
-  xgx_check_data(data,covariates,...)
+  xgx_check_data(data,covariates)
 }
