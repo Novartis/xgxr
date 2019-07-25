@@ -55,8 +55,8 @@ annotate it again.  Therefore, you can run this function on
 directories with different input script names and it will label
 each file based on when each file was run.
 
-Based on code from MrFlick on Stack Overflow: 
-https://stackoverflow.com/questions/23807021/how-to-do-in-r-load-an-image-file-print-text-on-image-save-modified-image
+Based on code from MrFlick on
+\href{https://stackoverflow.com/a/23816416}{Stack Overflow}.
 }
 \examples{
 # Using the examples from plot()

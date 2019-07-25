@@ -28,7 +28,7 @@
 xgx_summarize_covariates = function(data,covariates = NULL, n_cts = 8){
   #defining column names as variables, because this is a work around CRAN to accept the R package
   #due to the way dplyr and lazy evaluation interacts with the CRAN checking
-  #https://stackoverflow.com/questions/48750221/dplyr-and-no-visible-binding-for-global-variable-note-in-package-check
+  # https://stackoverflow.com/q/48750221
   ID=NULL; USUBJID=NULL;
   n <- NULL
   

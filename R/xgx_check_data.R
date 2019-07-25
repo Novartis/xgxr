@@ -1,8 +1,8 @@
 #' Check data for various issues
 #'
 #' \code{xgx_check_data} performs a series of checks on a PK or PKPD dataset
-#' It was inspired by the dataset preparation table from Intiquan
-#' https://iqrtools.intiquan.com/doc/book/analysis-dataset-preparation.html
+#' It was inspired by the dataset preparation table from 
+#' \href{https://iqrtools.intiquan.com/doc/book/analysis-dataset-preparation.html}{IntiQuan}.
 #' 
 #' The dataset must have the following columns
 #' \itemize{
@@ -50,7 +50,7 @@
 xgx_check_data = function(data,covariates = NULL){
   #defining column names as variables, because this is a work around CRAN to accept the R package
   #due to the way dplyr and lazy evaluation interacts with the CRAN checking
-  #https://stackoverflow.com/questions/48750221/dplyr-and-no-visible-binding-for-global-variable-note-in-package-check
+  #https://stackoverflow.com/q/48750221
   ID=NULL; EVID=NULL; YTYPE=NULL; MDV=NULL; AMT=NULL; DV=NULL; TIME=NULL; CENS=NULL; 
   Value=NULL; tot=NULL; ntot=NULL; pct=NULL; Data_Check_Issue=NULL;
   n <- NULL
