@@ -67,7 +67,7 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 position_dodge
 #' @export
-xgx_stat_ci = function(mapping = NULL, data = NULL, conf_level=.95, distribution = "normal", 
+xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level=.95, distribution = "normal", 
                        geom = list("point","line","errorbar"), 
                        position = "identity", 
                        ..., fun.args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
@@ -75,7 +75,7 @@ xgx_stat_ci = function(mapping = NULL, data = NULL, conf_level=.95, distribution
   if (!(conf_level > 0.5 && conf_level < 1))
     stop("conf_level should be greater than 0.5 and less than 1")
   
-  percentile_value = conf_level + (1-conf_level)/2  
+  percentile_value <- conf_level + (1-conf_level)/2  
   
   conf_int <- function(y, conf_level, distribution){
     y <- stats::na.omit(y)
@@ -87,7 +87,7 @@ xgx_stat_ci = function(mapping = NULL, data = NULL, conf_level=.95, distribution
         ymax = mean(y)+stats::qt(percentile_value,length(y))*sqrt(stats::var(y)/length(y))
       )
     }else if(distribution == "lognormal"){
-      yy = log(y)
+      yy <- log(y)
       conf_int_out <- data.frame(
         y = exp(mean(yy)),
         ymin = exp(mean(yy)-stats::qt(percentile_value,length(yy))*sqrt(stats::var(yy)/length(yy))), 

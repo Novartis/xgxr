@@ -41,7 +41,7 @@
 #' @importFrom ggplot2 geom_point
 #' @importFrom stats rnorm
 #' @export
-xgx_save = function(width,
+xgx_save <- function(width,
                     height,
                     dirs              = NULL,
                     filename_main,
@@ -52,17 +52,17 @@ xgx_save = function(width,
                     status_y=Inf,
                     status_fontsize=7) {
   
-  if (is.null(dirs$parent_dir))      dirs$parent_dir      = getwd()
-  if (is.null(dirs$rscript_dir))     dirs$rscript_dir     = "./"
-  if (is.null(dirs$rscript_name))    dirs$rscript_name    = "Name_Of_Script_Here.R"
-  if (is.null(dirs$results_dir))     dirs$results_dir     = "./"
-  if (is.null(dirs$filename_prefix)) dirs$filename_prefix = ""
+  if (is.null(dirs$parent_dir))      dirs$parent_dir <- getwd()
+  if (is.null(dirs$rscript_dir))     dirs$rscript_dir <- "./"
+  if (is.null(dirs$rscript_name))    dirs$rscript_name <- "Name_Of_Script_Here.R"
+  if (is.null(dirs$results_dir))     dirs$results_dir <- "./"
+  if (is.null(dirs$filename_prefix)) dirs$filename_prefix <- ""
   
-  filedir        = file.path(dirs$results_dir)
-  dirs$filename  = paste0(dirs$filename_prefix,filename_main,".",filetype)         #get the full filename
+  filedir <- file.path(dirs$results_dir)
+  dirs$filename <- paste0(dirs$filename_prefix,filename_main,".",filetype)         #get the full filename
   
-  g = g + xgx_annotate_filenames(dirs)
-  g = g + xgx_annotate_status(status,x=status_x,y=status_y,fontsize=status_fontsize)
+  g <- g + xgx_annotate_filenames(dirs)
+  g <- g + xgx_annotate_status(status,x=status_x,y=status_y,fontsize=status_fontsize)
   
   ggplot2::ggsave(plot=g,width=width,height=height,file.path(filedir,dirs$filename))
   return(g)

@@ -22,15 +22,15 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_point
 #' @export
-xgx_scale_x_time_units =
+xgx_scale_x_time_units <- 
   function(units_dataset, units_plot=NULL, breaks = breaks_function, labels = labels_function, ...) {
     # h = hours, d=days, w=weeks, m=months, y=years
     
-    if (is.null(units_plot)) units_plot = units_dataset
+    if (is.null(units_plot)) units_plot <- units_dataset
     
     #allows for user to write out longer string for units
-    units_plot       = units_plot %>% tolower() %>% substr(1,1)
-    units_dataset    = units_dataset  %>% tolower() %>% substr(1,1) #units_dataset)
+    units_plot <- units_plot %>% tolower() %>% substr(1,1)
+    units_dataset <- units_dataset  %>% tolower() %>% substr(1,1) #units_dataset)
     
     if (!(units_dataset %in% c("h","d","w","m","y")))
       stop("units_dataset must be hours, days, weeks, months, or years")
@@ -38,28 +38,28 @@ xgx_scale_x_time_units =
       stop("units_plot must be hours, days, weeks, months, or years")
     
     
-    day.scale  = data.frame(h=1/24,
+    day.scale <- data.frame(h=1/24,
                             d=1,
                             w=7,
                             m=30.4375,
                             y=365.25)
     
-    input.scale  = day.scale[[units_dataset]]
-    output.scale = day.scale[[units_plot]]
-    scale.factor = output.scale/input.scale
+    input.scale <- day.scale[[units_dataset]]
+    output.scale <- day.scale[[units_plot]]
+    scale.factor <- output.scale/input.scale
     
-    breaks_function = function(data.range) 
-      breaks = xgx_breaks_time(data.range/scale.factor,units_plot)*scale.factor
+    breaks_function <- function(data.range) 
+      breaks <- xgx_breaks_time(data.range/scale.factor,units_plot)*scale.factor
     
-    labels_function = function(breaks)
-      labels = breaks/scale.factor
+    labels_function <- function(breaks)
+      labels <- breaks/scale.factor
     
-    xlabel.list = data.frame(h="Hour",
+    xlabel.list <- data.frame(h="Hour",
                              d="Day",
                              w="Week",
                              m="Month",
                              y="Year")
-    xlabel = paste0("Time (",xlabel.list[[units_plot]],"s)")
+    xlabel <- paste0("Time (",xlabel.list[[units_plot]],"s)")
     
     return( list(
       ggplot2::scale_x_continuous(breaks=breaks_function, labels=labels_function, ...), 

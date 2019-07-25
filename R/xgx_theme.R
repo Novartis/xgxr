@@ -5,8 +5,8 @@
 #' @importFrom ggplot2 element_line
 #' @export
 xgx_theme <- function() {
-  minor.color = "grey83"
-  major.color = "grey83"
+  minor.color <- "grey83"
+  major.color <- "grey83"
   
   ggplot2::theme_bw() + 
     ggplot2::theme(panel.grid.minor.x=ggplot2::element_line(color=minor.color),

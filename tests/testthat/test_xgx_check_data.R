@@ -1,7 +1,7 @@
 library(xgxr)
 context("Data Check")
 
-data_missing = data.frame(x = 1)
+data_missing <- data.frame(x = 1)
 
 # data = data.frame    (ID   = 1,
 #                       EVID = 0,

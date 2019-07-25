@@ -25,7 +25,7 @@
 #' @importFrom ggplot2 scale_y_continuous
 #' @export
 xgx_scale_y_reverselog10 <- function(...) {
-  reverselog  = scales::trans_new(
+  reverselog <- scales::trans_new(
     name      = "reverselog", 
     transform = function(x) -log10(1-x), 
     inverse   = function(x)    1 - 10^-x,

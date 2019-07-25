@@ -17,12 +17,12 @@
 #' @return None
 #'
 #' @examples
-#' dirs = list(parent_dir   = "/your/parent/path/",
+#' dirs <- list(parent_dir   = "/your/parent/path/",
 #'             rscript_dir  = "./Rscripts/",
 #'             rscript_name = "Example.R",
 #'             results_dir  = "./Results/",
 #'             filename     = "your_file_name.png")
-#' data = data.frame(x=1:1000,y=rnorm(1000))
+#' data <- data.frame(x=1:1000,y=rnorm(1000))
 #' ggplot2::ggplot(data=data, ggplot2::aes(x=x,y=y)) + 
 #'   ggplot2::geom_point() +
 #'   xgx_annotate_filenames(dirs)
@@ -34,9 +34,9 @@
 #' @importFrom ggplot2 theme
 #' @importFrom ggplot2 element_text
 #' @export
-xgx_annotate_filenames = function(dirs,hjust=0.5) {
+xgx_annotate_filenames <- function(dirs,hjust=0.5) {
   
-  caption = xgx_dirs2char(dirs)
+  caption <- xgx_dirs2char(dirs)
   return(list(
     ggplot2::labs(caption = caption),
     ggplot2::theme(plot.caption = ggplot2::element_text(hjust = hjust))

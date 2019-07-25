@@ -24,34 +24,33 @@
 #' @importFrom dplyr desc
 #' @importFrom magrittr "%>%"
 #' @export
-xgx_summarize_covariates = function(data,covariates = NULL, n_cts = 8){
+xgx_summarize_covariates <- function(data,covariates = NULL, n_cts = 8){
   #defining column names as variables, because this is a work around CRAN to accept the R package
   #due to the way dplyr and lazy evaluation interacts with the CRAN checking
   # https://stackoverflow.com/q/48750221
-  ID=NULL; USUBJID=NULL;
-  n <- NULL
+  ID <- USUBJID <- n <- NULL
   
   if ("USUBJID" %in% names(data)) {
-    data1 = dplyr::filter(data,!duplicated(USUBJID))
+    data1 <- dplyr::filter(data,!duplicated(USUBJID))
   } else if ("ID" %in% names(data)) {
-    data1 = dplyr::filter(data,!duplicated(ID))
+    data1 <- dplyr::filter(data,!duplicated(ID))
   } else {
     stop("data column USUBJID or ID is required")
   }
 
-  icat=0
-  icts=0
-  catlist = list()
-  ctslist = list()
+  icat <- 0
+  icts <- 0
+  catlist <- list()
+  ctslist <- list()
   for (covk in covariates) {
-    x = data1[[covk]]
+    x <- data1[[covk]]
     
-    xdistinct = length(unique(x))
-    xmissing  = sum(is.na(x))
+    xdistinct <- length(unique(x))
+    xmissing <- sum(is.na(x))
     if (xdistinct>=n_cts) {
       
-      icts=icts+1
-      ctslist[[icts]] = tibble::tibble(Covariate     = covk,
+      icts <- icts+1
+      ctslist[[icts]] <- tibble::tibble(Covariate     = covk,
                                Nmissing      = xmissing,
                                min           = min(x,na.rm=TRUE),
                                `25th`        = stats::quantile(x,0.25,na.rm=TRUE),
@@ -59,14 +58,14 @@ xgx_summarize_covariates = function(data,covariates = NULL, n_cts = 8){
                                `75th`        = stats::quantile(x,0.75,na.rm=TRUE),
                                max           = max(x,na.rm=TRUE))
     } else {
-      summ = tibble::tibble(var=x) %>%
+      summ <- tibble::tibble(var=x) %>%
         dplyr::group_by(var) %>%
         dplyr::count() %>%
         dplyr::ungroup() %>%
         dplyr::arrange(dplyr::desc(n))
       
-      icat=icat+1
-      catlist[[icat]] = tibble::tibble(Covariate     = covk,
+      icat <- icat+1
+      catlist[[icat]] <- tibble::tibble(Covariate     = covk,
                                Nmissing      = xmissing,
                                Ndistinct     = xdistinct,
                                `Value (Count)` = paste0(summ$var," (",summ$n,")",collapse = ", "))
@@ -74,10 +73,10 @@ xgx_summarize_covariates = function(data,covariates = NULL, n_cts = 8){
   }
   
   #create summaries ----
-  cat_table   = dplyr::bind_rows(catlist)
-  cts_table   = dplyr::bind_rows(ctslist)
+  cat_table <- dplyr::bind_rows(catlist)
+  cts_table <- dplyr::bind_rows(ctslist)
   
-  output = list(cts_covariates  = cts_table,
+  output <- list(cts_covariates  = cts_table,
                 cat_covariates  = cat_table)
   
   #print the summary ----  

@@ -160,7 +160,7 @@ xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
                        col=col, font=font, srt=status_angle)
       }
       ##add path to the bottom of the graphs
-      bottom_txt = paste0(script, ifelse(script == "", "", "\n"),
+      bottom_txt <- paste0(script, ifelse(script == "", "", "\n"),
                           "PNG: ", file,
                           ifelse(date_format == "", "",
                                  paste0("\n",

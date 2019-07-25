@@ -27,12 +27,12 @@ File details to append include the parent directory, the path of the R script wh
 and the path of the plot.
 }
 \examples{
-dirs = list(parent_dir   = "/your/parent/path/",
+dirs <- list(parent_dir   = "/your/parent/path/",
             rscript_dir  = "./Rscripts/",
             rscript_name = "Example.R",
             results_dir  = "./Results/",
             filename     = "your_file_name.png")
-data = data.frame(x=1:1000,y=rnorm(1000))
+data <- data.frame(x=1:1000,y=rnorm(1000))
 ggplot2::ggplot(data=data, ggplot2::aes(x=x,y=y)) + 
   ggplot2::geom_point() +
   xgx_annotate_filenames(dirs)

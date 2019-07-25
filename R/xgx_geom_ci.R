@@ -13,7 +13,7 @@
 #' @importFrom ggplot2 aes
 #' @importFrom stats rnorm
 #' @export
-xgx_geom_ci = function(mapping = NULL, data = NULL, conf_level=.95, distribution = "normal", 
+xgx_geom_ci <- function(mapping = NULL, data = NULL, conf_level=.95, distribution = "normal", 
                        geom = list("point","line","errorbar"), 
                        position = "identity", 
                        ..., fun.args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
