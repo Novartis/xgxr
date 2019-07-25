@@ -38,6 +38,7 @@ xgx_breaks_log10(c(1,100))
 xgx_breaks_log10(c(1,1.01))
 xgx_breaks_log10(c(1,1.0001))
 print(xgx_breaks_log10(c(1,1.000001)),digits=10)
+
 }
 \references{
 Talbot, Justin, Sharon Lin, and Pat Hanrahan. "An extension of Wilkinson’s 

@@ -24,4 +24,5 @@ geom_point() +
  geom_line() + 
  xgx_scale_y_log10() +
  xgx_scale_x_reverselog10()
+ 
 }

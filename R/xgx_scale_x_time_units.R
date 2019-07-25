@@ -11,15 +11,17 @@
 #' 
 #' xgx_scale_x_time_units
 #'
-#' @export
 #' 
 #' @examples 
 #' data         = data.frame(x=1:1000,y=rnorm(1000))
 #' ggplot(data=data,aes(x=x,y=y)) + 
 #'   geom_point() + 
 #'   xgx_scale_x_time_units(units_dataset="hours",units_plot="weeks")
-
-#plotting a nice, scaled X axis
+#'   
+#' @importFrom magrittr "%>%"
+#' @importFrom ggplot2 scale_x_continuous
+#' @importFrom ggplot2 xlab
+#' @export
 xgx_scale_x_time_units =
   function(units_dataset, units_plot=NULL, breaks = breaks_function, labels = labels_function, ...) {
     # h = hours, d=days, w=weeks, m=months, y=years
@@ -60,6 +62,6 @@ xgx_scale_x_time_units =
     xlabel = paste0("Time (",xlabel.list[[units_plot]],"s)")
     
     return( list(
-      scale_x_continuous(breaks=breaks_function, labels=labels_function, ...), 
-      xlab(xlabel)) )
+      ggplot2::scale_x_continuous(breaks=breaks_function, labels=labels_function, ...), 
+      ggplot2::xlab(xlabel)) )
   }

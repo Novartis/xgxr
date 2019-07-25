@@ -5,7 +5,7 @@
 \title{Saving plot, automatically annotating the status and denoting the filenames}
 \usage{
 xgx_save(width, height, dirs = NULL, filename_main, status,
-  g = last_plot(), filetype = "png", status_x = Inf,
+  g = ggplot2::last_plot(), filetype = "png", status_x = Inf,
   status_y = Inf, status_fontsize = 7)
 }
 \arguments{
@@ -56,4 +56,5 @@ data = data.frame(x=1:1000,y=rnorm(1000))
 ggplot(data=data,aes(x=x,y=y)) +
 geom_point()
 xgx_save(4,4,dirs,"Example","DRAFT")
+
 }

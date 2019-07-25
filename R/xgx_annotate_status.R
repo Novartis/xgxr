@@ -16,7 +16,6 @@
 #' @param ... other arguments passed on to \code{\link{layer}}
 #'
 #' @return ggplot layer
-#' @export
 #'
 #' @examples
 #' library(ggplot2)  
@@ -25,12 +24,14 @@
 #'   geom_point() +
 #'   xgx_annotate_status("DRAFT")
 #' 
+#' @importFrom ggplot2 annotate
+#' @export
 xgx_annotate_status = function(status="DRAFT",
                                x=Inf, y=Inf, color="grey",
                                hjust=1.2, vjust=1.2,
                                fontsize=7, fontface="bold",
                                alpha = 0.5, ...) {
-  annotate("text", x=x, y=y, 
+  ggplot2::annotate("text", x=x, y=y, 
            label=status, color=color, 
            hjust=hjust, vjust=vjust, 
            cex=fontsize, fontface=fontface,

@@ -4,7 +4,7 @@
 \alias{xgx_plot}
 \title{Create a new xgx plot}
 \usage{
-xgx_plot(data = NULL, mapping = aes(), ...,
+xgx_plot(data = NULL, mapping = ggplot2::aes(), ...,
   environment = parent.frame())
 }
 \arguments{
@@ -31,4 +31,5 @@ data = data.frame(time = time, concentration  = conc, id = id)
 xgx_plot(data = data, mapping = aes(x = time, y = concentration, group = id)) + 
   geom_line() + 
   geom_point()
+  
 }

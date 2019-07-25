@@ -37,26 +37,28 @@ Depends:
 Imports:
     assertthat,
     binom,
-    caTools,
     dplyr,
     ggplot2,
     graphics,
+    grDevices,
     grid,
     gridExtra,
     labeling,
+    magrittr,
     pander,
     png,
     scales,
     stats,
-    stringr,
     tibble,
-    tidyr,
     utils
 Suggests: 
+    caTools,
     knitr,
     rmarkdown,
     RxODE,
-    testthat
+    stringr,
+    testthat,
+    tidyr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

@@ -7,8 +7,6 @@
 #' @param ... Other arguments passed on to methods. Not currently used. 
 #' @param environment If an variable defined in the aesthetic mapping is not found in the data, 
 #' ggplot will look for it in this environment. It defaults to using the environment in which \code{\link{ggplot}} is called.
-#'
-#' @export
 #' 
 #' @examples 
 #' library(ggplot2)  
@@ -18,8 +16,10 @@
 #' 
 #' data = data.frame(time = time, concentration  = conc, id = id)
 #' xgx_spaghetti(data = data, mapping = aes(x = time, y = concentration, group = id))
-
-xgx_spaghetti <-  function(data = NULL, mapping = aes(), ..., environment = parent.frame()){
+#' 
+#' @importFrom ggplot2 aes
+#' @export
+xgx_spaghetti <-  function(data = NULL, mapping = ggplot2::aes(), ..., environment = parent.frame()){
 
   gg <- xgx_plot(data = data, mapping = mapping, ..., environment = environment) +
       xgx_geom_spaghetti(mapping = mapping, data = data, ...)

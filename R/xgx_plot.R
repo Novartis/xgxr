@@ -7,7 +7,6 @@
 #'
 #' xgx_plot
 #'
-#' @export
 #' 
 #' @examples 
 #' library(ggplot2)  
@@ -19,10 +18,13 @@
 #' xgx_plot(data = data, mapping = aes(x = time, y = concentration, group = id)) + 
 #'   geom_line() + 
 #'   geom_point()
+#'   
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 ggplot
+#' @export
+xgx_plot <-  function(data = NULL, mapping = ggplot2::aes(), ..., environment = parent.frame()){
 
-xgx_plot <-  function(data = NULL, mapping = aes(), ..., environment = parent.frame()){
-
-  gg <- ggplot(data = data, mapping = mapping, ..., environment = environment) +
+  gg <- ggplot2::ggplot(data = data, mapping = mapping, ..., environment = environment) +
     xgx_theme()
   
   ret <- gg

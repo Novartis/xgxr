@@ -2,8 +2,9 @@
 #'
 #' xgx_theme_set
 #' 
+#' @importFrom ggplot2 theme_set
+#' @importFrom ggplot2 theme_bw
 #' @export
-
 xgx_theme_set <- function() {
-  theme_set(theme_bw())
+  ggplot2::theme_set(ggplot2::theme_bw())
 }

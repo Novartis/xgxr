@@ -49,5 +49,6 @@ library(ggplot2)
 data = data.frame(x = rep(c(1,2,3),each=20),
 y = rep(c(1,2,3),each=20) + rnorm(60))
 ggplot(data,aes(x=x,y=y)) + 
- xgx_geom_ci(percentile = .95)
+ xgx_geom_ci(conf_level = .95)
+ 
 }

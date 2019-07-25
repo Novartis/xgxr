@@ -22,8 +22,6 @@
 #' @param data.range range of the data
 #' @param units.plot units to use in the plot
 #'
-#' @export
-#'
 #' xgx_breaks_time
 #'
 #' @examples
@@ -40,7 +38,9 @@
 #' xgx_breaks_time(c(1000,3000),"d")
 #' xgx_breaks_time(c(-21,100),"d")
 #' xgx_breaks_time(c(-1,10),"w")
-
+#' 
+#' @importFrom labeling extended
+#' @export
 xgx_breaks_time <-  function(data.range,units.plot){
   dmin      = min(data.range)
   dmax      = max(data.range)

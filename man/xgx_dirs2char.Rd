@@ -34,4 +34,5 @@ dirs = list(Parent_dir   = "/your/parent/path/",
             results_dir  = "./Results/",
             filename     = "your_file_name.png")
 caption = xgx_dirs2caption(dirs)
+
 }

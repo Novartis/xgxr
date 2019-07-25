@@ -38,4 +38,5 @@ data = data.frame(x=1:1000,y=rnorm(1000))
 ggplot(data=data,aes(x=x,y=y)) + 
   geom_point() +
   xgx_annotate_filenames(dirs)
+
 }

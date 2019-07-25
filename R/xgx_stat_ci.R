@@ -25,7 +25,6 @@
 #'
 #'
 #' @return ggplot2 plot layer
-#' @export
 #'
 #' @examples
 #' library(ggplot2)  
@@ -61,8 +60,12 @@
 #'   xgx_stat_ci(conf_level = .95, distribution = "binomial", 
 #'               aes(color = factor(group)), position = position_dodge(width = 0.5))
 #'  
-#'  
-
+#' @importFrom stats na.omit
+#' @importFrom stats qt
+#' @importFrom stats var
+#' @importFrom binom binom.exact
+#' @importFrom ggplot2 stat_summary
+#' @export
 xgx_stat_ci = function(mapping = NULL, data = NULL, conf_level=.95, distribution = "normal", 
                        geom = list("point","line","errorbar"), 
                        position = "identity", 
@@ -79,15 +82,15 @@ xgx_stat_ci = function(mapping = NULL, data = NULL, conf_level=.95, distribution
     if(distribution == "normal"){
       conf_int_out <- data.frame(
         y = mean(y),
-        ymin = mean(y)-qt(percentile_value,length(y))*sqrt(stats::var(y)/length(y)), 
-        ymax = mean(y)+qt(percentile_value,length(y))*sqrt(stats::var(y)/length(y))
+        ymin = mean(y)-stats::qt(percentile_value,length(y))*sqrt(stats::var(y)/length(y)), 
+        ymax = mean(y)+stats::qt(percentile_value,length(y))*sqrt(stats::var(y)/length(y))
       )
     }else if(distribution == "lognormal"){
       yy = log(y)
       conf_int_out <- data.frame(
         y = exp(mean(yy)),
-        ymin = exp(mean(yy)-qt(percentile_value,length(yy))*sqrt(stats::var(yy)/length(yy))), 
-        ymax = exp(mean(yy)+qt(percentile_value,length(yy))*sqrt(stats::var(yy)/length(yy)))
+        ymin = exp(mean(yy)-stats::qt(percentile_value,length(yy))*sqrt(stats::var(yy)/length(yy))), 
+        ymax = exp(mean(yy)+stats::qt(percentile_value,length(yy))*sqrt(stats::var(yy)/length(yy)))
       )
     }else if(distribution == "binomial"){
       conf_int_out <- data.frame(
@@ -102,7 +105,7 @@ xgx_stat_ci = function(mapping = NULL, data = NULL, conf_level=.95, distribution
   ret <- list()
   for(igeom in geom){
     
-    temp <- stat_summary(mapping = mapping, data = data, geom = igeom, position = position, ..., 
+    temp <- ggplot2::stat_summary(mapping = mapping, data = data, geom = igeom, position = position, ..., 
                          fun.args = list(), na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes, 
                          fun.data = function(y) conf_int(y, conf_level, distribution)
     )

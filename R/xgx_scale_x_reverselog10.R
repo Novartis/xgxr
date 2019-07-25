@@ -5,10 +5,6 @@
 #' It is used when you want even spacing between 90, 99, 99.9, etc.
 #'
 #' @param ... other parameters passed to \code{ggplot2::scale_x_continuous}
-#'
-#' @import scales
-#'
-#' @export
 #' 
 #' @examples
 #' library(ggplot2)  
@@ -20,13 +16,17 @@
 #'  geom_line() + 
 #'  xgx_scale_y_log10() +
 #'  xgx_scale_x_reverselog10()
-
+#'  
+#' @importFrom ggplot2 scale_x_continuous
+#' @importFrom scales percent_format
+#' @importFrom scales trans_new
+#' @export
 xgx_scale_x_reverselog10 <- function(...) {
-  reverselog  = trans_new(
+  reverselog  = scales::trans_new(
     name      = "reverselog", 
     transform = function(x) -log10(1-x), 
     inverse   = function(x)    1 - 10^-x,
     breaks    = function(x) c(0,70,c(100-10^(-100:1)))/100)
   
-  scale_x_continuous(trans=reverselog,labels=scales::percent_format(),...)
+  ggplot2::scale_x_continuous(trans=reverselog,labels=scales::percent_format(),...)
 }

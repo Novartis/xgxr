@@ -35,8 +35,6 @@
 #' @param x11 Display on the X11/Windows device
 #' @return nothing
 #' 
-#' @importFrom graphics par plot.new "plot.window"
-#' 
 #' @examples
 #'
 #' library(xgx)
@@ -79,10 +77,22 @@
 #' # labeled items
 #'
 #' @author Matthew Fidler, Alison M, ....
+#' @importFrom grDevices grey
+#' @importFrom assertthat has_extension
+#' @importFrom png readPNG
+#' @importFrom png writePNG
+#' @importFrom grDevices png
+#' @importFrom graphics par
+#' @importFrom graphics plot.new
+#' @importFrom graphics plot.window
+#' @importFrom graphics rasterImage
+#' @importFrom graphics text
+#' @importFrom grDevices dev.off
+#' @importFrom magrittr "%>%"
 #' @export
 xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
                                     date_format="%a %b %d %X %Y",
-                                    col=grey(.8,alpha=.7),
+                                    col=grDevices::grey(.8,alpha=.7),
                                     font=2,
                                     cex_status_mult=7,
                                     cex_footnote_mult=0.8,
@@ -108,7 +118,7 @@ xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
       h<-dim(img)[1]
       w<-dim(img)[2]
       ##open file for output
-      png(file, width=w, height=h*1.05) ## make it slightly taller to add the text at the bottom
+      grDevices::png(file, width=w, height=h*1.05) ## make it slightly taller to add the text at the bottom
 
       ##par is for setting graphical parameters
       ##here, you're initializing a "state machine" setting all the graphical parameters
@@ -122,16 +132,16 @@ xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
       ## xpd=NA: all plotting is clipped to the device region
       ## mgp=c(0,0,0): margin line (in mex units) for the axis title.  I guess we don't care?
       ## oma=c(0,0,0,0): more margins # ann=FALSE: do not add extra annotation to the plot
-      old_par <- par();
-      on.exit(suppressWarnings({par(old_par)}));
-      suppressWarnings(par(mar=c(0,0,0,0), xpd=NA, mgp=c(0,0,0), oma=c(0,0,0,0), ann=FALSE))
+      old_par <- graphics::par();
+      on.exit(suppressWarnings({graphics::par(old_par)}));
+      suppressWarnings(graphics::par(mar=c(0,0,0,0), xpd=NA, mgp=c(0,0,0), oma=c(0,0,0,0), ann=FALSE))
 
       ##THIS CREATES NEW PLOT.  I GUESS IT AUTOMATICALLY USES WHAT YOU SET WITH PAR?
-      plot.new()
-      plot.window(0:1, 0:1)
+      graphics::plot.new()
+      graphics::plot.window(0:1, 0:1)
 
       ##fill plot with image
-      usr<-par("usr")  #gives the extremes of the user coordinates
+      usr<-graphics::par("usr")  #gives the extremes of the user coordinates
       graphics::rasterImage(img, usr[1], usr[3]+0.1, usr[2], usr[4]) #shifted up by .1 to make space for text
 
       ##add draft status to text if status isn't "Final"
@@ -151,12 +161,12 @@ xgx_annotate_status_png <- function(file_or_dir, script="", status="DRAFT",
                                         "Date: ", format(Sys.time(), date_format))))
       graphics::text(0.5, 0.025, bottom_txt,cex=cx*cex_footnote_mult)
       ##close image
-      invisible(dev.off())
+      invisible(grDevices::dev.off())
       img<-png::readPNG(file)
       png::writePNG(img,file,metadata="I love xgx!");
       if (x11){
-        par(mar=c(0,0,0,0), xpd=NA, mgp=c(0,0,0), oma=c(0,0,0,0), ann=FALSE)
-        lim <- par()
+        graphics::par(mar=c(0,0,0,0), xpd=NA, mgp=c(0,0,0), oma=c(0,0,0,0), ann=FALSE)
+        lim <- graphics::par()
         graphics::plot.new()
         graphics::plot.window(0:1, 0:1)
         graphics::rasterImage(img, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])

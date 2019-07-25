@@ -21,7 +21,6 @@
 #' @param status_fontsize font size for status in plot
 #'
 #' @return ggplot2 plot object
-#' @export
 #'
 #' @examples
 #' 
@@ -36,13 +35,16 @@
 #' ggplot(data=data,aes(x=x,y=y)) +
 #' geom_point()
 #' xgx_save(4,4,dirs,"Example","DRAFT")
-
+#' 
+#' @importFrom ggplot2 last_plot
+#' @importFrom ggplot2 ggsave
+#' @export
 xgx_save = function(width,
                     height,
                     dirs              = NULL,
                     filename_main,
                     status,
-                    g = last_plot(),
+                    g = ggplot2::last_plot(),
                     filetype="png",
                     status_x=Inf,
                     status_y=Inf,
@@ -60,6 +62,6 @@ xgx_save = function(width,
   g = g + xgx_annotate_filenames(dirs)
   g = g + xgx_annotate_status(status,x=status_x,y=status_y,fontsize=status_fontsize)
   
-  ggsave(plot=g,width=width,height=height,file.path(filedir,dirs$filename))
+  ggplot2::ggsave(plot=g,width=width,height=height,file.path(filedir,dirs$filename))
   return(g)
 }

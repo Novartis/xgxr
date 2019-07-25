@@ -9,8 +9,8 @@
 #' @param labels function for setting the labels, defined here 
 #' @param ... other arguments passed to \code{ggplot2::scale_y_log10}
 #'
+#' @importFrom ggplot2 scale_y_log10
 #' @export
-
 xgx_scale_y_log10 <-  function(breaks       = xgx_breaks_log10, 
                                minor_breaks = xgx_log_breaks_minor,
                                labels       = xgx_labels_log10,
@@ -29,8 +29,8 @@ xgx_scale_y_log10 <-  function(breaks       = xgx_breaks_log10,
     return(breaks)
   }
   
-  ret <- try(list(scale_y_log10(..., breaks=breaks, minor_breaks = minor_breaks, labels = labels)),
+  ret <- try(list(ggplot2::scale_y_log10(..., breaks=breaks, minor_breaks = minor_breaks, labels = labels)),
              silent=TRUE)
-  if  (inherits(ret, "try-error")) return(scale_y_log10(...))
+  if  (inherits(ret, "try-error")) return(ggplot2::scale_y_log10(...))
   return(ret);
 }

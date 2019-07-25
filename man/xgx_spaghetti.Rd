@@ -4,7 +4,7 @@
 \alias{xgx_spaghetti}
 \title{Make a spaghetti plot}
 \usage{
-xgx_spaghetti(data = NULL, mapping = aes(), ...,
+xgx_spaghetti(data = NULL, mapping = ggplot2::aes(), ...,
   environment = parent.frame())
 }
 \arguments{
@@ -28,4 +28,5 @@ conc = exp(-time)*sort(rep(rlnorm(5),10))
 
 data = data.frame(time = time, concentration  = conc, id = id)
 xgx_spaghetti(data = data, mapping = aes(x = time, y = concentration, group = id))
+
 }

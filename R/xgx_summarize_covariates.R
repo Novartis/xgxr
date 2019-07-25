@@ -8,24 +8,34 @@
 #' @param n_cts, the number of unique values for a covariate to be treated as continuous, default is 8
 #'
 #' @return list
-#' @export
-#' 
-#' @import dplyr
 #'
 #' @examples
 #' data = data.frame(ID=1:10,WT0 = rnorm(10,70,10),SEX=round(runif(10)))
 #' x = xgx_summarize_covariates(data,c("WT0","SEX"))
-
+#' 
+#' @importFrom dplyr filter
+#' @importFrom tibble tibble
+#' @importFrom dplyr group_by
+#' @importFrom dplyr count
+#' @importFrom dplyr ungroup
+#' @importFrom dplyr arrange
+#' @importFrom stats quantile
+#' @importFrom stats median
+#' @importFrom dplyr bind_rows
+#' @importFrom dplyr desc
+#' @importFrom magrittr "%>%"
+#' @export
 xgx_summarize_covariates = function(data,covariates = NULL, n_cts = 8){
   #defining column names as variables, because this is a work around CRAN to accept the R package
   #due to the way dplyr and lazy evaluation interacts with the CRAN checking
   #https://stackoverflow.com/questions/48750221/dplyr-and-no-visible-binding-for-global-variable-note-in-package-check
   ID=NULL; USUBJID=NULL;
+  n <- NULL
   
   if ("USUBJID" %in% names(data)) {
-    data1 = filter(data,!duplicated(USUBJID))
+    data1 = dplyr::filter(data,!duplicated(USUBJID))
   } else if ("ID" %in% names(data)) {
-    data1 = filter(data,!duplicated(ID))
+    data1 = dplyr::filter(data,!duplicated(ID))
   } else {
     stop("data column USUBJID or ID is required")
   }
@@ -42,22 +52,22 @@ xgx_summarize_covariates = function(data,covariates = NULL, n_cts = 8){
     if (xdistinct>=n_cts) {
       
       icts=icts+1
-      ctslist[[icts]] = tibble(Covariate     = covk,
+      ctslist[[icts]] = tibble::tibble(Covariate     = covk,
                                Nmissing      = xmissing,
                                min           = min(x,na.rm=TRUE),
-                               `25th`        = quantile(x,0.25,na.rm=TRUE),
-                               median        = median(x,na.rm=TRUE),
-                               `75th`        = quantile(x,0.75,na.rm=TRUE),
+                               `25th`        = stats::quantile(x,0.25,na.rm=TRUE),
+                               median        = stats::median(x,na.rm=TRUE),
+                               `75th`        = stats::quantile(x,0.75,na.rm=TRUE),
                                max           = max(x,na.rm=TRUE))
     } else {
-      summ = tibble(var=x) %>%
-        group_by(var) %>%
-        count() %>%
-        ungroup() %>%
-        arrange(desc(n))
+      summ = tibble::tibble(var=x) %>%
+        dplyr::group_by(var) %>%
+        dplyr::count() %>%
+        dplyr::ungroup() %>%
+        dplyr::arrange(dplyr::desc(n))
       
       icat=icat+1
-      catlist[[icat]] = tibble(Covariate     = covk,
+      catlist[[icat]] = tibble::tibble(Covariate     = covk,
                                Nmissing      = xmissing,
                                Ndistinct     = xdistinct,
                                `Value (Count)` = paste0(summ$var," (",summ$n,")",collapse = ", "))
@@ -65,8 +75,8 @@ xgx_summarize_covariates = function(data,covariates = NULL, n_cts = 8){
   }
   
   #create summaries ----
-  cat_table   = bind_rows(catlist)
-  cts_table   = bind_rows(ctslist)
+  cat_table   = dplyr::bind_rows(catlist)
+  cts_table   = dplyr::bind_rows(ctslist)
   
   output = list(cts_covariates  = cts_table,
                 cat_covariates  = cat_table)

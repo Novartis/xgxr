@@ -13,16 +13,17 @@
 #' 
 #' @param filename_main main part of the filename, excluding prefix and extension.  no default
 #'
-#' @importFrom utils write.csv
-#'
 #' @return ggplot2 plot object
-#' @export
 #'
 #' @examples
 #' data = data.frame(x=c(1,2),y=c(1,2))
 #' xgx_save_table(data)
-
-
+#' 
+#' @importFrom dplyr bind_rows
+#' @importFrom dplyr mutate_all
+#' @importFrom utils write.csv
+#' @importFrom magrittr "%>%"
+#' @export
 xgx_save_table = function(
                     data,
                     dirs = NULL,
@@ -44,14 +45,14 @@ xgx_save_table = function(
                          paste0("Created: ", Sys.time())))
   
   caption_row = data[1,] %>%
-    mutate_all(function(x){x=""})
-  caption_row = bind_rows(caption_row,caption_row,caption_row,caption_row,caption_row)
+    dplyr::mutate_all(function(x){x=""})
+  caption_row = dplyr::bind_rows(caption_row,caption_row,caption_row,caption_row,caption_row)
   caption_row[,1] = caption
   
   data_append = data %>%
-    mutate_all(as.character) %>%
-    bind_rows(caption_row)
+    dplyr::mutate_all(as.character) %>%
+    dplyr::bind_rows(caption_row)
   
-  write.csv(data_append,paste0(filedir,dirs$filename),quote = FALSE, row.names = FALSE)
+  utils::write.csv(data_append,paste0(filedir,dirs$filename),quote = FALSE, row.names = FALSE)
   return(data_append)
 }

@@ -16,7 +16,6 @@
 #' @param hjust horizontal justification of the caption
 #' 
 #' @return None
-#' @export
 #'
 #' @examples#' 
 #' library(ggplot2)  
@@ -29,13 +28,17 @@
 #' ggplot(data=data,aes(x=x,y=y)) + 
 #'   geom_point() +
 #'   xgx_annotate_filenames(dirs)
-
+#'
+#' @importFrom ggplot2 labs
+#' @importFrom ggplot2 theme
+#' @importFrom ggplot2 element_text
+#' @export
 xgx_annotate_filenames = function(dirs,hjust=0.5) {
   
   caption = xgx_dirs2char(dirs)
   return(list(
-    labs(caption = caption),
-    theme(plot.caption = element_text(hjust = hjust))
+    ggplot2::labs(caption = caption),
+    ggplot2::theme(plot.caption = ggplot2::element_text(hjust = hjust))
   ))
     
 }

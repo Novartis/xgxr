@@ -21,8 +21,6 @@
 #'
 #' @param data.range range of the data
 #'
-#' @export
-#'
 #' @examples
 #' library(ggplot2)  
 #' xgx_breaks_log10(c(1,1000))
@@ -36,7 +34,9 @@
 #' xgx_breaks_log10(c(1,1.01))
 #' xgx_breaks_log10(c(1,1.0001))
 #' print(xgx_breaks_log10(c(1,1.000001)),digits=10)
-
+#' 
+#' @importFrom labeling extended
+#' @export
 xgx_breaks_log10 <-  function(data.range){
   dmin      = min(log10(data.range))
   dmax      = max(log10(data.range))

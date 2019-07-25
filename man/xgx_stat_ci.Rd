@@ -82,5 +82,4 @@ xgx_plot(data,aes(x=x,y=y)) +
   xgx_stat_ci(conf_level = .95, distribution = "binomial", 
               aes(color = factor(group)), position = position_dodge(width = 0.5))
  
- 
 }
