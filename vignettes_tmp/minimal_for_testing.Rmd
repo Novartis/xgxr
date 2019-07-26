@@ -1,5 +1,5 @@
 ---
-title: "xgx Overview"
+title: "xgxr Overview"
 author: "Andrew Stein, Fariba Khanshan, Alison Margolskee"
 date: "`r Sys.Date()`"
 output: 
@@ -22,23 +22,14 @@ knitr::opts_chunk$set(
 
 ## Required Packages
 ```{r, message=FALSE}
-  #devtools::load_all()
-  library(xgx)
-  library(scales)
-  library(stringr)
-  library(grid)
-  library(gridExtra)
-  library(knitr)
-  library(png)
-  library(dplyr)
-  library(ggplot2)
+library(xgxr)
 
-  #override masking
-  rename = dplyr::rename
-  select = dplyr::select
+x <- y <- NULL
 
-  xgx_plot(data=data.frame(x=c(0,rlnorm(1000,0,1)),y=c(0,rlnorm(1000,0,3))),aes(x=x,y=y)) + 
-    geom_point() + 
+df <- data.frame(x = c(0, stats::rlnorm(1000, 0, 1)),
+                 y = c(0, stats::rlnorm(1000, 0, 3)))
+  xgx_plot(data = df, ggplot2::aes(x = x, y = y)) + 
+    ggplot2::geom_point() + 
     xgx_scale_x_log10() + 
     xgx_scale_y_log10()
 ```
