@@ -47,8 +47,6 @@ xgx_breaks_log10 <-  function(data.range) {
   m <- 5
   # preferred breaks, in log10-space
   Q <- c(1, 0.5)
-  # weights that heavily emphasize simpler breaks (factor of 10)
-  w.simple <- c(1, 0.2, 0.5, 0.05)
 
   breaks <- labeling::extended(dmin, dmax, m, Q = Q)
   breaks <- 10^breaks

@@ -32,7 +32,5 @@ xgx_plot <-  function(data = NULL, mapping = ggplot2::aes(), ...,
                         environment = environment) +
     xgx_theme()
 
-  ret <- gg
-
-  return(ret)
+  return(gg)
 }

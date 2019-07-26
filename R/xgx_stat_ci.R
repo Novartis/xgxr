@@ -117,7 +117,7 @@ xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95,
 
   conf_int <- function(y, conf_level, distribution) {
     y <- stats::na.omit(y)
-  
+
     if (distribution == "normal") {
       conf_int_out <- data.frame(
         y = mean(y),
