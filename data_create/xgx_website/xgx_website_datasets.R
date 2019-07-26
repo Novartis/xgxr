@@ -152,13 +152,13 @@ names(Single_Ascending_Dose_Dataset2) <- c("ID","TIME","NOMTIME","TIMEUNIT","AMT
                                            "NAME","EVENTU","CENS","EVID","WEIGHTB","SEX","TRTACT",
                                            "DOSE")
 
-Single_Ascending_Dose = Single_Ascending_Dose_Dataset2
-write.csv(Single_Ascending_Dose,"data_create/xgx_website/Single_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
-write.csv(Single_Ascending_Dose,           "inst/extdata/Single_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
-usethis::use_data(Single_Ascending_Dose, overwrite = TRUE)
+sad = Single_Ascending_Dose_Dataset2
+write.csv(sad,"data_create/xgx_website/Single_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
+write.csv(sad,           "inst/extdata/Single_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
+usethis::use_data(sad, overwrite = TRUE)
 
 
-DT::datatable(Single_Ascending_Dose, rownames = FALSE, options = list(autoWidth = TRUE, scrollX=TRUE)) 
+DT::datatable(sad, rownames = FALSE, options = list(autoWidth = TRUE, scrollX=TRUE)) 
 
 # Multiple Ascending Dose PK & PD Dataset ----
 set.seed(12345666)
@@ -343,14 +343,14 @@ names(Multiple_Ascending_Dose_Dataset2) <- c("ID","TIME","NOMTIME","TIMEUNIT","A
                                              "NAME","EVENTU","CENS","EVID","WEIGHTB","SEX","TRTACT",
                                              "DOSE","PROFDAY","PROFTIME","CYCLE")
 
-Multiple_Ascending_Dose = Multiple_Ascending_Dose_Dataset2
+mad = Multiple_Ascending_Dose_Dataset2
 
-write.csv(Multiple_Ascending_Dose,"data_create/xgx_website/Multiple_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
-write.csv(Multiple_Ascending_Dose,           "inst/extdata/Multiple_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
-usethis::use_data(Multiple_Ascending_Dose, overwrite = TRUE)
+write.csv(mad,"data_create/xgx_website/Multiple_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
+write.csv(mad,           "inst/extdata/Multiple_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
+usethis::use_data(mad, overwrite = TRUE)
 
 
-DT::datatable(Multiple_Ascending_Dose, rownames = FALSE, options = list(autoWidth = TRUE, scrollX=TRUE) )
+DT::datatable(mad, rownames = FALSE, options = list(autoWidth = TRUE, scrollX=TRUE) )
 
 #NCA dataset ----
 my.data = Multiple_Ascending_Dose_Dataset2
@@ -372,10 +372,10 @@ NCA = left_join(NCA_0_24,NCA_tau,by="ID") %>%
   gather(PARAM,VALUE,-ID) %>%
   left_join(my.data[,c("ID","DOSE","TRTACT","SEX","WEIGHTB")],by="ID")
 
-Multiple_Ascending_Dose_NCA = NCA
+mad_nca = NCA
 write.csv(NCA,"data_create/xgx_website/Multiple_Ascending_Dose_NCA.csv",row.names = FALSE, quote = FALSE)
 write.csv(NCA,           "inst/extdata/Multiple_Ascending_Dose_NCA.csv",row.names = FALSE, quote = FALSE)
-usethis::use_data(Multiple_Ascending_Dose_NCA, overwrite = TRUE)
+usethis::use_data(mad_nca, overwrite = TRUE)
 
 
 #MAD with missing and duplicate values ----
@@ -393,10 +393,10 @@ my.data = my.data %>%
   arrange(ID,TIME,CMT)
 
 # Define order for factors
-Multiple_Ascending_Dose_Missing_Duplicates = my.data
+mad_md = my.data
 write.csv(my.data,"data_create/xgx_website/Multiple_Ascending_Dose_Missing_Duplicates.csv",row.names = FALSE, quote = FALSE)
 write.csv(my.data,           "inst/extdata/Multiple_Ascending_Dose_Missing_Duplicates.csv",row.names = FALSE, quote = FALSE)
-usethis::use_data(Multiple_Ascending_Dose_Missing_Duplicates, overwrite = TRUE)
+usethis::use_data(mad_md, overwrite = TRUE)
 
 #check the data and also add it to the package
 if (FALSE) {

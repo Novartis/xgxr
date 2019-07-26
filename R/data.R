@@ -42,7 +42,7 @@
 #'   column 19: \tab \code{CYCLE} \tab numeric; count of drug administrations 
 #'   received
 #' }
-"Multiple_Ascending_Dose"
+"mad"
 
 #' Multiple Ascending Dose Data Set (Duplicates Removed)
 #'
@@ -88,7 +88,7 @@
 #'   column 19: \tab \code{CYCLE} \tab numeric; count of drug administrations 
 #'   received
 #' }
-"Multiple_Ascending_Dose_Missing_Duplicates"
+"mad_md"
 
 #' Multiple Ascending Dose Data Set (NCA)
 #'
@@ -104,7 +104,7 @@
 #'   column 14: \tab \code{SEX} \tab character; sex\cr
 #'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)
 #' }
-"Multiple_Ascending_Dose_NCA"
+"mad_nca"
 
 #' Case 1 PKPD Data Set
 #'
@@ -149,9 +149,9 @@
 #'   column 20: \tab \code{STUDY} \tab integer; TODO\cr
 #'   column 21: \tab \code{IPRED} \tab numeric; TODO\cr
 #' }
-"case1_PKPDdataset"
+"case1_pkpd"
 
-#' NLMIXR NIMO Data Set
+#' nlmixr Data Set
 #'
 #' TODO
 #'
@@ -231,7 +231,7 @@
 #'   column 16: \tab \code{DOSE} \tab numeric; randomized dose in mg 
 #'   received
 #' }
-"Single_Ascending_Dose"
+"sad"
 
 #' Single Ascending Dose PKPD Data Set
 #'
@@ -250,4 +250,4 @@
 #'   column 15: \tab \code{RACE} \tab character; TODO\cr
 #'   column 16: \tab \code{AMT} \tab integer; TODO
 #' }
-"Single_Ascending_Dose_PKPD_dpastoor"
+"sad_pkpd"

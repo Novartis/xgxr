@@ -3,7 +3,7 @@
 \docType{data}
 \name{nlmixr_nimo}
 \alias{nlmixr_nimo}
-\title{NLMIXR NIMO Data Set}
+\title{nlmixr Data Set}
 \format{A data frame with the following 20 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab integer; TODO\cr

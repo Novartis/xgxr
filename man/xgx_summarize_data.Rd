@@ -19,6 +19,5 @@ Calls \code{\link{xgx_check_data}}
 }
 \examples{
 covariates <- c("WEIGHTB", "SEX")
-check <- xgx_summarize_data(Multiple_Ascending_Dose_Missing_Duplicates,
-                            covariates)
+check <- xgx_summarize_data(mad_md, covariates)
 }
