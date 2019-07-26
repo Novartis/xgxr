@@ -25,7 +25,7 @@
 #' 
 #' @export
 xgx_dirs2char <- function(dirs, include_time = TRUE) {
-  #check to make sure all filenames dirs
+  # check to make sure all filenames dirs
   missing.filenames <- setdiff(c("parent_dir", "rscript_dir", "rscript_name", "results_dir", "filename"),
                               names(dirs))
   if (length(missing.filenames) > 0)

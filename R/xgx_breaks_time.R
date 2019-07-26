@@ -41,8 +41,10 @@ xgx_breaks_time <-  function(data.range, units.plot){
   dmin <- min(data.range)
   dmax <- max(data.range)
   dspan <- dmax - dmin
-  m <- 5 #number of breaks to aim for
-  Q.default <- c(1, 5, 2, 4, 3, 1) #default Q (spacing)
+  # number of breaks to aim for
+  m <- 5
+  # default Q (spacing)
+  Q.default <- c(1, 5, 2, 4, 3, 1)
   w.default <- c(0.25, 0.2, 0.5, 0.05)
   w.simple <- c(1, 0.2, 0.5, 0.05)
 

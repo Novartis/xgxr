@@ -26,33 +26,33 @@
 #' @return ggplot2 plot layer
 #'
 #' @examples
-#' ## Default settings for normally distributed data, 95% confidence interval,  
+#' # default settings for normally distributed data, 95% confidence interval,  
 #' data = data.frame(x = rep(c(1,2,3),each=20),
 #' y = rep(c(1,2,3),each=20) + stats::rnorm(60), group = (rep(1:3,20) ))
 #' xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
 #'  xgx_stat_ci(conf_level = 0.95)
 #' 
-#' # Try different geom 
+#' # try different geom 
 #' xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
 #'   xgx_stat_ci(conf_level = 0.95, geom = list("ribbon","point","line"))
 #'  
-#' ## Plotting lognormally distributed data
+#' # plotting lognormally distributed data
 #'  data = data.frame(x = rep(c(1,2,3),each=20),
 #'  y = 10^(rep(c(1,2,3),each=20) + stats::rnorm(60)), group = (rep(1:3,20) ))
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
 #'   xgx_stat_ci(conf_level = 0.95, distribution = "lognormal")
 #'   
-#' ## Note: you DO NOT need to use both distribution = "lognormal" and scale_y_log10()
+#' # note: you DO NOT need to use both distribution = "lognormal" and scale_y_log10()
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
 #'   xgx_stat_ci(conf_level = 0.95) + xgx_scale_y_log10()
 #'  
-#' ## Plotting binomial data
+#' # plotting binomial data
 #'  data = data.frame(x = rep(c(1,2,3),each=20),
 #'  y = stats::rbinom(60, 1, rep(c(0.2,0.6,0.8),each=20)), group = (rep(1:3,20) ))
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
 #'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial")
 #'  
-#' ## including multiple groups in same plot
+#' # including multiple groups in same plot
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
 #'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial", 
 #'               ggplot2::aes(color = factor(group)), position = ggplot2::position_dodge(width = 0.5))
@@ -125,7 +125,6 @@ xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95, distribu
       temp$geom$geom_params$fatten <- 2
     }
 
-    # ret <- c(ret, temp)
     ret[[paste0("geom_", igeom)]] <- temp
   }
 

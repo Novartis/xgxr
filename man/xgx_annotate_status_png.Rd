@@ -59,7 +59,7 @@ Based on code from MrFlick on
 \href{https://stackoverflow.com/a/23816416}{Stack Overflow}.
 }
 \examples{
-# Using the examples from plot()
+# using the examples from plot()
 grDevices::png("png-example.png")
 graphics::plot(cars)
 graphics::lines(stats::lowess(cars))
@@ -70,9 +70,9 @@ grDevices::png("png-example2.png")
 graphics::plot(sin, -pi, 2*pi) # see ?plot.function
 grDevices::dev.off()
 
-## Using the example from ggplot
+# using the example from ggplot
 
-# Generate some sample data, then compute mean and standard deviation
+# generate some sample data, then compute mean and standard deviation
 # in each group
 df <- data.frame(
  gp = factor(rep(letters[1:3], each = 10)),
@@ -80,7 +80,7 @@ df <- data.frame(
 )
 ds <- df \%>\% dplyr::group_by(gp) \%>\% dplyr::summarise(mean = mean(y), sd   = stats::sd(y))
 
-# The summary data frame ds is used to plot larger red points on top
+# the summary data frame ds is used to plot larger red points on top
 # of the raw data. Note that we don't need to supply `data` or `mapping`
 # in each layer because the defaults from ggplot() are used.
 grDevices::png("png-example3.png")
@@ -91,7 +91,7 @@ ggplot2::ggplot(df, ggplot2::aes(gp, y)) +
 grDevices::dev.off()
 xgx_annotate_status_png(".", "other-script.R")
 
-# Notice that this is agnostic of ggplot/plot and will skip already
+# notice that this is agnostic of ggplot/plot and will skip already
 # labeled items
 
 }

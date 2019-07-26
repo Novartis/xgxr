@@ -25,8 +25,8 @@
 #' @importFrom magrittr "%>%"
 #' @export
 xgx_summarize_covariates <- function(data, covariates = NULL, n_cts = 8){
-  #defining column names as variables, because this is a work around CRAN to accept the R package
-  #due to the way dplyr and lazy evaluation interacts with the CRAN checking
+  # defining column names as variables, because this is a work around CRAN to accept the R package
+  # due to the way dplyr and lazy evaluation interacts with the CRAN checking
   # https://stackoverflow.com/q/48750221
   ID <- USUBJID <- n <- NULL
 
@@ -72,27 +72,12 @@ xgx_summarize_covariates <- function(data, covariates = NULL, n_cts = 8){
     }
   }
 
-  #create summaries ----
+  # create summaries
   cat_table <- dplyr::bind_rows(catlist)
   cts_table <- dplyr::bind_rows(ctslist)
 
   output <- list(cts_covariates  = cts_table,
                 cat_covariates  = cat_table)
 
-  #print the summary ----
-  # if (length(cts_table)>0) {
-  #   cat("CONTINUOUS COVARIATES\n")
-  #   pander::pander(cts_table)
-  # } else {
-  #   cat("NO CONTINUOUS COVARIATES\n")
-  # }
-  #
-  # if (length(cat_table)>0) {
-  #   cat("CATEGORICAL COVARIATES\n")
-  #   pander::panderOptions("table.split.cells",100)
-  #   pander::pander(cat_table)
-  # } else {
-  #   cat("NO CATEGORICAL COVARIATES\n")
-  # }
   return(output)
 }
