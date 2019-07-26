@@ -27,7 +27,7 @@ w is a set of 4 weights for:
 }
 \examples{
 xgx_breaks_log10(c(1,1000))
-xgx_breaks_log10(c(.001,100))
+xgx_breaks_log10(c(0.001,100))
 xgx_breaks_log10(c(1e-4,1e4))
 xgx_breaks_log10(c(1e-9,1e9))
 xgx_breaks_log10(c(1,2))

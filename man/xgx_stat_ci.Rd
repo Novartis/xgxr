@@ -20,7 +20,7 @@ A data.frame, or other object, will override the plot data. All objects will be 
 
 A function will be called with a single argument, the plot data. The return value must be a data.frame., and will be used as the layer data.}
 
-\item{conf_level}{The percentile for the confidence interval (should fall between 0 and 1). The default is .95, which corresponds to a 95 percent confidence interval.}
+\item{conf_level}{The percentile for the confidence interval (should fall between 0 and 1). The default is 0.95, which corresponds to a 95 percent confidence interval.}
 
 \item{distribution}{The distribution which the data follow, used for calculating confidence intervals. The options are "normal", "lognormal", and "binomial". The "normal" option will use the Student t Distribution to calculate confidence intervals, the "lognormal" option will transform data to the log space first. The "binomial" option will use the binom::binom.exact() function to calculate the confidence intervals. Note: binomial data must be numeric and contain only 1's and 0's.}
 
@@ -63,21 +63,21 @@ xgx_plot(data,ggplot2::aes(x=x,y=y)) +
  data = data.frame(x = rep(c(1,2,3),each=20),
  y = 10^(rep(c(1,2,3),each=20) + stats::rnorm(60)), group = (rep(1:3,20) ))
  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-  xgx_stat_ci(conf_level = .95, distribution = "lognormal")
+  xgx_stat_ci(conf_level = 0.95, distribution = "lognormal")
   
 ## Note: you DO NOT need to use both distribution = "lognormal" and scale_y_log10()
  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-  xgx_stat_ci(conf_level = .95) + xgx_scale_y_log10()
+  xgx_stat_ci(conf_level = 0.95) + xgx_scale_y_log10()
  
 ## Plotting binomial data
  data = data.frame(x = rep(c(1,2,3),each=20),
  y = stats::rbinom(60, 1, rep(c(0.2,0.6,0.8),each=20)), group = (rep(1:3,20) ))
  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-  xgx_stat_ci(conf_level = .95, distribution = "binomial")
+  xgx_stat_ci(conf_level = 0.95, distribution = "binomial")
  
 ## including multiple groups in same plot
  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-  xgx_stat_ci(conf_level = .95, distribution = "binomial", 
+  xgx_stat_ci(conf_level = 0.95, distribution = "binomial", 
               ggplot2::aes(color = factor(group)), position = ggplot2::position_dodge(width = 0.5))
  
 }

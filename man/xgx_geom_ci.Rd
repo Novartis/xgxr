@@ -20,7 +20,7 @@ A data.frame, or other object, will override the plot data. All objects will be 
 
 A function will be called with a single argument, the plot data. The return value must be a data.frame., and will be used as the layer data.}
 
-\item{conf_level}{The percentile for the confidence interval (should fall between 0 and 1). The default is .95, which corresponds to a 95 percent confidence interval.}
+\item{conf_level}{The percentile for the confidence interval (should fall between 0 and 1). The default is 0.95, which corresponds to a 95 percent confidence interval.}
 
 \item{distribution}{The distribution which the data follow, used for calculating confidence intervals. The options are "normal", "lognormal", and "binomial". The "normal" option will use the Student t Distribution to calculate confidence intervals, the "lognormal" option will transform data to the log space first. The "binomial" option will use the binom::binom.exact() function to calculate the confidence intervals. Note: binomial data must be numeric and contain only 1's and 0's.}
 
@@ -48,6 +48,6 @@ Plot data with mean and confidence intervals
 data = data.frame(x = rep(c(1,2,3),each=20),
 y = rep(c(1,2,3),each=20) + stats::rnorm(60))
 ggplot2::ggplot(data,ggplot2::aes(x=x,y=y)) + 
- xgx_geom_ci(conf_level = .95)
+ xgx_geom_ci(conf_level = 0.95)
  
 }

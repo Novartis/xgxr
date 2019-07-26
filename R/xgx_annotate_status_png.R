@@ -155,7 +155,7 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       cx <- dpi / 75
 
       if (!any(status == c("Final", ""))) {
-        graphics::text(.5, .5, status, cex = cex_status_mult * cx,
+        graphics::text(0.5, 0.5, status, cex = cex_status_mult * cx,
                        col = col, font = font, srt = status_angle)
       }
       ##add path to the bottom of the graphs

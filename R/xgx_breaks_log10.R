@@ -22,7 +22,7 @@
 #'
 #' @examples 
 #' xgx_breaks_log10(c(1,1000))
-#' xgx_breaks_log10(c(.001,100))
+#' xgx_breaks_log10(c(0.001,100))
 #' xgx_breaks_log10(c(1e-4,1e4))
 #' xgx_breaks_log10(c(1e-9,1e9))
 #' xgx_breaks_log10(c(1,2))
@@ -40,7 +40,7 @@ xgx_breaks_log10 <-  function(data.range){
   dmax <- max(log10(data.range))
   m <- 5 #number of breaks to aim for
   Q <- c(1, 0.5) #prefered breaks, in log10-space
-  w.simple <- c(1, .2, .5, .05) #weights that heavily emphasize simpler breaks (factor of 10)
+  w.simple <- c(1, 0.2, 0.5, 0.05) #weights that heavily emphasize simpler breaks (factor of 10)
 
   breaks <- labeling::extended(dmin, dmax, m, Q = Q)
   breaks <- 10^breaks

@@ -44,7 +44,7 @@ xgx_breaks_time <-  function(data.range, units.plot){
   m <- 5 #number of breaks to aim for
   Q.default <- c(1, 5, 2, 4, 3, 1) #default Q (spacing)
   w.default <- c(0.25, 0.2, 0.5, 0.05)
-  w.simple <- c(1, .2, .5, .05)
+  w.simple <- c(1, 0.2, 0.5, 0.05)
 
   if (units.plot %in% c("h", "m") && dspan >= 48) {
     Q <- c(24, 12, 6, 3)

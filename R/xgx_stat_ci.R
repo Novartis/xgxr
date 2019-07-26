@@ -13,7 +13,7 @@
 #' A data.frame, or other object, will override the plot data. All objects will be fortified to produce a data frame. See fortify for which variables will be created.
 #' 
 #' A function will be called with a single argument, the plot data. The return value must be a data.frame., and will be used as the layer data.
-#' @param conf_level The percentile for the confidence interval (should fall between 0 and 1). The default is .95, which corresponds to a 95 percent confidence interval.
+#' @param conf_level The percentile for the confidence interval (should fall between 0 and 1). The default is 0.95, which corresponds to a 95 percent confidence interval.
 #' @param distribution The distribution which the data follow, used for calculating confidence intervals. The options are "normal", "lognormal", and "binomial". The "normal" option will use the Student t Distribution to calculate confidence intervals, the "lognormal" option will transform data to the log space first. The "binomial" option will use the binom::binom.exact() function to calculate the confidence intervals. Note: binomial data must be numeric and contain only 1's and 0's. 
 #' @param geom Use to override the default geom. Can be a list of multiple geoms, e.g. list("point","line","errorbar"), which is the default.
 #' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
@@ -40,21 +40,21 @@
 #'  data = data.frame(x = rep(c(1,2,3),each=20),
 #'  y = 10^(rep(c(1,2,3),each=20) + stats::rnorm(60)), group = (rep(1:3,20) ))
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-#'   xgx_stat_ci(conf_level = .95, distribution = "lognormal")
+#'   xgx_stat_ci(conf_level = 0.95, distribution = "lognormal")
 #'   
 #' ## Note: you DO NOT need to use both distribution = "lognormal" and scale_y_log10()
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-#'   xgx_stat_ci(conf_level = .95) + xgx_scale_y_log10()
+#'   xgx_stat_ci(conf_level = 0.95) + xgx_scale_y_log10()
 #'  
 #' ## Plotting binomial data
 #'  data = data.frame(x = rep(c(1,2,3),each=20),
 #'  y = stats::rbinom(60, 1, rep(c(0.2,0.6,0.8),each=20)), group = (rep(1:3,20) ))
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-#'   xgx_stat_ci(conf_level = .95, distribution = "binomial")
+#'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial")
 #'  
 #' ## including multiple groups in same plot
 #'  xgx_plot(data,ggplot2::aes(x=x,y=y)) + 
-#'   xgx_stat_ci(conf_level = .95, distribution = "binomial", 
+#'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial", 
 #'               ggplot2::aes(color = factor(group)), position = ggplot2::position_dodge(width = 0.5))
 #'  
 #' @importFrom stats rnorm
@@ -67,7 +67,7 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 position_dodge
 #' @export
-xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = .95, distribution = "normal",
+xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95, distribution = "normal",
                        geom = list("point", "line", "errorbar"),
                        position = "identity",
                        ..., fun.args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
