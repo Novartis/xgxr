@@ -37,9 +37,9 @@ xgx_dirs2char <- function(dirs, include_time = TRUE) {
     stop(paste("Fields missing from missing.filenames = ", missing.filenames))
   }
 
-  output <- with(dirs, paste0(parent_dir, "\n",
-                            rscript_dir, rscript_name, "\n",
-                            results_dir, filename))
+  output <- paste0(dirs$parent_dir, "\n",
+                   dirs$rscript_dir, dirs$rscript_name, "\n",
+                   dirs$results_dir, dirs$filename)
 
   if (include_time) {
     output <- paste0(output, "\n", "Created: ", Sys.time())

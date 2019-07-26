@@ -53,11 +53,10 @@ xgx_save_table <- function(
   filedir <- file.path(dirs$results_dir)
   dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".csv")
 
-  caption <- with(dirs, c("",
-                         parent_dir,
-                         paste0(rscript_dir, rscript_name),
-                         paste0(results_dir, filename),
-                         paste0("Created: ", Sys.time())))
+  caption <- c("", dirs$parent_dir,
+               paste0(dirs$rscript_dir, dirs$rscript_name),
+               paste0(dirs$results_dir, dirs$filename),
+               paste0("Created: ", Sys.time()))
 
   caption_row <- data[1, ] %>%
     dplyr::mutate_all(function(x) {x <- ""})
