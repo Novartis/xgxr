@@ -24,7 +24,9 @@
 #' on visualization and computer graphics 16.6 (2010): 1036-1043.
 #' 
 #' @param data.range range of the data
-#'
+#' 
+#' @return numeric vector of breaks
+#' 
 #' @examples 
 #' xgx_breaks_log10(c(1, 1000))
 #' xgx_breaks_log10(c(0.001, 100))

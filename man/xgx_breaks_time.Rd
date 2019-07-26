@@ -11,6 +11,9 @@ xgx_breaks_time(data.range, units.plot)
 
 \item{units.plot}{units to use in the plot}
 }
+\value{
+numeric vector of breaks
+}
 \description{
 \code{xgx_breaks_time} sets the default breaks for a time axis, 
 given the units of the data and the units of the plot.

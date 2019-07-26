@@ -2,6 +2,8 @@
 #'
 #' Calls \code{\link{xgx_check_data}}
 #' 
+#' @return data.frame
+#' 
 #' @inheritParams xgx_check_data
 #' @export
 xgx_summarize_data <- function(data, covariates = NULL) {

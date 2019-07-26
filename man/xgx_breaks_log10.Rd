@@ -9,6 +9,9 @@ xgx_breaks_log10(data.range)
 \arguments{
 \item{data.range}{range of the data}
 }
+\value{
+numeric vector of breaks
+}
 \description{
 \code{xgx_breaks_log10} sets nice breaks for log10 scale.
 it's better than the default function because it ensures there is at least 

@@ -8,6 +8,8 @@
 #' @param ... other parameters passed to 
 #' \code{\link[ggplot2:scale_continuous]{scale_y_continuous}}
 #' 
+#' @return ggplot2 compatible scale object
+#' 
 #' @examples  
 #' conc <- 10^(seq(-3, 3, by = 0.1))
 #' EC50 <- 1

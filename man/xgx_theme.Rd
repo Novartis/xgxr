@@ -6,6 +6,9 @@
 \usage{
 xgx_theme()
 }
+\value{
+xgx ggplot2 compatible theme
+}
 \description{
 Calls the standard theme for xGx graphics
 }

@@ -20,6 +20,9 @@ for plot. Must define x, y, and group for xgx_spaghetti.}
 found in the data, ggplot will look for it in this environment. It defaults 
 to using the environment in which \code{\link[ggplot2]{ggplot}} is called.}
 }
+\value{
+ggplot2 object
+}
 \description{
 Create a new xgx plot
 }

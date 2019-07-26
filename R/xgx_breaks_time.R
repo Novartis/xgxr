@@ -25,6 +25,8 @@
 #' @param data.range range of the data
 #' @param units.plot units to use in the plot
 #'
+#' @return numeric vector of breaks
+#' 
 #' @examples
 #' xgx_breaks_time(c(0, 5), "h")
 #' xgx_breaks_time(c(0, 6), "h")

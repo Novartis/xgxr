@@ -17,6 +17,9 @@ xgx_scale_x_log10(breaks = xgx_breaks_log10,
 \item{...}{other arguments passed to
 \code{\link[ggplot2:scale_continuous]{scale_x_log10}}}
 }
+\value{
+ggplot2 compatible scale object
+}
 \description{
 \code{xgx_scale_x_log10} is similar to
 \code{\link[ggplot2:scale_continuous]{scale_x_log10}}.  

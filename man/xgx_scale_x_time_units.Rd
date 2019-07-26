@@ -36,6 +36,9 @@ as output
 \item{...}{other parameters for 
 \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}}
 }
+\value{
+ggplot2 compatible scale object
+}
 \description{
 \code{xgx_scale_x_time_units} converts x axis scale from one time unit 
 to another.  

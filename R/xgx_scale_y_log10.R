@@ -12,6 +12,8 @@
 #' @param ... other arguments passed to 
 #' \code{\link[ggplot2:scale_continuous]{scale_y_log10}}
 #'
+#' @return ggplot2 compatible scale object
+#' 
 #' @importFrom ggplot2 scale_y_log10
 #' @export
 xgx_scale_y_log10 <-  function(breaks = xgx_breaks_log10,

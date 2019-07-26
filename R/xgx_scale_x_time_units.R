@@ -12,6 +12,8 @@
 #' @param ... other parameters for 
 #' \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}
 #' 
+#' @return ggplot2 compatible scale object
+#' 
 #' @examples 
 #' data <- data.frame(x = 1:1000, y = rnorm(1000))
 #' ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +

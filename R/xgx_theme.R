@@ -1,5 +1,7 @@
 #' Calls the standard theme for xGx graphics
 #'
+#' @return xgx ggplot2 compatible theme
+#' 
 #' @importFrom ggplot2 theme_bw
 #' @importFrom ggplot2 theme
 #' @importFrom ggplot2 element_line

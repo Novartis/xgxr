@@ -11,6 +11,9 @@ xgx_summarize_data(data, covariates = NULL)
 
 \item{covariates}{the column names of covariates, to explore}
 }
+\value{
+data.frame
+}
 \description{
 Calls \code{\link{xgx_check_data}}
 }
