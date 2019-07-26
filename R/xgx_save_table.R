@@ -28,31 +28,30 @@ xgx_save_table <- function(
                     data,
                     dirs = NULL,
                     filename_main) {
-  
   if (is.null(dirs$parent_dir))      dirs$parent_dir <- getwd()
   if (is.null(dirs$rscript_dir))     dirs$rscript_dir <- "./"
   if (is.null(dirs$rscript_name))    dirs$rscript_name <- "Name_Of_Script_Here.R"
   if (is.null(dirs$results_dir))     dirs$results_dir <- "./"
   if (is.null(dirs$filename_prefix)) dirs$filename_prefix <- ""
-  
+
   filedir <- file.path(dirs$results_dir)
-  dirs$filename <- paste0(dirs$filename_prefix,filename_main,".csv")         #get the full filename
-  
+  dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".csv")         #get the full filename
+
   caption <- with(dirs, c("",
-                         parent_dir, 
+                         parent_dir,
                          paste0(rscript_dir, rscript_name),
                          paste0(results_dir, filename),
                          paste0("Created: ", Sys.time())))
-  
-  caption_row <- data[1,] %>%
-    dplyr::mutate_all(function(x){x <- ""})
-  caption_row <- dplyr::bind_rows(caption_row,caption_row,caption_row,caption_row,caption_row)
-  caption_row[,1] <- caption
-  
+
+  caption_row <- data[1, ] %>%
+    dplyr::mutate_all(function(x) {x <- ""})
+  caption_row <- dplyr::bind_rows(caption_row, caption_row, caption_row, caption_row, caption_row)
+  caption_row[, 1] <- caption
+
   data_append <- data %>%
     dplyr::mutate_all(as.character) %>%
     dplyr::bind_rows(caption_row)
-  
-  utils::write.csv(data_append,paste0(filedir,dirs$filename),quote = FALSE, row.names = FALSE)
+
+  utils::write.csv(data_append, paste0(filedir, dirs$filename), quote = FALSE, row.names = FALSE)
   return(data_append)
 }

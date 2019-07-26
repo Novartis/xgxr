@@ -24,19 +24,19 @@
 #' caption = xgx_dirs2char(dirs)
 #' 
 #' @export
-xgx_dirs2char <- function(dirs,include_time=TRUE) {
+xgx_dirs2char <- function(dirs, include_time = TRUE) {
   #check to make sure all filenames dirs
-  missing.filenames <- setdiff(c("parent_dir","rscript_dir","rscript_name","results_dir","filename"),
+  missing.filenames <- setdiff(c("parent_dir", "rscript_dir", "rscript_name", "results_dir", "filename"),
                               names(dirs))
-  if (length(missing.filenames)>0)
-    stop(paste("Fields missing from missing.filenames = ",missing.filenames))
-  
-  output <- with(dirs,paste0(parent_dir,"\n",
-                            rscript_dir,rscript_name,"\n",
-                            results_dir,filename))
-  
-  if (include_time==TRUE)
-    output <- paste0(output,"\n","Created: ",Sys.time())
+  if (length(missing.filenames) > 0)
+    stop(paste("Fields missing from missing.filenames = ", missing.filenames))
+
+  output <- with(dirs, paste0(parent_dir, "\n",
+                            rscript_dir, rscript_name, "\n",
+                            results_dir, filename))
+
+  if (include_time == TRUE)
+    output <- paste0(output, "\n", "Created: ", Sys.time())
 
   return(output)
 }

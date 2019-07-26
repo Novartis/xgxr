@@ -67,68 +67,67 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 position_dodge
 #' @export
-xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level=.95, distribution = "normal", 
-                       geom = list("point","line","errorbar"), 
-                       position = "identity", 
+xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = .95, distribution = "normal",
+                       geom = list("point", "line", "errorbar"),
+                       position = "identity",
                        ..., fun.args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
-  
   if (!(conf_level > 0.5 && conf_level < 1))
     stop("conf_level should be greater than 0.5 and less than 1")
-  
-  percentile_value <- conf_level + (1-conf_level)/2  
-  
-  conf_int <- function(y, conf_level, distribution){
+
+  percentile_value <- conf_level + (1 - conf_level) / 2
+
+  conf_int <- function(y, conf_level, distribution) {
     y <- stats::na.omit(y)
-    
-    if(distribution == "normal"){
+
+    if (distribution == "normal") {
       conf_int_out <- data.frame(
         y = mean(y),
-        ymin = mean(y)-stats::qt(percentile_value,length(y))*sqrt(stats::var(y)/length(y)), 
-        ymax = mean(y)+stats::qt(percentile_value,length(y))*sqrt(stats::var(y)/length(y))
+        ymin = mean(y) - stats::qt(percentile_value, length(y)) * sqrt(stats::var(y) / length(y)),
+        ymax = mean(y) + stats::qt(percentile_value, length(y)) * sqrt(stats::var(y) / length(y))
       )
-    }else if(distribution == "lognormal"){
+    } else if (distribution == "lognormal") {
       yy <- log(y)
       conf_int_out <- data.frame(
         y = exp(mean(yy)),
-        ymin = exp(mean(yy)-stats::qt(percentile_value,length(yy))*sqrt(stats::var(yy)/length(yy))), 
-        ymax = exp(mean(yy)+stats::qt(percentile_value,length(yy))*sqrt(stats::var(yy)/length(yy)))
+        ymin = exp(mean(yy) - stats::qt(percentile_value, length(yy)) * sqrt(stats::var(yy) / length(yy))),
+        ymax = exp(mean(yy) + stats::qt(percentile_value, length(yy)) * sqrt(stats::var(yy) / length(yy)))
       )
-    }else if(distribution == "binomial"){
+    } else if (distribution == "binomial") {
       conf_int_out <- data.frame(
         y = mean(y),
-        ymin = binom::binom.exact(sum(y), length(y), 
+        ymin = binom::binom.exact(sum(y), length(y),
                                   conf.level = 0.95)$lower,
-        ymax = binom::binom.exact(sum(y), length(y), 
+        ymax = binom::binom.exact(sum(y), length(y),
                                   conf.level = 0.95)$upper)
-    }else{stop("distribution must be either normal, lognormal, or binomial")}
+    } else {
+      stop("distribution must be either normal, lognormal, or binomial")
+      }
   }
-  
+
   ret <- list()
-  for(igeom in geom){
-    
-    temp <- ggplot2::stat_summary(mapping = mapping, data = data, geom = igeom, position = position, ..., 
-                         fun.args = list(), na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes, 
+  for (igeom in geom) {
+    temp <- ggplot2::stat_summary(mapping = mapping, data = data, geom = igeom, position = position, ...,
+                         fun.args = list(), na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes,
                          fun.data = function(y) conf_int(y, conf_level, distribution)
     )
-    
-    if(igeom == "point"){
+
+    if (igeom == "point") {
       temp$geom$default_aes$size <- 2
-    }else if(igeom == "line"){
+    }else if (igeom == "line") {
       temp$geom$default_aes$size <- 1
-    }else if(igeom == "errorbar"){
+    }else if (igeom == "errorbar") {
       temp$geom$default_aes$size <- 1
-      if(is.null(temp$geom_params$width)){ temp$geom_params$width <- 0 } 
-    }else if(igeom == "ribbon"){
+      if (is.null(temp$geom_params$width)) { temp$geom_params$width <- 0 }
+    }else if (igeom == "ribbon") {
       temp$geom$default_aes$alpha <- 0.25
-    }else if(igeom == "pointrange"){
+    }else if (igeom == "pointrange") {
       temp$geom$default_aes$size <- 1
       temp$geom$geom_params$fatten <- 2
     }
-    
-    
+
     # ret <- c(ret, temp)
-    ret[[paste0("geom_",igeom)]] <- temp
+    ret[[paste0("geom_", igeom)]] <- temp
   }
-  
+
   return(ret)
-} 
+}

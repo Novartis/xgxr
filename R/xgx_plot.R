@@ -21,12 +21,11 @@
 #' @importFrom ggplot2 geom_point
 #' @importFrom stats rlnorm
 #' @export
-xgx_plot <-  function(data = NULL, mapping = ggplot2::aes(), ..., environment = parent.frame()){
-
+xgx_plot <-  function(data = NULL, mapping = ggplot2::aes(), ..., environment = parent.frame()) {
   gg <- ggplot2::ggplot(data = data, mapping = mapping, ..., environment = environment) +
     xgx_theme()
-  
+
   ret <- gg
-  
+
   return(ret)
 }

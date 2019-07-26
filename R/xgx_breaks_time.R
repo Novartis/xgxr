@@ -37,36 +37,32 @@
 #' 
 #' @importFrom labeling extended
 #' @export
-xgx_breaks_time <-  function(data.range,units.plot){
+xgx_breaks_time <-  function(data.range, units.plot){
   dmin <- min(data.range)
   dmax <- max(data.range)
   dspan <- dmax - dmin
   m <- 5 #number of breaks to aim for
-  Q.default <- c(1, 5, 2, 4, 3,1) #default Q (spacing)
+  Q.default <- c(1, 5, 2, 4, 3, 1) #default Q (spacing)
   w.default <- c(0.25, 0.2, 0.5, 0.05)
-  w.simple <- c(1,.2,.5,.05)
-  
-  
-  if (units.plot %in% c("h","m") && dspan >= 48)       { 
-    Q <- c(24,12,6,3) 
+  w.simple <- c(1, .2, .5, .05)
+
+  if (units.plot %in% c("h", "m") && dspan >= 48) {
+    Q <- c(24, 12, 6, 3)
     w <- w.simple
-  } else if (units.plot %in% c("h","m") && dspan >= 24)  {
-    Q <- c(3,12,6,2)
+  } else if (units.plot %in% c("h", "m") && dspan >= 24) {
+    Q <- c(3, 12, 6, 2)
     w <- w.simple
-  } else if (units.plot %in% c("h","m") && dspan < 24) {
-    Q <- c(6,3,2,1)
+  } else if (units.plot %in% c("h", "m") && dspan < 24) {
+    Q <- c(6, 3, 2, 1)
     w <- w.simple
-  } else if (units.plot == "d" && dspan >= 12)  { 
-    Q <- c(7,14,28)
+  } else if (units.plot == "d" && dspan >= 12) {
+    Q <- c(7, 14, 28)
     w <- w.simple
   } else {
     Q <- Q.default
     w <- w.default
   }
 
-  breaks <- labeling::extended(dmin,dmax,m,Q=Q,w=w)
+  breaks <- labeling::extended(dmin, dmax, m, Q = Q, w = w)
   return(breaks)
-}               
-
-
-
+}

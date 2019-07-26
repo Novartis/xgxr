@@ -26,10 +26,10 @@
 #' @export
 xgx_scale_y_reverselog10 <- function(...) {
   reverselog <- scales::trans_new(
-    name      = "reverselog", 
-    transform = function(x) -log10(1-x), 
+    name      = "reverselog",
+    transform = function(x) -log10(1 - x),
     inverse   = function(x)    1 - 10^-x,
-    breaks    = function(x) c(0,44,70,82,c(100-10^(-100:1)))/100)
-  
-  ggplot2::scale_y_continuous(trans=reverselog,labels=scales::percent_format(),...)
+    breaks    = function(x) c(0, 44, 70, 82, c(100 - 10^(-100:1))) / 100)
+
+  ggplot2::scale_y_continuous(trans = reverselog, labels = scales::percent_format(), ...)
 }

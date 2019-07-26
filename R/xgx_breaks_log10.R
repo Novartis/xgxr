@@ -39,28 +39,25 @@ xgx_breaks_log10 <-  function(data.range){
   dmin <- min(log10(data.range))
   dmax <- max(log10(data.range))
   m <- 5 #number of breaks to aim for
-  Q <- c(1,0.5) #prefered breaks, in log10-space
-  w.simple <- c(1,.2,.5,.05) #weights that heavily emphasize simpler breaks (factor of 10)
-  
-  breaks <- labeling::extended(dmin,dmax,m,Q=Q)
+  Q <- c(1, 0.5) #prefered breaks, in log10-space
+  w.simple <- c(1, .2, .5, .05) #weights that heavily emphasize simpler breaks (factor of 10)
+
+  breaks <- labeling::extended(dmin, dmax, m, Q = Q)
   breaks <- 10^breaks
-  
+
   #ensure that there are at least 2 breaks
   #but also try to present "nice" breaks with only one significant digit
-  breaks1 <- unique(signif(breaks,1))
-  breaks2 <- unique(signif(breaks,2))
-  breaks3 <- unique(signif(breaks,3))
-  if (length(breaks1)>=2) {
+  breaks1 <- unique(signif(breaks, 1))
+  breaks2 <- unique(signif(breaks, 2))
+  breaks3 <- unique(signif(breaks, 3))
+  if (length(breaks1) >= 2) {
     breaks.out <- breaks1
-  } else if (length(breaks2)>=2) {
+  } else if (length(breaks2) >= 2) {
     breaks.out <- breaks2
-  } else if (length(breaks3)>=2) {
+  } else if (length(breaks3) >= 2) {
     breaks.out <- breaks3
   } else {
     breaks.out <- unique(breaks)
   }
   return(breaks.out)
-}               
-
-
-
+}

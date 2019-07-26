@@ -43,27 +43,26 @@
 #' @export
 xgx_save <- function(width,
                     height,
-                    dirs              = NULL,
+                    dirs = NULL,
                     filename_main,
                     status,
                     g = ggplot2::last_plot(),
-                    filetype="png",
-                    status_x=Inf,
-                    status_y=Inf,
-                    status_fontsize=7) {
-  
+                    filetype = "png",
+                    status_x = Inf,
+                    status_y = Inf,
+                    status_fontsize = 7) {
   if (is.null(dirs$parent_dir))      dirs$parent_dir <- getwd()
   if (is.null(dirs$rscript_dir))     dirs$rscript_dir <- "./"
   if (is.null(dirs$rscript_name))    dirs$rscript_name <- "Name_Of_Script_Here.R"
   if (is.null(dirs$results_dir))     dirs$results_dir <- "./"
   if (is.null(dirs$filename_prefix)) dirs$filename_prefix <- ""
-  
+
   filedir <- file.path(dirs$results_dir)
-  dirs$filename <- paste0(dirs$filename_prefix,filename_main,".",filetype)         #get the full filename
-  
+  dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".", filetype)         #get the full filename
+
   g <- g + xgx_annotate_filenames(dirs)
-  g <- g + xgx_annotate_status(status,x=status_x,y=status_y,fontsize=status_fontsize)
-  
-  ggplot2::ggsave(plot=g,width=width,height=height,file.path(filedir,dirs$filename))
+  g <- g + xgx_annotate_status(status, x = status_x, y = status_y, fontsize = status_fontsize)
+
+  ggplot2::ggsave(plot = g, width = width, height = height, file.path(filedir, dirs$filename))
   return(g)
 }
