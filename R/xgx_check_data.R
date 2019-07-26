@@ -107,11 +107,11 @@ xgx_check_data <- function(data, covariates = NULL) {
   num_patients <- length(unique(data$ID))
   i <- i + 1
   check[[i]] <- tibble::tibble(
-    Category    = "Patients",
+    Category = "Patients",
     Description = "Number of Patients",
-    YTYPE       = "-",
-    Statistic   = paste0(num_patients),
-    Value       = num_patients)
+    YTYPE = "-",
+    Statistic = paste0(num_patients),
+    Value = num_patients)
 
   # number of patients with zero observations
   zero_obs <- data %>%
@@ -296,11 +296,12 @@ xgx_check_data <- function(data, covariates = NULL) {
 
     i <- i + 1
     check[[i]] <- num_cens %>%
-      dplyr::transmute(Category    = "CENS",
-                Description = paste0("Number of Censored Data Points"),
-                YTYPE       = as.character(YTYPE),
-                Statistic   = paste0(tot, " (", pct, "%)"),
-                Value       = tot)
+      dplyr::transmute(
+        Category = "CENS",
+        Description = paste0("Number of Censored Data Points"),
+        YTYPE = as.character(YTYPE),
+        Statistic = paste0(tot, " (", pct, "%)"),
+        Value = tot)
   }
 
   # columns with negative data

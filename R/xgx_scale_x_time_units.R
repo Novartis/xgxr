@@ -47,31 +47,31 @@ xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
     stop("units_plot must be hours, days, weeks, months, or years")
   }
 
-  day.scale <- data.frame(h = 1 / 24,
+  day_scale <- data.frame(h = 1 / 24,
                           d = 1,
                           w = 7,
                           m = 30.4375,
                           y = 365.25)
 
-  input.scale <- day.scale[[units_dataset]]
-  output.scale <- day.scale[[units_plot]]
-  scale.factor <- output.scale / input.scale
+  input_scale <- day_scale[[units_dataset]]
+  output_scale <- day_scale[[units_plot]]
+  scale_factor <- output_scale / input_scale
 
-  breaks_function <- function(data.range) {
-    breaks <- xgx_breaks_time(data.range / scale.factor,
-                              units_plot) * scale.factor
+  breaks_function <- function(data_range) {
+    breaks <- xgx_breaks_time(data_range / scale_factor,
+                              units_plot) * scale_factor
   }
 
   labels_function <- function(breaks) {
-    labels <- breaks / scale.factor
+    labels <- breaks / scale_factor
   }
 
-  xlabel.list <- data.frame(h = "Hour",
+  xlabel_list <- data.frame(h = "Hour",
                             d = "Day",
                             w = "Week",
                             m = "Month",
                             y = "Year")
-  xlabel <- paste0("Time (", xlabel.list[[units_plot]], "s)")
+  xlabel <- paste0("Time (", xlabel_list[[units_plot]], "s)")
 
   return(list(
     ggplot2::scale_x_continuous(breaks = breaks_function,

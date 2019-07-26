@@ -29,9 +29,9 @@ it can be used the same as
 }
 \examples{
 conc <- 10^(seq(-3, 3, by = 0.1))
-EC50 <- 1
+ec50 <- 1
 data <- data.frame(concentration = conc, 
-                   bound_receptor = 1 * conc / (conc + EC50))
+                   bound_receptor = 1 * conc / (conc + ec50))
 ggplot2::ggplot(data, ggplot2::aes(y = concentration, x = bound_receptor)) +
   ggplot2::geom_point() +
   ggplot2::geom_line() +

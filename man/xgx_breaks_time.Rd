@@ -4,12 +4,12 @@
 \alias{xgx_breaks_time}
 \title{Sets the default breaks for a time axis}
 \usage{
-xgx_breaks_time(data.range, units.plot)
+xgx_breaks_time(data_range, units_plot)
 }
 \arguments{
-\item{data.range}{range of the data}
+\item{data_range}{range of the data}
 
-\item{units.plot}{units to use in the plot}
+\item{units_plot}{units to use in the plot}
 }
 \value{
 numeric vector of breaks

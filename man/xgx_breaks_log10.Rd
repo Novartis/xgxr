@@ -4,10 +4,10 @@
 \alias{xgx_breaks_log10}
 \title{Sets the default breaks for log10}
 \usage{
-xgx_breaks_log10(data.range)
+xgx_breaks_log10(data_range)
 }
 \arguments{
-\item{data.range}{range of the data}
+\item{data_range}{range of the data}
 }
 \value{
 numeric vector of breaks

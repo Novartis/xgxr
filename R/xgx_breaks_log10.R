@@ -23,7 +23,7 @@
 #' algorithm for positioning tick labels on axes." IEEE Transactions 
 #' on visualization and computer graphics 16.6 (2010): 1036-1043.
 #' 
-#' @param data.range range of the data
+#' @param data_range range of the data
 #' 
 #' @return numeric vector of breaks
 #' 
@@ -42,15 +42,15 @@
 #' 
 #' @importFrom labeling extended
 #' @export
-xgx_breaks_log10 <-  function(data.range) {
-  dmin <- min(log10(data.range))
-  dmax <- max(log10(data.range))
+xgx_breaks_log10 <-  function(data_range) {
+  dmin <- min(log10(data_range))
+  dmax <- max(log10(data_range))
   # number of breaks to aim for
   m <- 5
   # preferred breaks, in log10-space
-  Q <- c(1, 0.5)
+  q <- c(1, 0.5)
 
-  breaks <- labeling::extended(dmin, dmax, m, Q = Q)
+  breaks <- labeling::extended(dmin, dmax, m, Q = q)
   breaks <- 10^breaks
 
   # ensure that there are at least 2 breaks
@@ -59,13 +59,13 @@ xgx_breaks_log10 <-  function(data.range) {
   breaks2 <- unique(signif(breaks, 2))
   breaks3 <- unique(signif(breaks, 3))
   if (length(breaks1) >= 2) {
-    breaks.out <- breaks1
+    breaks_out <- breaks1
   } else if (length(breaks2) >= 2) {
-    breaks.out <- breaks2
+    breaks_out <- breaks2
   } else if (length(breaks3) >= 2) {
-    breaks.out <- breaks3
+    breaks_out <- breaks3
   } else {
-    breaks.out <- unique(breaks)
+    breaks_out <- unique(breaks)
   }
-  return(breaks.out)
+  return(breaks_out)
 }
