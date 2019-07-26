@@ -7,7 +7,7 @@
 #' @return either character or expression
 #'
 #' @examples
-#' print(xgx_labels_log10(c(1e-5,1,1e5)))
+#' print(xgx_labels_log10(c(1e-5, 1, 1e5)))
 #' 
 #' @export
 xgx_labels_log10 <- function(breaks){

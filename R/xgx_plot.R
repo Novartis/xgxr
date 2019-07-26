@@ -6,11 +6,11 @@
 #' @param environment If an variable defined in the aesthetic mapping is not found in the data, ggplot will look for it in this environment. It defaults to using the environment in which @ggplot() is called.
 #'
 #' @examples  
-#' time = rep(seq(1,10),5)
-#' id = sort(rep(seq(1,5), 10))
-#' conc = exp(-time)*sort(rep(stats::rlnorm(5),10))
+#' time <- rep(seq(1, 10), 5)
+#' id <- sort(rep(seq(1, 5), 10))
+#' conc <- exp(-time) * sort(rep(stats::rlnorm(5), 10))
 #' 
-#' data = data.frame(time = time, concentration  = conc, id = id)
+#' data <- data.frame(time = time, concentration = conc, id = id)
 #' xgx_plot(data = data, mapping = ggplot2::aes(x = time, y = concentration, group = id)) + 
 #'   ggplot2::geom_line() + 
 #'   ggplot2::geom_point()

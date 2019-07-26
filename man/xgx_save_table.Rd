@@ -28,7 +28,7 @@ ggplot2 plot object
 Saving table as an image, also labeling the program that created the table and where the table is stored
 }
 \examples{
-data = data.frame(x=c(1,2),y=c(1,2))
+data <- data.frame(x = c(1, 2), y = c(1, 2))
 xgx_save_table(data, filename_main = "test")
 
 }

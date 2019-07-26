@@ -23,16 +23,15 @@
 #' @return ggplot2 plot object
 #'
 #' @examples
-#' dirs = list(
-#'   parent_dir= "./",
-#'   rscript_dir  = "./",
-#'   rscript_name = "Example.R",
-#'   results_dir  = "./",
-#'   filename_prefix   = "Task01_")
-#' data = data.frame(x=1:1000,y=stats::rnorm(1000))
-#' ggplot2::ggplot(data=data,ggplot2::aes(x=x,y=y)) +
-#' ggplot2::geom_point()
-#' xgx_save(4,4,dirs,"Example","DRAFT")
+#' dirs <- list(parent_dir= "./",
+#'              rscript_dir  = "./",
+#'              rscript_name = "Example.R",
+#'              results_dir  = "./",
+#'              filename_prefix   = "Task01_")
+#' data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
+#' ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
+#'   ggplot2::geom_point()
+#' xgx_save(4, 4, dirs, "Example", "DRAFT")
 #' 
 #' @importFrom ggplot2 last_plot
 #' @importFrom ggplot2 ggsave

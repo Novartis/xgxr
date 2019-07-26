@@ -26,8 +26,8 @@
 #' @return data.frame
 #'
 #' @examples
-#' covariates = c("WEIGHTB","SEX")
-#' check      = xgx_check_data(Multiple_Ascending_Dose_Missing_Duplicates,covariates)
+#' covariates <- c("WEIGHTB", "SEX")
+#' check <- xgx_check_data(Multiple_Ascending_Dose_Missing_Duplicates, covariates)
 #' 
 #' @importFrom dplyr rename
 #' @importFrom dplyr select

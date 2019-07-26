@@ -42,29 +42,31 @@
 #' graphics::plot(cars)
 #' graphics::lines(stats::lowess(cars))
 #' grDevices::dev.off()
-#' xgx_annotate_status_png("png-example.png", "/tmp/script1.R") # annotate one file
+#' # annotate one file
+#' xgx_annotate_status_png("png-example.png", "/tmp/script1.R")
 #'
 #' grDevices::png("png-example2.png")
-#' graphics::plot(sin, -pi, 2*pi) # see ?plot.function
+#' # see ?plot.function
+#' graphics::plot(sin, -pi, 2 * pi)
 #' grDevices::dev.off()
 #'
 #' # using the example from ggplot
 #'
 #' # generate some sample data, then compute mean and standard deviation
 #' # in each group
-#' df <- data.frame(
-#'  gp = factor(rep(letters[1:3], each = 10)),
-#'  y = stats::rnorm(30)
-#' )
-#' ds <- df %>% dplyr::group_by(gp) %>% dplyr::summarise(mean = mean(y), sd   = stats::sd(y))
+#' df <- data.frame(gp = factor(rep(letters[1:3], each = 10)),
+#'                  y = stats::rnorm(30))
+#' ds <- df %>% 
+#'   dplyr::group_by(gp) %>% 
+#'   dplyr::summarise(mean = mean(y), sd = stats::sd(y))
 #'
 #' # the summary data frame ds is used to plot larger red points on top
 #' # of the raw data. Note that we don't need to supply `data` or `mapping`
 #' # in each layer because the defaults from ggplot() are used.
 #' grDevices::png("png-example3.png")
 #' ggplot2::ggplot(df, ggplot2::aes(gp, y)) +
-#'  ggplot2::geom_point() +
-#'  ggplot2::geom_point(data = ds, ggplot2::aes(y = mean), colour = 'red', size = 3)
+#'   ggplot2::geom_point() +
+#'   ggplot2::geom_point(data = ds, ggplot2::aes(y = mean), colour = 'red', size = 3)
 #'
 #' grDevices::dev.off()
 #' xgx_annotate_status_png(".", "other-script.R")

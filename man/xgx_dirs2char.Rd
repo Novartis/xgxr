@@ -26,11 +26,11 @@ character
 The caption gives the filename
 }
 \examples{
-dirs = list(parent_dir   = "/your/parent/path/",
-            rscript_dir  = "./Rscripts/",
+dirs <- list(parent_dir = "/your/parent/path/",
+            rscript_dir = "./Rscripts/",
             rscript_name = "Example.R",
-            results_dir  = "./Results/",
-            filename     = "your_file_name.png")
-caption = xgx_dirs2char(dirs)
+            results_dir = "./Results/",
+            filename = "your_file_name.png")
+caption <- xgx_dirs2char(dirs)
 
 }

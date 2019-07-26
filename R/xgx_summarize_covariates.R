@@ -9,8 +9,8 @@
 #' @return list
 #'
 #' @examples
-#' data = data.frame(ID=1:10,WT0 = rnorm(10,70,10),SEX=round(runif(10)))
-#' x = xgx_summarize_covariates(data,c("WT0","SEX"))
+#' data <- data.frame(ID = 1:10, WT0 = rnorm(10, 70, 10), SEX = round(runif(10)))
+#' x <- xgx_summarize_covariates(data, c("WT0", "SEX"))
 #' 
 #' @importFrom dplyr filter
 #' @importFrom tibble tibble

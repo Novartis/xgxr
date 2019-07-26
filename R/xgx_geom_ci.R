@@ -4,10 +4,10 @@
 #' @return ggplot2 plot layer
 #'
 #' @examples 
-#' data = data.frame(x = rep(c(1,2,3),each=20),
-#' y = rep(c(1,2,3),each=20) + stats::rnorm(60))
-#' ggplot2::ggplot(data,ggplot2::aes(x=x,y=y)) + 
-#'  xgx_geom_ci(conf_level = 0.95)
+#' data <- data.frame(x = rep(c(1, 2, 3), each = 20),
+#'                    y = rep(c(1, 2, 3), each = 20) + stats::rnorm(60))
+#' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y)) + 
+#'   xgx_geom_ci(conf_level = 0.95)
 #'  
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 aes
