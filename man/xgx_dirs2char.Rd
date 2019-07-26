@@ -7,16 +7,20 @@
 xgx_dirs2char(dirs, include_time = TRUE)
 }
 \arguments{
-\item{dirs}{list containing directories and filenames.  It must contain five fields
+\item{dirs}{list containing directories and filenames.  It must contain 
+five fields
 \enumerate{
-\item parent_dir  = Parent directory containing the Rscript and the Results folder
-\item rscript_dir = Subdirectory ofparent_dir that contains the Rscript used to generate the figure
+\item parent_dir  = Parent directory containing the Rscript and the Results 
+folder
+\item rscript_dir = Subdirectory ofparent_dir that contains the Rscript 
+used to generate the figure
 \item rscript_name= Name of the Rscript used to generate the figure
 \item results_dir = Subdirectory ofparent_dir where the figure is stored
 \item filename    = Filename
 }}
 
-\item{include_time}{is logical with default TRUE.  If TRUE, it includes date/time in the output character}
+\item{include_time}{is logical with default TRUE.  If TRUE, it includes 
+date / time in the output character}
 }
 \value{
 character

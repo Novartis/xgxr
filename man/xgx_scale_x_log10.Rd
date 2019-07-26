@@ -14,10 +14,13 @@ xgx_scale_x_log10(breaks = xgx_breaks_log10,
 
 \item{labels}{function for setting the labels, defined here}
 
-\item{...}{other arguments passed to \code{\link[ggplot2:scale_continuous]{scale_x_log10}}}
+\item{...}{other arguments passed to
+\code{\link[ggplot2:scale_continuous]{scale_x_log10}}}
 }
 \description{
-\code{xgx_scale_x_log10} is similar to \code{\link[ggplot2:scale_continuous]{scale_x_log10}}.  
+\code{xgx_scale_x_log10} is similar to
+\code{\link[ggplot2:scale_continuous]{scale_x_log10}}.  
 But it uses what we believe to be a nicer spacing and set of tick marks
-it can be used the same as \code{\link[ggplot2:scale_continuous]{scale_x_log10}}
+it can be used the same as
+\code{\link[ggplot2:scale_continuous]{scale_x_log10}}
 }

@@ -10,7 +10,7 @@
 #' print(xgx_labels_log10(c(1e-5, 1, 1e5)))
 #' 
 #' @export
-xgx_labels_log10 <- function(breaks){
+xgx_labels_log10 <- function(breaks) {
   labels <- as.character(breaks)
   if (all(log10(breaks) == as.integer(log10(breaks)), na.rm = TRUE))
      if (min(breaks, na.rm = TRUE) < 0.001 || max(breaks, na.rm = TRUE) > 9999)

@@ -9,8 +9,9 @@ xgx_theme <- function() {
   major.color <- "grey83"
 
   ggplot2::theme_bw() +
-    ggplot2::theme(panel.grid.minor.x = ggplot2::element_line(color = minor.color),
-          panel.grid.minor.y = ggplot2::element_line(color = minor.color),
-          panel.grid.major.x = ggplot2::element_line(color = major.color),
-          panel.grid.major.y = ggplot2::element_line(color = major.color))
+    ggplot2::theme(
+      panel.grid.minor.x = ggplot2::element_line(color = minor.color),
+      panel.grid.minor.y = ggplot2::element_line(color = minor.color),
+      panel.grid.major.x = ggplot2::element_line(color = major.color),
+      panel.grid.major.y = ggplot2::element_line(color = major.color))
 }

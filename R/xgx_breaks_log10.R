@@ -1,7 +1,8 @@
 #' Sets the default breaks for log10
 #' 
 #' \code{xgx_breaks_log10} sets nice breaks for log10 scale.
-#' it's better than the default function because it ensures there is at least 2 breaks
+#' it's better than the default function because it ensures there is at least 
+#' 2 breaks
 #' and also, it will try to go by 3s (i.e. 1,3,10,30,100) if it makes sense
 #'
 #' for the extended breaks function Q is a set of nice increments and
@@ -9,14 +10,18 @@
 #' 
 #' \enumerate{
 #' \item simplicity - how early in the Q order are you
-#' \item coverage - labelings that don't extend outside the data: range(data)/range(labels)
-#' \item density (previously granuality) - how cloes to the number of ticks do you get (default is 5)
-#' \item legibility - has to do with fontsize and formatting to prevent label overlap
+#' \item coverage - labelings that don't extend outside the data: 
+#' range(data) / range(labels)
+#' \item density (previously granuality) - how cloes to the number of 
+#' ticks do you get (default is 5)
+#' \item legibility - has to do with fontsize and formatting to prevent 
+#' label overlap
 #' }
 #' 
-#' @references Talbot, Justin, Sharon Lin, and Pat Hanrahan. "An extension of Wilkinson’s 
-#' algorithm for positioning tick labels on axes." IEEE Transactions on visualization and 
-#' computer graphics 16.6 (2010): 1036-1043.
+#' @references Talbot, Justin, Sharon Lin, and Pat Hanrahan. 
+#' "An extension of Wilkinson’s 
+#' algorithm for positioning tick labels on axes." IEEE Transactions 
+#' on visualization and computer graphics 16.6 (2010): 1036-1043.
 #' 
 #' @param data.range range of the data
 #'
@@ -35,7 +40,7 @@
 #' 
 #' @importFrom labeling extended
 #' @export
-xgx_breaks_log10 <-  function(data.range){
+xgx_breaks_log10 <-  function(data.range) {
   dmin <- min(log10(data.range))
   dmax <- max(log10(data.range))
   # number of breaks to aim for

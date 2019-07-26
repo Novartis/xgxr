@@ -33,9 +33,11 @@ xgx_annotate_status(status = "DRAFT", x = Inf, y = Inf,
 ggplot layer
 }
 \description{
-\code{xgx_annotate_status} adds a status (e.g. DRAFT) annotation layer to a plot. 
+\code{xgx_annotate_status} adds a status (e.g. DRAFT) annotation layer 
+to a plot. 
 The text of the annotation can be customized, the default is "DRAFT". 
-The color, location, size, fontface, transparency of the annotation can also be customized.
+The color, location, size, fontface, transparency of the annotation can 
+also be customized.
 }
 \examples{
 data <- data.frame(x = 1:1000, y = rnorm(1000))

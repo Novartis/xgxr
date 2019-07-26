@@ -1,13 +1,18 @@
 #' Append filenames to bottom of the plot 
 #' 
-#' \code{xgx_annotate_filenames} appends file details to the bottom of a plot using the plot caption option. 
-#' File details to append include the parent directory, the path of the R script which generated the plot, 
+#' \code{xgx_annotate_filenames} appends file details to the bottom of a plot 
+#' using the plot caption option. 
+#' File details to append include the parent directory, the path of the R 
+#' script which generated the plot, 
 #' and the path of the plot.
 #' 
-#' @param dirs list containing directories and filenames.  It must contain five fields
+#' @param dirs list containing directories and filenames.  It must contain 
+#' five fields
 #' \enumerate{
-#' \item parent_dir  = Parent directory containing the Rscript and the Results folder
-#' \item rscript_dir = Subdirectory ofparent_dir that contains the Rscript used to generate the figure
+#' \item parent_dir  = Parent directory containing the Rscript and the Results 
+#' folder
+#' \item rscript_dir = Subdirectory ofparent_dir that contains the Rscript 
+#' used to generate the figure
 #' \item rscript_name= Name of the Rscript used to generate the figure
 #' \item results_dir = Subdirectory ofparent_dir where the figure is stored
 #' \item filename    = Filename

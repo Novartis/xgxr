@@ -22,22 +22,28 @@ It was inspired by the dataset preparation table from
 \details{
 The dataset must have the following columns
 \itemize{
-  \item ID      = unique subject identifier.  USUBJID is another option if ID is not there
+  \item ID      = unique subject identifier.  USUBJID is another option 
+  if ID is not there
   \item EVID    = event ID: 1 for dose, 0 otherwise
   \item AMT     = value of the dose
   \item TIME    = time of the measurement
-  \item DV      = dependent value (linear scale).  will check if LIDV or LNDV are also there if DV is not
-  \item YTYPE   = data measurement for LIDV.  will check if CMT is there, if YTYPE is not
+  \item DV      = dependent value (linear scale).  will check if LIDV or 
+  LNDV are also there if DV is not
+  \item YTYPE   = data measurement for LIDV.  will check if CMT is there, 
+  if YTYPE is not
 }
 
 The dataset may also have additional columns
 \itemize{
-  \item CENS = flag for censoring of the data because it's below the limit of quantification (BLOQ)
-  \item MDV  = missing dependent variable - will be counted and then filtered out from the data check
+  \item CENS = flag for censoring of the data because it's below the 
+  limit of quantification (BLOQ)
+  \item MDV  = missing dependent variable - will be counted and then 
+  filtered out from the data check
 }
 }
 \examples{
 covariates <- c("WEIGHTB", "SEX")
-check <- xgx_check_data(Multiple_Ascending_Dose_Missing_Duplicates, covariates)
+check <- xgx_check_data(Multiple_Ascending_Dose_Missing_Duplicates, 
+                        covariates)
 
 }

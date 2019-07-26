@@ -6,18 +6,23 @@
 #' 
 #' The dataset must have the following columns
 #' \itemize{
-#'   \item ID      = unique subject identifier.  USUBJID is another option if ID is not there
+#'   \item ID      = unique subject identifier.  USUBJID is another option 
+#'   if ID is not there
 #'   \item EVID    = event ID: 1 for dose, 0 otherwise
 #'   \item AMT     = value of the dose
 #'   \item TIME    = time of the measurement
-#'   \item DV      = dependent value (linear scale).  will check if LIDV or LNDV are also there if DV is not
-#'   \item YTYPE   = data measurement for LIDV.  will check if CMT is there, if YTYPE is not
+#'   \item DV      = dependent value (linear scale).  will check if LIDV or 
+#'   LNDV are also there if DV is not
+#'   \item YTYPE   = data measurement for LIDV.  will check if CMT is there, 
+#'   if YTYPE is not
 #' }
 #'
 #' The dataset may also have additional columns
 #' \itemize{
-#'   \item CENS = flag for censoring of the data because it's below the limit of quantification (BLOQ)
-#'   \item MDV  = missing dependent variable - will be counted and then filtered out from the data check
+#'   \item CENS = flag for censoring of the data because it's below the 
+#'   limit of quantification (BLOQ)
+#'   \item MDV  = missing dependent variable - will be counted and then 
+#'   filtered out from the data check
 #' }
 #'
 #' @param data, the dataset to check.  Must contain the above columns
@@ -27,7 +32,8 @@
 #'
 #' @examples
 #' covariates <- c("WEIGHTB", "SEX")
-#' check <- xgx_check_data(Multiple_Ascending_Dose_Missing_Duplicates, covariates)
+#' check <- xgx_check_data(Multiple_Ascending_Dose_Missing_Duplicates, 
+#'                         covariates)
 #' 
 #' @importFrom dplyr rename
 #' @importFrom dplyr select
@@ -47,8 +53,9 @@
 #' @importFrom pander pander
 #' @importFrom utils head
 #' @export
-xgx_check_data <- function(data, covariates = NULL){
-  # defining column names as variables, because this is a work around CRAN to accept the R package
+xgx_check_data <- function(data, covariates = NULL) {
+  # defining column names as variables, because this is a work around
+  # CRAN to accept the R package
   # due to the way dplyr and lazy evaluation interacts with the CRAN checking
   # https://stackoverflow.com/q/48750221
   ID <-  EVID <- YTYPE <- MDV <- AMT <- DV <- TIME <- CENS <-
@@ -115,11 +122,12 @@ xgx_check_data <- function(data, covariates = NULL){
   num_zero_obs <- nrow(zero_obs)
 
   i <- i + 1
-  check[[i]] <- tibble::tibble(Category    = "MDV",
-                      Description = paste0("Number of patients with zero observations"),
-                      YTYPE       = "all",
-                      Statistic   = paste0(num_zero_obs, " ", paste0(zero_obs$ID, collapse = ", ")),
-                      Value       = num_zero_obs)
+  check[[i]] <- tibble::tibble(
+    Category = "MDV",
+    Description = paste0("Number of patients with zero observations"),
+    YTYPE = "all",
+    Statistic = paste0(num_zero_obs, " ", paste0(zero_obs$ID, collapse = ", ")),
+    Value = num_zero_obs)
 
   # number of missing data points, to be filtered out from MDV
   if ("MDV" %in% names(data)) {
@@ -130,39 +138,44 @@ xgx_check_data <- function(data, covariates = NULL){
 
     if (num_mdv == 0) {
       i <- i + 1
-      check[[i]] <- tibble::tibble(Category    = "MDV",
-                          Description = paste0("Number of Missing Data Points (MDV==1 and EVID==0)"),
-                          YTYPE       = "all",
-                          Statistic   = "0",
-                          Value       = 0)
+      check[[i]] <- tibble::tibble(
+        Category = "MDV",
+        Description = paste0("Number of Missing Data Points (MDV==1 and EVID==0)"),
+        YTYPE = "all",
+        Statistic = "0",
+        Value = 0)
     } else {
       i <- i + 1
       check[[i]] <- mdv %>%
-        dplyr::transmute(Category    = "MDV",
-                  Description = paste0("Number of Missing Data Points (MDV==1 and EVID==0)"),
-                  YTYPE       = as.character(YTYPE),
-                  Statistic   = paste0(n),
-                  Value       = n)
-      message(paste0("removing ", nrow(num_mdv), " points with MDV==1 & EVID==0 from dataset"))
+        dplyr::transmute(
+          Category = "MDV",
+          Description = paste0("Number of Missing Data Points (MDV==1 and EVID==0)"),
+          YTYPE = as.character(YTYPE),
+          Statistic = paste0(n),
+          Value = n)
+      message(paste0("removing ", nrow(num_mdv),
+                     " points with MDV==1 & EVID==0 from dataset"))
       data <- dplyr::filter(data, !(MDV == 1 & EVID == 0))
     }
   }
 
   # number of doses
   i <- i + 1
-  check[[i]] <- tibble::tibble(Category    = "Dose",
-                      Description = paste0("Number of non-zero doses"),
-                      YTYPE       = "-",
-                      Value       = sum(data$AMT > 0),
-                      Statistic   = paste0(Value))
+  check[[i]] <- tibble::tibble(
+    Category = "Dose",
+    Description = paste0("Number of non-zero doses"),
+    YTYPE = "-",
+    Value = sum(data$AMT > 0),
+    Statistic = paste0(Value))
 
   # number of zero doses
   i <- i + 1
-  check[[i]] <- tibble::tibble(Category    = "Dose",
-                      Description = paste0("Number of zero doses (AMT==0)"),
-                      YTYPE       = "-",
-                      Value       = sum(data$AMT == 0 & data$EVID == 1),
-                      Statistic   = paste0(Value))
+  check[[i]] <- tibble::tibble(
+    Category = "Dose",
+    Description = paste0("Number of zero doses (AMT==0)"),
+    YTYPE = "-",
+    Value = sum(data$AMT == 0 & data$EVID == 1),
+    Statistic = paste0(Value))
 
   # number of patients that have all zero doses or that never receive any dose
   num_doses <- data %>%
@@ -170,11 +183,12 @@ xgx_check_data <- function(data, covariates = NULL){
     dplyr::summarise(n = sum(AMT > 0))
 
   i <- i + 1
-  check[[i]] <- tibble::tibble(Category    = "Dose",
-                      Description = paste0("Number of patients that never received drug"),
-                      YTYPE       = "-",
-                      Value       = sum(num_doses$n == 0),
-                      Statistic   = paste0(Value))
+  check[[i]] <- tibble::tibble(
+    Category = "Dose",
+    Description = paste0("Number of patients that never received drug"),
+    YTYPE = "-",
+    Value = sum(num_doses$n == 0),
+    Statistic = paste0(Value))
 
   # number of data points
   num_datapoints <- data %>%
@@ -188,19 +202,22 @@ xgx_check_data <- function(data, covariates = NULL){
 
   i <- i + 1
   check[[i]] <- num_datapoints %>%
-    dplyr::transmute(Category    = "DV",
-              Description = paste0("Number of Data Points"),
-              YTYPE       = as.character(YTYPE),
-              Statistic   = paste0(tot),
-              Value       = tot)
+    dplyr::transmute(
+      Category = "DV",
+      Description = paste0("Number of Data Points"),
+      YTYPE = as.character(YTYPE),
+      Statistic = paste0(tot),
+      Value = tot)
 
   i <- i + 1
   check[[i]] <- num_datapoints %>%
-    dplyr::transmute(Category    = "DV",
-              Description = paste0("Number of Data Points per Individual"),
-              YTYPE       = as.character(YTYPE),
-              Statistic   = paste0("min = ", min, ",  median = ", median, ", max = ", max),
-              Value       = median)
+    dplyr::transmute(
+      Category = "DV",
+      Description = paste0("Number of Data Points per Individual"),
+      YTYPE = as.character(YTYPE),
+      Statistic = paste0("min = ", min, ",  median = ", median,
+                         ", max = ", max),
+      Value = median)
 
   # check for zero concentrations
   num_zero_datapoints <- data %>%
@@ -210,11 +227,13 @@ xgx_check_data <- function(data, covariates = NULL){
 
   i <- i + 1
   check[[i]] <- num_zero_datapoints %>%
-    dplyr::transmute(Category    = "DV",
-              Description = paste0("Number of Data Points with zero value (DV==0)"),
-              YTYPE       = as.character(YTYPE),
-              Statistic   = paste0(tot),
-              Value       = tot)
+    dplyr::transmute(
+      Category = "DV",
+      Description = paste0("Number of Data Points with zero value (DV==0)"),
+      YTYPE = as.character(YTYPE),
+      Statistic = paste0(tot),
+      Value = tot)
+
   j <- j + 1
   data_subset[[j]] <- data %>%
     dplyr::filter(DV == 0 & MDV == 0) %>%
@@ -224,15 +243,16 @@ xgx_check_data <- function(data, covariates = NULL){
   num_na_datapoints <- data %>%
     dplyr::group_by(ID, YTYPE) %>%
     dplyr::group_by(YTYPE) %>%
-    dplyr::summarise(tot    = sum(is.na(DV) & MDV == 0))
+    dplyr::summarise(tot = sum(is.na(DV) & MDV == 0))
 
   i <- i + 1
   check[[i]] <- num_na_datapoints %>%
-    dplyr::transmute(Category    = "DV",
-              Description = paste0("Number of Data Points with NA (is.na(DV))"),
-              YTYPE       = as.character(YTYPE),
-              Statistic   = paste0(tot),
-              Value       = tot)
+    dplyr::transmute(
+      Category = "DV",
+      Description = paste0("Number of Data Points with NA (is.na(DV))"),
+      YTYPE = as.character(YTYPE),
+      Statistic = paste0(tot),
+      Value = tot)
 
   j <- j + 1
   data_subset[[j]] <- data %>%
@@ -251,19 +271,20 @@ xgx_check_data <- function(data, covariates = NULL){
     dplyr::group_by(YTYPE) %>%
     dplyr::summarise(ntot = sum(n)) %>%
     dplyr::ungroup() %>%
-    dplyr::transmute(Category    = "DV+TIME",
-              Description = "Multiple measurements at same time",
-              YTYPE       = as.character(YTYPE),
-              Statistic   = paste0(ntot),
-              Value       = ntot)
+    dplyr::transmute(
+      Category = "DV+TIME",
+      Description = "Multiple measurements at same time",
+      YTYPE = as.character(YTYPE),
+      Statistic = paste0(ntot),
+      Value = ntot)
 
   j <- j + 1
   dup_time <- dup_time %>%
     dplyr::filter(n >= 2)
   data_subset[[j]] <- data %>%
-    dplyr::filter(ID      %in% dup_time$ID,
-           TIME    %in% dup_time$TIME,
-           YTYPE   %in% dup_time$YTYPE) %>%
+    dplyr::filter(ID %in% dup_time$ID,
+           TIME %in% dup_time$TIME,
+           YTYPE %in% dup_time$YTYPE) %>%
     dplyr::mutate(Data_Check_Issue = "Duplicate Time Points")
 
   # number of Censored data points
@@ -293,11 +314,12 @@ xgx_check_data <- function(data, covariates = NULL){
   neg <- neg[neg > 0]
 
   i <- i + 1
-  check[[i]] <- tibble::tibble(Category    = "All Columns",
-                      Description = "Negative Values (number)",
-                      YTYPE       = "-",
-                      Statistic   = paste0(names(neg), ":", neg, collapse = ", "),
-                      Value       = sum(neg))
+  check[[i]] <- tibble::tibble(
+    Category = "All Columns",
+    Description = "Negative Values (number)",
+    YTYPE = "-",
+    Statistic = paste0(names(neg), ":", neg, collapse = ", "),
+    Value = sum(neg))
 
   # columns with missing values
   na <- data %>%
@@ -307,11 +329,12 @@ xgx_check_data <- function(data, covariates = NULL){
   na <- na[na > 0]
 
   i <- i + 1
-  check[[i]] <- tibble::tibble(Category    = "All Columns",
-                      Description = "Missing Values (number)",
-                      YTYPE       = "-",
-                      Statistic   = paste0(names(na), ":", na, collapse = ", "),
-                      Value       = sum(na))
+  check[[i]] <- tibble::tibble(
+    Category = "All Columns",
+    Description = "Missing Values (number)",
+    YTYPE = "-",
+    Statistic = paste0(names(na), ":", na, collapse = ", "),
+    Value = sum(na))
   missing_summary <- check[[i]]$Statistic
 
   # create summaries
@@ -323,10 +346,10 @@ xgx_check_data <- function(data, covariates = NULL){
   cov_summary <- xgx_summarize_covariates(data, covariates)
 
   # output
-  output <- list(summary         = check,
-                cts_covariates  = cov_summary$cts_covariates,
-                cat_covariates  = cov_summary$cat_covariates,
-                data_subset     = data_subset)
+  output <- list(summary = check,
+                cts_covariates = cov_summary$cts_covariates,
+                cat_covariates = cov_summary$cat_covariates,
+                data_subset = data_subset)
 
   # print the summary
   pander::panderOptions("table.split.table", Inf)

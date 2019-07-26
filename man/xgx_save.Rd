@@ -13,17 +13,23 @@ xgx_save(width, height, dirs = NULL, filename_main, status,
 
 \item{height}{height of plot}
 
-\item{dirs}{list of directories.  If NULL or if directories missing, there is default behavior below
+\item{dirs}{list of directories.  If NULL or if directories missing, there 
+is default behavior below
 
 \enumerate{
-\item parent_dir  = Parent directory containing the Rscript and the Results folder, default getwd()
-\item rscript_dir = Subdirectory of parent_dir that contains the Rscript used to generate the figure, default "./"
-\item rscript_name= Name of the Rscript used to generate the figure, default "Name_Of_Script_Here.R"
-\item results_dir = Subdirectory ofparent_dir where the figure is stored, default "./"
+\item parent_dir  = Parent directory containing the Rscript and the Results 
+folder, default getwd()
+\item rscript_dir = Subdirectory of parent_dir that contains the Rscript 
+used to generate the figure, default "./"
+\item rscript_name= Name of the Rscript used to generate the figure, 
+default "Name_Of_Script_Here.R"
+\item results_dir = Subdirectory ofparent_dir where the figure is stored, 
+default "./"
 \item filename_prefix = prefix of filename to be appended to filename_main
 }}
 
-\item{filename_main}{main part of the filename, excluding prefix and suffix.  no default}
+\item{filename_main}{main part of the filename, excluding prefix and suffix.
+no default}
 
 \item{status}{status to be annotated}
 

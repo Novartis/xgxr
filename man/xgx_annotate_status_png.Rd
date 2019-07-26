@@ -88,7 +88,8 @@ ds <- df \%>\%
 grDevices::png("png-example3.png")
 ggplot2::ggplot(df, ggplot2::aes(gp, y)) +
   ggplot2::geom_point() +
-  ggplot2::geom_point(data = ds, ggplot2::aes(y = mean), colour = 'red', size = 3)
+  ggplot2::geom_point(data = ds, ggplot2::aes(y = mean), 
+                      colour = 'red', size = 3)
 
 grDevices::dev.off()
 xgx_annotate_status_png(".", "other-script.R")

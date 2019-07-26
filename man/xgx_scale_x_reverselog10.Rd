@@ -7,17 +7,20 @@
 xgx_scale_x_reverselog10(...)
 }
 \arguments{
-\item{...}{other parameters passed to \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}}
+\item{...}{other parameters passed to 
+\code{\link[ggplot2:scale_continuous]{scale_x_continuous}}}
 }
 \description{
-\code{xgx_scale_x_reverselog10} is designed to be used with data that approaches 100%.
+\code{xgx_scale_x_reverselog10} is designed to be used with data that 
+approaches 100%.
 A common example is receptor occupancy in drug development.  
 It is used when you want even spacing between 90, 99, 99.9, etc.
 }
 \examples{
 conc <- 10^(seq(-3, 3, by = 0.1))
 EC50 <- 1
-data <- data.frame(concentration = conc, bound_receptor = 1 * conc / (conc + EC50))
+data <- data.frame(concentration = conc, 
+                   bound_receptor = 1 * conc / (conc + EC50))
 ggplot2::ggplot(data, ggplot2::aes(y = concentration, x = bound_receptor)) +
   ggplot2::geom_point() +
   ggplot2::geom_line() +

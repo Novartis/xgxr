@@ -66,7 +66,8 @@
 #' grDevices::png("png-example3.png")
 #' ggplot2::ggplot(df, ggplot2::aes(gp, y)) +
 #'   ggplot2::geom_point() +
-#'   ggplot2::geom_point(data = ds, ggplot2::aes(y = mean), colour = 'red', size = 3)
+#'   ggplot2::geom_point(data = ds, ggplot2::aes(y = mean), 
+#'                       colour = 'red', size = 3)
 #'
 #' grDevices::dev.off()
 #' xgx_annotate_status_png(".", "other-script.R")
@@ -128,10 +129,12 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       w <- dim(img)[2]
 
       # open file for output
-      grDevices::png(file, width = w, height = h * 1.05) # make it slightly taller to add the text at the bottom
+      # make it slightly taller to add the text at the bottom
+      grDevices::png(file, width = w, height = h * 1.05)
 
       # par is for setting graphical parameters
-      # here, you're initializing a "state machine" setting all the graphical parameters
+      # here, you're initializing a "state machine" setting all the
+      # graphical parameters
       # from the state machine.  you can just set a few parameters differently.
       # it is extremely fast and takes no memory.
       #
@@ -140,11 +143,15 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       #
       # mar <- c(0, 0, 0, 0): sets margins to zero
       # xpd <- NA: all plotting is clipped to the device region
-      # mgp <- c(0, 0, 0): margin line (in mex units) for the axis title.  I guess we don't care?
-      # oma <- c(0, 0, 0, 0): more margins # ann = FALSE: do not add extra annotation to the plot
+      # mgp <- c(0, 0, 0): margin line (in mex units) for the axis title.
+      # oma <- c(0, 0, 0, 0): more margins # ann = FALSE: do not add extra
+      # annotation to the plot
       old_par <- graphics::par()
       on.exit(suppressWarnings({graphics::par(old_par)}))
-      suppressWarnings(graphics::par(mar = c(0, 0, 0, 0), xpd = NA, mgp = c(0, 0, 0), oma = c(0, 0, 0, 0), ann = FALSE))
+      suppressWarnings(graphics::par(mar = c(0, 0, 0, 0),
+                                     xpd = NA,
+                                     mgp = c(0, 0, 0),
+                                     oma = c(0, 0, 0, 0), ann = FALSE))
 
       # creates new plot - uses what was set with par()?
       graphics::plot.new()
@@ -169,8 +176,8 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       bottom_txt <- paste0(script, ifelse(script == "", "", "\n"),
                           "PNG: ", file,
                           ifelse(date_format == "", "",
-                                 paste0("\n",
-                                        "Date: ", format(Sys.time(), date_format))))
+                                 paste0("\n", "Date: ",
+                                        format(Sys.time(), date_format))))
       graphics::text(0.5, 0.025, bottom_txt, cex = cx * cex_footnote_mult)
 
       # close image
@@ -178,11 +185,13 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       img <- png::readPNG(file)
       png::writePNG(img, file, metadata = "I love xgx!")
       if (x11) {
-        graphics::par(mar = c(0, 0, 0, 0), xpd = NA, mgp = c(0, 0, 0), oma = c(0, 0, 0, 0), ann = FALSE)
+        graphics::par(mar = c(0, 0, 0, 0), xpd = NA, mgp = c(0, 0, 0),
+                      oma = c(0, 0, 0, 0), ann = FALSE)
         lim <- graphics::par()
         graphics::plot.new()
         graphics::plot.window(0:1, 0:1)
-        graphics::rasterImage(img, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
+        graphics::rasterImage(img, lim$usr[1], lim$usr[3],
+                              lim$usr[2], lim$usr[4])
       }
     } else {
       message(sprintf("Already annotated %s; Need to regenerate figure to annotate again\n", file))

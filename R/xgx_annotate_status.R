@@ -1,8 +1,10 @@
 #' Create a status (e.g. DRAFT) annotation layer
 #' 
-#' \code{xgx_annotate_status} adds a status (e.g. DRAFT) annotation layer to a plot. 
+#' \code{xgx_annotate_status} adds a status (e.g. DRAFT) annotation layer 
+#' to a plot. 
 #' The text of the annotation can be customized, the default is "DRAFT". 
-#' The color, location, size, fontface, transparency of the annotation can also be customized.
+#' The color, location, size, fontface, transparency of the annotation can 
+#' also be customized.
 #'
 #' @param status the text to 
 #' @param x x location, default Inf (right most point)

@@ -2,17 +2,23 @@
 #'
 #' @param width width of plot
 #' @param height height of plot
-#' @param dirs list of directories.  If NULL or if directories missing, there is default behavior below
+#' @param dirs list of directories.  If NULL or if directories missing, there 
+#' is default behavior below
 #'
 #' \enumerate{
-#' \item parent_dir  = Parent directory containing the Rscript and the Results folder, default getwd()
-#' \item rscript_dir = Subdirectory of parent_dir that contains the Rscript used to generate the figure, default "./"
-#' \item rscript_name= Name of the Rscript used to generate the figure, default "Name_Of_Script_Here.R"
-#' \item results_dir = Subdirectory ofparent_dir where the figure is stored, default "./"
+#' \item parent_dir  = Parent directory containing the Rscript and the Results 
+#' folder, default getwd()
+#' \item rscript_dir = Subdirectory of parent_dir that contains the Rscript 
+#' used to generate the figure, default "./"
+#' \item rscript_name= Name of the Rscript used to generate the figure, 
+#' default "Name_Of_Script_Here.R"
+#' \item results_dir = Subdirectory ofparent_dir where the figure is stored, 
+#' default "./"
 #' \item filename_prefix = prefix of filename to be appended to filename_main
 #' }
 #' 
-#' @param filename_main main part of the filename, excluding prefix and suffix.  no default
+#' @param filename_main main part of the filename, excluding prefix and suffix.
+#' no default
 #' @param status status to be annotated
 #' @param g ggplot plot object, default is ggplot::last_plot()
 #' @param filetype file extension (e.g. "pdf","csv" etc.)
@@ -50,18 +56,20 @@ xgx_save <- function(width,
                     status_x = Inf,
                     status_y = Inf,
                     status_fontsize = 7) {
-  if (is.null(dirs$parent_dir))      dirs$parent_dir <- getwd()
-  if (is.null(dirs$rscript_dir))     dirs$rscript_dir <- "./"
-  if (is.null(dirs$rscript_name))    dirs$rscript_name <- "Name_Of_Script_Here.R"
-  if (is.null(dirs$results_dir))     dirs$results_dir <- "./"
+  if (is.null(dirs$parent_dir)) dirs$parent_dir <- getwd()
+  if (is.null(dirs$rscript_dir)) dirs$rscript_dir <- "./"
+  if (is.null(dirs$rscript_name)) dirs$rscript_name <- "Name_Of_Script_Here.R"
+  if (is.null(dirs$results_dir)) dirs$results_dir <- "./"
   if (is.null(dirs$filename_prefix)) dirs$filename_prefix <- ""
 
   filedir <- file.path(dirs$results_dir)
-  dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".", filetype)         #get the full filename
+  dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".", filetype)
 
   g <- g + xgx_annotate_filenames(dirs)
-  g <- g + xgx_annotate_status(status, x = status_x, y = status_y, fontsize = status_fontsize)
+  g <- g + xgx_annotate_status(status, x = status_x, y = status_y,
+                               fontsize = status_fontsize)
 
-  ggplot2::ggsave(plot = g, width = width, height = height, file.path(filedir, dirs$filename))
+  ggplot2::ggsave(plot = g, width = width, height = height,
+                  file.path(filedir, dirs$filename))
   return(g)
 }
