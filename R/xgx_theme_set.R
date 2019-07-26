@@ -4,6 +4,18 @@
 #' 
 #' @return xgx ggplot2 compatible theme
 #' 
+#' @examples 
+#' conc <- 10^(seq(-3, 3, by = 0.1))
+#' EC50 <- 1
+#' data <- data.frame(concentration = conc, 
+#'                    bound_receptor = 1 * conc / (conc + EC50))
+#' xgx_theme_set()
+#' ggplot2::ggplot(data, ggplot2::aes(y = concentration, x = bound_receptor)) +
+#'   ggplot2::geom_point() +
+#'   ggplot2::geom_line() +
+#'   xgx_scale_y_log10() +
+#'   xgx_scale_x_reverselog10()
+#'   
 #' @importFrom ggplot2 theme_set
 #' @importFrom ggplot2 theme_bw
 #' @export
