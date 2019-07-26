@@ -30,7 +30,8 @@
 #' and "binomial". The "normal" option will use the Student t Distribution 
 #' to calculate confidence intervals, the "lognormal" option will transform 
 #' data to the log space first. The "binomial" option will use the
-#' \code{\link[binom]{binom.exact}} function to calculate the confidence 
+#' \code{\link[binom:binom.confint]{binom.exact}} function to calculate the
+#' confidence 
 #' intervals. Note: binomial data must be numeric and contain only 1's and 0's. 
 #' @param geom Use to override the default geom. Can be a list of multiple 
 #' geoms, e.g. list("point","line","errorbar"), which is the default.
@@ -108,14 +109,15 @@ xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95,
                         na.rm = FALSE,
                         show.legend = NA,
                         inherit.aes = TRUE) {
-  if (!(conf_level > 0.5 && conf_level < 1))
+  if (!(conf_level > 0.5 && conf_level < 1)) {
     stop("conf_level should be greater than 0.5 and less than 1")
+  }
 
   percentile_value <- conf_level + (1 - conf_level) / 2
 
   conf_int <- function(y, conf_level, distribution) {
     y <- stats::na.omit(y)
-
+  
     if (distribution == "normal") {
       conf_int_out <- data.frame(
         y = mean(y),
@@ -156,14 +158,16 @@ xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95,
 
     if (igeom == "point") {
       temp$geom$default_aes$size <- 2
-    }else if (igeom == "line") {
+    } else if (igeom == "line") {
       temp$geom$default_aes$size <- 1
-    }else if (igeom == "errorbar") {
+    } else if (igeom == "errorbar") {
       temp$geom$default_aes$size <- 1
-      if (is.null(temp$geom_params$width)) { temp$geom_params$width <- 0 }
-    }else if (igeom == "ribbon") {
+      if (is.null(temp$geom_params$width)) {
+        temp$geom_params$width <- 0
+      }
+    } else if (igeom == "ribbon") {
       temp$geom$default_aes$alpha <- 0.25
-    }else if (igeom == "pointrange") {
+    } else if (igeom == "pointrange") {
       temp$geom$default_aes$size <- 1
       temp$geom$geom_params$fatten <- 2
     }

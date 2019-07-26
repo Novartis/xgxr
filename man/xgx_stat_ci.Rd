@@ -36,7 +36,8 @@ calculating confidence intervals. The options are "normal", "lognormal",
 and "binomial". The "normal" option will use the Student t Distribution 
 to calculate confidence intervals, the "lognormal" option will transform 
 data to the log space first. The "binomial" option will use the
-\code{\link[binom]{binom.exact}} function to calculate the confidence 
+\code{\link[binom:binom.confint]{binom.exact}} function to calculate the
+confidence 
 intervals. Note: binomial data must be numeric and contain only 1's and 0's.}
 
 \item{geom}{Use to override the default geom. Can be a list of multiple 

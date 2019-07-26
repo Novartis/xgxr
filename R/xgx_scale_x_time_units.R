@@ -30,16 +30,20 @@ xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
                                    labels = labels_function, ...) {
   # h = hours, d = days, w = weeks, m = months, y = years
 
-  if (is.null(units_plot)) units_plot <- units_dataset
+  if (is.null(units_plot)) {
+    units_plot <- units_dataset
+  }
 
   # allows for user to write out longer string for units
   units_plot <- units_plot %>% tolower() %>% substr(1, 1)
   units_dataset <- units_dataset  %>% tolower() %>% substr(1, 1)
 
-  if (!(units_dataset %in% c("h", "d", "w", "m", "y")))
+  if (!(units_dataset %in% c("h", "d", "w", "m", "y"))) {
     stop("units_dataset must be hours, days, weeks, months, or years")
-  if (!(units_plot %in% c("h", "d", "w", "m", "y")))
+  }
+  if (!(units_plot %in% c("h", "d", "w", "m", "y"))) {
     stop("units_plot must be hours, days, weeks, months, or years")
+  }
 
   day.scale <- data.frame(h = 1 / 24,
                           d = 1,
@@ -51,12 +55,14 @@ xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
   output.scale <- day.scale[[units_plot]]
   scale.factor <- output.scale / input.scale
 
-  breaks_function <- function(data.range)
+  breaks_function <- function(data.range) {
     breaks <- xgx_breaks_time(data.range / scale.factor,
                               units_plot) * scale.factor
+  }
 
-  labels_function <- function(breaks)
+  labels_function <- function(breaks) {
     labels <- breaks / scale.factor
+  }
 
   xlabel.list <- data.frame(h = "Hour",
                             d = "Day",

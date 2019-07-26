@@ -31,7 +31,7 @@ xgx_scale_x_reverselog10 <- function(...) {
   reverselog <- scales::trans_new(
     name      = "reverselog",
     transform = function(x) -log10(1 - x),
-    inverse   = function(x)    1 - 10^-x,
+    inverse   = function(x) 1 - 10^-x,
     breaks    = function(x) c(0, 70, c(100 - 10^(-100:1))) / 100)
 
   ggplot2::scale_x_continuous(trans = reverselog,

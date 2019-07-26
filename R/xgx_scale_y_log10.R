@@ -37,6 +37,9 @@ xgx_scale_y_log10 <-  function(breaks = xgx_breaks_log10,
                                          minor_breaks = minor_breaks,
                                          labels = labels)),
              silent = TRUE)
-  if  (inherits(ret, "try-error")) return(ggplot2::scale_y_log10(...))
-  return(ret)
+  if  (inherits(ret, "try-error")) {
+    return(ggplot2::scale_y_log10(...))
+  } else {
+    return(ret)
+  }
 }

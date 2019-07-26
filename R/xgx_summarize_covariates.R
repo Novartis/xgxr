@@ -49,7 +49,6 @@ xgx_summarize_covariates <- function(data, covariates = NULL, n_cts = 8) {
     xdistinct <- length(unique(x))
     xmissing <- sum(is.na(x))
     if (xdistinct >= n_cts) {
-
       icts <- icts + 1
       ctslist[[icts]] <- tibble::tibble(
         Covariate = covk,

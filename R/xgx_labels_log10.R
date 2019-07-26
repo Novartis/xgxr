@@ -12,8 +12,11 @@
 #' @export
 xgx_labels_log10 <- function(breaks) {
   labels <- as.character(breaks)
-  if (all(log10(breaks) == as.integer(log10(breaks)), na.rm = TRUE))
-     if (min(breaks, na.rm = TRUE) < 0.001 || max(breaks, na.rm = TRUE) > 9999)
-       labels <- as.character(breaks)
+  if (all(log10(breaks) == as.integer(log10(breaks)), na.rm = TRUE)
+      && (min(breaks, na.rm = TRUE) < 0.001 ||
+          max(breaks, na.rm = TRUE) > 9999)) {
+    labels <- as.character(breaks)
+  }
+
   return(labels)
 }

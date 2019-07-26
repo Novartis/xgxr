@@ -34,11 +34,21 @@ xgx_save_table <- function(
                     data,
                     dirs = NULL,
                     filename_main) {
-  if (is.null(dirs$parent_dir)) dirs$parent_dir <- getwd()
-  if (is.null(dirs$rscript_dir)) dirs$rscript_dir <- "./"
-  if (is.null(dirs$rscript_name)) dirs$rscript_name <- "Name_Of_Script_Here.R"
-  if (is.null(dirs$results_dir)) dirs$results_dir <- "./"
-  if (is.null(dirs$filename_prefix)) dirs$filename_prefix <- ""
+  if (is.null(dirs$parent_dir)) {
+    dirs$parent_dir <- getwd()
+  }
+  if (is.null(dirs$rscript_dir)) {
+    dirs$rscript_dir <- "./"
+  }
+  if (is.null(dirs$rscript_name)) {
+    dirs$rscript_name <- "Name_Of_Script_Here.R"
+  }
+  if (is.null(dirs$results_dir)) {
+    dirs$results_dir <- "./"
+  }
+  if (is.null(dirs$filename_prefix)) {
+    dirs$filename_prefix <- ""
+  }
 
   filedir <- file.path(dirs$results_dir)
   dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".csv")
