@@ -34,8 +34,8 @@ reverse-log-transform-scale functions for more readable axes).
 
 ```{r, message=FALSE}
 library(xgxr)
-library(dplyr)
 library(ggplot2)
+library(dplyr)
 ```
 
 <!-- ## Data exploration
