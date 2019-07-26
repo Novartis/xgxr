@@ -41,7 +41,7 @@ xgx_dirs2char <- function(dirs, include_time = TRUE) {
                             rscript_dir, rscript_name, "\n",
                             results_dir, filename))
 
-  if (include_time == TRUE) {
+  if (include_time) {
     output <- paste0(output, "\n", "Created: ", Sys.time())
   }
 
