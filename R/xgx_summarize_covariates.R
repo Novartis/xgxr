@@ -78,6 +78,6 @@ xgx_summarize_covariates <- function(data, covariates = NULL, n_cts = 8) {
   cat_table <- dplyr::bind_rows(catlist)
   cts_table <- dplyr::bind_rows(ctslist)
 
-  return(list(cts_covariates  = cts_table,
-              cat_covariates  = cat_table))
+  return(list(cts_covariates = cts_table,
+              cat_covariates = cat_table))
 }

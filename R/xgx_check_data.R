@@ -53,10 +53,7 @@
 #' @importFrom utils head
 #' @export
 xgx_check_data <- function(data, covariates = NULL) {
-  # defining column names as variables, because this is a work around
-  # CRAN to accept the R package
-  # due to the way dplyr and lazy evaluation interacts with the CRAN checking
-  # https://stackoverflow.com/q/48750221
+  # avoid CRAN note
   ID <-  EVID <- YTYPE <- MDV <- AMT <- DV <- TIME <- CENS <-
     Value <- tot <- ntot <- pct <- Data_Check_Issue <- n <- NULL
 
