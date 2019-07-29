@@ -4,7 +4,7 @@
 \alias{xgx_save}
 \title{Saving plot, automatically annotating the status and denoting the filenames}
 \usage{
-xgx_save(width, height, dirs = NULL, filename_main, status,
+xgx_save(width, height, filename_main, status, dirs = NULL,
   g = ggplot2::last_plot(), filetype = "png", status_x = Inf,
   status_y = Inf, status_fontsize = 7)
 }
@@ -12,6 +12,11 @@ xgx_save(width, height, dirs = NULL, filename_main, status,
 \item{width}{width of plot}
 
 \item{height}{height of plot}
+
+\item{filename_main}{main part of the filename, excluding prefix and suffix.
+no default}
+
+\item{status}{status to be annotated}
 
 \item{dirs}{list of directories.  If NULL or if directories missing, there 
 is default behavior below
@@ -27,11 +32,6 @@ default "Name_Of_Script_Here.R"
 default "./"
 \item filename_prefix = prefix of filename to be appended to filename_main
 }}
-
-\item{filename_main}{main part of the filename, excluding prefix and suffix.
-no default}
-
-\item{status}{status to be annotated}
 
 \item{g}{ggplot plot object, default is ggplot::last_plot()}
 
@@ -58,6 +58,6 @@ dirs <- list(parent_dir= "./",
 data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
   ggplot2::geom_point()
-xgx_save(4, 4, dirs, "Example", "DRAFT")
+xgx_save(4, 4, "Example", "DRAFT", dirs)
 
 }

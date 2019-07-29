@@ -37,7 +37,7 @@
 #' data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 #' ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
 #'   ggplot2::geom_point()
-#' xgx_save(4, 4, dirs, "Example", "DRAFT")
+#' xgx_save(4, 4, "Example", "DRAFT", dirs)
 #' 
 #' @importFrom ggplot2 last_plot
 #' @importFrom ggplot2 ggsave
@@ -47,15 +47,15 @@
 #' @importFrom stats rnorm
 #' @export
 xgx_save <- function(width,
-                    height,
-                    dirs = NULL,
-                    filename_main,
-                    status,
-                    g = ggplot2::last_plot(),
-                    filetype = "png",
-                    status_x = Inf,
-                    status_y = Inf,
-                    status_fontsize = 7) {
+                     height,
+                     filename_main,
+                     status,
+                     dirs = NULL,
+                     g = ggplot2::last_plot(),
+                     filetype = "png",
+                     status_x = Inf,
+                     status_y = Inf,
+                     status_fontsize = 7) {
   if (is.null(dirs$parent_dir)) {
     dirs$parent_dir <- getwd()
   }
@@ -63,7 +63,7 @@ xgx_save <- function(width,
     dirs$rscript_dir <- "./"
   }
   if (is.null(dirs$rscript_name)) {
-    dirs$rscript_name <- "Name_Of_Script_Here.R"
+    dirs$rscript_name <- "default_script_name.R"
   }
   if (is.null(dirs$results_dir)) {
     dirs$results_dir <- "./"

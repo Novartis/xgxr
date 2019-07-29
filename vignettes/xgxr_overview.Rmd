@@ -110,7 +110,7 @@ dirs <- list(
 data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 g <- xgx_plot(data = data, aes(x = x, y = y)) +
   geom_point()
-xgx_save(width = 4, height = 4, dirs = dirs, "Example_Plot", "DRAFT")
+xgx_save(width = 4, height = 4, "Example_Plot", "DRAFT", dirs = dirs)
 ```
 
 The the function `xgx_save` works only with ggplot objets.  If the figure 
@@ -134,7 +134,7 @@ information to csv files. The annotated table is shown below.
 
 ```{r}
 x <- data.frame(ID = c(1, 2), SEX = c("male", "female"))
-data <- xgx_save_table(x, dirs, "ExampleTable")
+data <- xgx_save_table(x, "ExampleTable", dirs)
 knitr::kable(data)
 ```
 

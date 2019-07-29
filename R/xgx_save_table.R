@@ -30,10 +30,7 @@
 #' @importFrom utils write.csv
 #' @importFrom magrittr "%>%"
 #' @export
-xgx_save_table <- function(
-                    data,
-                    dirs = NULL,
-                    filename_main) {
+xgx_save_table <- function(data, filename_main, dirs = NULL) {
   if (is.null(dirs$parent_dir)) {
     dirs$parent_dir <- getwd()
   }
@@ -41,7 +38,7 @@ xgx_save_table <- function(
     dirs$rscript_dir <- "./"
   }
   if (is.null(dirs$rscript_name)) {
-    dirs$rscript_name <- "Name_Of_Script_Here.R"
+    dirs$rscript_name <- "default_script_name.R"
   }
   if (is.null(dirs$results_dir)) {
     dirs$results_dir <- "./"

@@ -87,12 +87,12 @@ g = ggplot(data,aes(x=time,y=Dnorm,color=dose.label))
   g = g1 + aes(y=D)
   g = g %+% filter(SIMplot,!is.na(D))
   g = g + ylab("Concentration (mg/L)")
-  g = xgx_save(width,height,dirs,"Profile",status = "")
+  g = xgx_save(width,height,"Profile",status = "",dirs)
   print(g)
   g2 = g
   
   g = g %+% filter(SIMplot,dose.label==1)
-  g = xgx_save(width,height,dirs,"Profile_1dose",status = "")
+  g = xgx_save(width,height,"Profile_1dose",status = "",dirs)
   print(g)
   g3 = g
   
@@ -107,7 +107,7 @@ g = ggplot(data,aes(x=time,y=Dnorm,color=dose.label))
   g = g + aes(color=NULL)
   g = g + facet_wrap(~dose.label)
   g = g + xgx_scale_x_time_units(units_dataset = "day",units_plot = "week",limits = c(0,8*7))
-  g = xgx_save(6,3,dirs,"Profile_high_low",status = "")
+  g = xgx_save(6,3,"Profile_high_low",status = "",dirs)
   print(g)
   
 
@@ -141,7 +141,7 @@ data = read.csv("data_create/TMDD_SCIM/task02a_sensitivity_all drugs and params_
 #   theme(legend.position="top") + 
 #   xlab("Fold Change in Parameter")
 # dirs = list()
-# g = xgx_save(8,8,dirs,paste0("ManySensitivityAnalysis"),"")
+# g = xgx_save(8,8,paste0("ManySensitivityAnalysis"),"",dirs)
 # print(g)
 
 ```
