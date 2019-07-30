@@ -67,15 +67,15 @@ Vignettes are documents that show how a package can be used.  They are located i
 ## Scope of the project
 * Base case (100%)
     * Helper functions - log scale, confidence intervals, etc. [DONE]
-    * Vignettes that show idea and work with examples in nlmixr/ggpmx [pk-DONE, pd-TO DO]
+    * Vignettes that show idea and work with examples in nlmixr/ggpmx [pk-DONE, pd-DONE]
     * Data checking: xgx_check_data() - [DONE]
 * Under Consideration (50%)
-    * Overview Plots: xgx_explore_pk(data,units), xgx_explore_pd, xgx_explore_pkpd [pk-IN PROGRESS, pd-TO DO]
+    * Overview Plots: xgx_explore_pk(data,units), xgx_explore_pd, xgx_explore_pkpd [CONSIDERING]
       * (continuous, binary, RO)
       * repeated time to event
       * We still need to align as a team on whether we want to provide this functionality, or just have the user copy the Rmarkdown documents from the vignettes or https://opensource.nibr.com/xgx.  The advantage of this functionality is that it makes some plots even easier to create.  The disadvantage is that it's more functions for the user to learn and more work to maintain the package and many of the commonly used plots can be created with just a few lines of code.
 * Stretch goal (40%)
-    * Additional datatypes 
+    * Additional datatypes [TO DO]
       * RECIST (Target, Nontarget, and New lesions), 
       * Liver enzymes (ALT, AST, Bilirubin, etc.)
       * Blood counts (Neutrophils, Platelets, Blasts).
