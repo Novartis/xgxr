@@ -6,6 +6,22 @@
 \usage{
 xgx_theme()
 }
+\value{
+xgx ggplot2 compatible theme
+}
 \description{
 Calls the standard theme for xGx graphics
+}
+\examples{
+conc <- 10^(seq(-3, 3, by = 0.1))
+ec50 <- 1
+data <- data.frame(concentration = conc, 
+                   bound_receptor = 1 * conc / (conc + ec50))
+ggplot2::ggplot(data, ggplot2::aes(y = concentration, x = bound_receptor)) +
+  ggplot2::geom_point() +
+  ggplot2::geom_line() +
+  xgx_scale_y_log10() +
+  xgx_scale_x_reverselog10() +
+  xgx_theme()
+  
 }

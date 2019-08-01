@@ -19,6 +19,6 @@ xgx_create_rmarkdown = function(type = "pk", to = ".", open_file = TRUE){
   file.copy(filename, to, overwrite = FALSE)
   file_created = file.path(to,Rmd)
   message(file_created, " has been created")
-  if (open_file == TRUE) file.edit(file_created)
+  if (open_file) file.edit(file_created)
 }
 

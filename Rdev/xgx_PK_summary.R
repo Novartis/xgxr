@@ -137,5 +137,5 @@ xgx_PK_summary <-  function(data = NULL,
   
   ret <- gg 
   
-  return(invisible(ret)); 
+  return(invisible(ret))
 } 

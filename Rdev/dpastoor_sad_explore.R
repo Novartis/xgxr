@@ -2,11 +2,11 @@ library(ggplot2)
 library(dplyr)
 devtools::load_all()
 
-data = Single_Ascending_Dose_PKPD_dpastoor %>%
+data = sad_pkpd %>%
   group_by(ID) %>%
   mutate(DOSE = AMT[1])
 
-g = ggplot(Single_Ascending_Dose_PKPD_dpastoor,
+g = ggplot(sad_pkpd,
            aes(x=TIME,y=COBS,group=ID,color=factor(DOSE)))
 g = g + geom_point()
 g = g + geom_line()

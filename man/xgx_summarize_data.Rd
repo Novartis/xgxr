@@ -2,18 +2,22 @@
 % Please edit documentation in R/xgx_summarize_data.R
 \name{xgx_summarize_data}
 \alias{xgx_summarize_data}
-\alias{xgx_check_data}
 \title{Check data for various issues}
 \usage{
-xgx_summarize_data(data, covariates = NULL, ...)
+xgx_summarize_data(data, covariates = NULL)
 }
 \arguments{
 \item{data}{the dataset to check.  Must contain the above columns}
 
 \item{covariates}{the column names of covariates, to explore}
-
-\item{...}{parameters from \code{\link{xgx_check_data}}}
+}
+\value{
+data.frame
 }
 \description{
 Calls \code{\link{xgx_check_data}}
+}
+\examples{
+covariates <- c("WEIGHTB", "SEX")
+check <- xgx_summarize_data(mad_md, covariates)
 }

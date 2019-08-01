@@ -4,8 +4,8 @@
 \alias{xgx_save}
 \title{Saving plot, automatically annotating the status and denoting the filenames}
 \usage{
-xgx_save(width, height, dirs = NULL, filename_main, status,
-  g = last_plot(), filetype = "png", status_x = Inf,
+xgx_save(width, height, filename_main, status, dirs = NULL,
+  g = ggplot2::last_plot(), filetype = "png", status_x = Inf,
   status_y = Inf, status_fontsize = 7)
 }
 \arguments{
@@ -13,19 +13,25 @@ xgx_save(width, height, dirs = NULL, filename_main, status,
 
 \item{height}{height of plot}
 
-\item{dirs}{list of directories.  If NULL or if directories missing, there is default behavior below
-
-\enumerate{
-\item parent_dir  = Parent directory containing the Rscript and the Results folder, default getwd()
-\item rscript_dir = Subdirectory of parent_dir that contains the Rscript used to generate the figure, default "./"
-\item rscript_name= Name of the Rscript used to generate the figure, default "Name_Of_Script_Here.R"
-\item results_dir = Subdirectory ofparent_dir where the figure is stored, default "./"
-\item filename_prefix = prefix of filename to be appended to filename_main
-}}
-
-\item{filename_main}{main part of the filename, excluding prefix and suffix.  no default}
+\item{filename_main}{main part of the filename, excluding prefix and suffix.
+no default}
 
 \item{status}{status to be annotated}
+
+\item{dirs}{list of directories.  If NULL or if directories missing, there 
+is default behavior below
+
+\enumerate{
+\item parent_dir  = Parent directory containing the Rscript and the Results 
+folder, default getwd()
+\item rscript_dir = Subdirectory of parent_dir that contains the Rscript 
+used to generate the figure, default "./"
+\item rscript_name= Name of the Rscript used to generate the figure, 
+default "Name_Of_Script_Here.R"
+\item results_dir = Subdirectory ofparent_dir where the figure is stored, 
+default "./"
+\item filename_prefix = prefix of filename to be appended to filename_main
+}}
 
 \item{g}{ggplot plot object, default is ggplot::last_plot()}
 
@@ -44,16 +50,14 @@ ggplot2 plot object
 Saving plot, automatically annotating the status and denoting the filenames
 }
 \examples{
+dirs <- list(parent_dir= "./",
+             rscript_dir  = "./",
+             rscript_name = "Example.R",
+             results_dir  = "./",
+             filename_prefix   = "Task01_")
+data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
+ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
+  ggplot2::geom_point()
+xgx_save(4, 4, "Example", "DRAFT", dirs)
 
-library(ggplot2)  
-dirs = list(
-  parent_dir= "./",
-  rscript_dir  = "./",
-  rscript_name = "Example.R",
-  results_dir  = "./",
-  filename_prefix   = "Task01_")
-data = data.frame(x=1:1000,y=rnorm(1000))
-ggplot(data=data,aes(x=x,y=y)) +
-geom_point()
-xgx_save(4,4,dirs,"Example","DRAFT")
 }

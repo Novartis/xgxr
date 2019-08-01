@@ -35,7 +35,7 @@ xgx_theme_set()
   covariates = c("WEIGHTB","SEX")
   
 #load dataset 
-  data     = Multiple_Ascending_Dose %>%
+  data     = mad %>%
     filter(CMT %in% c(1,2))
   
 #make sure that the necessary columns are assigned
@@ -70,7 +70,7 @@ xgx_theme_set()
     filter(PROFDAY %in% c(1,6)) #PROFDAY is the day of the PK profile
   
 #load NCA
-  NCA      = Multiple_Ascending_Dose_NCA
+  NCA      = mad_nca
   
 #make sure NCA dataset has the appropriate columns
 #five columns are required: DOSE, DOSEREG, PARAM, VALUE, VALUE_NORM

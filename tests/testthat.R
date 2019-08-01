@@ -1,4 +1,4 @@
 library(testthat)
-library(xgx)
+library(xgxr)
 
-test_check("xgx")
+test_check("xgxr")

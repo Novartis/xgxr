@@ -5,8 +5,8 @@
 \title{Annotate a png file or directory of png files}
 \usage{
 xgx_annotate_status_png(file_or_dir, script = "", status = "DRAFT",
-  date_format = "\%a \%b \%d \%X \%Y", col = grey(0.8, alpha = 0.7),
-  font = 2, cex_status_mult = 7, cex_footnote_mult = 0.8,
+  date_format = "\%a \%b \%d \%X \%Y", col = grDevices::grey(0.8, alpha
+  = 0.7), font = 2, cex_status_mult = 7, cex_footnote_mult = 0.8,
   status_angle = 45, x11 = FALSE)
 }
 \arguments{
@@ -55,48 +55,46 @@ annotate it again.  Therefore, you can run this function on
 directories with different input script names and it will label
 each file based on when each file was run.
 
-Based on code from MrFlick on Stack Overflow: 
-https://stackoverflow.com/questions/23807021/how-to-do-in-r-load-an-image-file-print-text-on-image-save-modified-image
+Based on code from MrFlick on
+\href{https://stackoverflow.com/a/23816416}{Stack Overflow}.
 }
 \examples{
+# using the examples from plot()
+grDevices::png("png-example.png")
+graphics::plot(cars)
+graphics::lines(stats::lowess(cars))
+grDevices::dev.off()
+# annotate one file
+xgx_annotate_status_png("png-example.png", "/tmp/script1.R")
 
-library(xgx)
-library(ggplot2)
+grDevices::png("png-example2.png")
+# see ?plot.function
+graphics::plot(sin, -pi, 2 * pi)
+grDevices::dev.off()
 
-# Using the examples from plot()
-require(stats) # for lowess, rpois, rnorm
-png("png-example.png")
-plot(cars)
-lines(lowess(cars))
-dev.off()
-xgx_annotate_status_png("png-example.png", "/tmp/script1.R") # annotate one file
+# using the example from ggplot
 
-png("png-example2.png")
-plot(sin, -pi, 2*pi) # see ?plot.function
-dev.off()
-
-## Using the example from ggplot
-
-# Generate some sample data, then compute mean and standard deviation
+# generate some sample data, then compute mean and standard deviation
 # in each group
-df <- data.frame(
- gp = factor(rep(letters[1:3], each = 10)),
- y = rnorm(30)
-)
-ds <- df \%>\% group_by(gp) \%>\% summarise(mean = mean(y), sd   = sd(y))
+df <- data.frame(gp = factor(rep(letters[1:3], each = 10)),
+                 y = stats::rnorm(30))
+ds <- df \%>\% 
+  dplyr::group_by(gp) \%>\% 
+  dplyr::summarise(mean = mean(y), sd = stats::sd(y))
 
-# The summary data frame ds is used to plot larger red points on top
+# the summary data frame ds is used to plot larger red points on top
 # of the raw data. Note that we don't need to supply `data` or `mapping`
 # in each layer because the defaults from ggplot() are used.
-png("png-example3.png")
-ggplot(df, aes(gp, y)) +
- geom_point() +
- geom_point(data = ds, aes(y = mean), colour = 'red', size = 3)
+grDevices::png("png-example3.png")
+ggplot2::ggplot(df, ggplot2::aes(gp, y)) +
+  ggplot2::geom_point() +
+  ggplot2::geom_point(data = ds, ggplot2::aes(y = mean), 
+                      colour = 'red', size = 3)
 
-dev.off()
+grDevices::dev.off()
 xgx_annotate_status_png(".", "other-script.R")
 
-# Notice that this is agnostic of ggplot/plot and will skip already
+# notice that this is agnostic of ggplot/plot and will skip already
 # labeled items
 
 }

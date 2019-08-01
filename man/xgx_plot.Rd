@@ -4,31 +4,38 @@
 \alias{xgx_plot}
 \title{Create a new xgx plot}
 \usage{
-xgx_plot(data = NULL, mapping = aes(), ...,
+xgx_plot(data = NULL, mapping = ggplot2::aes(), ...,
   environment = parent.frame())
 }
 \arguments{
-\item{data}{Default dataset to use for plot. If not already a data.frame, will be converted to one by fortify.}
+\item{data}{Default dataset to use for plot. If not already a data.frame, 
+will be converted to one by fortify.}
 
-\item{mapping}{As in ggplot2; Default list of aesthetic mappings to use for plot. Must define x, y, and group for xgx_spaghetti.}
+\item{mapping}{As in ggplot2; Default list of aesthetic mappings to use 
+for plot. Must define x, y, and group for xgx_spaghetti.}
 
 \item{...}{Other arguments passed on to methods. Not currently used.}
 
-\item{environment}{If an variable defined in the aesthetic mapping is not found in the data, ggplot will look for it in this environment. It defaults to using the environment in which @ggplot() is called.
-
-xgx_plot}
+\item{environment}{If an variable defined in the aesthetic mapping is not 
+found in the data, ggplot will look for it in this environment. It defaults 
+to using the environment in which \code{\link[ggplot2]{ggplot}} is called.}
+}
+\value{
+ggplot2 object
 }
 \description{
 Create a new xgx plot
 }
 \examples{
-library(ggplot2)  
-time = rep(seq(1,10),5)
-id = sort(rep(seq(1,5), 10))
-conc = exp(-time)*sort(rep(rlnorm(5),10))
+ 
+time <- rep(seq(1, 10), 5)
+id <- sort(rep(seq(1, 5), 10))
+conc <- exp(-time) * sort(rep(stats::rlnorm(5), 10))
 
-data = data.frame(time = time, concentration  = conc, id = id)
-xgx_plot(data = data, mapping = aes(x = time, y = concentration, group = id)) + 
-  geom_line() + 
-  geom_point()
+data <- data.frame(time = time, concentration = conc, id = id)
+xgx_plot(data = data,
+         mapping = ggplot2::aes(x = time, y = concentration, group = id)) + 
+  ggplot2::geom_line() + 
+  ggplot2::geom_point()
+  
 }

@@ -16,5 +16,6 @@ either character or expression
 Returns a set of labels for ggplot
 }
 \examples{
-print(xgx_labels_log10(c(1e-5,1,1e5)))
+print(xgx_labels_log10(c(1e-5, 1, 1e5)))
+
 }
