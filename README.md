@@ -1,5 +1,7 @@
 # xgxr
 
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Travis build status](https://travis-ci.org/Novartis/xgxr.svg?branch=master)](https://travis-ci.org/Novartis/xgxr)
+
 The xgxr package supports a structured approach for exploring PKPD data ([outlined here](http://opensource.nibr.com/xgx)).  It also contains helper functions for enabling the modeler to follow best R practices (by appending the program name, figure name location, and draft status to each plot).  In addition, it enables the modeler to follow best graphical practices (by providing an xgx theme that reduces chart ink, and by providing time-scale, log-scale, and reverse-log-transform-scale functions for more readable axes).  Finally, it provides some data checking and summarizing functions for rapidly exploring a PKPD dataset.
 
 ## How to update/test/use package
@@ -35,7 +37,7 @@ The xgxr package supports a structured approach for exploring PKPD data ([outlin
   * **Last Resort Failsafe:** If you want to copy code from xGx exploratory graphics webpage but are unable to install the  `xgxr` package, you can use an older version of the website that does not make use of the `xgxr` package.  http://opensource.nibr.com/xgx_v1
   
 ## Your contribution
-* If you will be helping to contribute, we make an effort to follow the [tidyverse style guide](https://style.tidyverse.org/index.html).  Though the one exception is that some of us prefer "=" over "<-".
+* If you will be helping to contribute, we make an effort to follow the [tidyverse style guide](https://style.tidyverse.org/index.html).
 
 ## Overview for how R packages (including this one) are organized
 
