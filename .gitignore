@@ -19,8 +19,6 @@ Explore_IQRtools.R
 IQRtools/
 png_example.png
 vignettes/*.png
-vignettes/PK_Multiple_Ascending_Dose_nlmixr_theo.R
-PK_Multiple_Ascending_Dose.Rmd
 xgx.Rcheck
 ..Rcheck
 *.tar.gz

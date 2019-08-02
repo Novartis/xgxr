@@ -46,8 +46,6 @@ Imports:
     ggplot2,
     graphics,
     grDevices,
-    grid,
-    gridExtra,
     labeling,
     magrittr,
     pander,
