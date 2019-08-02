@@ -56,7 +56,14 @@ xgx_check_data <- function(data, covariates = NULL) {
   # avoid CRAN note
   ID <-  EVID <- YTYPE <- MDV <- AMT <- DV <- TIME <- CENS <-
     Value <- tot <- ntot <- pct <- Data_Check_Issue <- n <- NULL
-
+  
+  required_names <- c("ID", "EVID", "AMT", "TIME", "DV", "YTYPE")
+  missing_cols <- setdiff(required_names, names(data))
+  if (length(missing_cols) > 0) {
+    missing_text <- paste(missing_cols, collapse = ",")
+    stop(paste0("These columns must be present in the dataset: ", missing_text))
+  }
+  
   # check for required column names in dataset
   if (!("YTYPE" %in% names(data)) && ("CMT" %in% names(data))) {
     warning("Setting YTYPE column equal to CMT\n")
@@ -84,13 +91,6 @@ xgx_check_data <- function(data, covariates = NULL) {
   if (!("CENS" %in% names(data))) {
     warning("Setting CENS column equal to 0\n")
     data$CENS <- 0
-  }
-
-  required_names <- c("ID", "EVID", "AMT", "TIME", "DV", "YTYPE")
-  missing_cols <- setdiff(required_names, names(data))
-  if (length(missing_cols) > 0) {
-    missing_text <- paste(missing_cols, collapse = ",")
-    stop(paste0("These columns must be present in the dataset: ", missing_text))
   }
 
   # initialize output tibble
