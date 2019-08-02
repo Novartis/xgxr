@@ -1,5 +1,5 @@
 ---
-title: "PKPD Multiple Ascending Dose example"
+title: "PKPD Single Ascending Dose example"
 author: "Fariba Khanshan, Andrew Stein, Alison Margolskee"
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     toc: true
     self_contained: yes
 vignette: >
-  %\VignetteIndexEntry{PKPD Multiple Ascending Dose example}
+  %\VignetteIndexEntry{PKPD Single Ascending Dose example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

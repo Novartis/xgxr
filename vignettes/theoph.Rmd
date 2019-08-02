@@ -7,7 +7,7 @@ output:
     toc: true
     self_contained: yes
 vignette: >
-  %\VignetteIndexEntry{PK Exploration with nlmixr dataset}
+  %\VignetteIndexEntry{PK Exploration with nlmixr dataset for theophylline}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

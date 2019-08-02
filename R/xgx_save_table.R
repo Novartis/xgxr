@@ -30,7 +30,7 @@
 #' @importFrom utils write.csv
 #' @importFrom magrittr "%>%"
 #' @export
-xgx_save_table <- function(data, filename_main, dirs = NULL) {
+xgx_save_table <- function(data, dirs = NULL, filename_main = NULL) {
   if (is.null(dirs$parent_dir)) {
     dirs$parent_dir <- getwd()
   }
@@ -46,6 +46,9 @@ xgx_save_table <- function(data, filename_main, dirs = NULL) {
   if (is.null(dirs$filename_prefix)) {
     dirs$filename_prefix <- ""
   }
+  if (is.null(dirs$filename_main)) {
+    filename_main <- "Unnamed_Table"
+  }  
 
   filedir <- file.path(dirs$results_dir)
   dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".csv")
