@@ -11,3 +11,8 @@ r_github_packages:
 
 after_success:
   - Rscript -e 'covr::coveralls()'
+
+addons:
+  apt:
+    packages:
+      - libudunits2-dev

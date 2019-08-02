@@ -18,11 +18,9 @@
   column 7: \tab \code{MDV} \tab numeric; missing dependent variable \cr
   (1 if missing, 0 otherwise)\cr
   column 8: \tab \code{CMT} \tab integer; compartment number 
-  (determines observation type):
-  \itemize{
-    \item CMT 1 = Dosing event
-    \item CMT 2 = PK concentration
-  }\cr
+  (determines observation type):\cr
+  \tab \tab CMT 1 = Dosing event\cr
+  \tab \tab CMT 2 = PK concentration\cr
   column 9: \tab \code{NAME} \tab character; description of event\cr
   column 10: \tab \code{EVENTU} \tab character; unit for observation\cr
   column 11: \tab \code{CENS} \tab integer; censored values

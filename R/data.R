@@ -18,15 +18,13 @@
 #'   (observation type determined by CMT), units determined by EVENTU column\cr
 #'   column 7: \tab \code{MDV} \tab numeric; missing dependent variable\cr
 #'   column 8: \tab \code{CMT} \tab integer; compartment number 
-#'   (determines observation type):
-#'   \itemize{
-#'     \item CMT 1 = Dosing event
-#'     \item CMT 2 = PK concentration
-#'     \item CMT 3 = Continuous response data
-#'     \item CMT 4 = Count response data
-#'     \item CMT 5 = Ordinal response data
-#'     \item CMT 6 = Binary response data
-#'   }\cr
+#'   (determines observation type):\cr
+#'   \tab \tab CMT 1 = Dosing event\cr
+#'   \tab \tab CMT 2 = PK concentration\cr
+#'   \tab \tab CMT 3 = Continuous response data\cr
+#'   \tab \tab CMT 4 = Count response data\cr
+#'   \tab \tab CMT 5 = Ordinal response data\cr
+#'   \tab \tab CMT 6 = Binary response data\cr
 #'   column 9: \tab \code{NAME} \tab character; description of event\cr
 #'   column 10: \tab \code{EVENTU} \tab character; unit for observation\cr
 #'   column 11: \tab \code{CENS} \tab integer; censored values
@@ -64,15 +62,13 @@
 #'   (observation type determined by CMT), units determined by EVENTU column\cr
 #'   column 7: \tab \code{MDV} \tab numeric; missing dependent variable\cr
 #'   column 8: \tab \code{CMT} \tab integer; compartment number 
-#'   (determines observation type):
-#'   \itemize{
-#'     \item CMT 1 = Dosing event
-#'     \item CMT 2 = PK concentration
-#'     \item CMT 3 = Continuous response data
-#'     \item CMT 4 = Count response data
-#'     \item CMT 5 = Ordinal response data
-#'     \item CMT 6 = Binary response data
-#'   }\cr
+#'   (determines observation type):\cr
+#'   \tab \tab CMT 1 = Dosing event\cr
+#'   \tab \tab CMT 2 = PK concentration\cr
+#'   \tab \tab CMT 3 = Continuous response data\cr
+#'   \tab \tab CMT 4 = Count response data\cr
+#'   \tab \tab CMT 5 = Ordinal response data\cr
+#'   \tab \tab CMT 6 = Binary response data\cr
 #'   column 9: \tab \code{NAME} \tab character; description of event\cr
 #'   column 10: \tab \code{EVENTU} \tab character; unit for observation\cr
 #'   column 11: \tab \code{CENS} \tab integer; censored values
@@ -116,15 +112,13 @@
 #'   column 6: \tab \code{LIDV} \tab numeric; observation on a linear scale 
 #'   (observation type determined by CMT), units determined by EVENTU column\cr
 #'   column 7: \tab \code{CMT} \tab integer; compartment number 
-#'   (determines observation type):
-#'   \itemize{
-#'     \item CMT 1 = Dosing event
-#'     \item CMT 2 = PK concentration
-#'     \item CMT 3 = Continuous response data
-#'     \item CMT 4 = Count response data
-#'     \item CMT 5 = Ordinal response data
-#'     \item CMT 6 = Binary response data
-#'   }\cr
+#'   (determines observation type):\cr
+#'   \tab \tab CMT 1 = Dosing event\cr
+#'   \tab \tab CMT 2 = PK concentration\cr
+#'   \tab \tab CMT 3 = Continuous response data\cr
+#'   \tab \tab CMT 4 = Count response data\cr
+#'   \tab \tab CMT 5 = Ordinal response data\cr
+#'   \tab \tab CMT 6 = Binary response data\cr
 #'   column 8: \tab \code{NAME} \tab factor; description of event\cr
 #'   column 9: \tab \code{EVENTU} \tab factor; unit for observation\cr
 #'   column 10: \tab \code{CENS} \tab integer; censored values
@@ -180,11 +174,9 @@
 #'   column 7: \tab \code{MDV} \tab numeric; missing dependent variable \cr
 #'   (1 if missing, 0 otherwise)\cr
 #'   column 8: \tab \code{CMT} \tab integer; compartment number 
-#'   (determines observation type):
-#'   \itemize{
-#'     \item CMT 1 = Dosing event
-#'     \item CMT 2 = PK concentration
-#'   }\cr
+#'   (determines observation type):\cr
+#'   \tab \tab CMT 1 = Dosing event\cr
+#'   \tab \tab CMT 2 = PK concentration\cr
 #'   column 9: \tab \code{NAME} \tab character; description of event\cr
 #'   column 10: \tab \code{EVENTU} \tab character; unit for observation\cr
 #'   column 11: \tab \code{CENS} \tab integer; censored values
