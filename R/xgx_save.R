@@ -37,7 +37,7 @@
 #' data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 #' ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
 #'   ggplot2::geom_point()
-#' xgx_save(4, 4, "Example", "DRAFT", dirs)
+#' xgx_save(4, 4, dirs, "Example", "DRAFT")
 #' 
 #' @importFrom ggplot2 last_plot
 #' @importFrom ggplot2 ggsave
@@ -48,9 +48,9 @@
 #' @export
 xgx_save <- function(width,
                      height,
-                     filename_main,
-                     status,
                      dirs = NULL,
+                     filename_main = NULL,
+                     status = "DRAFT",
                      g = ggplot2::last_plot(),
                      filetype = "png",
                      status_x = Inf,
@@ -70,6 +70,9 @@ xgx_save <- function(width,
   }
   if (is.null(dirs$filename_prefix)) {
     dirs$filename_prefix <- ""
+  }
+  if (is.null(filename_main)) {
+    filename_main <- "Unnamed_Graph"
   }
 
   filedir <- file.path(dirs$results_dir)

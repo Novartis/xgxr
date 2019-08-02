@@ -1,5 +1,5 @@
 ---
-title: "PKPD Multiple Ascending Dose example"
+title: "PKPD Single Ascending Dose example"
 author: "Fariba Khanshan, Andrew Stein, Alison Margolskee"
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     toc: true
     self_contained: yes
 vignette: >
-  %\VignetteIndexEntry{PKPD Multiple Ascending Dose example}
+  %\VignetteIndexEntry{PKPD Single Ascending Dose example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -32,6 +32,7 @@ here are based on simulated data.
 library(xgxr)
 library(ggplot2)
 library(dplyr)
+library(tidyr)
 
 # flag for labeling figures as draft
 status <- "DRAFT"
@@ -45,7 +46,11 @@ xgx_theme_set()
 ```{r, warning=FALSE, message=FALSE}
 pkpd_data <- case1_pkpd %>%
   arrange(DOSE) %>%
-  mutate(TRTACT = factor(TRTACT, levels = unique(TRTACT)))
+  select(-IPRED) %>%
+  mutate(TRTACT_low2high = factor(TRTACT, levels = unique(TRTACT)),
+         TRTACT_high2low = factor(TRTACT, levels = rev(unique(TRTACT))),
+         DAY_label = paste("Day", PROFDAY),
+         DAY_label = ifelse(DAY_label == "Day 0","Baseline",DAY_label))
  
 pk_data <- pkpd_data %>%
   filter(CMT == 2)
@@ -53,14 +58,18 @@ pk_data <- pkpd_data %>%
 pk_data_cycle1 <- pk_data %>%
   filter(CYCLE == 1)
  
-pk_data_revdose <- pk_data_cycle1 %>%
-  mutate(TRTACT = factor(TRTACT, levels = rev(levels(TRTACT))))
-
 pd_data <- pkpd_data %>%
   filter(CMT == 3)
- 
-pd_data_revdose <- pd_data %>%
-  mutate(TRTACT = factor(TRTACT, levels = rev(levels(TRTACT))))
+
+pd_data_baseline_day85 <- pkpd_data %>%
+  filter(CMT == 3,
+         DAY_label %in% c("Baseline", "Day 85"))
+
+pk_vs_pd_data <- pkpd_data %>%
+  filter(!is.na(LIDV)) %>%
+  select(-c(EVENTU,NAME)) %>%
+  spread(CMT,LIDV) %>%
+  rename(Concentration = `2`, Response = `3`)
 
 NCA <- pk_data_cycle1 %>%
   group_by(ID, DOSE) %>%
@@ -70,7 +79,19 @@ NCA <- pk_data_cycle1 %>%
   tidyr::gather(PARAM,VALUE,-c(ID, DOSE)) %>%
   ungroup() %>%
   mutate(VALUE_NORM = VALUE / DOSE)
- 
+
+AUC_last <- NCA %>%
+  filter(PARAM == "AUC_last") %>%
+  rename(AUC_last = VALUE) %>%
+  select(-c(DOSE,PARAM,VALUE_NORM))
+
+pk_vs_pd_data_day85 <- pk_vs_pd_data %>%
+  filter(DAY_label == "Day 85",
+         !is.na(Concentration),
+         !is.na(Response)) %>%
+  left_join(AUC_last)
+
+
 time_units_dataset <- "hours"
 time_units_plot    <- "days"
 trtact_label       <- "Dose"
@@ -81,6 +102,7 @@ concnorm_label     <- "Normalized Concentration (ng/ml)/mg"
 sex_label          <- "Sex"
 w100_label         <- "WEIGHTB>100"
 pd_label           <- "FEV1 (mL)"
+cens_label         <- "Censored"
 ```
 
 ## Provide an overview of the data
@@ -102,13 +124,13 @@ would be needed in a PK model?
 ### Concentration over time, colored by Dose, mean +/- 95% CI
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-ggplot(data = pk_data_revdose, aes(x = NOMTIME,
-                                   y = LIDV,
-                                   group = DOSE,
-                                   color = TRTACT)) +
+ggplot(data = pk_data_cycle1, aes(x     = NOMTIME,
+                                  y     = LIDV,
+                                  group = DOSE,
+                                  color = TRTACT_high2low)) +
   xgx_geom_ci(conf_level = 0.95) +
   xgx_scale_y_log10() +
-  xgx_scale_x_time_units(units_dataset = time_units_dataset) +
+  xgx_scale_x_time_units(units_dataset = time_units_dataset, units_plot = time_units_plot) +
   labs(y = conc_label, color = trtact_label) +
   xgx_annotate_status(status)
 ```
@@ -122,10 +144,10 @@ ggplot(data = pk_data_cycle1, aes(x = NOMTIME, y = LIDV)) +
   scale_color_manual(values = c("grey50", "red")) +
   xgx_geom_ci(aes(x = NOMTIME, color = NULL, group = NULL), conf_level = 0.95) +
   xgx_scale_y_log10() +
-  xgx_scale_x_time_units(units_dataset = time_units_dataset) +
+  xgx_scale_x_time_units(units_dataset = time_units_dataset, units_plot = time_units_plot) +
   labs(y = conc_label, color = trtact_label) +
   theme(legend.position = "none") +
-  facet_grid(.~TRTACT) +
+  facet_grid(.~TRTACT_low2high) +
   xgx_annotate_status(status)
 ```
 
@@ -134,14 +156,14 @@ ggplot(data = pk_data_cycle1, aes(x = NOMTIME, y = LIDV)) +
 ### Dose Normalized Concentration over time, colored by Dose, mean +/- 95% CI
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-ggplot(data = pk_data_revdose,
+ggplot(data = pk_data_cycle1,
        aes(x = NOMTIME,
            y = LIDV / as.numeric(as.character(DOSE)),
            group = DOSE,
-           color = TRTACT)) +
+           color = TRTACT_high2low)) +
   xgx_geom_ci(conf_level = 0.95, alpha = 0.5, position = position_dodge(1)) +
   xgx_scale_y_log10() +
-  xgx_scale_x_time_units(units_dataset = time_units_dataset) +
+  xgx_scale_x_time_units(units_dataset = time_units_dataset, units_plot = time_units_plot) +
   labs(y = concnorm_label, color = trtact_label) +
   xgx_annotate_status(status)
 
@@ -185,13 +207,13 @@ ggplot(data = NCA[!NCA$DOSE == 3 & !NCA$DOSE == 10 , ],
 ### Concentration over time, colored by categorical covariate, mean +/- 95% CI
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-ggplot(data = pk_data_revdose, aes(x = NOMTIME,
+ggplot(data = pk_data_cycle1, aes(x = NOMTIME,
                                    y = LIDV,
                                    group = WEIGHTB > 100,
                                    color = WEIGHTB > 100)) + 
   xgx_geom_ci(conf_level = 0.95) +
   xgx_scale_y_log10() +
-  xgx_scale_x_time_units(units_dataset = time_units_dataset) +
+  xgx_scale_x_time_units(units_dataset = time_units_dataset, units_plot = time_units_plot) +
   facet_grid(.~DOSE) +
   labs(y = conc_label, color = w100_label) +
   xgx_annotate_status(status)
@@ -200,13 +222,13 @@ ggplot(data = pk_data_revdose, aes(x = NOMTIME,
 ## PD marker over time, colored by Dose, mean (95% CI) percentiles by nominal time
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-ggplot(data = pd_data_revdose, aes(x = NOMTIME / 24,
-                                   y = LIDV,
-                                   group = DOSE,
-                                   color = TRTACT)) +
+ggplot(data = pd_data, aes(x     = NOMTIME,
+                           y     = LIDV,
+                           group = DOSE,
+                           color = TRTACT_high2low)) +
   xgx_geom_ci(conf_level = 0.95) +
   xgx_scale_y_log10() + 
-  xgx_scale_x_time_units(units_dataset = time_units_plot) + 
+  xgx_scale_x_time_units(units_dataset = time_units_dataset, units_plot = time_units_plot) +
   labs(y = pd_label, color = trtact_label) + 
   xgx_annotate_status(status)
 ```
@@ -214,12 +236,12 @@ ggplot(data = pd_data_revdose, aes(x = NOMTIME / 24,
 ## PD marker over time, faceted by Dose, dots & lines grouped by individuals
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-ggplot(data = pd_data, aes(x = NOMTIME / 24, y = LIDV)) +
-  geom_line(aes(group = ID), alpha = 0.5) +
+ggplot(data = pd_data, aes(x = NOMTIME, y = LIDV, group = ID)) +
+  geom_line(alpha = 0.5) +
   geom_point(alpha = 0.5) +
   xgx_scale_y_log10() + 
-  xgx_scale_x_time_units(units_dataset = time_units_plot) +
-  facet_grid(~TRTACT) +
+  xgx_scale_x_time_units(units_dataset = time_units_dataset, units_plot = time_units_plot) +
+  facet_grid(~TRTACT_low2high) +
   labs(y = pd_label, color = trtact_label) +
   xgx_annotate_status(status)
 ```
@@ -245,36 +267,22 @@ Extrapolation outside of the observed dose range could indicate a higher dose
 is always better (even if it isn’t).
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-pd_data$DAY_label <- paste("Day", pd_data$PROFDAY)
-pd_data$DAY_label[pd_data$DAY_label == "Day 0"] <- "Baseline"
-pd_data_baseline_day85 <- pd_data[pd_data$DAY_label %in% c("Baseline", "Day 85"), ]
-
 ggplot(data = pd_data_baseline_day85, aes(x = DOSE,
                                           y = LIDV,
                                           group = DOSE)) +
   xgx_geom_ci(conf_level = 0.95) + 
-  stat_summary(geom = "point", fun.y = mean) +
-  guides(color = guide_legend(""), fill = guide_legend("")) +
   facet_grid(~DAY_label) +
-  labs(y = pd_label, color = trtact_label) +
+  labs(x = dose_label, y = pd_label, color = trtact_label) +
   xgx_annotate_status(status)
 ```
 
 ### PD marker by Dose, faceted by visit, mean (95% CI) by Dose
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-pd_data_visit <- pd_data[pd_data$DAY_label %in% c("Baseline",
-                                                  "Day 14",
-                                                  "Day 28",
-                                                  "Day 56",
-                                                  "Day 85"), ]
-
-ggplot(data = pd_data_visit, aes(x = DOSE, y = LIDV, group = DOSE)) +
+ggplot(data = pd_data, aes(x = DOSE, y = LIDV, group = DOSE)) +
   xgx_geom_ci(conf_level = 0.95) +
-  stat_summary(geom = "point", fun.y = mean) +
-  guides(color = guide_legend(""), fill = guide_legend("")) +
   facet_grid(~DAY_label) +
-  labs(y = pd_label, color = trtact_label) +
+  labs(x = dose_label, y = pd_label, color = trtact_label) +
   xgx_annotate_status(status)
 ```
 
@@ -286,9 +294,8 @@ ggplot(data = pd_data_baseline_day85, aes(x = DOSE,
                                           group = WEIGHTB > 100,
                                           color = WEIGHTB > 100)) +
   xgx_geom_ci(conf_level = .95) +
-  stat_summary(geom = "point", fun.y = mean) +
   facet_grid(~DAY_label) +
-  labs(y = pd_label, color = w100_label) +
+  labs(x = dose_label, y = pd_label, color = w100_label) +
   xgx_annotate_status(status)
 ```
 
@@ -304,70 +311,20 @@ Exposure-Response relationships. Extrapolation outside of the observed
 dose range could indicate a higher dose is always better (even if it isn’t).
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-pkpd_data$DAY_label <- paste("Day", pkpd_data$PROFDAY)
-pkpd_data$DAY_label[pkpd_data$DAY_label == "Day 0"] <- "Baseline"
-pkpd_data_day85 <- pkpd_data[pkpd_data$DAY_label %in% c("Day 85"), ]
-data_to_plot <- list()
-data_to_plot[[1]] <- pkpd_data_day85[pkpd_data_day85$CMT == 2
-                                     & pkpd_data_day85$TRTACT != "Placebo"
-                                     & pkpd_data_day85$PROFDAY == 85,
-                                     c("TIME", "LIDV", "ID", "TRTACT", "CENS")]
-data_to_plot[[1]]$Concentration <- data_to_plot[[1]]$LIDV
-data_to_plot[[1]]$LIDV <- NULL
-
-data_to_plot[[2]] <- pkpd_data_day85[pkpd_data_day85$CMT == 3
-                                     & pkpd_data_day85$PROFDAY == 85,
-                                     c("TIME", "LIDV", "ID", "TRTACT")]
-
-data_to_plot[[2]]$Response <- data_to_plot[[2]]$LIDV
-data_to_plot[[2]]$LIDV <- NULL
-data_to_plot2 <- merge(data_to_plot[[1]], data_to_plot[[2]],
-                       by = c("TIME", "ID", "TRTACT"))
-data_to_plot2$TRTACT <- factor(data_to_plot2$TRTACT,
-                               levels = rev(levels(data_to_plot2$TRTACT)))
-
-ggplot(data = data_to_plot2, aes(x = Concentration, y = Response)) +
-  geom_point(aes(color = TRTACT)) +
-  geom_point(data = data_to_plot2[data_to_plot2$CENS == 1, ], 
-             color = "red", shape = 8) +
-  guides(color = guide_legend(""), fill = guide_legend("")) +
+g = ggplot(data = pk_vs_pd_data_day85, aes(x = Concentration, y = Response)) +
+  geom_point(aes(color = TRTACT_high2low, shape = factor(CENS))) +
+  geom_smooth(color="black",shape=NULL) +
   xgx_scale_x_log10() +
-  labs(y = pd_label, x = conc_label) +
+  labs(x = conc_label, y = pd_label, color = trtact_label, shape = cens_label) +
   xgx_annotate_status(status)
+print(g)
 ```
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-pkpd_data$DAY_label <- paste("Day", pkpd_data$PROFDAY)
-data_to_plot <- list()
-data_to_plot[[1]] <- pkpd_data[pkpd_data$CMT == 2 
-                               & pkpd_data$PROFDAY %in% c(1, 14, 28, 56, 85),
-                               c("TIME", "LIDV", "ID", "TRTACT", "CENS", "PROFDAY")]
-data_to_plot[[1]]$Concentration <- data_to_plot[[1]]$LIDV
-data_to_plot[[1]]$LIDV <- NULL
-
-data_to_plot[[2]] <- pkpd_data[pkpd_data$CMT == 3 
-                               & pkpd_data$PROFDAY %in% c(1, 14, 28, 56, 85),
-                               c("TIME", "LIDV", "ID", "TRTACT", "PROFDAY")]
-data_to_plot[[2]]$Response <- data_to_plot[[2]]$LIDV
-data_to_plot[[2]]$LIDV <- NULL
-
-data_to_plot2 <- merge(data_to_plot[[1]], data_to_plot[[2]],
-                       by = c("TIME", "ID", "TRTACT", "PROFDAY"))
-data_to_plot2$DAY_label <- paste("Day", data_to_plot2$PROFDAY)
-data_to_plot2$TRTACT <- factor(data_to_plot2$TRTACT,
-                               levels = rev(levels(data_to_plot2$TRTACT)))
-
-ggplot(data = data_to_plot2, aes(x = Concentration,
-                                 y = Response,
-                                 color = TRTACT)) + 
-  geom_point() +
-  geom_point(data = data_to_plot2[data_to_plot2$CENS == 1, ],
-             color = "red", shape = 8) +
-  xgx_scale_x_log10() +
-  guides(color = guide_legend(""), fill = guide_legend("")) +
-  facet_grid(~DAY_label) +
-  labs(y = pd_label, x = conc_label) +
-  xgx_annotate_status(status)
+gfacet = g %+% 
+  pk_vs_pd_data + 
+  facet_grid(~DAY_label)
+print(g)
 ```
 
 Plotting AUC vs response instead of concentration vs response may make more 
@@ -380,58 +337,10 @@ samples are scarce, average Cmin could also be used as the exposure metric.
 
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-AUC_0_24 <- NCA[NCA$PARAM == "AUC_last", c("ID", "VALUE")]
-
-names(AUC_0_24) <- c("ID","AUC")
-AUC_0_24$PROFDAY <- 1
-if (length(AUC_0_24[is.na(AUC_0_24$AUC),]$AUC) > 0 ) {
-  AUC_0_24[is.na(AUC_0_24$AUC), ]$AUC <- 0
-}
-
-AUCtau <- pkpd_data[pkpd_data$CMT == 2 & pkpd_data$NOMTIME >= 2015.9 
-                    & pkpd_data$NOMTIME <= 2039.9, ]
-AUCtau <- data.frame(stack(sapply(split(AUCtau, AUCtau$ID),
-                                  function(df) caTools::trapz(df$TIME, df$LIDV))))
-names(AUCtau) <- c("AUC", "ID")
-AUCtau$PROFDAY <- 85
-if (length(AUCtau[is.na(AUCtau$AUC), ]$AUC) > 0 ) {
-  AUCtau[is.na(AUCtau$AUC), ]$AUC <- 0
-}
-
-AUC <- rbind(AUC_0_24, AUCtau)
-AUC$ID <- as.numeric(as.character(AUC$ID))
-AUC <- AUC[order(AUC$ID,AUC$PROFDAY), ]
-
-RESPONSE <- pkpd_data[pkpd_data$CMT == 3 & pkpd_data$PROFDAY %in% c(1, 85),
-                      c("ID", "PROFDAY", "LIDV", "DOSE", "TRTACT")]
-names(RESPONSE) <- c("ID", "PROFDAY", "Response", "DOSE", "TRTACT")
-
-data_to_plot <- merge(AUC, RESPONSE, by = c("ID", "PROFDAY"))
-data_to_plot$ID <- as.numeric(as.character(data_to_plot$ID))
-data_to_plot <- data_to_plot[order(data_to_plot$ID, data_to_plot$PROFDAY), ]
-
-data_to_plot$DAY_label <- paste("Day", data_to_plot$PROFDAY)
-
-data_to_plot$AUC_bins <- cut(data_to_plot$AUC,
-                             quantile(data_to_plot$AUC, na.rm = TRUE),
-                             na.rm = TRUE)
-data_to_plot <- data_to_plot %>%
-  group_by(AUC_bins) %>%
-  mutate(AUC_midpoints = median(AUC))
-
-data_to_plot$TRTACT <- factor(data_to_plot$TRTACT,
-                              levels = rev(levels(data_to_plot$TRTACT)))
-
-ggplot(data = data_to_plot, aes(x = AUC, y = Response)) +
-  geom_point(aes(color = TRTACT)) + geom_smooth(color = "black") +
-  xgx_geom_ci(geom = "pointrange", data = data_to_plot,
-              mapping = aes(x = AUC_midpoints, y = Response),
-              shape = 0) +
-  xgx_scale_x_log10() +
-  guides(color = guide_legend(""), fill = guide_legend("")) +
-  facet_grid(~DAY_label) +
-  labs(y = pd_label, x = auc_label) +
-  xgx_annotate_status(status)
+gAUC = g + 
+  aes(x = AUC_last) +
+  xlab(auc_label)
+print(gAUC)
 ```
 
 ## R Session Info

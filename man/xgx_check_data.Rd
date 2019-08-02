@@ -43,6 +43,6 @@ The dataset may also have additional columns
 }
 \examples{
 covariates <- c("WEIGHTB", "SEX")
-check <- xgx_check_data(mad_md, covariates)
+check <- xgx_check_data(mad_missing_duplicates, covariates)
 
 }

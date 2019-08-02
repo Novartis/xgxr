@@ -6,7 +6,7 @@
 #' 
 #' @examples
 #' covariates <- c("WEIGHTB", "SEX")
-#' check <- xgx_summarize_data(mad_md, covariates)
+#' check <- xgx_summarize_data(mad_missing_duplicates, covariates)
 #' @inheritParams xgx_check_data
 #' @export
 xgx_summarize_data <- function(data, covariates = NULL) {

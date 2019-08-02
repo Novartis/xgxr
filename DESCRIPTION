@@ -46,8 +46,6 @@ Imports:
     ggplot2,
     graphics,
     grDevices,
-    grid,
-    gridExtra,
     labeling,
     magrittr,
     pander,
@@ -58,6 +56,7 @@ Imports:
     utils
 Suggests: 
     caTools,
+    gridExtra,
     knitr,
     rmarkdown,
     RxODE,

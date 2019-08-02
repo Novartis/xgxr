@@ -153,8 +153,8 @@ names(Single_Ascending_Dose_Dataset2) <- c("ID","TIME","NOMTIME","TIMEUNIT","AMT
                                            "DOSE")
 
 sad = Single_Ascending_Dose_Dataset2
-write.csv(sad,"data_create/xgx_website/Single_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
-write.csv(sad,           "inst/extdata/Single_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
+#write.csv(sad,"data_create/xgx_website/sad.csv",row.names = FALSE, quote = FALSE)
+write.csv(sad,"data_create/raw/sad.csv",row.names = FALSE, quote = FALSE)
 usethis::use_data(sad, overwrite = TRUE)
 
 
@@ -345,8 +345,8 @@ names(Multiple_Ascending_Dose_Dataset2) <- c("ID","TIME","NOMTIME","TIMEUNIT","A
 
 mad = Multiple_Ascending_Dose_Dataset2
 
-write.csv(mad,"data_create/xgx_website/Multiple_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
-write.csv(mad,           "inst/extdata/Multiple_Ascending_Dose.csv",row.names = FALSE, quote = FALSE)
+#write.csv(mad,"data_create/xgx_website/mad.csv",row.names = FALSE, quote = FALSE)
+write.csv(mad,        "data_create/raw/mad.csv",row.names = FALSE, quote = FALSE)
 usethis::use_data(mad, overwrite = TRUE)
 
 
@@ -373,8 +373,8 @@ NCA = left_join(NCA_0_24,NCA_tau,by="ID") %>%
   left_join(my.data[,c("ID","DOSE","TRTACT","SEX","WEIGHTB")],by="ID")
 
 mad_nca = NCA
-write.csv(NCA,"data_create/xgx_website/Multiple_Ascending_Dose_NCA.csv",row.names = FALSE, quote = FALSE)
-write.csv(NCA,           "inst/extdata/Multiple_Ascending_Dose_NCA.csv",row.names = FALSE, quote = FALSE)
+#write.csv(NCA,"data_create/xgx_website/mad_NCA.csv",row.names = FALSE, quote = FALSE)
+write.csv(NCA,        "data_create/raw/mad_NCA.csv",row.names = FALSE, quote = FALSE)
 usethis::use_data(mad_nca, overwrite = TRUE)
 
 
@@ -393,10 +393,10 @@ my.data = my.data %>%
   arrange(ID,TIME,CMT)
 
 # Define order for factors
-mad_md = my.data
-write.csv(my.data,"data_create/xgx_website/Multiple_Ascending_Dose_Missing_Duplicates.csv",row.names = FALSE, quote = FALSE)
-write.csv(my.data,           "inst/extdata/Multiple_Ascending_Dose_Missing_Duplicates.csv",row.names = FALSE, quote = FALSE)
-usethis::use_data(mad_md, overwrite = TRUE)
+mad_missing_duplicates = my.data
+#write.csv(my.data,"data_create/xgx_website/mad_missing_duplicates.csv",row.names = FALSE, quote = FALSE)
+write.csv(my.data,        "data_create/raw/mad_missing_duplicates.csv",row.names = FALSE, quote = FALSE)
+usethis::use_data(mad_missing_duplicates, overwrite = TRUE)
 
 #check the data and also add it to the package
 if (FALSE) {
@@ -407,5 +407,5 @@ if (FALSE) {
 }
 
 #also add theophylline to the dataset
-nlmixr_theo_sd = read.csv("./inst/extdata/nlmixr_theo_sd.csv")
+nlmixr_theo_sd = read.csv("./data_create/raw/nlmixr_theo_sd.csv")
 usethis::use_data(nlmixr_theo_sd,overwrite=TRUE)
