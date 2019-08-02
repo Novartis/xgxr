@@ -15,7 +15,7 @@
   in mg\cr
   column 6: \tab \code{LIDV} \tab numeric; observation on a linear scale 
   (observation type determined by CMT), units determined by EVENTU column\cr
-  column 7: \tab \code{MDV} \tab numeric; TODO\cr
+  column 7: \tab \code{MDV} \tab numeric; missing dependent variable\cr
   column 8: \tab \code{CMT} \tab integer; compartment number 
   (determines observation type):
   \itemize{

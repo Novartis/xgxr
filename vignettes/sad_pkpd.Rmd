@@ -89,7 +89,7 @@ pk_vs_pd_data_day85 <- pk_vs_pd_data %>%
   filter(DAY_label == "Day 85",
          !is.na(Concentration),
          !is.na(Response)) %>%
-  left_join(AUC)
+  left_join(AUC_last)
 
 
 time_units_dataset <- "hours"

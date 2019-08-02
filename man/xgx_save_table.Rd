@@ -5,13 +5,10 @@
 \title{Saving table as an image, also labeling the program that created the table 
 and where the table is stored}
 \usage{
-xgx_save_table(data, filename_main, dirs = NULL)
+xgx_save_table(data, dirs = NULL, filename_main = NULL)
 }
 \arguments{
 \item{data}{data.frame or table of results}
-
-\item{filename_main}{main part of the filename, excluding prefix and 
-extension.  no default}
 
 \item{dirs}{list of directories.  If NULL or if directories missing, there 
 is default behavior below
@@ -27,6 +24,9 @@ default "Name_Of_Script_Here.R"
 default "./"
 \item filename_prefix = prefix of filename to be appended to filename_main
 }}
+
+\item{filename_main}{main part of the filename, excluding prefix and 
+extension.  no default}
 }
 \value{
 ggplot2 plot object

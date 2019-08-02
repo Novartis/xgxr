@@ -6,13 +6,13 @@
 \title{NLMIXR Theo SD Data Set}
 \format{A data frame with the following 7 columns:
 \tabular{rll}{
-  column 1: \tab \code{ID} \tab integer; TODO\cr
-  column 2: \tab \code{TIME} \tab numeric; TODO\cr
-  column 3: \tab \code{DV} \tab numeric; TODO\cr
-  column 4: \tab \code{AMT} \tab numeric; TODO\cr
-  column 5: \tab \code{EVID} \tab integer; TODO\cr
-  column 6: \tab \code{CMT} \tab integer; TODO\cr
-  column 7: \tab \code{WT} \tab numeric; TODO
+  column 1: \tab \code{ID} \tab integer; unique patient identifier\cr
+  column 2: \tab \code{TIME} \tab numeric; time relative to first drug 
+  administration\cr#'   column 3: \tab \code{DV} \tab numeric; TODO\cr
+  column 4: \tab \code{AMT} \tab numeric; dependent variable (drug concentration)\cr
+  column 5: \tab \code{EVID} \tab integer; event ID, 1 if dose, 0 otherwise\cr
+  column 6: \tab \code{CMT} \tab integer; compartment number\cr
+  column 7: \tab \code{WT} \tab numeric; weight
 }}
 \usage{
 nlmixr_theo_sd

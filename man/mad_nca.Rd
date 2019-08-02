@@ -3,12 +3,12 @@
 \docType{data}
 \name{mad_nca}
 \alias{mad_nca}
-\title{Multiple Ascending Dose Data Set (NCA)}
+\title{Multiple Ascending Dose Noncompartmental Analysis (NCA) dataset}
 \format{A data frame with the following 7 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab numeric; unique subject ID\cr
-  column 2: \tab \code{PARAM} \tab character; TODO\cr
-  column 3: \tab \code{VALUE} \tab numeric; TODO\cr
+  column 2: \tab \code{PARAM} \tab character; NCA parameter\cr
+  column 3: \tab \code{VALUE} \tab numeric; Value of the NCA parameter\cr
   column 4: \tab \code{DOSE} \tab numeric; randomized dose in mg\cr
   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
   column 14: \tab \code{SEX} \tab character; sex\cr
@@ -18,6 +18,6 @@
 mad_nca
 }
 \description{
-TODO
+Multiple Ascending Dose Noncompartmental Analysis (NCA) dataset
 }
 \keyword{datasets}

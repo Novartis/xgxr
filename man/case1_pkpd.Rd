@@ -47,6 +47,6 @@
 case1_pkpd
 }
 \description{
-TODO
+Case 1 PKPD Data Set
 }
 \keyword{datasets}

@@ -304,7 +304,7 @@ check the dataset for issues.  This can be done using the `xgx_check_data`
 or `xgx_summarize_data` function (the two functions are identical).
 
 ```{r, message=FALSE}
-data <- mad_md %>%
+data <- mad_missing_duplicates %>%
   filter(CMT %in% c(1, 2, 3)) %>%
   rename(DV      = LIDV,
          YTYPE   = CMT,
