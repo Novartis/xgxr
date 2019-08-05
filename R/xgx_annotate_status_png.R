@@ -121,7 +121,7 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       dpi <- 75
     }
     metadata <- attr(img, "metadata")
-    if (!identical(metadata, "I love xgx!")) {
+    if (!identical(metadata, "annotated by xGx")) {
       message(sprintf("Add footnote to %s\n", file))
 
       # get size
@@ -183,7 +183,7 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       # close image
       invisible(grDevices::dev.off())
       img <- png::readPNG(file)
-      png::writePNG(img, file, metadata = "I love xgx!")
+      png::writePNG(img, file, metadata = "annotated by xGx")
       if (x11) {
         graphics::par(mar = c(0, 0, 0, 0), xpd = NA, mgp = c(0, 0, 0),
                       oma = c(0, 0, 0, 0), ann = FALSE)
