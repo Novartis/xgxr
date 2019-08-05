@@ -28,8 +28,8 @@
 #' @importFrom ggplot2 geom_point
 #' @export
 xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
-                                   breaks = breaks_function,
-                                   labels = labels_function, ...) {
+                                   breaks = NULL,
+                                   labels = NULL, ...) {
   # h = hours, d = days, w = weeks, m = months, y = years
 
   if (is.null(units_plot)) {
@@ -57,13 +57,16 @@ xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
   output_scale <- day_scale[[units_plot]]
   scale_factor <- output_scale / input_scale
 
-  breaks_function <- function(data_range) {
-    breaks <- xgx_breaks_time(data_range / scale_factor,
-                              units_plot) * scale_factor
+  if (is.null(breaks)) {
+    breaks <- function(data_range) {
+      xgx_breaks_time(data_range / scale_factor, units_plot) * scale_factor
+    }
   }
 
-  labels_function <- function(breaks) {
-    labels <- breaks / scale_factor
+  if (is.null(labels)) {
+    labels <- function(breaks) {
+      breaks / scale_factor
+    }
   }
 
   xlabel_list <- data.frame(h = "Hour",
@@ -74,7 +77,7 @@ xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
   xlabel <- paste0("Time (", xlabel_list[[units_plot]], "s)")
 
   return(list(
-    ggplot2::scale_x_continuous(breaks = breaks_function,
-                                labels = labels_function, ...),
+    ggplot2::scale_x_continuous(breaks = breaks,
+                                labels = labels, ...),
     ggplot2::xlab(xlabel)))
 }
