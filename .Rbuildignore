@@ -4,6 +4,7 @@
 ^\.Rproj\.user$
 ^data_create$
 ^vignettes/png_example.png$
+^png_example.png$
 ^vignettes/*png$
 ^vignettes_tmp$
 ^.*tar.gz$
