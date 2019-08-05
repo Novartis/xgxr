@@ -2,8 +2,8 @@ Package: xgxr
 Title: Exploratory Graphics for Pharmacometrics
 Version: 1.0.0
 Authors@R: 
-    c(person(given = "xGx",
-             family = "Team",
+    c(person(given = "Andrew",
+             family = "Stein",
              role = c("aut", "cre"),
              email = "andy.stein@gmail.com"),
       person(given = "Alison",
@@ -11,9 +11,6 @@ Authors@R:
              role = "aut"),
       person(given = "Fariba",
              family = "Khanshan",
-             role = "aut"),
-      person(given = "Andrew",
-             family = "Stein",
              role = "aut"),
       person(given = "Konstantin",
              family = "Krismer",
@@ -37,7 +34,7 @@ Description: The xgx R package supports a structured approach
     Finally, it provides some data checking and summarizing functions for
     rapidly exploring a PKPD dataset.
 License: MIT + file LICENSE
-URL: https://opensource.nibr.com/xgx
+URL: <https://opensource.nibr.com/xgx>
 Depends: 
     R (>= 3.4.0)
 Imports:

@@ -5,6 +5,11 @@
 ^data_create$
 ^vignettes/png_example.png$
 ^png_example.png$
+^.Unnamed_Table.csv$
+^Task01_Example.png$
+^png-example.png$
+^png-example2.png$
+^png-example3.png$
 ^vignettes/*png$
 ^vignettes_tmp$
 ^.*tar.gz$
