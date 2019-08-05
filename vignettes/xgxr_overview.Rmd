@@ -113,7 +113,7 @@ g <- xgx_plot(data = data, aes(x = x, y = y)) +
 xgx_save(width = 4, height = 4, dirs = dirs, filename_main = "Example_Plot", status = "DRAFT")
 ```
 
-The the function `xgx_save` works only with ggplot objets.  If the figure 
+The the function `xgx_save` works only with ggplot objects.  If the figure 
 that is created is not a ggplot object, it will not work.  An alternative 
 is to use `xgx_annotate_status_png` to add the status and filename to png files.
 
@@ -180,7 +180,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 The code for confidence intervals is a bit complex and hard to remember. 
 Rather than copy-pasting this code we provide the function `xgx_stat_ci` 
 for calculating and plotting default confidence intervals. `xgx_stat_ci` 
-allows the definition of multple `geom` options in one function call, defined 
+allows the definition of multiple `geom` options in one function call, defined 
 through a list. The default is `geom = list("point","line","errorbar")`. 
 Additional ggplot options can be fed through the `ggplot` object call, or 
 the `xgx_stat_ci` layer. (Note that `xgx_stat_ci` and `xgx_geom_ci` are 

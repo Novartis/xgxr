@@ -31,7 +31,7 @@
 #'   (0 = not censored, 1 = censored)\cr
 #'   column 12: \tab \code{EVID} \tab integer; event ID (0 = observation, 
 #'   1 = dosing event)\cr
-#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)\cr
+#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)\cr
 #'   column 14: \tab \code{SEX} \tab character; sex\cr
 #'   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
 #'   column 16: \tab \code{DOSE} \tab numeric; randomized dose in mg\cr
@@ -75,7 +75,7 @@
 #'   (0 = not censored, 1 = censored)\cr
 #'   column 12: \tab \code{EVID} \tab integer; event ID (0 = observation, 
 #'   1 = dosing event)\cr
-#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)\cr
+#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)\cr
 #'   column 14: \tab \code{SEX} \tab character; sex\cr
 #'   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
 #'   column 16: \tab \code{DOSE} \tab numeric; randomized dose in mg\cr
@@ -95,7 +95,7 @@
 #'   column 4: \tab \code{DOSE} \tab numeric; randomized dose in mg\cr
 #'   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
 #'   column 14: \tab \code{SEX} \tab character; sex\cr
-#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)
+#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)
 #' }
 "mad_nca"
 
@@ -125,7 +125,7 @@
 #'   (0 = not censored, 1 = censored)\cr
 #'   column 11: \tab \code{EVID} \tab integer; event ID (0 = observation, 
 #'   1 = dosing event)\cr
-#'   column 12: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)\cr
+#'   column 12: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)\cr
 #'   column 13: \tab \code{eff0} \tab numeric; efficacy\cr
 #'   column 14: \tab \code{TRTACT} \tab factor; treatment group label\cr
 #'   column 15: \tab \code{DOSE} \tab integer; Dose in mg\cr
@@ -139,7 +139,7 @@
 #' }
 "case1_pkpd"
 
-#' NLMIXR Theo SD Data Set
+#' nlmixr Theophylline SD Data Set
 #'
 #' Theophylline dataset, from the nlmixr R package
 #'
@@ -184,7 +184,7 @@
 #'   (0 = not censored, 1 = censored)\cr
 #'   column 12: \tab \code{EVID} \tab integer; event ID (0 = observation, 
 #'   1 = dosing event)\cr
-#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)\cr
+#'   column 13: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)\cr
 #'   column 14: \tab \code{SEX} \tab character; sex\cr
 #'   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
 #'   column 16: \tab \code{DOSE} \tab numeric; randomized dose in mg 

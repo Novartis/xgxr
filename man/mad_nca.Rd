@@ -12,7 +12,7 @@
   column 4: \tab \code{DOSE} \tab numeric; randomized dose in mg\cr
   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
   column 14: \tab \code{SEX} \tab character; sex\cr
-  column 13: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)
+  column 13: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)
 }}
 \usage{
 mad_nca

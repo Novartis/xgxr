@@ -11,7 +11,7 @@
 #' Based on code from MrFlick on
 #' \href{https://stackoverflow.com/a/23816416}{Stack Overflow}.
 #'
-#' @param file_or_dir Png file to annotate or directory location for
+#' @param file_or_dir The png file to annotate or directory location for
 #'   annotating png files.  Note this will annotate just once, so if
 #'   you generate multiple png files and then annotate at the end of
 #'   your script it will have the correct script name on it. Then if

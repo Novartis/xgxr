@@ -258,7 +258,7 @@ Mean +/- SE, or median, 5th & 95th percentiles.
 
 Here are some questions to ask yourself when looking at Dose-Response plots: 
 Do you see any relationship? Does response increase (decrease) with 
-increasing dose? Are you able to detect a plateau or emax (emin) on the 
+increasing dose? Are you able to detect a plateau or Emax (Emin) on the 
 effect? If so, around what dose does this occur?
 
 Warning: Even if you don’t see an Emax, that doesn’t mean there isn’t one. 
@@ -303,7 +303,7 @@ ggplot(data = pd_data_baseline_day85, aes(x = DOSE,
 
 Plot PD marker against concentration. Do you see any relationship? Does 
 response increase (decrease) with increasing dose? Are you able to detect 
-a plateau or emax (emin) on the effect?
+a plateau or Emax (Emin) on the effect?
 
 Warning: Even if you don’t see an Emax, that doesn’t mean there isn’t one. 
 Be very careful about using linear models for Dose-Response or 
@@ -329,7 +329,7 @@ print(g)
 
 Plotting AUC vs response instead of concentration vs response may make more 
 sense in some situations. For example, when there is a large delay between 
-PK and PD it would be diffcult to relate the time-varying concentration with 
+PK and PD it would be difficult to relate the time-varying concentration with 
 the response. If rich sampling is only done at a particular point in the 
 study, e.g. at steady state, then the AUC calculated on the rich profile 
 could be used as the exposure variable for a number of PD visits. If PK 

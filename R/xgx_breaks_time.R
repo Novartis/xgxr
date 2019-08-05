@@ -11,7 +11,7 @@
 #' \item simplicity - how early in the Q order are you
 #' \item coverage - labelings that don't extend outside the data:
 #' range(data) / range(labels)
-#' \item density (previously granuality) - how cloes to the number of ticks 
+#' \item density (previously granularity) - how close to the number of ticks 
 #' do you get (default is 5)
 #' \item legibility - has to do with fontsize and formatting to prevent 
 #' label overlap

@@ -10,7 +10,7 @@ xgx_annotate_status_png(file_or_dir, script = "", status = "DRAFT",
   status_angle = 45, x11 = FALSE)
 }
 \arguments{
-\item{file_or_dir}{Png file to annotate or directory location for
+\item{file_or_dir}{The png file to annotate or directory location for
 annotating png files.  Note this will annotate just once, so if
 you generate multiple png files and then annotate at the end of
 your script it will have the correct script name on it. Then if

@@ -30,7 +30,7 @@
   (0 = not censored, 1 = censored)\cr
   column 12: \tab \code{EVID} \tab integer; event ID (0 = observation, 
   1 = dosing event)\cr
-  column 13: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)\cr
+  column 13: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)\cr
   column 14: \tab \code{SEX} \tab character; sex\cr
   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
   column 16: \tab \code{DOSE} \tab numeric; randomized dose in mg\cr

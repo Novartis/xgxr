@@ -3,7 +3,7 @@
 \docType{data}
 \name{nlmixr_theo_sd}
 \alias{nlmixr_theo_sd}
-\title{NLMIXR Theo SD Data Set}
+\title{nlmixr Theophylline SD Data Set}
 \format{A data frame with the following 7 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab integer; unique patient identifier\cr
