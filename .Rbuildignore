@@ -11,3 +11,4 @@
 ^Rdev$
 ^misc$
 ^\.travis\.yml$
+^cran-comments\.md$
