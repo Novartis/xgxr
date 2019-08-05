@@ -141,7 +141,7 @@
 
 #' NLMIXR Theo SD Data Set
 #'
-#' TODO
+#' Theophylline dataset, from the nlmixr R package
 #'
 #' @format A data frame with the following 7 columns:
 #' \tabular{rll}{
