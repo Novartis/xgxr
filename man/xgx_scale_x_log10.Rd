@@ -4,8 +4,8 @@
 \alias{xgx_scale_x_log10}
 \title{log10 scales the x axis with a "pretty" set of breaks}
 \usage{
-xgx_scale_x_log10(breaks = xgx_breaks_log10,
-  minor_breaks = xgx_log_breaks_minor, labels = xgx_labels_log10, ...)
+xgx_scale_x_log10(breaks = xgx_breaks_log10, minor_breaks = NULL,
+  labels = xgx_labels_log10, ...)
 }
 \arguments{
 \item{breaks}{major breaks, default is a function defined here}

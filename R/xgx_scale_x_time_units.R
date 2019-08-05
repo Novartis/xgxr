@@ -62,7 +62,7 @@ xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
       xgx_breaks_time(data_range / scale_factor, units_plot) * scale_factor
     }
   }
-  
+
   if (is.null(labels)) {
     labels <- function(breaks) {
       breaks / scale_factor
