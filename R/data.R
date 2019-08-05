@@ -126,16 +126,16 @@
 #'   column 11: \tab \code{EVID} \tab integer; event ID (0 = observation, 
 #'   1 = dosing event)\cr
 #'   column 12: \tab \code{WEIGHTB} \tab numeric; baseline bodyweight (kg)\cr
-#'   column 13: \tab \code{eff0} \tab numeric; TODO\cr
+#'   column 13: \tab \code{eff0} \tab numeric; efficacy\cr
 #'   column 14: \tab \code{TRTACT} \tab factor; treatment group label\cr
-#'   column 15: \tab \code{DOSE} \tab integer; TODO\cr
+#'   column 15: \tab \code{DOSE} \tab integer; Dose in mg\cr
 #'   column 16: \tab \code{PROFDAY} \tab integer; day of profile\cr
 #'   column 17: \tab \code{PROFTIME} \tab numeric; time within PROFDAY\cr
 #'   column 18: \tab \code{CYCLE} \tab integer; count of drug administrations
 #'   received\cr
-#'   column 19: \tab \code{PART} \tab integer; TODO\cr
-#'   column 20: \tab \code{STUDY} \tab integer; TODO\cr
-#'   column 21: \tab \code{IPRED} \tab numeric; TODO\cr
+#'   column 19: \tab \code{PART} \tab integer; part of study\cr
+#'   column 20: \tab \code{STUDY} \tab integer; study\cr
+#'   column 21: \tab \code{IPRED} \tab numeric; individual prediction\cr
 #' }
 "case1_pkpd"
 
