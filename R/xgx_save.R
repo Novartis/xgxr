@@ -29,11 +29,9 @@
 #' @return ggplot2 plot object
 #'
 #' @examples
-#' dirs <- list(parent_dir = tempdir(),
-#'              rscript_dir = "./",
-#'              rscript_name = "Example.R",
-#'              results_dir = "./",
-#'              filename_prefix = "Task01_")
+#' dirs <- list(rscript_name = "example.R",
+#'              results_dir = tempdir(),
+#'              filename_prefix = "example_")
 #' data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 #' ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
 #'   ggplot2::geom_point()
@@ -72,7 +70,7 @@ xgx_save <- function(width,
     dirs$filename_prefix <- ""
   }
   if (is.null(filename_main)) {
-    filename_main <- "Unnamed_Graph"
+    filename_main <- "unnamed_graph_"
   }
 
   filedir <- file.path(dirs$results_dir)
