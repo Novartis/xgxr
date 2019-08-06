@@ -104,13 +104,13 @@ height and width by typing `dev.size()`
 dirs <- list(
   parent_dir = tempdir(),
   rscript_dir = "./",
-  rscript_name = "Example.R",
-  results_dir = "./",
-  filename_prefix = "Task01_")
+  rscript_name = "example.R",
+  results_dir = tempdir(),
+  filename_prefix = "example_")
 data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 g <- xgx_plot(data = data, aes(x = x, y = y)) +
   geom_point()
-xgx_save(width = 4, height = 4, dirs = dirs, filename_main = "Example_Plot", status = "DRAFT")
+xgx_save(width = 4, height = 4, dirs = dirs, filename_main = "example_plot", status = "DRAFT")
 ```
 
 The the function `xgx_save` works only with ggplot objects.  If the figure 
