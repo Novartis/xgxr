@@ -36,7 +36,12 @@ Saving table as an image, also labeling the program that created the table
 and where the table is stored
 }
 \examples{
+dirs <- list(parent_dir = tempdir(),
+             rscript_dir = "./",
+             rscript_name = "Example.R",
+             results_dir = "./",
+             filename_prefix = "Task01_")
 data <- data.frame(x = c(1, 2), y = c(1, 2))
-xgx_save_table(data, filename_main = "test")
+xgx_save_table(data, dirs = dirs, filename_main = "test")
 
 }
