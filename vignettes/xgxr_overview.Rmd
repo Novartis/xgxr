@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 ## Overview
 
 The xgxr package supports a structured approach to exploring PKPD data 
-([outlined here](http://opensource.nibr.com/xgx)).  It also contains helper 
+([outlined here](https://opensource.nibr.com/xgx)).  It also contains helper 
 functions for enabling the modeler to follow best R practices (by appending 
 the program name, figure name location, and draft status to each plot) and 
 enabling the modeler to follow best graphical practices (by providing an xgx 
