@@ -1,8 +1,5 @@
 # xgxr
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Travis build status](https://travis-ci.org/Novartis/xgxr.svg?branch=master)](https://travis-ci.org/Novartis/xgxr)
-
-The xgxr package supports a structured approach for exploring PKPD data ([outlined here](http://opensource.nibr.com/xgx)).  It also contains helper functions for enabling the modeler to follow best R practices (by appending the program name, figure name location, and draft status to each plot).  In addition, it enables the modeler to follow best graphical practices (by providing an xgx theme that reduces chart ink, and by providing time-scale, log-scale, and reverse-log-transform-scale functions for more readable axes).  Finally, it provides some data checking and summarizing functions for rapidly exploring a PKPD dataset.
 
 ## How to update/test/use package
 * **Developing the package:** Run [_Package_Setup.R](_Package_Setup.R).  This will update the documentation, reinstall the package, and rebuild the vignette.
@@ -65,6 +62,9 @@ Vignettes are documents that show how a package can be used.  They are located i
 * [Hadley Wickham's book](http://r-pkgs.had.co.nz/)
 * [Developing package with Rstudio](https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-RStudio)
 * [Getting a package onto CRAN](https://cran.r-project.org/web/packages/policies.html)
+
+## Coveralls.io for testing
+Visit coveralls.io if later, we get to the point where we want to look at unit test coverage.
 
 ## Scope of the project
 * Base case (100%)
