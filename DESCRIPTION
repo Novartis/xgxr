@@ -22,17 +22,17 @@ Authors@R:
              role = "ctb",
              email = "matthew.fidler@gmail.com",
              comment = c(ORCID = "0000-0001-8538-6691")),
-       person("Novartis Pharma AG", role = "fnd"))
-Description: The xgx R package supports a structured approach
+       person("Novartis Pharma AG", role = c("cph","fnd"))
+Description: Supports a structured approach
     for exploring PKPD data <https://opensource.nibr.com/xgx>. It also
     contains helper functions for enabling the modeler to follow best R
     practices (by appending the program name, figure name location, and
     draft status to each plot). In addition, it enables the modeler to
-    follow best graphical practices (by providing an xgx theme that
+    follow best graphical practices (by providing a theme that
     reduces chart ink, and by providing time-scale, log-scale, and
     reverse-log-transform-scale functions for more readable axes).
     Finally, it provides some data checking and summarizing functions for
-    rapidly exploring a PKPD dataset.
+    rapidly exploring pharmacokinetics and pharmacodynamics (PKPD) datasets.
 License: MIT + file LICENSE
 URL: https://opensource.nibr.com/xgx
 Depends: 
