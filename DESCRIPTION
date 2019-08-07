@@ -22,7 +22,7 @@ Authors@R:
              role = "ctb",
              email = "matthew.fidler@gmail.com",
              comment = c(ORCID = "0000-0001-8538-6691")),
-       person("Novartis Pharma AG", role = c("cph","fnd"))
+       person("Novartis Pharma AG", role = c("cph","fnd")))
 Description: Supports a structured approach
     for exploring PKPD data <https://opensource.nibr.com/xgx>. It also
     contains helper functions for enabling the modeler to follow best R
