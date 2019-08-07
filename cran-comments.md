@@ -9,24 +9,11 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-### Note 1:
-* checking CRAN incoming feasibility ... NOTE
-  Maintainer: 'Andrew Stein <andy.stein@gmail.com>'
-
-  New submission
-   
-  Possibly mis-spelled words in DESCRIPTION:
-   PKPD (27:19, 35:25)
-   Pharmacometrics (2:33)
-   xgx (26:18, 31:54)
+0 errors | 0 warnings | 0 notes
 
 **Comments:**
 
-* Andrew Stein is the maintainer of the package,
-* andy.stein@gmail.com is his stable email address,
-* none of the words are misspelled
+* Andrew Stein is the maintainer of the package
 
 ## Downstream dependencies
 
