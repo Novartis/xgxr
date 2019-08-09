@@ -36,7 +36,9 @@ Saving table as an image, also labeling the program that created the table
 and where the table is stored
 }
 \examples{
-dirs <- list(rscript_name = "example.R",
+dirs <- list(parent_dir  = tempdir(),
+             rscript_dir = tempdir(),
+             rscript_name = "example.R",
              results_dir = tempdir(),
              filename_prefix = "example_")
 data <- data.frame(x = c(1, 2), y = c(1, 2))

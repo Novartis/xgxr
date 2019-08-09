@@ -117,12 +117,13 @@ xgx_annotate_status_png <- function(file_or_dir, script = "", status = "DRAFT",
       # mgp <- c(0, 0, 0): margin line (in mex units) for the axis title.
       # oma <- c(0, 0, 0, 0): more margins # ann = FALSE: do not add extra
       # annotation to the plot
-      old_par <- graphics::par()
-      on.exit(suppressWarnings({graphics::par(old_par)}))
-      suppressWarnings(graphics::par(mar = c(0, 0, 0, 0),
+      old_par <- graphics::par(no.readonly =TRUE)
+      on.exit(graphics::par(old_par))
+      
+      graphics::par(mar = c(0, 0, 0, 0),
                                      xpd = NA,
                                      mgp = c(0, 0, 0),
-                                     oma = c(0, 0, 0, 0), ann = FALSE))
+                                     oma = c(0, 0, 0, 0), ann = FALSE)
 
       # creates new plot - uses what was set with par()?
       graphics::plot.new()

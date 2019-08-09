@@ -121,11 +121,12 @@ is to use `xgx_annotate_status_png` to add the status and filename to png files.
 data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 g <- xgx_plot(data = data, aes(x = x, y = y)) +
   geom_point()
-ggsave("png_example.png", plot = g, height = 4, width = 4, dpi = 75)
-xgx_annotate_status_png("png_example.png", "./ExampleScript.R")
+filename = file.path(tempdir(), "png_example.png")
+ggsave(filename, plot = g, height = 4, width = 4, dpi = 75)
+xgx_annotate_status_png(filename, "./ExampleScript.R")
 ```
 
-![image](png_example.png)
+<!-- ![image](png_example.png) -->
 
 ### Saving tables
 

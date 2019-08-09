@@ -29,8 +29,10 @@
 #' @return ggplot2 plot object
 #'
 #' @examples
-#' dirs <- list(rscript_name = "example.R",
-#'              results_dir = tempdir(),
+#' dirs <- list(parent_dir   = tempdir(),
+#'              rscript_dir  = tempdir(),
+#'              rscript_name = "example.R",
+#'              results_dir  = tempdir(),
 #'              filename_prefix = "example_")
 #' data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 #' ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
@@ -55,16 +57,16 @@ xgx_save <- function(width,
                      status_y = Inf,
                      status_fontsize = 7) {
   if (is.null(dirs$parent_dir)) {
-    dirs$parent_dir <- getwd()
+    stop("The parent directory for your programs and results must be specified: dirs$parent_dir")
   }
   if (is.null(dirs$rscript_dir)) {
-    dirs$rscript_dir <- "./"
+    stop("The project directory where your R scripts are stored must be specified: dirs$rscript_dir")
   }
   if (is.null(dirs$rscript_name)) {
-    dirs$rscript_name <- "default_script_name.R"
+    stop("The name of the R script that saves this plot must be specified: dirs$rscript_name")
   }
   if (is.null(dirs$results_dir)) {
-    dirs$results_dir <- "./"
+    stop("The results directory where your outputs are stored must be specified: dirs$results_dir")
   }
   if (is.null(dirs$filename_prefix)) {
     dirs$filename_prefix <- ""
