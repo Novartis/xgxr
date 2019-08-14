@@ -13,10 +13,9 @@
 
 **Comments:**
 
-* Andrew Stein is the maintainer of the package
+* this version corrected the example code in the documentation for 
+  xgx_save and xgx_save_table so that it would not store any files
 
 ## Downstream dependencies
 
 None.
-
-* This is a new release.
