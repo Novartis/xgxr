@@ -1,6 +1,6 @@
 Package: xgxr
 Title: Exploratory Graphics for Pharmacometrics
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     c(person(given = "Andrew",
              family = "Stein",
@@ -8,10 +8,12 @@ Authors@R:
              email = "andy.stein@gmail.com"),
       person(given = "Alison",
              family = "Margolskee",
-             role = "aut"),
+             role = "aut",
+             email = "alison.margolskee@gmail.com"),
       person(given = "Fariba",
              family = "Khanshan",
-             role = "aut"),
+             role = "aut",
+             email = "faribashan@gmail.com"),
       person(given = "Konstantin",
              family = "Krismer",
              role = "aut",
