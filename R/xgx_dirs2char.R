@@ -34,7 +34,7 @@ xgx_dirs2char <- function(dirs, include_time = TRUE) {
                                  "results_dir", "filename"),
                               names(dirs))
   if (length(missing.filenames) > 0) {
-    stop(paste("Fields missing from missing.filenames = ", missing.filenames))
+    stop(paste("Fields missing from dirs = ", missing.filenames))
   }
 
   output <- paste0(dirs$parent_dir, "\n",
