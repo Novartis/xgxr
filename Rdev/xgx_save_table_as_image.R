@@ -16,11 +16,6 @@
 #'
 #' @return ggplot2 plot object
 #' @export
-#'
-#' @examples
-#' data = data.frame(x=c(1,2),y=c(1,2))
-#' xgx_save_table(data,4,4)
-
 
 xgx_save_table_as_image = function(
                     data,

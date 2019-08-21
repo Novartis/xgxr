@@ -56,7 +56,6 @@ xgx_save_table <- function(data, dirs = NULL, filename_main = NULL) {
     filename_main <- "unnamed_table_"
   }
 
-  filedir <- file.path(dirs$results_dir)
   dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".csv")
 
   caption <- c("", dirs$parent_dir,
@@ -74,7 +73,7 @@ xgx_save_table <- function(data, dirs = NULL, filename_main = NULL) {
     dplyr::mutate_all(as.character) %>%
     dplyr::bind_rows(caption_row)
 
-  utils::write.csv(data_append, file.path(filedir, dirs$filename),
+  utils::write.csv(data_append, file.path(dirs$results_dir, dirs$filename),
                    quote = FALSE, row.names = FALSE)
   return(data_append)
 }
