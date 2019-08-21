@@ -210,7 +210,7 @@ The default settings calculate the confidence interval based on the
 Student t Distribution (assuming normally distributed data). You can also 
 specify "lognormal"" or "binomial"" for the `distribution`. The former will 
 perform the confidence interval operation on the log-scaled data, the latter 
-uses the binomial exact confidence interval calculation from the binom package. 
+uses the binomial exact confidence interval calculation from the `binom` package. 
 
 Note: you DO NOT need to use both `distribution = "lognormal"` 
 and `scale_y_log10()`, choose only one of these.

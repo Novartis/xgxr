@@ -2,7 +2,7 @@
 % Please edit documentation in R/xgx_scale_x_reverselog10.R
 \name{xgx_scale_x_reverselog10}
 \alias{xgx_scale_x_reverselog10}
-\title{Reverselog transform for the x scale.}
+\title{Reverse-log transform for the x scale.}
 \usage{
 xgx_scale_x_reverselog10(...)
 }

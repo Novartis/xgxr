@@ -1,4 +1,4 @@
-#' Reverselog transform for the x scale.  
+#' Reverse-log transform for the x scale.  
 #' 
 #' \code{xgx_scale_x_reverselog10} is designed to be used with data that 
 #' approaches 100%.
