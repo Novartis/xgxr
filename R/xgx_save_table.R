@@ -22,15 +22,14 @@
 #' @return ggplot2 plot object
 #'
 #' @examples
-#' \dontrun{
-#' dirs <- list(parent_dir  = "./",
-#'              rscript_dir = "./",
+#' directory = tempdir()
+#' dirs <- list(parent_dir  = directory,
+#'              rscript_dir = directory,
 #'              rscript_name = "example.R",
-#'              results_dir = "./",
+#'              results_dir = directory,
 #'              filename_prefix = "example_")
 #' data <- data.frame(x = c(1, 2), y = c(1, 2))
 #' xgx_save_table(data, dirs = dirs, filename_main = "test")
-#' }
 #' 
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr mutate_all

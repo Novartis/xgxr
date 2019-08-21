@@ -13,8 +13,10 @@
 
 **Comments:**
 
-* this version corrected the example code in the documentation for 
-  xgx_save and xgx_save_table so that it would not store any files
+* removed dontrun block
+* further corrected the example code in the documentation for 
+  xgx_save and xgx_save_table so that the examples would not store
+  any files locally
 
 ## Downstream dependencies
 

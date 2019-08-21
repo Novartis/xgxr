@@ -5,9 +5,7 @@
 #' 2 breaks
 #' and also, it will try to go by 3s (i.e. 1,3,10,30,100) if it makes sense
 #'
-#' for the extended breaks function Q is a set of nice increments and
-#' w is a set of 4 weights for:
-#' 
+#' for the extended breaks function, weights is a set of 4 weights for
 #' \enumerate{
 #' \item simplicity - how early in the Q order are you
 #' \item coverage - labelings that don't extend outside the data: 
@@ -43,14 +41,13 @@
 #' @importFrom labeling extended
 #' @export
 xgx_breaks_log10 <-  function(data_range) {
-  dmin <- min(log10(data_range))
-  dmax <- max(log10(data_range))
-  # number of breaks to aim for
-  m <- 5
+  data_min <- min(log10(data_range))
+  data_max <- max(log10(data_range))
+  n_breaks <- 5   # number of breaks to aim for
   # preferred breaks, in log10-space
-  q <- c(1, 0.5)
+  preferred_increment <- c(1, 0.5)
 
-  breaks <- labeling::extended(dmin, dmax, m, Q = q)
+  breaks <- labeling::extended(data_min, data_max, n_breaks, Q = preferred_increment)
   breaks <- 10^breaks
 
   # ensure that there are at least 2 breaks

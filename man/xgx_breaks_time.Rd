@@ -20,9 +20,7 @@ given the units of the data and the units of the plot.
 It is inspired by scales::extended_breaks
 }
 \details{
-for the extended breaks function, 
-Q is a set of nice increments
-w is a set of 4 weights for
+for the extended breaks function, weights is a set of 4 weights for
 \enumerate{
 \item simplicity - how early in the Q order are you
 \item coverage - labelings that don't extend outside the data:

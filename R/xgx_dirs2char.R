@@ -30,11 +30,11 @@
 #' @export
 xgx_dirs2char <- function(dirs, include_time = TRUE) {
   # check to make sure all filenames dirs
-  missing.filenames <- setdiff(c("parent_dir", "rscript_dir", "rscript_name",
+  missing_filenames <- setdiff(c("parent_dir", "rscript_dir", "rscript_name",
                                  "results_dir", "filename"),
                               names(dirs))
-  if (length(missing.filenames) > 0) {
-    stop(paste("Fields missing from dirs = ", missing.filenames))
+  if (length(missing_filenames) > 0) {
+    stop(paste("Fields missing from dirs = ", missing_filenames))
   }
 
   output <- paste0(dirs$parent_dir, "\n",

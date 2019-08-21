@@ -4,9 +4,7 @@
 #' given the units of the data and the units of the plot.
 #' It is inspired by scales::extended_breaks
 #'
-#' for the extended breaks function, 
-#' Q is a set of nice increments
-#' w is a set of 4 weights for
+#' for the extended breaks function, weights is a set of 4 weights for
 #' \enumerate{
 #' \item simplicity - how early in the Q order are you
 #' \item coverage - labelings that don't extend outside the data:
@@ -44,33 +42,32 @@
 #' @importFrom labeling extended
 #' @export
 xgx_breaks_time <-  function(data_range, units_plot) {
-  dmin <- min(data_range)
-  dmax <- max(data_range)
-  dspan <- dmax - dmin
-  # number of breaks to aim for
-  m <- 5
-  # default Q (spacing)
-  q_default <- c(1, 5, 2, 4, 3, 1)
-  w_default <- c(0.25, 0.2, 0.5, 0.05)
-  w_simple <- c(1, 0.2, 0.5, 0.05)
+  data_min <- min(data_range)
+  data_max <- max(data_range)
+  data_span <- data_max - data_min
+  n_breaks <- 5 # number of breaks to aim for
+  preferred_increment_default <- c(1, 5, 2, 4, 3, 1)
+  weights_default <- c(0.25, 0.2, 0.5, 0.05)
+  weights_simple <- c(1, 0.2, 0.5, 0.05)
 
-  if (units_plot %in% c("h", "m") && dspan >= 48) {
-    q <- c(24, 12, 6, 3)
-    w <- w_simple
-  } else if (units_plot %in% c("h", "m") && dspan >= 24) {
-    q <- c(3, 12, 6, 2)
-    w <- w_simple
-  } else if (units_plot %in% c("h", "m") && dspan < 24) {
-    q <- c(6, 3, 2, 1)
-    w <- w_simple
-  } else if (units_plot == "d" && dspan >= 12) {
-    q <- c(7, 14, 28)
-    w <- w_simple
+  if (units_plot %in% c("h", "m") && data_span >= 48) {
+    preferred_increment <- c(24, 12, 6, 3)
+    weights <- weights_simple
+  } else if (units_plot %in% c("h", "m") && data_span >= 24) {
+    preferred_increment <- c(3, 12, 6, 2)
+    weights <- weights_simple
+  } else if (units_plot %in% c("h", "m") && data_span < 24) {
+    preferred_increment <- c(6, 3, 2, 1)
+    weights <- weights_simple
+  } else if (units_plot == "d" && data_span >= 12) {
+    preferred_increment <- c(7, 14, 28)
+    weights <- weights_simple
   } else {
-    q <- q_default
-    w <- w_default
+    preferred_increment <- preferred_increment_default
+    weights <- weights_default
   }
 
-  breaks <- labeling::extended(dmin, dmax, m, Q = q, w = w)
+  breaks <- labeling::extended(data_min, data_max, m = n_breaks, 
+                               Q = preferred_increment, w = weights)
   return(breaks)
 }

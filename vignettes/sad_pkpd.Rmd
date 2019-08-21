@@ -320,13 +320,6 @@ g = ggplot(data = pk_vs_pd_data_day85, aes(x = Concentration, y = Response)) +
 print(g)
 ```
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-gfacet = g %+% 
-  pk_vs_pd_data + 
-  facet_grid(~DAY_label)
-print(g)
-```
-
 Plotting AUC vs response instead of concentration vs response may make more 
 sense in some situations. For example, when there is a large delay between 
 PK and PD it would be difficult to relate the time-varying concentration with 

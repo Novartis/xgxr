@@ -19,9 +19,7 @@ it's better than the default function because it ensures there is at least
 and also, it will try to go by 3s (i.e. 1,3,10,30,100) if it makes sense
 }
 \details{
-for the extended breaks function Q is a set of nice increments and
-w is a set of 4 weights for:
-
+for the extended breaks function, weights is a set of 4 weights for
 \enumerate{
 \item simplicity - how early in the Q order are you
 \item coverage - labelings that don't extend outside the data: 
