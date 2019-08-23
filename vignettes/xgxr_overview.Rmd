@@ -326,7 +326,3 @@ covar <- xgx_summarize_covariates(data,covariates)
 knitr::kable(covar$cts_covariates)
 knitr::kable(covar$cat_covariates)
 ```
-
-### Visual check
-
-TODO
