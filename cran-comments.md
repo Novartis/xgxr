@@ -13,10 +13,7 @@
 
 **Comments:**
 
-* removed dontrun block
-* further corrected the example code in the documentation for 
-  xgx_save and xgx_save_table so that the examples would not store
-  any files locally
+* reran usethis::use_data() on all datasets in R-3.6.1, because some versions of this command were run with R-3.5 and the datasets were not working for a user.
 
 ## Downstream dependencies
 
