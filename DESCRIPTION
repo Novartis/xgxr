@@ -38,7 +38,7 @@ Description: Supports a structured approach
 License: MIT + file LICENSE
 URL: https://opensource.nibr.com/xgx
 Depends: 
-    R (>= 3.4.0)
+    R (>= 3.5.0)
 Imports:
     assertthat,
     binom,
