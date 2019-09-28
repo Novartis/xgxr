@@ -1,3 +1,5 @@
-CHANGES IN VERSION 0.0.1
+CHANGES IN VERSION 1.0.3
 -------------------------
-    o initial release
+    o datasets are now visible to R-3.6 but this may break functionality for R-3.4
+    o therefore, we now require R >= 3.5 for using this package.
+    o user can still use xgxr-1.0.2 for R-3.4

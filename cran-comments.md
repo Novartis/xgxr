@@ -13,7 +13,8 @@
 
 **Comments:**
 
-* reran usethis::use_data() on all datasets in R-3.6.1, because some versions of this command were run with R-3.5 and the datasets were not working for a user.
+* reran usethis::use_data() on all datasets in R-3.6.1, because some versions of this command were run with R-3.5 and the datasets were not visible for an xgxr user.  
+* we now require R-3.5 for using this package
 
 ## Downstream dependencies
 
