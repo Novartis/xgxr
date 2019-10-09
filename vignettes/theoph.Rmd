@@ -60,9 +60,9 @@ data <- data %>%
   mutate(ID = ID) %>%   #ID column
   group_by(ID) %>%
   mutate(TIME = TIME,     #TIME column name 
-         NOMTIME = as.numeric(cut(TIME,
+         NOMTIME = as.numeric(as.character(cut(TIME,
                                   breaks = c(-Inf, 0.1, 0.7, 1.5, 4, 8, 10.5, 15, Inf), 
-                                  labels = c( 0, 0.5, 1, 2, 7, 9, 12, 24))),
+                                  labels = c( 0, 0.5, 1, 2, 7, 9, 12, 24)))),
          EVID    = EVID,                     # EVENT ID >=1 is dose, 0 otherwise
          CYCLE   = 1,                        # CYCLE of PK data 
          LIDV    = DV,                       # DEPENDENT VARIABLE column name
@@ -164,13 +164,13 @@ if (exists("data_pk_rich")) {
 ### Concentration over Time, faceted by dose, mean +/- 95% CI, overlaid on gray spaghetti plots
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
-ggplot(data = data_pk, aes(x = NOMTIME,
+ggplot(data = data_pk, aes(x = TIME,
                            y = LIDV,
                            group = interaction(ID, CYCLE))) +
   geom_line(size = 1, color = rgb(0.5, 0.5, 0.5), alpha = 0.3) +
   geom_point(aes(color = factor(CENS), shape = factor(CENS)),
                      size = 2, alpha = 0.3) +
-  xgx_stat_ci(aes(group = NULL, color = NULL)) +
+  xgx_stat_ci(aes(x = NOMTIME, group = NULL, color = NULL)) +
   facet_grid(.~DOSEREG) +
   xgx_scale_x_time_units(time_units_dataset, time_units_plot) +
   xgx_scale_y_log10() +

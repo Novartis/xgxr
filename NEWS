@@ -1,6 +1,8 @@
 CHANGES IN VERSION 1.0.4
 -------------------------
     o fixed bug in xgx_geom_ci because it wasn't properly passing parameters to xgx_stat_ci
+    o fixed bug in theoph.Rmd vignette to properly calculate the NOMTIME.
+    o update theoph.Rmd and sad_pkpd.Rmd vignette to use TIME and NOMTIME both for confidence interval plots that overlay data
 
 CHANGES IN VERSION 1.0.3
 -------------------------
