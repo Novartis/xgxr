@@ -1,5 +1,17 @@
+CHANGES IN VERSION 1.0.4
+-------------------------
+    o fixed bug in xgx_geom_ci because it wasn't properly passing parameters to xgx_stat_ci
+
 CHANGES IN VERSION 1.0.3
 -------------------------
     o datasets are now visible to R-3.6 but this may break functionality for R-3.4
     o therefore, we now require R >= 3.5 for using this package.
     o user can still use xgxr-1.0.2 for R-3.4
+    
+CHANGES IN VERSION 1.0.0, 1.0.1, and 1.0.2
+-------------------------
+    o fixing to get in line with CRAN policies (e.g. example code cannot save files in the user's directory)
+
+CHANGES IN VERSION 0.0.1
+-------------------------
+    o initial release

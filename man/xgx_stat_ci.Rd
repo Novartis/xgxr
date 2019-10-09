@@ -6,8 +6,8 @@
 \usage{
 xgx_stat_ci(mapping = NULL, data = NULL, conf_level = 0.95,
   distribution = "normal", geom = list("point", "line", "errorbar"),
-  position = "identity", ..., fun.args = list(), na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  position = "identity", fun.args = list(), na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by `aes` or `aes_`. 
@@ -46,10 +46,6 @@ geoms, e.g. list("point","line","errorbar"), which is the default.}
 \item{position}{Position adjustment, either as a string, or the result of 
 a call to a position adjustment function.}
 
-\item{...}{other arguments passed on to layer. These are often aesthetics, 
-used to set an aesthetic to a fixed value, like color = "red" or size = 3. 
-They may also be parameters to the paired geom/stat.}
-
 \item{fun.args}{Optional additional arguments passed on to the functions.}
 
 \item{na.rm}{If FALSE, the default, missing values are removed with a 
@@ -63,6 +59,10 @@ includes, and TRUE always includes.}
 than combining with them. This is most useful for helper functions that 
 define both data and aesthetics and shouldn't inherit behaviour from the 
 default plot specification, e.g. borders.}
+
+\item{...}{other arguments passed on to layer. These are often aesthetics, 
+used to set an aesthetic to a fixed value, like color = "red" or size = 3. 
+They may also be parameters to the paired geom/stat.}
 }
 \value{
 ggplot2 plot layer

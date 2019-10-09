@@ -1,4 +1,4 @@
-# xgxr
+# xgxr - Exploratory Graphics R Package - README
 
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Travis build status](https://travis-ci.org/Novartis/xgxr.svg?branch=master)](https://travis-ci.org/Novartis/xgxr)
 

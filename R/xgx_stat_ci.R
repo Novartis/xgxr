@@ -37,9 +37,6 @@
 #' geoms, e.g. list("point","line","errorbar"), which is the default.
 #' @param position Position adjustment, either as a string, or the result of 
 #' a call to a position adjustment function.
-#' @param ... other arguments passed on to layer. These are often aesthetics, 
-#' used to set an aesthetic to a fixed value, like color = "red" or size = 3. 
-#' They may also be parameters to the paired geom/stat.
 #' @param fun.args Optional additional arguments passed on to the functions.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
@@ -50,6 +47,9 @@
 #' than combining with them. This is most useful for helper functions that 
 #' define both data and aesthetics and shouldn't inherit behaviour from the 
 #' default plot specification, e.g. borders.
+#' @param ... other arguments passed on to layer. These are often aesthetics, 
+#' used to set an aesthetic to a fixed value, like color = "red" or size = 3. 
+#' They may also be parameters to the paired geom/stat.
 #'
 #' @return ggplot2 plot layer
 #'
@@ -105,10 +105,11 @@ xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95,
                         distribution = "normal",
                         geom = list("point", "line", "errorbar"),
                         position = "identity",
-                        ..., fun.args = list(),
+                        fun.args = list(),
                         na.rm = FALSE,
                         show.legend = NA,
-                        inherit.aes = TRUE) {
+                        inherit.aes = TRUE,
+                        ...) {
   if (!(conf_level > 0.5 && conf_level < 1)) {
     stop("conf_level should be greater than 0.5 and less than 1")
   }
