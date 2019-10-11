@@ -1,4 +1,5 @@
 CHANGES IN VERSION 1.0.5
+-------------------------
     o fixed bug in xgx_theme_set() to make sure it calls xgx_theme() instead of theme_bw()
 
 CHANGES IN VERSION 1.0.4
