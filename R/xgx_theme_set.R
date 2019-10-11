@@ -17,8 +17,7 @@
 #'   xgx_scale_x_reverselog10()
 #'   
 #' @importFrom ggplot2 theme_set
-#' @importFrom ggplot2 theme_bw
 #' @export
 xgx_theme_set <- function() {
-  ggplot2::theme_set(ggplot2::theme_bw())
+  ggplot2::theme_set(xgx_theme())
 }
