@@ -4,32 +4,10 @@
 ## How to update/test/use package
 * **Developing the package:** Run [_Package_Setup.R](_Package_Setup.R).  This will update the documentation, reinstall the package, and rebuild the vignette.
 * **Installing the package for use in your project:** follow the directions below, also [here](_Package_Install_New_User.R).  There are a few options.
-  * **Option 1:** Install directly from Github to a local repository with the following command: `devtools::install_github("Novartis/xgxr", args = c('--library="./"'))`.  If you want to install it in your default library path, you can delete the "args" option.
-  * **Option 2:** Download the package as a zip file and build and install it yourself, following the directions below.
-    * Download this package as a zip file
-    * Place the zip file in your project folder, with your R code. (if you don't have a project folder, then create one)
-    * Unzip the file.  
-    * Open R 
-    * Set the working directory to your project folder.
-    * Type: `devtools::build("xgxr-master")` (if you don't have devtools, install that first using command: `install.packages("devtools")`)
-    * Then type: `install.packages("xgxr-master", repos = NULL, lib = "./", type = "source")`
-    * To load the package, type: `library(xgxr, lib.loc = "./")`
-  * **Option 3:** Source the R files and read in the data files directly
-    * Download this package as a zip file
-    * Place the zip file in your project folder, with your R code. (if you don't have a project folder, then create one)
-    * Unzip the file.  
-    * Open R
-    * Execute the following code:
-      ``` 
-      Rfiles = list.files(path = "xgxr-master/R/", full.names = TRUE)
-      for(ifile in Rfiles) {
-        source(ifile)
-      }
-      
-      Rdafiles = list.files(path = "xgxr-master/data", full.names = TRUE)
-      for(ifile in Rdafiles) {
-        load(ifile)
-      }
+  * **Option 1:** Install directory from CRAN using install.packages("xgxr", lib = "./").  If you want it in your default library, you can delete the lib option.
+  * **Option 2:** Install directly from Github to a local repository with the following command: `devtools::install_github("Novartis/xgxr", args = c('--library="./"'))`.  If you want to install it in your default library path, you can delete the "args" option.
+  * **Option 3:** Download the package as a tar.gz file and then type: `install.packages("xgxr_1.0.4.tar.gz", repos = NULL, lib = "./", type = "source")`
+
       ```
   * **Last Resort Failsafe:** If you want to copy code from xGx exploratory graphics webpage but are unable to install the  `xgxr` package, you can use an older version of the website that does not make use of the `xgxr` package.  http://opensource.nibr.com/xgx_v1
   
