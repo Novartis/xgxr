@@ -1,6 +1,7 @@
 CHANGES IN VERSION 1.0.5
 -------------------------
     o fixed bug in xgx_theme_set() to make sure it calls xgx_theme() instead of theme_bw()
+    o fixed bug in xgx_stat_ci() which changed default geom properties globally by mistake
 
 CHANGES IN VERSION 1.0.4
 -------------------------

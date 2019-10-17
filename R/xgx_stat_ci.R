@@ -158,20 +158,25 @@ xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95,
     )
 
     if (igeom == "point") {
-      temp$geom$default_aes$size <- 2
-    } else if (igeom == "line") {
-      temp$geom$default_aes$size <- 1
-    } else if (igeom == "errorbar") {
-      temp$geom$default_aes$size <- 1
+      if (is.null(temp$aes_params$size)) temp$aes_params$size <- 2
+    }
+    else if (igeom == "line") {
+      if (is.null(temp$aes_params$size)) temp$aes_params$size <- 1
+    }
+    else if (igeom == "errorbar") {
+      if (is.null(temp$aes_params$size)) temp$aes_params$size <- 1
       if (is.null(temp$geom_params$width)) {
         temp$geom_params$width <- 0
       }
-    } else if (igeom == "ribbon") {
-      temp$geom$default_aes$alpha <- 0.25
-    } else if (igeom == "pointrange") {
-      temp$geom$default_aes$size <- 1
+    }
+    else if (igeom == "ribbon") {
+      if(is.null(temp$aes_params$alpha)) temp$aes_params$alpha <- 0.25
+    }
+    else if (igeom == "pointrange") {
+      if(is.null(temp$aes_params$size)) temp$aes_params$size <- 1
       temp$geom$geom_params$fatten <- 2
     }
+    
 
     ret[[paste0("geom_", igeom)]] <- temp
   }

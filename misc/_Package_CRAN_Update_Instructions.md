@@ -2,13 +2,13 @@
 
 * make changes to your package
   * try your best to follow the tidyverse style guide
-* update cran-comments.md
 * update DESCRIPTION with new version number
 * update the NEWS
-* run command>> devtools::build()
+* R>> devtools::build()
   * green check marks are good, red x's are bad
-* run command>> devtools::check()
+* R>> devtools::check()
   * checks for issues
+* update cran-comments.md (including errors...)
 * from terminal, run>> R CMD check --as-cran xgxr_1.0.4.tar.gz
   * (this tar.gz was built from the devtools::build() command)
 * If there are any warnings or notes, open the document where they are saved and resolve them.
