@@ -120,7 +120,7 @@ xgx_check_data <- function(data, covariates = NULL) {
   i <- i + 1
   check[[i]] <- tibble::tibble(
     Category = "MDV",
-    Description = paste0("Number of patients with zero observations"),
+    Description = paste0("Number of patients with zero PK or PD observations"),
     YTYPE = "all",
     Statistic = paste0(num_zero_obs, " ", paste0(zero_obs$ID, collapse = ", ")),
     Value = num_zero_obs)
