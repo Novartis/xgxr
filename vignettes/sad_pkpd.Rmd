@@ -52,8 +52,11 @@ pkpd_data <- case1_pkpd %>%
          DAY_label = paste("Day", PROFDAY),
          DAY_label = ifelse(DAY_label == "Day 0","Baseline",DAY_label))
  
+LOQ = 0.05 #ng/ml
+dose_max = as.numeric(max(pkpd_data$DOSE))
 pk_data <- pkpd_data %>%
-  filter(CMT == 2)
+  filter(CMT == 2) %>%
+  mutate(LIDVNORM = LIDV / as.numeric(DOSE))
 
 pk_data_cycle1 <- pk_data %>%
   filter(CYCLE == 1)
@@ -139,10 +142,11 @@ ggplot(data = pk_data_cycle1, aes(x     = NOMTIME,
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
 ggplot(data = pk_data_cycle1, aes(x = TIME, y = LIDV)) +
-  geom_line(aes(group = ID), color = rgb(0.5, 0.5, 0.5), size = 1, alpha = 0.3) +
+  geom_line(aes(group = ID), color = "grey50", size = 1, alpha = 0.3) +
+  geom_point(aes(color = factor(CENS), shape = factor(CENS))) + 
   scale_shape_manual(values = c(1, 8)) +
   scale_color_manual(values = c("grey50", "red")) +
-  xgx_geom_ci(aes(x = NOMTIME, color = NULL, group = NULL), conf_level = 0.95) +
+  xgx_geom_ci(aes(x = NOMTIME, color = NULL, group = NULL, shape = NULL), conf_level = 0.95) +
   xgx_scale_y_log10() +
   xgx_scale_x_time_units(units_dataset = time_units_dataset, units_plot = time_units_plot) +
   labs(y = conc_label, color = trtact_label) +
@@ -158,7 +162,7 @@ ggplot(data = pk_data_cycle1, aes(x = TIME, y = LIDV)) +
 ```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.height=3}
 ggplot(data = pk_data_cycle1,
        aes(x = NOMTIME,
-           y = LIDV / as.numeric(as.character(DOSE)),
+           y = LIDVNORM,
            group = DOSE,
            color = TRTACT_high2low)) +
   xgx_geom_ci(conf_level = 0.95, alpha = 0.5, position = position_dodge(1)) +
