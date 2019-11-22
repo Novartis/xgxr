@@ -5,6 +5,11 @@
 #' A common example is receptor occupancy in drug development.  
 #' It is used when you want even spacing between 90, 99, 99.9, etc.
 #' 
+#' @param labels.  if NULL, then the default is to use scales::percent()
+#' 
+#' @param accuracy.  if NULL, then use the the default as specified by scales::percent()
+#' to round to the hundredths place, set accuracy 0.01
+#' 
 #' @param ... other parameters passed to 
 #' \code{\link[ggplot2:scale_continuous]{scale_y_continuous}}
 #' 
@@ -29,13 +34,17 @@
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 scale_y_continuous
 #' @export
-xgx_scale_y_reverselog10 <- function(...) {
+xgx_scale_y_reverselog10 <- function(labels = NULL, accuracy = NULL, ...) {
   reverselog <- scales::trans_new(
     name      = "reverselog",
     transform = function(x) -log10(1 - x),
     inverse   = function(x) 1 - 10^-x,
-    breaks    = function(x) c(0, 44, 70, 82, c(100 - 10^(-100:1))) / 100)
+    breaks    = function(x) c(0, c(100 - 10^(-100:1))) / 100)
 
+  if (is.null(labels)) {
+    labels = scales::percent_format(accuracy = accuracy)
+  }
+  
   ggplot2::scale_y_continuous(trans = reverselog,
-                              labels = scales::percent_format(), ...)
+                              labels = labels, ...)
 }
