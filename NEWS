@@ -2,7 +2,8 @@ CHANGES IN VERSION 1.0.6
 -------------------------
     o updating sad_pkpd vignette to show BLOQ data in red
     o minor change to xgx_check_data() text output
-    o updating xgx_scale_x_reverselog() and xgx_scale_y_reverselog() to more easily control the labels and to allow user to set accurac
+    o updating xgx_scale_x_reverselog() and xgx_scale_y_reverselog() to more easily control the labels and to allow user to set accuracy
+    o xgx_breaks_time() - allow user to set target number of breaks xgx_scale_x_time_units()
 
 CHANGES IN VERSION 1.0.5
 -------------------------

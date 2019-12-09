@@ -13,7 +13,10 @@
 
 **Comments:**
 
-* fixed a bug in xgx_geom_ci to make sure it properly feeds the parameters into xgx_stat_ci
+    o updating sad_pkpd vignette to show BLOQ data in red
+    o minor change to xgx_check_data() text output
+    o updating xgx_scale_x_reverselog() and xgx_scale_y_reverselog() to more easily control the labels and to allow user to set accuracy
+    o xgx_breaks_time() - allow user to set target number of breaks xgx_scale_x_time_units()
 
 ## Downstream dependencies
 

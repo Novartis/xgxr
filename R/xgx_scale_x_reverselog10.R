@@ -5,11 +5,9 @@
 #' A common example is receptor occupancy in drug development.  
 #' It is used when you want even spacing between 90, 99, 99.9, etc.
 #'
-#' @param labels.  if NULL, then the default is to use scales::percent()
-#' 
-#' @param accuracy.  if NULL, then use the the default as specified by scales::percent()
+#' @param labels  if NULL, then the default is to use scales::percent()
+#' @param accuracy  if NULL, then use the the default as specified by scales::percent()
 #' to round to the hundredths place, set accuracy 0.01
-#' 
 #' @param ... other parameters passed to 
 #' \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}
 #' 

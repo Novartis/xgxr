@@ -4,9 +4,14 @@
 \alias{xgx_scale_x_reverselog10}
 \title{Reverse-log transform for the x scale.}
 \usage{
-xgx_scale_x_reverselog10(...)
+xgx_scale_x_reverselog10(labels = NULL, accuracy = NULL, ...)
 }
 \arguments{
+\item{labels}{if NULL, then the default is to use scales::percent()}
+
+\item{accuracy}{if NULL, then use the the default as specified by scales::percent()
+to round to the hundredths place, set accuracy 0.01}
+
 \item{...}{other parameters passed to 
 \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}}
 }

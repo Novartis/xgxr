@@ -22,7 +22,8 @@
 #' 
 #' @param data_range range of the data
 #' @param units_plot units to use in the plot
-#'
+#' @param number_breaks number of breaks to aim for (default is 5)
+#' 
 #' @return numeric vector of breaks
 #' 
 #' @examples
@@ -41,11 +42,11 @@
 #' 
 #' @importFrom labeling extended
 #' @export
-xgx_breaks_time <-  function(data_range, units_plot) {
+xgx_breaks_time <-  function(data_range, units_plot, number_breaks = 5) {
   data_min <- min(data_range)
   data_max <- max(data_range)
   data_span <- data_max - data_min
-  n_breaks <- 5 # number of breaks to aim for
+  number_breaks <- 5 # number of breaks to aim for
   preferred_increment_default <- c(1, 5, 2, 4, 3, 1)
   weights_default <- c(0.25, 0.2, 0.5, 0.05)
   weights_simple <- c(1, 0.2, 0.5, 0.05)
@@ -67,7 +68,7 @@ xgx_breaks_time <-  function(data_range, units_plot) {
     weights <- weights_default
   }
 
-  breaks <- labeling::extended(data_min, data_max, m = n_breaks, 
+  breaks <- labeling::extended(data_min, data_max, m = number_breaks, 
                                Q = preferred_increment, w = weights)
   return(breaks)
 }
