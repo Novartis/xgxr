@@ -1,4 +1,4 @@
-#' xgx_minor_breaks_log10, Sets the default minor_breaks for log10
+#' Sets the default minor_breaks for log10 scales
 #' 
 #' \code{xgx_minor_breaks_log10} sets nice minor_breaks for log10 scale.
 #'
