@@ -65,7 +65,16 @@ xgx_scale_y_percentchangelog10 <- function(breaks = NULL,
                                            ...) {
   
   if (is.null(breaks)){
-    breaks <- function(x) 2^(-100:100) - 1
+    breaks <-  function(data_range) {
+      r1 <- range(log2(data_range + 1))
+      r <-  r1
+      r[1] <-  floor(r[1])
+      r[2] <-  ceiling(r[2]) + 1
+      breaks <- 2^(seq(r[1], r[2])) - 1
+      
+      return(breaks)
+    }
+    
   }
   
   if (is.null(minor_breaks)) {
