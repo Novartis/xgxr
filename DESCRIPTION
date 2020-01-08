@@ -1,6 +1,6 @@
 Package: xgxr
 Title: Exploratory Graphics for Pharmacometrics
-Version: 1.0.6
+Version: 1.0.7
 Authors@R: 
     c(person(given = "Andrew",
              family = "Stein",
