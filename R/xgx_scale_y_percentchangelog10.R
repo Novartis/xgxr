@@ -27,8 +27,8 @@
 #'                   Kout = exp(rnorm(Ntot,-2, 0.3)),
 #'                   Imax = 1,
 #'                   ED50 = 25) %>% 
-#'  mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, 0.05, 0.3))  ) %>%
-#'  mutate(PCHG = (PDSS - PD0)/PD0)
+#'  dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, 0.05, 0.3))  ) %>%
+#'  dplyr::mutate(PCHG = (PDSS - PD0)/PD0)
 #'
 #' ggplot2::ggplot(dat1, ggplot2::aes(x = DOSE, y = PCHG, group = DOSE)) +
 #'   ggplot2::geom_boxplot() +
@@ -41,8 +41,8 @@
 #'                   Kout = exp(rnorm(Ntot,-2, 0.3)),
 #'                   Emax = 50*rlnorm(Ntot, 0, 0.3),
 #'                   ED50 = 300) %>% 
-#'  mutate(PDSS = PD0*(1 + Emax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, -1, 0.3))  ) %>%
-#'  mutate(PCHG = (PDSS - PD0)/PD0)
+#'  dplyr::mutate(PDSS = PD0*(1 + Emax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, -1, 0.3))  ) %>%
+#'  dplyr::mutate(PCHG = (PDSS - PD0)/PD0)
 #'
 #' ggplot2::ggplot(dat2, ggplot2::aes(x = DOSE, y = PCHG, group = DOSE)) +
 #'   ggplot2::geom_boxplot() +
@@ -57,6 +57,7 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_boxplot
 #' @importFrom ggplot2 scale_y_continuous
+#' @importFrom dplyr mutate
 #' @export
 xgx_scale_y_percentchangelog10 <- function(breaks = NULL,
                                            minor_breaks = NULL,
