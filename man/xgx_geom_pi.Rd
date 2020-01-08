@@ -4,7 +4,7 @@
 \alias{xgx_geom_pi}
 \title{Plot data with median and prediction intervals}
 \usage{
-xgx_geom_pi(mapping = NULL, data = NULL, pred_level = 0.95,
+xgx_geom_pi(mapping = NULL, data = NULL, percent_level = 0.95,
   geom = list("line", "ribbon"), position = "identity",
   fun.args = list(), na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...)
@@ -27,9 +27,9 @@ will be created.
 A function will be called with a single argument, the plot data. The return 
 value must be a data.frame., and will be used as the layer data.}
 
-\item{pred_level}{The percentiles for the prediction interval (should fall 
+\item{percent_level}{The upper or lower percentile for the percent interval (should fall 
 between 0 and 1). The default is 0.95, which corresponds  
-to a 95 percent prediction interval i.e. (0.025, 0.975).}
+to (0.05, 0.95) interval. Supplying 0.05 would give the same result}
 
 \item{geom}{Use to override the default geom. Can be a list of multiple 
 geoms, e.g. list("line","ribbon"), which is the default.}

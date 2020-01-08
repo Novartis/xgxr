@@ -2,9 +2,9 @@
 % Please edit documentation in R/xgx_stat_pi.R
 \name{xgx_stat_pi}
 \alias{xgx_stat_pi}
-\title{Plot data with median and prediction intervals}
+\title{Plot data with median and percent intervals}
 \usage{
-xgx_stat_pi(mapping = NULL, data = NULL, pred_level = 0.95,
+xgx_stat_pi(mapping = NULL, data = NULL, percent_level = 0.95,
   geom = list("line", "ribbon"), position = "identity",
   fun.args = list(), na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...)
@@ -27,9 +27,9 @@ will be created.
 A function will be called with a single argument, the plot data. The return 
 value must be a data.frame., and will be used as the layer data.}
 
-\item{pred_level}{The percentiles for the prediction interval (should fall 
+\item{percent_level}{The upper or lower percentile for the percent interval (should fall 
 between 0 and 1). The default is 0.95, which corresponds  
-to a 95 percent prediction interval i.e. (0.025, 0.975).}
+to (0.05, 0.95) interval. Supplying 0.05 would give the same result}
 
 \item{geom}{Use to override the default geom. Can be a list of multiple 
 geoms, e.g. list("line","ribbon"), which is the default.}
@@ -59,32 +59,32 @@ They may also be parameters to the paired geom/stat.}
 ggplot2 plot layer
 }
 \description{
-\code{xgx_stat_pi} returns a ggplot layer plotting median +/- prediction 
+\code{xgx_stat_pi} returns a ggplot layer plotting median +/- percent 
 intervals
 }
 \examples{
-# default settings for normally distributed data, 95\% prediction interval,
+# default settings for normally distributed data, (5\%,95\%) interval,
 data <- data.frame(x = rep(c(1, 2, 3), each = 20),
                    y = rep(c(1, 2, 3), each = 20) + stats::rnorm(60),
                    group = rep(1:3, 20))
 xgx_plot(data, ggplot2::aes(x = x, y = y)) +
-  xgx_stat_pi(pred_level = 0.95)
+  xgx_stat_pi(percent_level = 0.95)
 
 # try different geom 
 xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-  xgx_stat_pi(pred_level = 0.95, geom = list("errorbar", "point", "line"))
+  xgx_stat_pi(percent_level = 0.95, geom = list("errorbar", "point", "line"))
  
 # including multiple groups in same plot
 xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-  xgx_stat_pi(pred_level = 0.95, 
+  xgx_stat_pi(percent_level = 0.95, 
               ggplot2::aes(color = factor(group), fill = factor(group)),
               position = ggplot2::position_dodge(width = 0.5))
               
-# including multiple prediction intervals in same plot              
+# including multiple percent intervals in same plot              
 xgx_plot(data, ggplot2::aes(x = x, y = y)) +
-  xgx_stat_pi(pred_level = 0.80) + 
-  xgx_stat_pi(pred_level = 0.60) + 
-  xgx_stat_pi(pred_level = 0.40) + 
-  xgx_stat_pi(pred_level = 0.20)      
+  xgx_stat_pi(percent_level = 0.90) + 
+  xgx_stat_pi(percent_level = 0.80) + 
+  xgx_stat_pi(percent_level = 0.70) + 
+  xgx_stat_pi(percent_level = 0.60)      
  
 }
