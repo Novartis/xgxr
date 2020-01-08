@@ -1,6 +1,6 @@
-#' Plot data with median and prediction intervals
+#' Plot data with median and percent intervals
 #'
-#' \code{xgx_stat_pi} returns a ggplot layer plotting median +/- prediction 
+#' \code{xgx_stat_pi} returns a ggplot layer plotting median +/- percent 
 #' intervals
 #' 
 #'
@@ -19,9 +19,9 @@
 #' 
 #' A function will be called with a single argument, the plot data. The return 
 #' value must be a data.frame., and will be used as the layer data.
-#' @param pred_level The percentiles for the prediction interval (should fall 
+#' @param percent_level The upper or lower percentile for the percent interval (should fall 
 #' between 0 and 1). The default is 0.95, which corresponds  
-#' to a 95 percent prediction interval i.e. (0.025, 0.975).
+#' to (0.05, 0.95) interval. Supplying 0.05 would give the same result
 
 #' @param geom Use to override the default geom. Can be a list of multiple 
 #' geoms, e.g. list("line","ribbon"), which is the default.
@@ -44,36 +44,36 @@
 #' @return ggplot2 plot layer
 #'
 #' @examples
-#' # default settings for normally distributed data, 95% prediction interval,
+#' # default settings for normally distributed data, (5%,95%) interval,
 #' data <- data.frame(x = rep(c(1, 2, 3), each = 20),
 #'                    y = rep(c(1, 2, 3), each = 20) + stats::rnorm(60),
 #'                    group = rep(1:3, 20))
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) +
-#'   xgx_stat_pi(pred_level = 0.95)
+#'   xgx_stat_pi(percent_level = 0.95)
 #' 
 #' # try different geom 
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_stat_pi(pred_level = 0.95, geom = list("errorbar", "point", "line"))
+#'   xgx_stat_pi(percent_level = 0.95, geom = list("errorbar", "point", "line"))
 #'  
 #' # including multiple groups in same plot
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_stat_pi(pred_level = 0.95, 
+#'   xgx_stat_pi(percent_level = 0.95, 
 #'               ggplot2::aes(color = factor(group), fill = factor(group)),
 #'               position = ggplot2::position_dodge(width = 0.5))
 #'               
-#' # including multiple prediction intervals in same plot              
+#' # including multiple percent intervals in same plot              
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) +
-#'   xgx_stat_pi(pred_level = 0.80) + 
-#'   xgx_stat_pi(pred_level = 0.60) + 
-#'   xgx_stat_pi(pred_level = 0.40) + 
-#'   xgx_stat_pi(pred_level = 0.20)      
+#'   xgx_stat_pi(percent_level = 0.90) + 
+#'   xgx_stat_pi(percent_level = 0.80) + 
+#'   xgx_stat_pi(percent_level = 0.70) + 
+#'   xgx_stat_pi(percent_level = 0.60)      
 #'  
 #' @importFrom stats rnorm
 #' @importFrom ggplot2 stat_summary
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 position_dodge
 #' @export
-xgx_stat_pi <- function(mapping = NULL, data = NULL, pred_level = 0.95,
+xgx_stat_pi <- function(mapping = NULL, data = NULL, percent_level = 0.95,
                         geom = list("line", "ribbon"),
                         position = "identity",
                         fun.args = list(),
@@ -81,17 +81,17 @@ xgx_stat_pi <- function(mapping = NULL, data = NULL, pred_level = 0.95,
                         show.legend = NA,
                         inherit.aes = TRUE,
                         ...) {
-  if (!(pred_level > 0 && pred_level < 1)) {
-    stop("pred_level should be greater than 0 and less than 1")
+  if (!(percent_level >= 0 && percent_level <= 1)) {
+    stop("percent_level should be greater or equal 0 and less or equal 1")
   }
   
   
-  pred_int <- function(y, pred_level) {
-    percentile_value <- pred_level + (1 - pred_level) / 2
+  percent_int <- function(y, percent_level) {
+    percentile_value <- max(percent_level, 1 - percent_level)
     
     y <- stats::na.omit(y)
     
-      pred_int_out <- data.frame(
+      percent_int_out <- data.frame(
         y = median(y),
         ymin = quantile(y, 1 - percentile_value),
         ymax = quantile(y, percentile_value)
@@ -105,7 +105,7 @@ xgx_stat_pi <- function(mapping = NULL, data = NULL, pred_level = 0.95,
                                   fun.args = list(), na.rm = na.rm,
                                   show.legend = show.legend,
                                   inherit.aes = inherit.aes,
-                                  fun.data = function(y) pred_int(y, pred_level)
+                                  fun.data = function(y) percent_int(y, percent_level)
     )
     
     if (igeom == "point") {

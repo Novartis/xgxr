@@ -13,7 +13,7 @@
 #' @importFrom ggplot2 aes
 #' @importFrom stats rnorm
 #' @export
-xgx_geom_pi <- function(mapping = NULL, data = NULL, pred_level = 0.95,
+xgx_geom_pi <- function(mapping = NULL, data = NULL, percent_level = 0.95,
                         geom = list("line", "ribbon"),
                         position = "identity",
                         fun.args = list(),
@@ -21,7 +21,7 @@ xgx_geom_pi <- function(mapping = NULL, data = NULL, pred_level = 0.95,
                         show.legend = NA,
                         inherit.aes = TRUE,
                         ...) {
-  return(list(xgx_stat_pi(mapping, data, pred_level,
+  return(list(xgx_stat_pi(mapping, data, percent_level,
                           geom,
                           position,
                           fun.args,
