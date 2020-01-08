@@ -1,4 +1,4 @@
-#' Plot data with median and prediction intervals
+#' Plot data with median and percent intervals
 #'
 #' @inheritParams xgx_stat_pi
 #' @return ggplot2 plot layer
@@ -7,7 +7,7 @@
 #' data <- data.frame(x = rep(c(1, 2, 3), each = 20),
 #'                    y = rep(c(1, 2, 3), each = 20) + stats::rnorm(60))
 #' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_geom_pi(pred_level = 0.95)
+#'   xgx_geom_pi(percent_level = 0.95)
 #'  
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 aes
