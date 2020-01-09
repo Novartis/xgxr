@@ -16,7 +16,6 @@
 #' @return ggplot2 compatible scale object
 #' 
 #' @examples  
-#'   
 #' Nsubj <- 10
 #' Doses <- c(0, 25, 50, 100, 200)
 #' Ntot <- Nsubj*length(Doses)
