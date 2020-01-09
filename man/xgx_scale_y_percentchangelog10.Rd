@@ -31,7 +31,6 @@ especially data close to -100%, and/or several fold increase from baseline.
 }
 \examples{
  
-  
 Nsubj <- 10
 Doses <- c(0, 25, 50, 100, 200)
 Ntot <- Nsubj*length(Doses)

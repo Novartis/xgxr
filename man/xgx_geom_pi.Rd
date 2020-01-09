@@ -2,7 +2,7 @@
 % Please edit documentation in R/xgx_geom_pi.R
 \name{xgx_geom_pi}
 \alias{xgx_geom_pi}
-\title{Plot data with median and prediction intervals}
+\title{Plot data with median and percent intervals}
 \usage{
 xgx_geom_pi(mapping = NULL, data = NULL, percent_level = 0.95,
   geom = list("line", "ribbon"), position = "identity",
@@ -59,12 +59,12 @@ They may also be parameters to the paired geom/stat.}
 ggplot2 plot layer
 }
 \description{
-Plot data with median and prediction intervals
+Plot data with median and percent intervals
 }
 \examples{
 data <- data.frame(x = rep(c(1, 2, 3), each = 20),
                    y = rep(c(1, 2, 3), each = 20) + stats::rnorm(60))
 ggplot2::ggplot(data, ggplot2::aes(x = x, y = y)) + 
-  xgx_geom_pi(pred_level = 0.95)
+  xgx_geom_pi(percent_level = 0.95)
  
 }
