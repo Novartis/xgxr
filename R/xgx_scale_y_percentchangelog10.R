@@ -83,8 +83,7 @@ xgx_scale_y_percentchangelog10 <- function(breaks = NULL,
   percentchangelog <- scales::trans_new(
     name      = "percentchangelog",
     transform = function(x) log10(x + 1),
-    inverse = function(x) 10^(x) - 1,
-    breaks = breaks)
+    inverse = function(x) 10^(x) - 1)
   
   if (is.null(labels)) {
     labels = scales::percent_format(accuracy = accuracy)
@@ -92,5 +91,6 @@ xgx_scale_y_percentchangelog10 <- function(breaks = NULL,
   
   ggplot2::scale_y_continuous(trans = percentchangelog,
                               labels = labels,
-                              minor_breaks = minor_breaks, ...)
+                              minor_breaks = minor_breaks,
+                              breaks = breaks, ...)
 }
