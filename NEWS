@@ -1,3 +1,8 @@
+CHANGES IN VERSION 1.0.7
+    o adding xgx_scale_y_percentchangelog10
+    o adding xgx_stat_pi and xgx_geom_pi
+    o adding xgx_minor_breaks_log10
+
 CHANGES IN VERSION 1.0.6
 -------------------------
     o updating sad_pkpd vignette to show BLOQ data in red
