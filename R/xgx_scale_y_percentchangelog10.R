@@ -16,39 +16,13 @@
 #' 
 #' @return ggplot2 compatible scale object
 #' 
-#' @examples  
-#' Nsubj <- 10
-#' Doses <- c(0, 25, 50, 100, 200)
-#' Ntot <- Nsubj*length(Doses)
-#' dat1 <- data.frame(ID = 1:(Ntot),
-#'                   DOSE = rep(Doses, Nsubj),
-#'                   PD0 = rlnorm(Ntot, log(100), 1),
-#'                   Kout = exp(rnorm(Ntot,-2, 0.3)),
-#'                   Imax = 1,
-#'                   ED50 = 25) %>%
-#'  dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, 0.05, 0.3))  ) %>%
-#'  dplyr::mutate(PCHG = (PDSS - PD0)/PD0)
+#' @examples 
+#' dat1 <- data.frame(x = rnorm(100), PCHG = exp(rnorm(100)) - 1)
 #' 
-#' ggplot2::ggplot(dat1, ggplot2::aes(x = DOSE, y = PCHG, group = DOSE)) +
-#'   ggplot2::geom_boxplot() +
+#' ggplot2::ggplot(dat1, ggplot2::aes(x = x, y = PCHG)) +
+#'   ggplot2::geom_point() +
 #'   xgx_theme() +
 #'   xgx_scale_y_percentchangelog10()
-#' 
-#' dat2 <- data.frame(ID = 1:(Ntot),
-#'                   DOSE = rep(Doses, Nsubj),
-#'                   PD0 = rlnorm(Ntot, log(100), 1),
-#'                   Kout = exp(rnorm(Ntot,-2, 0.3)),
-#'                   Emax = 50*rlnorm(Ntot, 0, 0.3),
-#'                   ED50 = 300) %>%
-#'  dplyr::mutate(PDSS = PD0*(1 + Emax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, -1, 0.3))  ) %>%
-#'  dplyr::mutate(PCHG = (PDSS - PD0)/PD0)
-#' 
-#' ggplot2::ggplot(dat2, ggplot2::aes(x = DOSE, y = PCHG, group = DOSE)) +
-#'   ggplot2::geom_boxplot() +
-#'   xgx_theme() +
-#'   xgx_scale_y_percentchangelog10()
-#'
-#'   
 #'  
 #' @importFrom scales trans_new
 #' @importFrom scales percent_format

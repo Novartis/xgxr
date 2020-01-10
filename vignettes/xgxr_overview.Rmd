@@ -276,6 +276,76 @@ gx <- xgx_plot(data, aes(x = bound_receptor, y = concentration)) +
 gridExtra::grid.arrange(gy, gx, nrow = 1)
 ```
 
+### Nice scale for percent change data
+
+This transform is useful for plotting percent change from baseline data. 
+Percent change data can range from -100% to +Inf%, and depending on the range
+of the data, a linear scale can lose the desired resolution. This transform
+plots percent change data on a scale of log10(PCHG + 100%), similar to a 
+log scale of ratio to baseline.
+
+```{r, fig.height=3.5, warning=FALSE}
+
+Nsubj <- 10
+Doses <- c(0, 25, 50, 100, 200)
+Ntot <- Nsubj*length(Doses)
+times <- c(0,14,30,60,90)
+
+dat1 <- data.frame(ID = 1:(Ntot),
+                   DOSE = rep(Doses, Nsubj),
+                   PD0 = rlnorm(Ntot, log(100), 1),
+                   Kout = exp(rnorm(Ntot,-2, 0.3)),
+                   Imax = 1,
+                   ED50 = 25) %>%
+  dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, 0.05, 0.3))  ) %>%
+  merge(data.frame(ID = rep(1:(Ntot), each = length(times)), Time = times), by = "ID") %>%
+  dplyr::mutate(PD = ((PD0 - PDSS)*(exp(-Kout*Time)) + PDSS), 
+                PCHG = (PD - PD0)/PD0)
+
+ggplot2::ggplot(dat1 %>% subset(Time == 90), 
+                ggplot2::aes(x = DOSE, y = PCHG, group = DOSE)) +
+  ggplot2::geom_boxplot() +
+  xgx_theme() +
+  xgx_scale_y_percentchangelog10() +
+  ylab("Percent Change from Baseline") +
+  xlab("Dose (mg)")
+
+ggplot2::ggplot(dat1, 
+                ggplot2::aes(x = Time, y = PCHG, group = ID, color = factor(DOSE))) +
+  ggplot2::geom_line() +
+  xgx_theme() +
+  xgx_scale_y_percentchangelog10() +
+  guides(color = guide_legend(title = "Dose (mg)")) +
+  ylab("Percent Change from Baseline")
+
+dat2 <- data.frame(ID = 1:(Ntot),
+                  DOSE = rep(Doses, Nsubj),
+                  PD0 = rlnorm(Ntot, log(100), 1),
+                  Kout = exp(rnorm(Ntot,-2, 0.3)),
+                  Emax = 50*rlnorm(Ntot, 0, 0.3),
+                  ED50 = 300) %>%
+ dplyr::mutate(PDSS = PD0*(1 + Emax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, -1, 0.3))  ) %>%
+  merge(data.frame(ID = rep(1:(Ntot), each = length(times)), Time = times), by = "ID") %>%
+  dplyr::mutate(PD = ((PD0 - PDSS)*(exp(-Kout*Time)) + PDSS), 
+                PCHG = (PD - PD0)/PD0)
+
+ggplot2::ggplot(dat2, ggplot2::aes(x = DOSE, y = PCHG, group = DOSE)) +
+  ggplot2::geom_boxplot() +
+  xgx_theme() +
+  xgx_scale_y_percentchangelog10() +
+  ylab("Percent Change from Baseline") +
+  xlab("Dose (mg)")
+
+ggplot2::ggplot(dat2, 
+                ggplot2::aes(x = Time, y = PCHG, group = ID, color = factor(DOSE))) +
+  ggplot2::geom_line() +
+  xgx_theme() +
+  xgx_scale_y_percentchangelog10() +
+  guides(color = guide_legend(title = "Dose (mg)")) +
+  ylab("Percent Change from Baseline")
+
+```
+
 ### Scaling x-axis as a time scale
 
 For time, it's often good for the x ticks to be spaced in a particular way. 
