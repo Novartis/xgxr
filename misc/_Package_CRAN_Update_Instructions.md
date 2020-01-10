@@ -8,6 +8,7 @@
   * green check marks are good, red x's are bad
   * this step makes sure you can build the package
 * R>> devtools::check()
+  * updates package documentation
   * checks for issues
   * this is the first level of checks for CRAN issues.  It is the easiest CRAN check to read
 * update cran-comments.md (including the # errors | # warnings | # notes)
