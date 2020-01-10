@@ -180,12 +180,10 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 
 The code for confidence intervals is a bit complex and hard to remember. 
 Rather than copy-pasting this code we provide the function `xgx_stat_ci` 
-for calculating and plotting default confidence intervals. `xgx_stat_ci` 
-allows the definition of multiple `geom` options in one function call, defined 
-through a list. The default is `geom = list("point","line","errorbar")`. 
+for calculating and plotting default confidence intervals and also `xgx_geom_ci` for percentile intervals. `xgx_stat_ci` allows the definition of multiple `geom` options in one function call, defined through a list. The default is `geom = list("point","line","errorbar")`. 
 Additional ggplot options can be fed through the `ggplot` object call, or 
 the `xgx_stat_ci` layer. (Note that `xgx_stat_ci` and `xgx_geom_ci` are 
-equivalent)
+equivalent).  `xgx_stat_pi` and `xgx_geom_pi` work in a similar fashion but for percentile intervals.
 
 ```{r, fig.width=4, fig.height=2}
 data <- data.frame(x = rep(c(1, 2, 3), each = 20),
@@ -194,6 +192,9 @@ data <- data.frame(x = rep(c(1, 2, 3), each = 20),
 
 xgx_plot(data,aes(x = x, y = y)) +
     xgx_stat_ci(conf_level = .95)
+
+xgx_plot(data,aes(x = x, y = y)) +
+    xgx_stat_pi(percent = .95)
 
 xgx_plot(data,aes(x = x, y = y)) +
     xgx_stat_ci(conf_level = .95, geom = list("pointrange","line"))
