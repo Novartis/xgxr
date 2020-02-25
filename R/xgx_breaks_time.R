@@ -49,8 +49,14 @@ xgx_breaks_time <-  function(data_range, units_plot, number_breaks = 5) {
     if (missing(units_plot)) {
       units_plot <- attr(data_range, "units")$numerator
       ## week isn't supported
-      if (any(units_plot == c("week", "weeks"))){
+      if (any(units_plot == c("week", "weeks"))) {
         units_plot <- "w"
+      }
+      if (any(units_plot == c("year", "years"))) {
+          units_plot <- "y"
+      }
+      if (any(units_plot == c("month", "months"))) {
+          units_plot <- "m"
       }
     }
     units <- attr(data_range, "units")

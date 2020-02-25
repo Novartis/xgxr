@@ -16,4 +16,22 @@ for (u in c("h", "d", "s")) {
 test_that("xgxr time-breaks week", {
     expect_equal(xgx_breaks_time(units::set_units(c(0, 5), "weeks")),
                  units::set_units(xgx_breaks_time(c(0, 5), "w"), "weeks"))
+    expect_equal(xgx_breaks_time(units::set_units(c(0, 5), "week")),
+                 units::set_units(xgx_breaks_time(c(0, 5), "w"), "week"))
+})
+
+
+test_that("xgxr time-breaks years", {
+    expect_equal(xgx_breaks_time(units::set_units(c(0, 5), "years")),
+                 units::set_units(xgx_breaks_time(c(0, 5), "y"), "years"))
+
+    expect_equal(xgx_breaks_time(units::set_units(c(0, 5), "year")),
+                 units::set_units(xgx_breaks_time(c(0, 5), "y"), "year"))
+})
+
+test_that("xgxr time-breaks month", {
+    expect_equal(xgx_breaks_time(units::set_units(c(0, 5), "months")),
+                 units::set_units(xgx_breaks_time(c(0, 5), "m"), "months"))
+    expect_equal(xgx_breaks_time(units::set_units(c(0, 5), "month")),
+                 units::set_units(xgx_breaks_time(c(0, 5), "m"), "month"))
 })
