@@ -62,7 +62,8 @@ Suggests:
     RxODE,
     stringr,
     testthat,
-    tidyr
+    tidyr,
+    units
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
