@@ -13,7 +13,7 @@ xgx_scale_x_time_units(
 )
 }
 \arguments{
-\item{units_dataset}{units of the input dataset, must be specified by user 
+\item{units_dataset}{units of the input dataset, must be specified by user
 as "h", "d", "w", "m", or "y"}
 
 \item{units_plot}{units of the plot, will be units of the dataset if empty}
@@ -38,16 +38,16 @@ transformation object
 as output
 }}
 
-\item{...}{other parameters for 
+\item{...}{other parameters for
 \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}}
 }
 \value{
 ggplot2 compatible scale object
 }
 \description{
-\code{xgx_scale_x_time_units} converts x axis scale from one time unit 
-to another.  
-Supported units include hours, days, weeks, months, and years, which 
+\code{xgx_scale_x_time_units} converts x axis scale from one time unit
+to another.
+Supported units include hours, days, weeks, months, and years, which
 can also be called using just the first letter (h, d, w, m, y).
 }
 \examples{
@@ -55,5 +55,5 @@ data <- data.frame(x = 1:1000, y = rnorm(1000))
 ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
   ggplot2::geom_point() +
   xgx_scale_x_time_units(units_dataset = "hours", units_plot = "weeks")
-  
+
 }

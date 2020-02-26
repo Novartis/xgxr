@@ -64,7 +64,8 @@ Suggests:
     testthat,
     tidyr,
     ggforce,
-    units
+    units,
+    vdiffr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

@@ -8,7 +8,8 @@ xgx_scale_x_log10(
   breaks = xgx_breaks_log10,
   minor_breaks = NULL,
   labels = xgx_labels_log10,
-  ...
+  ...,
+  units = FALSE
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ xgx_scale_x_log10(
 
 \item{...}{other arguments passed to
 \code{\link[ggplot2:scale_continuous]{scale_x_log10}}}
+
+\item{units}{boolean indicating if the scale is on a units object}
 }
 \value{
 ggplot2 compatible scale object

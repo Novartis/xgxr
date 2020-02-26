@@ -4,7 +4,7 @@
 \alias{xgx_breaks_time}
 \title{Sets the default breaks for a time axis}
 \usage{
-xgx_breaks_time(data_range, units_plot, number_breaks = 5)
+xgx_breaks_time(data_range, units_plot = NULL, number_breaks = 5)
 }
 \arguments{
 \item{data_range}{range of the data}

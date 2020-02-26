@@ -2,6 +2,7 @@
 
 export("%>%")
 export(theme_xgx)
+export(xgx_1_unit)
 export(xgx_annotate_filenames)
 export(xgx_annotate_status)
 export(xgx_annotate_status_png)

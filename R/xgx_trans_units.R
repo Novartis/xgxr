@@ -4,7 +4,7 @@ xgx_1_x <- NULL
 #'
 #' @param set_unit When specified, this will save the unit information
 #'   for x-axis transformation.
-#' 
+#'
 #'@export
 xgx_1_unit <- function(set_unit){
   if (!missing(set_unit)) {
@@ -66,7 +66,7 @@ xgx_log_trans_unit <- function (base = exp(1)) {
                     inv, scales::log_breaks(base = base),
                     domain = c(1e-100, Inf))
 }
-#' @rdname xgx_log_trans_units
+#' @rdname xgx_log_trans_unit
 #' @export
 xgx_log10_trans_unit <- function() {
   xgx_log_trans_unit(10)

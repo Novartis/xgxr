@@ -11,6 +11,7 @@
 #' @param labels function for setting the labels, defined here
 #' @param ... other arguments passed to
 #' \code{\link[ggplot2:scale_continuous]{scale_x_log10}}
+#' @param units boolean indicating if the scale is on a units object
 #'
 #' @return ggplot2 compatible scale object
 #'
@@ -30,11 +31,11 @@
 xgx_scale_x_log10 <-  function(breaks = xgx_breaks_log10,
                                minor_breaks = NULL,
                                labels = xgx_labels_log10,
-                               ...) {
+                               ..., units=FALSE) {
   if (is.null(minor_breaks)) {
     minor_breaks <- function(x) xgx_minor_breaks_log10(x)
   }
-  if (requireNamespace("ggforce", quietly = TRUE)) {
+  if (units && requireNamespace("ggforce", quietly = TRUE)) {
     ret <- try(ggforce::scale_x_unit(..., breaks = breaks,
                                      minor_breaks = minor_breaks,
                                      labels = labels,
