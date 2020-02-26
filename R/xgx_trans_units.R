@@ -1,3 +1,34 @@
+xgx_1_x <- NULL
+
+#' A dummy translation function to capture the units of the x-axis
+#'
+#' @param set_unit When specified, this will save the unit information
+#'   for x-axis transformation.
+#' 
+#'@export
+xgx_1_unit <- function(set_unit){
+  if (!missing(set_unit)) {
+    utils::assignInMyNamespace("xgx_1_x", set_unit)
+    return(set_unit)
+  }
+  trans <- function(x) {
+    if (inherits(x, "units")) {
+      xgxr::xgx_1_unit(attr(x, "units"))
+      return(x)
+    } else {
+      return(x)
+    }
+  }
+  inv <- function(x){
+    if (inherits(x, "units")) {
+      xgxr::xgx_1_unit(attr(x, "units"))
+      return(x)
+    } else {
+      return(x)
+    }
+  }
+  scales::trans_new("unit-1-x", trans, inv)
+}
 
 #' xgx log trans for units
 #'

@@ -42,27 +42,25 @@
 #'
 #' @importFrom labeling extended
 #' @export
-xgx_breaks_time <-  function(data_range, units_plot, number_breaks = 5) {
+xgx_breaks_time <-  function(data_range, units_plot=NULL, number_breaks = 5) {
   units <- NULL
   class_units <- NULL
   if (inherits(data_range, "units")) {
-    if (missing(units_plot)) {
+    if (is.null(units_plot)) {
       units_plot <- attr(data_range, "units")$numerator
-      ## week isn't supported
-      if (any(units_plot == c("week", "weeks"))) {
-        units_plot <- "w"
-      }
-      if (any(units_plot == c("year", "years"))) {
-          units_plot <- "y"
-      }
-      if (any(units_plot == c("month", "months"))) {
-          units_plot <- "m"
-      }
+      units_plot <- units_plot %>% tolower() %>% substr(1, 1)
     }
     units <- attr(data_range, "units")
     attr(data_range, "units") <- NULL
     class_units <- class(data_range)
     class(data_range) <- NULL
+  }
+  if (is.null(units_plot) && !is.null(xgx_1_x)){
+      units_plot <- xgx_1_x$numerator
+      units_plot <- units_plot %>% tolower() %>% substr(1, 1)
+  }
+  if (is.null(units_plot)) {
+    stop("'units_plot' needs to be specified in 'xgx_breaks_time'")
   }
   data_min <- min(data_range)
   data_max <- max(data_range)
