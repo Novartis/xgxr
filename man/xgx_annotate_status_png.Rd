@@ -4,10 +4,18 @@
 \alias{xgx_annotate_status_png}
 \title{Annotate a png file or directory of png files}
 \usage{
-xgx_annotate_status_png(file_or_dir, script = "", status = "DRAFT",
-  date_format = "\%a \%b \%d \%X \%Y", col = grDevices::grey(0.8, alpha
-  = 0.7), font = 2, cex_status_mult = 7, cex_footnote_mult = 0.8,
-  status_angle = 45, x11 = FALSE)
+xgx_annotate_status_png(
+  file_or_dir,
+  script = "",
+  status = "DRAFT",
+  date_format = "\%a \%b \%d \%X \%Y",
+  col = grDevices::grey(0.8, alpha = 0.7),
+  font = 2,
+  cex_status_mult = 7,
+  cex_footnote_mult = 0.8,
+  status_angle = 45,
+  x11 = FALSE
+)
 }
 \arguments{
 \item{file_or_dir}{The png file to annotate or directory location for
