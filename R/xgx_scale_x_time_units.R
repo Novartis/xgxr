@@ -5,6 +5,10 @@
 #' Supported units include hours, days, weeks, months, and years, which 
 #' can also be called using just the first letter (h, d, w, m, y).
 #'
+#' Note: \code{xgx_scale_x_time_units} only scales the plot axis, all other 
+#' specifications must be on the original scale of the dataset (e.g. breaks,
+#' position, width)
+#'
 #' @param units_dataset units of the input dataset, must be specified by user 
 #' as "h", "d", "w", "m", or "y"
 #' @param units_plot units of the plot, will be units of the dataset if empty
