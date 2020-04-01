@@ -43,31 +43,3 @@ Vignettes are documents that show how a package can be used.  They are located i
 
 ## Coveralls.io for testing
 Visit coveralls.io if later, we get to the point where we want to look at unit test coverage.
-
-## Scope of the project
-* Base case (100%)
-    * Helper functions - log scale, confidence intervals, etc. [DONE]
-    * Vignettes that show idea and work with examples in nlmixr/ggpmx [pk-DONE, pd-DONE]
-    * Data checking: xgx_check_data() - [DONE]
-* Under Consideration (50%)
-    * Overview Plots: xgx_explore_pk(data,units), xgx_explore_pd, xgx_explore_pkpd [CONSIDERING]
-      * (continuous, binary, RO)
-      * repeated time to event
-      * We still need to align as a team on whether we want to provide this functionality, or just have the user copy the Rmarkdown documents from the vignettes or https://opensource.nibr.com/xgx.  The advantage of this functionality is that it makes some plots even easier to create.  The disadvantage is that it's more functions for the user to learn and more work to maintain the package and many of the commonly used plots can be created with just a few lines of code.
-* Stretch goal (40%)
-    * Additional datatypes [TO DO]
-      * RECIST (Target, Nontarget, and New lesions), 
-      * Liver enzymes (ALT, AST, Bilirubin, etc.)
-      * Blood counts (Neutrophils, Platelets, Blasts).
-
-## Roadmap
-* Continue coding
-    * Finish base case at minimum, and possibly some additinoal functionality.
-* Begin process of "validation" for CRAN and put version 1 onto CRAN.
-See [https://kbroman.org/pkg_primer/pages/cran.html]
-  * From Rstudio, run `devtools::check()`
-      * Alternatively one could navigate to directory containing package and type: `R CMD build ./`  
-      * This will create a .tar.gz file (e.g. `xgx_0.0.1.005.tar.gz`)
-      * Then, type: `R CMD check xgx_0.0.1.005.tar.gz --as-cran`
-      * The devtools::check() above does the same thing (I think)
-* Request installation on Novartis systems.
