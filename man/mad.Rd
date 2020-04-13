@@ -4,7 +4,8 @@
 \name{mad}
 \alias{mad}
 \title{Multiple Ascending Dose Data Set}
-\format{A data frame with the following 19 columns:
+\format{
+A data frame with the following 19 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab numeric; unique subject ID\cr
   column 2: \tab \code{TIME} \tab numeric; time relative to first drug 
@@ -38,7 +39,8 @@
   column 18: \tab \code{PROFTIME} \tab numeric; time within PROFDAY\cr
   column 19: \tab \code{CYCLE} \tab numeric; count of drug administrations 
   received
-}}
+}
+}
 \usage{
 mad
 }

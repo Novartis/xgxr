@@ -4,7 +4,8 @@
 \name{nlmixr_theo_sd}
 \alias{nlmixr_theo_sd}
 \title{nlmixr Theophylline SD Data Set}
-\format{A data frame with the following 7 columns:
+\format{
+A data frame with the following 7 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab integer; unique patient identifier\cr
   column 2: \tab \code{TIME} \tab numeric; time relative to first drug 
@@ -14,7 +15,8 @@
   column 5: \tab \code{EVID} \tab integer; event ID, 1 if dose, 0 otherwise\cr
   column 6: \tab \code{CMT} \tab integer; compartment number\cr
   column 7: \tab \code{WT} \tab numeric; weight
-}}
+}
+}
 \usage{
 nlmixr_theo_sd
 }

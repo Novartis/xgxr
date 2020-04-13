@@ -4,10 +4,19 @@
 \alias{xgx_stat_ci}
 \title{Plot data with mean and confidence intervals}
 \usage{
-xgx_stat_ci(mapping = NULL, data = NULL, conf_level = 0.95,
-  distribution = "normal", geom = list("point", "line", "errorbar"),
-  position = "identity", fun.args = list(), na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE, ...)
+xgx_stat_ci(
+  mapping = NULL,
+  data = NULL,
+  conf_level = 0.95,
+  distribution = "normal",
+  geom = list("point", "line", "errorbar"),
+  position = "identity",
+  fun.args = list(),
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE,
+  ...
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by `aes` or `aes_`. 

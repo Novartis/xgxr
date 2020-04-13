@@ -1,6 +1,6 @@
 Package: xgxr
 Title: Exploratory Graphics for Pharmacometrics
-Version: 1.0.7
+Version: 1.0.8
 Authors@R: 
     c(person(given = "Andrew",
              family = "Stein",
@@ -67,4 +67,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

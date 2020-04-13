@@ -83,7 +83,7 @@ data <- data %>%
                        # define order of treatment factor
   
 # for plotting the PK data
-data_pk <- filter(data, CMT == 2)
+data_pk <- filter(data, CMT == 2, TIME > 0)
   
 # NCA
 NCA <- data %>%
@@ -132,12 +132,11 @@ glin <- ggplot(data = data_pk, aes(x = NOMTIME,
                                    y = LIDV,
                                    group = DOSE,
                                    color = DOSEREG_REV)) +
-  xgx_stat_ci() + 
+  stat_summary() + 
   xgx_scale_x_time_units(time_units_dataset, time_units_plot) +
   labs(y = conc_label, color = "Dose")
 
-glog <- glin + xgx_scale_y_log10()
-
+glog <- glin + scale_y_log10()
 gridExtra::grid.arrange(gridExtra::arrangeGrob(glin, glog, nrow = 1))
 ```
 

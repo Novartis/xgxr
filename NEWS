@@ -1,3 +1,8 @@
+CHANGES IN VERSION 1.0.8
+------------------------
+    o theoph.Rmd vignette, for data_pk, keep only rows where TIME>0.  This fixed an 
+      error in the vignette that was introduced with the March 5, 2020 ggplot2 update
+
 CHANGES IN VERSION 1.0.7
 ------------------------
     o adding xgx_scale_y_percentchangelog10

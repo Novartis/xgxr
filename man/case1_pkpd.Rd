@@ -4,7 +4,8 @@
 \name{case1_pkpd}
 \alias{case1_pkpd}
 \title{Case 1 PKPD Data Set}
-\format{A data frame with the following 21 columns:
+\format{
+A data frame with the following 21 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab integer; unique subject ID\cr
   column 2: \tab \code{TIME} \tab numeric; time relative to first drug 
@@ -40,7 +41,8 @@
   column 19: \tab \code{PART} \tab integer; part of study\cr
   column 20: \tab \code{STUDY} \tab integer; study\cr
   column 21: \tab \code{IPRED} \tab numeric; individual prediction\cr
-}}
+}
+}
 \usage{
 case1_pkpd
 }
