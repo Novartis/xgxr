@@ -56,7 +56,7 @@ xgx_check_data <- function(data, covariates = NULL) {
   # avoid CRAN note
   ID <-  EVID <- YTYPE <- MDV <- AMT <- DV <- TIME <- CENS <-
     Value <- tot <- ntot <- pct <- Data_Check_Issue <- n <- NULL
-
+  
   # check for required column names in dataset
   if (!("YTYPE" %in% names(data)) && ("CMT" %in% names(data))) {
     warning("Setting YTYPE column equal to CMT\n")
@@ -85,20 +85,20 @@ xgx_check_data <- function(data, covariates = NULL) {
     warning("Setting CENS column equal to 0\n")
     data$CENS <- 0
   }
-
+  
   required_names <- c("ID", "EVID", "AMT", "TIME", "DV", "YTYPE")
   missing_cols <- setdiff(required_names, names(data))
   if (length(missing_cols) > 0) {
     missing_text <- paste(missing_cols, collapse = ",")
     stop(paste0("These columns must be present in the dataset: ", missing_text))
   }
-
+  
   # initialize output tibble
   check <- list()
   data_subset <- list()
   i <- 0 #index for table
   j <- 0 #index for list of data indices
-
+  
   # number of patients
   num_patients <- length(unique(data$ID))
   i <- i + 1
@@ -108,7 +108,7 @@ xgx_check_data <- function(data, covariates = NULL) {
     YTYPE = "-",
     Statistic = paste0(num_patients),
     Value = num_patients)
-
+  
   # number of patients with zero observations
   zero_obs <- data %>%
     dplyr::group_by(ID) %>%
@@ -116,7 +116,7 @@ xgx_check_data <- function(data, covariates = NULL) {
     dplyr::count() %>%
     dplyr::filter(n == 0)
   num_zero_obs <- nrow(zero_obs)
-
+  
   i <- i + 1
   check[[i]] <- tibble::tibble(
     Category = "MDV",
@@ -124,14 +124,14 @@ xgx_check_data <- function(data, covariates = NULL) {
     YTYPE = "all",
     Statistic = paste0(num_zero_obs, " ", paste0(zero_obs$ID, collapse = ", ")),
     Value = num_zero_obs)
-
+  
   # number of missing data points, to be filtered out from MDV
   if ("MDV" %in% names(data)) {
     mdv <- data %>%
       dplyr::group_by(YTYPE) %>%
       dplyr::summarise(n = sum(MDV == 1 & EVID == 0))
     num_mdv <- sum(mdv$n)
-
+    
     if (num_mdv == 0) {
       i <- i + 1
       check[[i]] <- tibble::tibble(
@@ -154,7 +154,7 @@ xgx_check_data <- function(data, covariates = NULL) {
       data <- dplyr::filter(data, !(MDV == 1 & EVID == 0))
     }
   }
-
+  
   # number of doses
   i <- i + 1
   check[[i]] <- tibble::tibble(
@@ -163,7 +163,7 @@ xgx_check_data <- function(data, covariates = NULL) {
     YTYPE = "-",
     Value = sum(data$AMT > 0),
     Statistic = paste0(Value))
-
+  
   # number of zero doses
   i <- i + 1
   check[[i]] <- tibble::tibble(
@@ -172,12 +172,12 @@ xgx_check_data <- function(data, covariates = NULL) {
     YTYPE = "-",
     Value = sum(data$AMT == 0 & data$EVID == 1),
     Statistic = paste0(Value))
-
+  
   # number of patients that have all zero doses or that never receive any dose
   num_doses <- data %>%
     dplyr::group_by(ID) %>%
     dplyr::summarise(n = sum(AMT > 0))
-
+  
   i <- i + 1
   check[[i]] <- tibble::tibble(
     Category = "Dose",
@@ -185,17 +185,17 @@ xgx_check_data <- function(data, covariates = NULL) {
     YTYPE = "-",
     Value = sum(num_doses$n == 0),
     Statistic = paste0(Value))
-
+  
   # number of data points
   num_datapoints <- data %>%
     dplyr::group_by(ID, YTYPE) %>%
     dplyr::count() %>%
     dplyr::group_by(YTYPE) %>%
     dplyr::summarise(tot    = sum(n),
-              min    = min(n),
-              median = median(n),
-              max    = max(n))
-
+                     min    = min(n),
+                     median = median(n),
+                     max    = max(n))
+  
   i <- i + 1
   check[[i]] <- num_datapoints %>%
     dplyr::transmute(
@@ -204,7 +204,7 @@ xgx_check_data <- function(data, covariates = NULL) {
       YTYPE = as.character(YTYPE),
       Statistic = paste0(tot),
       Value = tot)
-
+  
   i <- i + 1
   check[[i]] <- num_datapoints %>%
     dplyr::transmute(
@@ -214,13 +214,13 @@ xgx_check_data <- function(data, covariates = NULL) {
       Statistic = paste0("min = ", min, ",  median = ", median,
                          ", max = ", max),
       Value = median)
-
+  
   # check for zero concentrations
   num_zero_datapoints <- data %>%
     dplyr::group_by(ID, YTYPE) %>%
     dplyr::group_by(YTYPE) %>%
     dplyr::summarise(tot = sum(DV == 0 & MDV == 0, na.rm = TRUE))
-
+  
   i <- i + 1
   check[[i]] <- num_zero_datapoints %>%
     dplyr::transmute(
@@ -229,18 +229,18 @@ xgx_check_data <- function(data, covariates = NULL) {
       YTYPE = as.character(YTYPE),
       Statistic = paste0(tot),
       Value = tot)
-
+  
   j <- j + 1
   data_subset[[j]] <- data %>%
     dplyr::filter(DV == 0 & MDV == 0) %>%
     dplyr::mutate(Data_Check_Issue = "DV == 0")
-
+  
   # check for missing data
   num_na_datapoints <- data %>%
     dplyr::group_by(ID, YTYPE) %>%
     dplyr::group_by(YTYPE) %>%
     dplyr::summarise(tot = sum(is.na(DV) & MDV == 0))
-
+  
   i <- i + 1
   check[[i]] <- num_na_datapoints %>%
     dplyr::transmute(
@@ -249,19 +249,19 @@ xgx_check_data <- function(data, covariates = NULL) {
       YTYPE = as.character(YTYPE),
       Statistic = paste0(tot),
       Value = tot)
-
+  
   j <- j + 1
   data_subset[[j]] <- data %>%
     dplyr::filter(is.na(DV) & MDV == 0) %>%
     dplyr::mutate(Data_Check_Issue = "is.na(DV)")
-
+  
   # check for duplicate data
   dup_time <- data %>%
     dplyr::group_by(ID, YTYPE, TIME) %>%
     dplyr::mutate(n = length(DV),
-           n = ifelse(n == 1, 0, n)) %>%
+                  n = ifelse(n == 1, 0, n)) %>%
     dplyr::ungroup()
-
+  
   i <- i + 1
   check[[i]] <- dup_time %>%
     dplyr::group_by(YTYPE) %>%
@@ -273,23 +273,23 @@ xgx_check_data <- function(data, covariates = NULL) {
       YTYPE = as.character(YTYPE),
       Statistic = paste0(ntot),
       Value = ntot)
-
+  
   j <- j + 1
   dup_time <- dup_time %>%
     dplyr::filter(n >= 2)
   data_subset[[j]] <- data %>%
     dplyr::filter(ID %in% dup_time$ID,
-           TIME %in% dup_time$TIME,
-           YTYPE %in% dup_time$YTYPE) %>%
+                  TIME %in% dup_time$TIME,
+                  YTYPE %in% dup_time$YTYPE) %>%
     dplyr::mutate(Data_Check_Issue = "Duplicate Time Points")
-
+  
   # number of Censored data points
   if ("CENS" %in% names(data)) {
     num_cens <- data %>%
       dplyr::group_by(YTYPE) %>%
       dplyr::summarise(tot  = sum(CENS == 1))
     num_cens$pct <- round(num_cens$tot / num_datapoints$tot * 100)
-
+    
     i <- i + 1
     check[[i]] <- num_cens %>%
       dplyr::transmute(
@@ -299,17 +299,19 @@ xgx_check_data <- function(data, covariates = NULL) {
         Statistic = paste0(tot, " (", pct, "%)"),
         Value = tot)
   }
-
+  
   # columns with negative data
   neg <- data %>%
+    ungroup() %>%
     dplyr::select(DV, covariates) %>%
+    dplyr::select_if(is.numeric) %>%
     dplyr::summarise_all(function(x) {sum( x < 0, na.rm = TRUE)})
   nam <- names(neg)
   neg <- neg %>%
     as.numeric() %>%
     stats::setNames(nam)
   neg <- neg[neg > 0]
-
+  
   i <- i + 1
   check[[i]] <- tibble::tibble(
     Category = "All Columns",
@@ -317,14 +319,15 @@ xgx_check_data <- function(data, covariates = NULL) {
     YTYPE = "-",
     Statistic = paste0(names(neg), ":", neg, collapse = ", "),
     Value = sum(neg))
-
+  
   # columns with missing values
   na <- data %>%
+    ungroup() %>%
     dplyr::summarise_all(function(x) {sum(is.na(x))}) %>%
     as.numeric() %>%
     stats::setNames(names(data))
   na <- na[na > 0]
-
+  
   i <- i + 1
   check[[i]] <- tibble::tibble(
     Category = "All Columns",
@@ -333,36 +336,36 @@ xgx_check_data <- function(data, covariates = NULL) {
     Statistic = paste0(names(na), ":", na, collapse = ", "),
     Value = sum(na))
   missing_summary <- check[[i]]$Statistic
-
+  
   # create summaries
   check <- dplyr::bind_rows(check)
   data_subset <- dplyr::bind_rows(data_subset) %>%
     dplyr::select(Data_Check_Issue, ID, TIME, DV, CENS, YTYPE)
-
+  
   # covariates
   cov_summary <- xgx_summarize_covariates(data, covariates)
-
+  
   # output
   output <- list(summary = check,
-                cts_covariates = cov_summary$cts_covariates,
-                cat_covariates = cov_summary$cat_covariates,
-                data_subset = data_subset)
-
+                 cts_covariates = cov_summary$cts_covariates,
+                 cat_covariates = cov_summary$cat_covariates,
+                 data_subset = data_subset)
+  
   # print the summary
   pander::panderOptions("table.split.table", Inf)
   pander::panderOptions("table.split.cells", 60)
   pander::panderOptions("table.alignment.default", "left")
-
+  
   cat("\nDATA SUMMARY\n")
   pander::pander(check %>% dplyr::select(-Value))
-
+  
   if (length(output$cts_covariates) > 0) {
     cat("CONTINUOUS COVARIATES\n")
     pander::pander(output$cts_covariates)
   } else {
     cat("NO CONTINUOUS COVARIATES\n")
   }
-
+  
   if (length(output$cat_covariates) > 0) {
     cat("CATEGORICAL COVARIATES\n")
     pander::panderOptions("table.split.cells", 100)
@@ -370,7 +373,7 @@ xgx_check_data <- function(data, covariates = NULL) {
   } else {
     cat("NO CATEGORICAL COVARIATES\n")
   }
-
+  
   if (nrow(data_subset) == 0) {
   } else if (nrow(data_subset) <= 6) {
     cat("POSSIBLE DATA ISSUES IN THE FOLLOWING RECORDS\n")
@@ -381,6 +384,6 @@ xgx_check_data <- function(data, covariates = NULL) {
   }
   cat("The following columns contained missing values\n")
   cat(missing_summary)
-
+  
   return(output)
 }
