@@ -19,4 +19,5 @@
 * Check the package into Github.  Wait a few minutes and check that the build is "passing" under Travis CI.
 * Send the package to CRAN.  There are two options
   * devtools::release() - this will run a lot of checks that are helpful, but doesn't work with Novartis firewall.  It sometimes fails works on the GuestWireless network
-  * Go to this website and upload the tar.gz https://cran.r-project.org/submit.html
+  * Go to this website and upload the tar.gz https://CRAN.R-project.org/submit.html
+* CRAN will send you an email saying the package has been submitted and you then need to click a link to confirm the submission.

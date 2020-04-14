@@ -26,7 +26,7 @@ Functions are located in the "R" folder.
 Sample datasets are stored in the the data folder as ".Rda" files and also, for convenience, in the inst/extdata folder as csv files.  Code for generating some of these datasets is stored in the data_create folder.  And the Single Ascending Dose PKPD dataset came from [https://github.com/dpastoor/PKPDdatasets/blob/master/R/PKPDdatasets.R#L31]
 
 ### Documentation
-Documentation is located in the "man" folder.  Do not edit this folder.  Instead, edit the documentation within the function header and the documentation will be automatically created [as described here] (https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html).
+Documentation is located in the "man" folder.  Do not edit this folder.  Instead, edit the documentation within the function header and the documentation will be automatically created [as described here] (https://CRAN.R-project.org/web/packages/roxygen2/vignettes/roxygen2.html).
 
 ### Vignettes
 Vignettes are documents that show how a package can be used.  They are located in the "vignettes" folder.  Build them using the devtools::build_vignettes() function.
@@ -39,7 +39,7 @@ Vignettes are documents that show how a package can be used.  They are located i
 * [Hilary Parker's brief intro](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/)
 * [Hadley Wickham's book](http://r-pkgs.had.co.nz/)
 * [Developing package with Rstudio](https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-RStudio)
-* [Getting a package onto CRAN](https://cran.r-project.org/web/packages/policies.html)
+* [Getting a package onto CRAN](https://CRAN.R-project.org/web/packages/policies.html)
 
 ## Coveralls.io for testing
 Visit coveralls.io if later, we get to the point where we want to look at unit test coverage.
