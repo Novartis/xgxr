@@ -1,5 +1,5 @@
 ---
-title: "Novatis Open Source Package Downloads"
+title: "PMX Open Source Package Downloads"
 author: "Andy Stein"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -16,25 +16,36 @@ library(cranlogs)
 library(ggplot2)
 library(dplyr)
 library(xgxr)
+library(ggrepel)
 xgx_theme_set()
 
 # How many overall downloads
-data <- cran_downloads(packages = c("xgxr","nlmixr","ggPMX","RBesT"), from = "2010-01-01", to = Sys.Date()-1) %>%
+data <- cran_downloads(packages = c("xgxr","nlmixr","RxODE","ggPMX","RBesT","RStan","mrgsolve","PKNCA","NonCompart"), 
+                       from = "2010-01-01", to = Sys.Date()-1) %>%
   group_by(package) %>%
   mutate(cumulative = cumsum(count)) %>%
   filter(cumulative > 0)
 
+data_last = data %>% 
+  filter(date == max(date)) %>%
+  mutate(date = date + 100)
+
 # Daily downloads
-g = ggplot(data, aes(date, count, color = package)) 
-g = g + geom_line() 
-g = g + labs(x = "Time", 
+g = ggplot(data, aes(x = date, y = count, color = package, label = package)) 
+g = g + geom_line(size = 1, alpha = 0.5) 
+g = g + labs(x = "Date", 
              y =  "Daily downloads",
              title =  "Daily downloads") 
 print(g)
+g0 = g
 
-# Cumulative  Downloads
-g = g + aes(y = cumulative)
-g = g + labs(y = "Total downloads",
+# Cumulative  Downloads ----
+g = ggplot(data, aes(x = date, y = cumulative, color = package, label = package)) 
+g = g + geom_line(size = 1, alpha = 0.5, show.legend = FALSE) 
+g = g + labs(x = "Date",
+             y = "Total downloads",
              title = "Cumulative downloads")
+g = g + ggrepel::geom_text_repel(data = data_last, direction = "y", hjust = .5, show.legend = FALSE)
+g = g + theme(legend.position = NULL)
 print(g)
 ```
