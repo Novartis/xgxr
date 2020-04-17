@@ -1,0 +1,40 @@
+---
+title: "Novatis Open Source Package Downloads"
+author: "Andy Stein"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    code_folding: hide
+---
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+# Based on demo from this  website
+# https://www.r-bloggers.com/how-many-downloads-does-my-package-have/
+
+# install.packages("cranlogs")
+library(cranlogs)
+library(ggplot2)
+library(dplyr)
+library(xgxr)
+xgx_theme_set()
+
+# How many overall downloads
+data <- cran_downloads(packages = c("xgxr","nlmixr","ggPMX","RBesT"), from = "2010-01-01", to = Sys.Date()-1) %>%
+  group_by(package) %>%
+  mutate(cumulative = cumsum(count)) %>%
+  filter(cumulative > 0)
+
+# Daily downloads
+g = ggplot(data, aes(date, count, color = package)) 
+g = g + geom_line() 
+g = g + labs(x = "Time", 
+             y =  "Daily downloads",
+             title =  "Daily downloads") 
+print(g)
+
+# Cumulative  Downloads
+g = g + aes(y = cumulative)
+g = g + labs(y = "Total downloads",
+             title = "Cumulative downloads")
+print(g)
+```
