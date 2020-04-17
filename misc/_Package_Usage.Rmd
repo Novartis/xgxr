@@ -20,20 +20,25 @@ library(ggrepel)
 xgx_theme_set()
 
 # How many overall downloads
-other_packages = c("ggplot2","rstan","deSolve") #these packages were used a lot more often, make it hard to see the plots
-data <- cran_downloads(packages = c("xgxr","nlmixr","RxODE","ggPMX","RBesT","mrgsolve","PKNCA","NonCompart"), 
+data <- cran_downloads(packages = c("xgxr","nlmixr","RxODE","ggPMX","RBesT","mrgsolve","PKNCA","NonCompart","ggplot2","rstan","deSolve"), 
                        from = "2010-01-01", to = Sys.Date()-1) %>%
   group_by(package) %>%
   mutate(cumulative = cumsum(count)) %>%
   filter(cumulative > 0)
 
+data_pmx = data %>%
+  filter(!(package %in% c("ggplot2","rstan","deSolve")))
+
 data_last = data %>% 
   filter(date == max(date)) %>%
   mutate(date = date + 100)
 
+data_pmx_last = data_last %>%
+  filter(!(package %in% c("ggplot2","rstan","deSolve")))
+
 # Daily downloads
-g = ggplot(data, aes(x = date, y = count, color = package, label = package)) 
-g = g + geom_line(size = 1, alpha = 0.5) 
+g = ggplot(data_pmx, aes(x = date, y = count, color = package, label = package)) 
+g = g + geom_line(alpha = 0.5) 
 g = g + labs(x = "Date", 
              y =  "Daily downloads",
              title =  "Daily downloads") 
@@ -41,12 +46,24 @@ print(g)
 g0 = g
 
 # Cumulative  Downloads ----
-g = ggplot(data, aes(x = date, y = cumulative, color = package, label = package)) 
+g = ggplot(data_pmx, aes(x = date, y = cumulative, color = package, label = package)) 
 g = g + geom_line(size = 1, alpha = 0.5, show.legend = FALSE) 
 g = g + labs(x = "Date",
              y = "Total downloads",
              title = "Cumulative downloads")
-g = g + ggrepel::geom_text_repel(data = data_last, direction = "y", hjust = .5, show.legend = FALSE)
+g = g + geom_text_repel(data = data_pmx_last, direction = "y", hjust = .5, show.legend = FALSE)
 g = g + theme(legend.position = NULL)
 print(g)
+
+# Cumulative  Downloads ----
+g = ggplot(data, aes(x = date, y = cumulative, color = package, label = package)) 
+g = g + geom_line(size = 1, alpha = 0.5, show.legend = FALSE) 
+g = g + labs(x = "Date",
+             y = "Total downloads",
+             title = "Cumulative downloads, including commonly used packages")
+g = g + geom_text_repel(data = data_last, direction = "y", hjust = .5, show.legend = FALSE)
+g = g + theme(legend.position = NULL)
+g = g + xgx_scale_y_log10(limits = c(300,max(data$cumulative)))
+print(g)
+
 ```
