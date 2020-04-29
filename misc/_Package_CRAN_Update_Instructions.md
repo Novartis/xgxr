@@ -5,7 +5,7 @@
 * update DESCRIPTION with new version number
 * update the NEWS
 * R>> devtools::build()
-  * green check marks are good, red x's are bad
+  * green check marks are good, red x's are bad.  fix them
   * this step makes sure you can build the package
 * R>> devtools::check()
   * updates package documentation
