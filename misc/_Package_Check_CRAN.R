@@ -1,5 +1,4 @@
-library(devtools)
-a = check()
+a = devtools::check()
 print(a)
 stop()
 

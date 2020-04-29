@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 ## Loading the libraries used
 ```{r, message=FALSE}
   devtools::load_all()
-  library(xgx)
+  library(xgxr)
   library(tidyr)
   library(scales)
   library(ggplot2)
@@ -68,8 +68,8 @@ breaks.y = xgx_breaks_log10(c(0,10));
 
 ## Odd errors number 1
 ```{r}
-data = read.csv("data_create/TMDD_SCIM/TMDD_Model_with_NAs.csv") %>%
-  mutate(Dnorm = D/dose,
+data = read.csv("data_create/TMDD_SCIM/TMDD_Model_with_NAs.csv", stringsAsFactors = FALSE) %>%
+  dplyr::mutate(Dnorm = as.numeric(D)/as.numeric(dose),
            dose.round = signif(dose,1),
            dose.label = factor(dose.round, levels = unique(dose.round)))
 
@@ -115,7 +115,7 @@ g = ggplot(data,aes(x=time,y=Dnorm,color=dose.label))
 
 ## Odd errors number 2
 ```{r}
-data = read.csv("data_create/TMDD_SCIM/task02a_sensitivity_all drugs and params_100_updated 04_24.csv")
+data = read.csv("../data_create/TMDD_SCIM/task02a_sensitivity_all drugs and params_100_updated 04_24.csv")
 
 
 
