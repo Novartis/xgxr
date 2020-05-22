@@ -66,7 +66,12 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
       method.args$start[[ivar]] <- 1
     }
   }
-  ggplot2::stat_smooth(method = method, formula = formula, method.args = method.args, se = se, ...)
+
+  ggplot2::stat_smooth(mapping = mapping, data = data, geom = geom, 
+                       position = position, ..., method = method, formula = formula,
+                       se = se, n = n, span = span, fullrange = fullrange, 
+                       level = level, method.args = method.args, na.rm = na.rm,
+                       show.legend = show.legend, inherit.aes = inherit.aes)
 }
 
 
@@ -119,10 +124,10 @@ predictdf.nls <- function(model, xseq, se, level) {
     deltaf <- sqrt(GS)*qt(1 - alpha/2, df = summary(model)$df[2])
     
     pred <- data.frame(x = xseq, y = f.new, ymin = f.new - deltaf, ymax = f.new + deltaf)
+
   }else{
 
     pred <- ggplot2:::predictdf.default(model, xseq, se, level)
-    
   }
   
   return(pred)
