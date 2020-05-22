@@ -37,6 +37,7 @@
 #'   xgx_geom_smooth_emax()
 #'
 #' @importFrom stats nls
+#' @importFrom ggplot2 geom_boxplot
 #' @importFrom ggplot2 geom_smooth
 #' @export
 xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
