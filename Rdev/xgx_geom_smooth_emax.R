@@ -3,8 +3,6 @@
 #'
 #' @inheritParams ggplot2::geom_smooth
 #'
-#' @return dataframe with x and y values, if se is TRUE dataframe also includes ymin and ymax
-#'
 #' @examples 
 #' Nsubj <- 10
 #' Doses <- c(0, 25, 50, 100, 200)
