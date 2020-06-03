@@ -114,7 +114,19 @@ xgx_stat_ci <- function(
                     distribution = "normal",
                     bins = NULL,
                     ...) {
+  
+
+  
+  
   lays <- list()
+  
+  if (distribution == "ordinal") {
+    # data$y = as.double(data$y)
+    # lays[["scale_y_continuous()"]] <- scale_y_continuous()
+    lays[["scale_y_continuous()"]] <- coord_trans(limy = c(0.0,1.0))
+    lays[["scale_y_continuous()"]] <- remove_y_scales("discrete")
+    # lays[["scale_y_continuous()"]] <- scale_y_continuous(labels = scales::percent)
+  }
   
   for (igeom in geom) {
     if (is.null(bins)) {
@@ -173,6 +185,7 @@ xgx_stat_ci <- function(
         lay$geom$geom_params$fatten <- 2
       }
     }
+    
 
     lays[[paste0("geom_", igeom)]] <- lay  
   }
@@ -193,11 +206,44 @@ xgx_stat_ci <- function(
 StatCI <- ggplot2::ggproto("StatCI", ggplot2::Stat,
                   
     required_aes = c("x","y"),
+    default_aes = aes(fill = ..y..),
     
     compute_group = function(data, scales, conf_level, distribution, bins) {
     
       if (distribution == "ordinal") {
+        # print(scales)
+        # print(scales$y)
+        print(scales$y$is_discrete)
+        # scales$y$is_discerete <- FALSE
+        # scales$y <- continuous_scale(limits = c(0,1))
+        # print(scales$y$is_discrete)
         stat_data <- data
+        # print(data)
+        # stat_data <- data %>% group_by(quantile_index) %>%
+        #                       summarize(colour = unique(colour),
+        #                                 x = median(x),
+        #                                 ymin = DescTools::MultinomCI(y, conf_level)$ymin,
+        #                                 ymax = DescTools::MultinomCI(y, conf_level)$ymax,
+        #                                 y = DescTools::MultinomCI(y, conf_level)$y) %>%
+        #                      ungroup()
+        # print(stat_data)
+        # # print(stat_data)
+        # # # Hacky solution - treat each group as binomial
+        # # temp_distribution = "binomial"
+        # # # # The `y` values should be scaled to the number of ordinal variables
+        # # # num_categories = max(data$y)
+        # # # # For some reason it needs this + the mutate...
+        # # # ytemp = data$y / num_categories
+        # # 
+        # # stat_data <- data %>% mutate(quantile_index = dplyr::ntile(data$x, bins),
+        # #                              ytemp = data$y / num_categories) %>%
+        # #                       group_by(quantile_index) %>%
+        # #                       summarize(x = median(x),
+        # #                                 ymin = xgx_conf_int(ytemp, conf_level, temp_distribution)$ymin,
+        # #                                 ymax = xgx_conf_int(ytemp, conf_level, temp_distribution)$ymax,
+        # #                                 y = xgx_conf_int(ytemp, conf_level, temp_distribution)$ys) %>%
+        # #                       subset(select = -c(ytemp)) %>%
+        # #                       ungroup()
       }
       else {
         stat_data <- data %>% mutate(quantile_index = dplyr::ntile(data$x, bins)) %>%
@@ -213,36 +259,77 @@ StatCI <- ggplot2::ggproto("StatCI", ggplot2::Stat,
     },
     
     setup_data = function(data, params){
-      
-      # If the data is ordinal, calculate percentages
-      #   for each category across each bin
+      # print(scales)
+      # print(data)
+      # print(data)
+      data$y <- as.double(data$y)
       if (params$distribution == "ordinal"){
-        
-        # Get median x value for each bin
+        # print(data)
         median_x <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-                              group_by(quantile_index) %>%
-                              summarize(x = median(x))
-        
-        # Get the number of each category in each bin 
+                            group_by(quantile_index) %>%
+                            summarize(x = median(x))
+        # print(median_x)
         counts <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-                              group_by(quantile_index, y) %>%
-                              summarize(count = length(y),
-                                        colour = unique(colour),
-                                        fill = unique(fill),
-                                        PANEL = unique(PANEL),
-                                        group = unique(group))
-
-        # Combine the x and y data
+                          group_by(quantile_index, y) %>%
+                          summarize(count = length(y),
+                                    colour = unique(colour),
+                                    fill = unique(fill),
+                                    PANEL = unique(PANEL),
+                                    group = unique(group))
+        # print(counts)
         data <- merge(median_x, counts, by = "quantile_index", all = TRUE)
-
-        # Now calculate the confidence intervals for the multinomial data
+        # print(data)
         data <- data %>% group_by(quantile_index) %>%
-                  mutate(x = median(x),
-                         y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
-                         ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
-                         ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
+                  mutate(
+                    # colour = unique(colour),
+                    # fill = unique(fill),
+                    # group = unique(group),
+                            x = median(x),
+                            y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
+                            ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
+                            ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
                   ungroup() %>% group_by(group)
+        # print(data)
+
+        # print(data)
+
+        # group_by(quantile_index) %>%
+        #   summarize(x = median(x),
+        #             y=(DescTools::MultinomCI(count, params$conf_level))["est"],
+        #             ymin=(DescTools::MultinomCI(count, params$conf_level))["lwr.ci"],
+        #             ymax=(DescTools::MultinomCI(count, params$conf_level))["upr.ci"]) %>%
+          # ungroup()
+        # print(data)
+        # categories = unique(data$y)
+        # num_categories = length(categories)
+        # print(data)
+        # # Make categorical data into binary of classes by pivoting / melting
+        # data <- data %>% cbind(dummies::dummy.data.frame(data, names = "y", all = FALSE)) %>%
+        #                       pivot_longer(cols = paste("y", categories, sep = ""),
+        #                                    names_to = "dummy_group",
+        #                                    values_to = "dummy_y",
+        #                                    names_repair = "minimal") %>%
+        #                       # Remove original "group" and "y"
+        #                       subset(select = -c(group, y)) %>%
+        #                       # Remove "y" from values like "y1, y2, ..."
+        #                       # Replace "y" and "group" column
+        #                       mutate(group = as.integer(stringr::str_replace(dummy_group, "y", "")),
+        #                              y = dummy_y * num_categories) %>%
+        #                       subset(select = -c(dummy_group, dummy_y))
       }
+      # print(data)
       return(data)
     }
 )
+
+
+remove_y_scales <- function(x, scale_type) {
+  # Find layers that match the requested type.
+  selector <- sapply(x$layers,
+                     function(y) {
+                       class(y$scales[[1]])[1] == scale_type
+                     })
+  # Delete the layers.
+  x$layers[selector] <- NULL
+  x
+}

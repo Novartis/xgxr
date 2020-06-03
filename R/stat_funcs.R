@@ -30,7 +30,7 @@
 #' @importFrom stats var
 #' @importFrom binom binom.exact
 #' @export
-conf_int = function(y, conf_level, distribution) {
+xgx_conf_int = function(y, conf_level, distribution) {
   
   if (!(conf_level > 0.5 && conf_level < 1)) {
     stop("conf_level should be greater than 0.5 and less than 1")
@@ -39,7 +39,7 @@ conf_int = function(y, conf_level, distribution) {
   percentile_value <- conf_level + (1 - conf_level) / 2
   
   y <- stats::na.omit(y)
-  
+
   if (distribution == "normal") {
     conf_int_out <- data.frame(
       y = mean(y),
