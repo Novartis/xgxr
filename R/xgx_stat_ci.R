@@ -138,9 +138,9 @@ xgx_stat_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95,
       conf_int_out <- data.frame(
         y = mean(y),
         ymin = binom::binom.exact(sum(y), length(y),
-                                  conf.level = conf.level)$lower,
+                                  conf.level = conf_level)$lower,
         ymax = binom::binom.exact(sum(y), length(y),
-                                  conf.level = conf.level)$upper)
+                                  conf.level = conf_level)$upper)
     } else {
       stop("distribution must be either normal, lognormal, or binomial")
     }
