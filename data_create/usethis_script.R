@@ -16,3 +16,5 @@ usethis::use_data(nlmixr_theo_sd, overwrite = TRUE)
 sad = read.csv("data_create/raw/sad.csv", stringsAsFactors = FALSE)
 usethis::use_data(sad, overwrite = TRUE)
 
+data_specification_columns = read.csv("data_create/raw/data_specification_columns.csv", stringsAsFactors = FALSE)
+usethis::use_data(data_specification_columns, overwrite = TRUE)

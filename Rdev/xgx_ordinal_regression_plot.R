@@ -6,7 +6,7 @@ xgx_ordinal_regression_plot <- function(data = NULL,
                                         levels = NULL,
                                         nbins = 6,
                                         colors = c("red", "green", "blue"),
-                                        ci = 0.975) {
+                                        ci = 0.95) {
 
   # Prepare variables and ensure correct datatypes
   if (class(formula) == "character"){
@@ -20,7 +20,7 @@ xgx_ordinal_regression_plot <- function(data = NULL,
   if (!lapply(data, is.ordered)[[dependent_variable]]) {
     if (is.null(levels)) {
       warning("In order to determine the ordering, it is best to provide the `levels` parameter")
-      levels = unique(data[,dependent_variable])
+      levels = unique(as.vector(data[,dependent_variable]))
     }
   }
   data <- data %>% mutate(Response = factor(data[, dependent_variable],
@@ -28,7 +28,7 @@ xgx_ordinal_regression_plot <- function(data = NULL,
                                             ordered = TRUE))
 
   # Ordinal Regression Model
-  model <-  brms::brm(formula = formula,
+  model <-  brms::brm(formula = as.formula(paste("Response ~ ", as.character(independent_variables))),
                       family = brms::cumulative("logit", threshold="flexible"),
                       data = data,
                       refresh = 0)
@@ -48,15 +48,14 @@ xgx_ordinal_regression_plot <- function(data = NULL,
 
   predictions <- tidybayes::fitted_draws(model = model,
                                          newdata = pframe,
-                                         n = 20,
+                                         # n = 20,
                                          category ="Response",
                                          value = "Value") %>%
                             ungroup() %>%
                             select(independent_variables, Response, Value)
   
   
-  
-  
+
   # Dataframe with renamed columns for alignment
   pred_probabilities <- predict(model)%>%
                                 as.data.frame %>%
@@ -73,15 +72,16 @@ xgx_ordinal_regression_plot <- function(data = NULL,
                             cbind(dummies::dummy.data.frame(data, 
                                                             names = "Response",
                                                             all = FALSE))
-                          
-  print(ord_reg_prediction_data)
+
   gg <- ggplot(predictions,
                aes_string(x = independent_variables[1], y = "Value",
                    color = "Response",
                    fill = "Response"))
 
+  percentile_value <- conf_level + (1 - conf_level) / 2
+
   # Plot confidence interval ribbon for fitted draw predictions
-  gg <- gg + xgx_geom_pi(percent_level = 0.975, geom = "ribbon")
+  gg <- gg + xgx_geom_pi(percent_level = percentile_value, geom = "ribbon")
   
   # Plot confidence intervals for observed data binned by quantiles
   response_cols = paste("Response", levels(predictions$Response), sep = "")

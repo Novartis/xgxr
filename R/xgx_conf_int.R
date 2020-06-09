@@ -1,6 +1,6 @@
 #  Function for computing confidence intervals
 #'
-#' \code{conf_int} returns a dataframe with mean +/- confidence intervals
+#' \code{xgx_conf_int} returns a dataframe with mean +/- confidence intervals
 #'
 #' @param conf_level The percentile for the confidence interval (should fall 
 #' between 0 and 1). The default is 0.95, which corresponds to a 95 percent 
@@ -21,7 +21,7 @@
 #' data <- data.frame(x = rep(c(1, 2, 3), each = 20),
 #'                    y = rep(c(1, 2, 3), each = 20) + stats::rnorm(60),
 #'                    group = rep(1:3, 20))
-#' conf_int(data$y)
+#' xgx_conf_int(data$y)
 #'   
 #' @importFrom stats rnorm
 #' @importFrom stats rbinom
@@ -29,6 +29,7 @@
 #' @importFrom stats qt
 #' @importFrom stats var
 #' @importFrom binom binom.exact
+#' @importFrom DescTools MultinomCI
 #' @export
 xgx_conf_int = function(y, conf_level, distribution) {
   
@@ -41,29 +42,48 @@ xgx_conf_int = function(y, conf_level, distribution) {
   y <- stats::na.omit(y)
 
   if (distribution == "normal") {
+    mu <- mean(y)
+    qtt <- stats::qt(percentile_value, length(y))
+    s_v = sqrt(stats::var(y) / length(y))
+
     conf_int_out <- data.frame(
-      y = mean(y),
-      ymin = mean(y) - stats::qt(percentile_value,
-                                 length(y)) * sqrt(stats::var(y) / length(y)),
-      ymax = mean(y) + stats::qt(percentile_value,
-                                 length(y)) * sqrt(stats::var(y) / length(y))
+      y = mu,
+      ymin = mu - qtt * s_v,
+      ymax = mu + qtt * s_v
     )
   } else if (distribution == "lognormal") {
     yy <- log(y)
+    mu <- mean(yy)
+    qtt <- stats::qt(percentile_value, length(yy))
+    s_v <- sqrt(stats::var(yy) / length(yy))
+
+    # e^mu = median value - http://jse.amstat.org/v13n1/olsson.html
     conf_int_out <- data.frame(
-      y = exp(mean(yy)),
-      ymin = exp(mean(yy) - stats::qt(percentile_value, length(yy)) * sqrt(stats::var(yy) / length(yy))),
-      ymax = exp(mean(yy) + stats::qt(percentile_value, length(yy)) * sqrt(stats::var(yy) / length(yy)))
+      y = exp(mu),
+      ymin = exp(mu - qtt * s_v),
+      ymax = exp(mu + qtt * s_v)
     )
   } else if (distribution == "binomial") {
+    stats <- binom::binom.exact(sum(y), length(y), 
+                                conf.level = conf_level)
+
     conf_int_out <- data.frame(
       y = mean(y),
-      ymin = binom::binom.exact(sum(y), length(y),
-                                conf.level = percentile_value)$lower,
-      ymax = binom::binom.exact(sum(y), length(y),
-                                conf.level = percentile_value)$upper)
+      ymin = stats$lower,
+      ymax = stats$upper)
+  } else if (distribution %in% c("multinomial", "ordinal")) {
+
+    # Assuming `y` is a not yet collapsed to the number of counts per category
+    count <- as.data.frame(table(ytemp))$Freq
+    stats <- as.data.frame(DescTools::MultinomCI(count, conf.level = conf_level))
+
+    conf_int_out <- data.frame(
+      y = stats$est,
+      ymin = stats$lwr.ci,
+      ymax = stats$upr.ci)
   } else {
-    stop("distribution must be either normal, lognormal, or binomial")
+    stop("distribution must be either normal, lognormal, binomial,
+         or multinomial/ordinal.")
   }
   return(conf_int_out)
 }

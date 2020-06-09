@@ -1,6 +1,6 @@
 #' Plot data with mean and confidence intervals
 #'
-#' \code{xgx_ci_summary} returns a ggplot layer plotting mean +/- confidence 
+#' \code{xgx_stat_ci} returns a ggplot layer plotting mean +/- confidence 
 #' intervals
 #' 
 #' This function can be used to generate mean +/- confidence interval plots 
@@ -59,23 +59,23 @@
 #'                    y = rep(c(1, 2, 3), each = 20) + stats::rnorm(60),
 #'                    group = rep(1:3, 20))
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_summary_ci(conf_level = 0.95)
+#'   xgx_stat_ci(conf_level = 0.95)
 #' 
 #' # try different geom 
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_summary_ci(conf_level = 0.95, geom = list("ribbon", "point", "line"))
+#'   xgx_stat_ci(conf_level = 0.95, geom = list("ribbon", "point", "line"))
 #'  
 #' # plotting lognormally distributed data
 #' data <- data.frame(x = rep(c(1, 2, 3), each = 20),
 #'                    y = 10^(rep(c(1, 2, 3), each = 20) + stats::rnorm(60)),
 #'                    group = rep(1:3, 20))
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_summary_ci(conf_level = 0.95, distribution = "lognormal")
+#'   xgx_stat_ci(conf_level = 0.95, distribution = "lognormal")
 #'   
 #' # note: you DO NOT need to use both distribution = "lognormal"
 #' # and scale_y_log10()
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_summary_ci(conf_level = 0.95) + xgx_scale_y_log10()
+#'   xgx_stat_ci(conf_level = 0.95) + xgx_scale_y_log10()
 #'  
 #' # plotting binomial data
 #' data <- data.frame(x = rep(c(1, 2, 3), each = 20),
@@ -83,11 +83,11 @@
 #'                    each = 20)),
 #'                    group = rep(1:3, 20))
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_summary_ci(conf_level = 0.95, distribution = "binomial")
+#'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial")
 #'  
 #' # including multiple groups in same plot
 #' xgx_plot(data, ggplot2::aes(x = x, y = y)) + 
-#'   xgx_summary_ci(conf_level = 0.95, distribution = "binomial", 
+#'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial", 
 #'               ggplot2::aes(color = factor(group)),
 #'               position = ggplot2::position_dodge(width = 0.5))
 #'  
@@ -99,57 +99,150 @@
 #' @importFrom binom binom.exact
 #' @importFrom ggplot2 stat_summary
 #' @importFrom ggplot2 aes
-#' @importFrom ggplot2 position_dodeg
+#' @importFrom ggplot2 position_dodge
 #' @export
-xgx_stat_ci <- function(
-                    data = NULL,
-                    mapping = NULL,
-                    geom = list("point", "line", "errorbar"),
-                    position = "identity",
-                    na.rm = FALSE,
-                    show.legend = NA, 
-                    inherit.aes = TRUE,
-                    
-                    conf_level = 0.95,
-                    distribution = "normal",
-                    bins = NULL,
-                    ...) {
+xgx_stat_ci <- function(mapping = NULL,
+                        data = NULL,
+                        conf_level = 0.95,
+                        distribution = "normal",
+                        bins = NULL,
+                        breaks = NULL,
+                        geom = list("point", "line", "errorbar"),
+                        position = "identity",
+                        fun.args = list(),
+                        fun.data = NULL,
+                        na.rm = FALSE,
+                        show.legend = NA,
+                        inherit.aes = TRUE,
+                        ...) {
   lays <- list()
   
-  for (igeom in geom) {
-    if (is.null(bins)) {
-      lay = layer(
-        stat = StatSummary,
-        data = data,
-        mapping = mapping,
-        geom = igeom,
-        position = position,
-        show.legend = show.legend,
-        inherit.aes = inherit.aes,
-        params = list(
-          fun.args = list(),
-          fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
-          na.rm = na.rm,
-          ...)
-      )
+  # Confidence intervals via `xgx_conf_int` is the default function
+  if (is.null(fun.data)) {
+    fun.data <- function(y) xgx_conf_int(y = y,conf_level = conf_level,
+                                         distribution = distribution)
+  }
+  
+
+  # Non-binned case
+  if (is.null(bins) & is.null(breaks)) {
+    gg_params = list(
+      fun.args = fun.args,
+      fun.data = fun.data,
+      na.rm = na.rm,
+      ...)
+
+    ggproto_stat <- StatSummary
+  }
+  # Binned case
+  else {
+
+    if (distribution %in% c("ordinal", "binomial", "multinomial")) {
+      ggproto_stat <- StatSummaryBinOrdinal
+
+      gg_params = list(
+        fun.args = fun.args,
+        fun.data = fun.data,
+        conf_level = conf_level,
+        distribution = distribution,
+        bins = nbins,
+        breaks = breaks,
+        na.rm = na.rm,
+        ...)
     }
     else {
-      lay = layer(
-        stat = StatCI,
-        data = data,
-        mapping = mapping,
-        geom = igeom,
-        position = position,
-        show.legend = show.legend,
-        inherit.aes = inherit.aes,
-        params = list(
-          conf_level = conf_level,
-          distribution = distribution,
-          bins = bins,
-          na.rm = na.rm,
-          ...)
-      )
+      ggproto_stat <- StatSummaryBinQuant
+      
+      gg_params = list(
+        fun.args = fun.args,
+        fun.data = fun.data,
+        bins = bins,
+        breaks = breaks,
+        na.rm = na.rm,
+        ...)
     }
+  }
+  
+  
+  for (igeom in geom) {
+
+    lay = layer(
+      stat = ggproto_stat,
+      data = data,
+      mapping = mapping,
+      geom = igeom,
+      position = position,
+      show.legend = show.legend,
+      inherit.aes = inherit.aes,
+      params = gg_params
+    )
+      # 
+      # if (distribution %in% c("ordinal", "binomial", "multinomial")) {
+      #   params = list(
+      #     fun.args = list(),
+      #     fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
+      #     na.rm = na.rm,
+      #     ...)
+      # }
+      # else {
+      #   params = list(
+      #     fun.args = list(),
+      #     fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
+      #     na.rm = na.rm,
+      #     ...)
+      #   
+      #   lay = layer(
+      #     stat = StatSummary,
+      #     data = data,
+      #     mapping = mapping,
+      #     geom = igeom,
+      #     position = position,
+      #     show.legend = show.legend,
+      #     inherit.aes = inherit.aes,
+      #     params = list(
+      #       fun.args = list(),
+      #       fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
+      #       na.rm = na.rm,
+      #       ...)
+      #   )
+      # }
+    # }
+    # # if `breaks` are given, use these instead of the bins
+    # else if (!(is.null(breaks))) {
+    #   ggproto_stat <- StatSummary
+    #   
+    #   lay = layer(
+    #     stat = StatSummaryBin,
+    #     data = data,
+    #     mapping = mapping,
+    #     geom = igeom,
+    #     position = position,
+    #     show.legend = show.legend,
+    #     inherit.aes = inherit.aes,
+    #     params = list(
+    #       fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
+    #       breaks = breaks,
+    #       na.rm = na.rm,
+    #       ...)
+    #   )
+    # }
+    # else if (is.null(breaks)) {
+    #   lay = layer(
+    #     stat = StatCI,
+    #     data = data,
+    #     mapping = mapping,
+    #     geom = igeom,
+    #     position = position,
+    #     show.legend = show.legend,
+    #     inherit.aes = inherit.aes,
+    #     params = list(
+    #       conf_level = conf_level,
+    #       distribution = distribution,
+    #       bins = bins,
+    #       na.rm = na.rm,
+    #       ...)
+    #   )
+    # }
 
     # TODO:
     #   - This would be cleaner with a dictionary
@@ -181,68 +274,119 @@ xgx_stat_ci <- function(
 }
 
 
+
+
+
+
+
 #' Stat ggproto object for creating ggplot layers of binned confidence intervals
+#' for probabiliities of classes in ordinal data
 #'
 #' 
-#' \code{StatCI} returns a ggproto object for plotting mean +/- confidence bins
+#' \code{StatSummaryBinOrdinal} returns a ggproto object for plotting mean +/- confidence bins
 #' 
 #'
 #' @return ggplot2 ggproto object
 #'
 #' @export
-StatCI <- ggplot2::ggproto("StatCI", ggplot2::Stat,
-                  
-    required_aes = c("x","y"),
-    
-    compute_group = function(data, scales, conf_level, distribution, bins) {
-    
-      if (distribution == "ordinal") {
-        stat_data <- data
-      }
-      else {
-        stat_data <- data %>% mutate(quantile_index = dplyr::ntile(data$x, bins)) %>%
-                              group_by(quantile_index) %>%
-                              summarize(x = median(x),
-                                        ymin = xgx_conf_int(y, conf_level, distribution)$ymin,
-                                        ymax = xgx_conf_int(y, conf_level, distribution)$ymax,
-                                        y = xgx_conf_int(y, conf_level, distribution)$y) %>%
-                              ungroup()
-      }
+StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat,
+     
+     required_aes = c("x","y"),
+     # default_aes = aes(fill = ..y..),
+     
+     compute_group = function(data, scales, conf_level, distribution, bins) {
+       return(data)
+     },
+     
+     setup_data = function(data, params) {
 
-      return(stat_data)
-    },
-    
-    setup_data = function(data, params){
-      
-      # If the data is ordinal, calculate percentages
-      #   for each category across each bin
-      if (params$distribution == "ordinal"){
-        
-        # Get median x value for each bin
-        median_x <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-                              group_by(quantile_index) %>%
-                              summarize(x = median(x))
-        
-        # Get the number of each category in each bin 
-        counts <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-                              group_by(quantile_index, y) %>%
-                              summarize(count = length(y),
-                                        colour = unique(colour),
-                                        fill = unique(fill),
-                                        PANEL = unique(PANEL),
-                                        group = unique(group))
+       # Calculate percentages for each category across each bin
+       # Get median x value for each bin
+       median_x <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
+         group_by(quantile_index) %>%
+         summarize(x = median(x))
+       
+       # Get the number of each category in each bin 
+       counts <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
+         group_by(quantile_index, y) %>%
+         summarize(count = length(y),
+                   colour = unique(colour),
+                   # fill = unique(fill),
+                   PANEL = unique(PANEL),
+                   group = unique(group))
 
-        # Combine the x and y data
-        data <- merge(median_x, counts, by = "quantile_index", all = TRUE)
+       # Combine the x and y data
+       data <- merge(median_x, counts, by = "quantile_index", all = TRUE)
+       
+       # Now calculate the confidence intervals for the multinomial data
+       data <- data %>% group_by(quantile_index) %>%
+         mutate(x = median(x),
+                y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
+                ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
+                ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
+         ungroup() %>% group_by(group) 
+       return(data)
+     }
+)
 
-        # Now calculate the confidence intervals for the multinomial data
-        data <- data %>% group_by(quantile_index) %>%
-                  mutate(x = median(x),
-                         y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
-                         ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
-                         ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
-                  ungroup() %>% group_by(group)
-      }
-      return(data)
-    }
+#' Stat ggproto object for binning by quantile for xgx_stat_ci
+#'
+#' Source:
+#'     https://github.com/tidyverse/ggplot2/blob/351eb41623397dea20ed0059df62a4a5974d88cb/R/stat-summary-bin.R
+#' 
+#' \code{StatSummaryBinQuant} returns a ggproto object for plotting mean +/- confidence bins
+#' 
+#'
+#' @return ggplot2 ggproto object
+#'
+#' @export
+StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
+       required_aes = c("x", "y"),
+       
+       extra_params = c("na.rm", "orientation"),
+       setup_params = function(data, params) {
+         params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
+         params
+       },
+
+       compute_group = function(data, scales,
+                                fun.data = NULL,
+                                fun = NULL,
+                                fun.max = NULL,
+                                fun.min = NULL,
+                                fun.args = list(),
+                                bins = NULL,
+                                binwidth = NULL,
+                                breaks = NULL,
+                                origin = NULL,
+                                right = FALSE,
+                                na.rm = FALSE,
+                                flipped_aes = FALSE) {
+         # data <- flip_data(data, flipped_aes)
+         fun <- ggplot2:::make_summary_fun(fun.data, fun, fun.max, fun.min, fun.args)
+         # x <- flipped_names(flipped_aes)$x
+         # breaks <- bin2d_breaks(scales[[x]], breaks, origin, binwidth, bins, right = right)
+         
+         # Use breaks if available instead of bins
+         if (!is.null(breaks)) {
+           breaks <- breaks
+         }
+         else {
+           # Calculate breaks from number of bins
+           breaks <- quantile(data$x,probs = seq(0, 1, 1/bins))
+         }
+         
+         data$bin <- cut(data$x, breaks, include.lowest = TRUE, labels = FALSE)
+         out <- ggplot2:::dapply(data, "bin", fun)
+         
+         locs <- ggplot2:::bin_loc(breaks, out$bin)
+         out$x <- locs$mid
+         return(out)
+
+         # out$width <- locs$length
+         # out$width <- if (scales[[x]]$is_discrete()) 0.9 else locs$length
+         # out$flipped_aes <- flipped_aes
+
+         # return(flip_data(out, flipped_aes))
+       }
 )
