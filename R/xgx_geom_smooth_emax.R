@@ -1,5 +1,20 @@
 #' Plot Emax fit to data
-#' Uses nls, predictdf.nls, and stat_smooth to display Emax model fit to data
+#' Uses nlsLM, predictdf.nls, and stat_smooth to display Emax model fit to data
+#' 
+#' @section Warning:
+#' \code{nlsLM} uses \code{nls.lm} which implements the Levenberg-Marquardt
+#' algorithm for fitting a nonlinear model, and may fail to converge for a
+#' number of reasons. See \code{?nls.lm} for more information.
+#' 
+#' \code{nls} uses Gauss-Newton method for estimating parameters, 
+#' and could fail if the parameters are not identifiable. If this happens 
+#' you will see the following warning message: 
+#' Warning message:
+#' Computation failed in `stat_smooth()`:
+#'   singular gradient
+#'   
+#' \code{nls} will also fail if used on artificial "zero-residual" data, 
+#' use \code{nlsLM} instead.
 #'
 #' @inheritParams ggplot2::geom_smooth
 #'
@@ -29,43 +44,26 @@
 #'   xlab("Dose (mg)")
 #' 
 #' gg + 
-#'   geom_smooth(method = "nls", formula = y ~ Emax*x/(ED50 + x), 
-#'               method.args = list(start = list(Emax = -0.50, ED50 = 25)), 
+#'   ggplot2::geom_smooth(method = "nlsLM", formula = y ~ E0 + Emax*x/(exp(logED50) + x), 
+#'               method.args = list(start = list(Emax = -0.50, logED50 = log(25), E0 = 0)), 
 #'               se = TRUE)
 #'               
 #' gg + 
 #'   xgx_geom_smooth_emax()
-#'
+#' 
+#' @importFrom minpack.lm nlsLM
 #' @importFrom stats nls
 #' @importFrom ggplot2 geom_boxplot
 #' @importFrom ggplot2 geom_smooth
 #' @export
 xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
-                                 position = "identity", ..., method = "nls", formula, 
+                                 position = "identity", ..., method = "nlsLM", formula, 
                                  se = TRUE, n = 80, span = 0.75, fullrange = FALSE,
                                  level = 0.95, method.args = list(), na.rm = FALSE,
                                  show.legend = NA, inherit.aes = TRUE){
   if(missing(formula)) {
-    warning("Formula not specified.\nUsing default formula y ~ Emax*x/(ED50 + x)")
-    formula = y ~ Emax*x/(ED50 + x)
-  }
-  
-  variables <- attr(terms(formula),"variables") %>% 
-    as.character %>% 
-    setdiff(c("list","y","x"))
-  
-  if(is.null(method.args$start)){
-    warning("No starting values specified.\nInitializing ", paste0(variables,collapse = ", ")," to 1")
-    
-    for(ivar in variables){
-      method.args$start[[ivar]] <- 1
-    }
-    
-  }else{
-    for(ivar in variables){
-      if(is.null(method.args$start[[ivar]])) warning(paste0("No starting value specified for ", ivar, "\ninitializing to 1"))
-      method.args$start[[ivar]] <- 1
-    }
+    warning("Formula not specified.\nUsing default formula y ~ E0 + Emax*x/(exp(logED50) + x)")
+    formula = y ~ E0 + Emax*x/(exp(logED50) + x)
   }
 
   ggplot2::stat_smooth(mapping = mapping, data = data, geom = geom, 
