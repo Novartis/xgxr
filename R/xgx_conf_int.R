@@ -74,7 +74,7 @@ xgx_conf_int = function(y, conf_level, distribution) {
   } else if (distribution %in% c("multinomial", "ordinal")) {
 
     # Assuming `y` is a not yet collapsed to the number of counts per category
-    count <- as.data.frame(table(ytemp))$Freq
+    count <- table(y)  #as.data.frame(table(y))$Freq
     stats <- as.data.frame(DescTools::MultinomCI(count, conf.level = conf_level))
 
     conf_int_out <- data.frame(

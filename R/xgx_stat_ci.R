@@ -115,57 +115,47 @@ xgx_stat_ci <- function(mapping = NULL,
                         show.legend = NA,
                         inherit.aes = TRUE,
                         ...) {
+
   lays <- list()
-  
+
   # Confidence intervals via `xgx_conf_int` is the default function
   if (is.null(fun.data)) {
     fun.data <- function(y) xgx_conf_int(y = y,conf_level = conf_level,
                                          distribution = distribution)
   }
-  
 
-  # Non-binned case
+  # Default parameters
+  gg_params = list(
+    fun.args = fun.args,
+    fun.data = fun.data,
+    na.rm = na.rm,
+    ...)
+
+  # Non-binned
   if (is.null(bins) & is.null(breaks)) {
-    gg_params = list(
-      fun.args = fun.args,
-      fun.data = fun.data,
-      na.rm = na.rm,
-      ...)
-
     ggproto_stat <- StatSummary
   }
-  # Binned case
+  # Binned
   else {
-
+    # Ordinal binned
     if (distribution %in% c("ordinal", "binomial", "multinomial")) {
       ggproto_stat <- StatSummaryBinOrdinal
 
-      gg_params = list(
-        fun.args = fun.args,
-        fun.data = fun.data,
-        conf_level = conf_level,
-        distribution = distribution,
-        bins = nbins,
-        breaks = breaks,
-        na.rm = na.rm,
-        ...)
+      gg_params = append(gg_params, list(conf_level = conf_level,
+                                      distribution = distribution,
+                                      bins = bins,
+                                      breaks = breaks))
     }
+
+    # Continuous binned
     else {
       ggproto_stat <- StatSummaryBinQuant
-      
-      gg_params = list(
-        fun.args = fun.args,
-        fun.data = fun.data,
-        bins = bins,
-        breaks = breaks,
-        na.rm = na.rm,
-        ...)
+      gg_params = append(gg_params, list(bins = bins,
+                                      breaks = breaks))
     }
   }
   
-  
   for (igeom in geom) {
-
     lay = layer(
       stat = ggproto_stat,
       data = data,
@@ -176,77 +166,8 @@ xgx_stat_ci <- function(mapping = NULL,
       inherit.aes = inherit.aes,
       params = gg_params
     )
-      # 
-      # if (distribution %in% c("ordinal", "binomial", "multinomial")) {
-      #   params = list(
-      #     fun.args = list(),
-      #     fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
-      #     na.rm = na.rm,
-      #     ...)
-      # }
-      # else {
-      #   params = list(
-      #     fun.args = list(),
-      #     fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
-      #     na.rm = na.rm,
-      #     ...)
-      #   
-      #   lay = layer(
-      #     stat = StatSummary,
-      #     data = data,
-      #     mapping = mapping,
-      #     geom = igeom,
-      #     position = position,
-      #     show.legend = show.legend,
-      #     inherit.aes = inherit.aes,
-      #     params = list(
-      #       fun.args = list(),
-      #       fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
-      #       na.rm = na.rm,
-      #       ...)
-      #   )
-      # }
-    # }
-    # # if `breaks` are given, use these instead of the bins
-    # else if (!(is.null(breaks))) {
-    #   ggproto_stat <- StatSummary
-    #   
-    #   lay = layer(
-    #     stat = StatSummaryBin,
-    #     data = data,
-    #     mapping = mapping,
-    #     geom = igeom,
-    #     position = position,
-    #     show.legend = show.legend,
-    #     inherit.aes = inherit.aes,
-    #     params = list(
-    #       fun.data = function(y) xgx_conf_int(y, conf_level, distribution),
-    #       breaks = breaks,
-    #       na.rm = na.rm,
-    #       ...)
-    #   )
-    # }
-    # else if (is.null(breaks)) {
-    #   lay = layer(
-    #     stat = StatCI,
-    #     data = data,
-    #     mapping = mapping,
-    #     geom = igeom,
-    #     position = position,
-    #     show.legend = show.legend,
-    #     inherit.aes = inherit.aes,
-    #     params = list(
-    #       conf_level = conf_level,
-    #       distribution = distribution,
-    #       bins = bins,
-    #       na.rm = na.rm,
-    #       ...)
-    #   )
-    # }
 
-    # TODO:
-    #   - This would be cleaner with a dictionary
-    #   - Move this to aes_default in ggproto?
+    # Adjust aes to default xgx preference
     if (igeom == "point") {
       if (is.null(lay$aes_params$size)) lay$aes_params$size <- 2
     }
@@ -294,10 +215,12 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
      required_aes = c("x","y"),
      # default_aes = aes(fill = ..y..),
      
-     compute_group = function(data, scales, conf_level, distribution, bins) {
+     compute_group = function(data, scales, conf_level, distribution, bins, breaks,
+                              fun.data = NULL,
+                              fun.args = list()) {
        return(data)
      },
-     
+
      setup_data = function(data, params) {
 
        # Calculate percentages for each category across each bin
@@ -317,14 +240,14 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
 
        # Combine the x and y data
        data <- merge(median_x, counts, by = "quantile_index", all = TRUE)
-       
+
        # Now calculate the confidence intervals for the multinomial data
        data <- data %>% group_by(quantile_index) %>%
          mutate(x = median(x),
                 y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
                 ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
                 ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
-         ungroup() %>% group_by(group) 
+         ungroup() %>% group_by(group)
        return(data)
      }
 )
@@ -364,9 +287,7 @@ StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
                                 flipped_aes = FALSE) {
          # data <- flip_data(data, flipped_aes)
          fun <- ggplot2:::make_summary_fun(fun.data, fun, fun.max, fun.min, fun.args)
-         # x <- flipped_names(flipped_aes)$x
-         # breaks <- bin2d_breaks(scales[[x]], breaks, origin, binwidth, bins, right = right)
-         
+
          # Use breaks if available instead of bins
          if (!is.null(breaks)) {
            breaks <- breaks
@@ -382,11 +303,5 @@ StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
          locs <- ggplot2:::bin_loc(breaks, out$bin)
          out$x <- locs$mid
          return(out)
-
-         # out$width <- locs$length
-         # out$width <- if (scales[[x]]$is_discrete()) 0.9 else locs$length
-         # out$flipped_aes <- flipped_aes
-
-         # return(flip_data(out, flipped_aes))
        }
 )
