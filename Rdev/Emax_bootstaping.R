@@ -31,8 +31,8 @@ gg <- ggplot2::ggplot(dat1 %>% subset(Time == 90),
   ylab("Percent Change from Baseline") +
   xlab("Dose (mg)")
 
-################ nonlinear Emax regression model (Not sure if I got it from ######################################
-################ Andy or found it somewhere online 3 years ago for LSZ      ######################################
+################ nonlinear Emax regression model, not sure if I got it from ######################################
+################ Andy or found it somewhere online few years ago            ######################################
 
 bpc <- as.numeric(dat1$PCHG)
 dose <- dat1$DOSE
