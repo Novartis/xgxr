@@ -23,16 +23,8 @@ dat1 <- data.frame(ID = 1:(Ntot),
   dplyr::mutate(PD = ((PD0 - PDSS)*(exp(-Kout*Time)) + PDSS),
                 PCHG = (PD - PD0)/PD0)
 
-gg <- ggplot2::ggplot(dat1 %>% subset(Time == 90),
-                      ggplot2::aes(x = DOSE, y = PCHG)) +
-  ggplot2::geom_boxplot(aes(group = DOSE)) +
-  xgx_theme() +
-  xgx_scale_y_percentchangelog10() +
-  ylab("Percent Change from Baseline") +
-  xlab("Dose (mg)")
-
 ################ nonlinear Emax regression model, not sure if I got it from ######################################
-################ Andy or found it somewhere online few years ago            ######################################
+################ Andy or wrote it few years ago      #############################################################
 
 bpc <- as.numeric(dat1$PCHG)
 dose <- dat1$DOSE
