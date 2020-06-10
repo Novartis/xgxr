@@ -151,10 +151,10 @@ xgx_stat_ci <- function(mapping = NULL,
     else {
       ggproto_stat <- StatSummaryBinQuant
       gg_params = append(gg_params, list(bins = bins,
-                                      breaks = breaks))
+                                         breaks = breaks))
     }
   }
-  
+
   for (igeom in geom) {
     lay = layer(
       stat = ggproto_stat,
@@ -211,8 +211,8 @@ xgx_stat_ci <- function(mapping = NULL,
 #'
 #' @export
 StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat,
-     
-     required_aes = c("x","y"),
+
+     required_aes = c("x"),
      # default_aes = aes(fill = ..y..),
      
      compute_group = function(data, scales, conf_level, distribution, bins, breaks,
@@ -231,12 +231,8 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
        
        # Get the number of each category in each bin 
        counts <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-         group_by(quantile_index, y) %>%
-         summarize(count = length(y),
-                   colour = unique(colour),
-                   # fill = unique(fill),
-                   PANEL = unique(PANEL),
-                   group = unique(group))
+         group_by(quantile_index, colour, PANEL, group) %>%
+         summarize(count = length(x))
 
        # Combine the x and y data
        data <- merge(median_x, counts, by = "quantile_index", all = TRUE)

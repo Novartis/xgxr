@@ -26,8 +26,8 @@ xgx_auto_explore <- function(data_path = NULL,
                              mapping = NULL,
                              author_name = NULL,
                              multiple_dosing = FALSE,
-                             PK_CMT = NULL,
-                             PD_CMT = NULL,
+                             pk_cmt = NULL,
+                             pd_cmt = NULL,
                              pd_data_type = NULL,
                              rmd_template_path = NULL,
                              rmd_output_path = NULL,
@@ -41,14 +41,15 @@ xgx_auto_explore <- function(data_path = NULL,
                                   Examples:
                                   {}
                                   ")
+  }
     
   
   # Setup defaults
   file_prefix = "xgx_autoexplore_"
   analysis_fname <- tools::file_path_sans_ext(
                            get_rmd_name(multiple_dosing = multiple_dosing,
-                                        PK_CMT = PK_CMT,
-                                        PD_CMT = PD_CMT,
+                                        pk_cmt = pk_cmt,
+                                        pd_cmt = pd_cmt,
                                         pd_data_type = pd_data_type))
   if (is.null(rmd_output_path)) {
     working_dir <- getwd()
@@ -63,28 +64,6 @@ xgx_auto_explore <- function(data_path = NULL,
     html_output_path <- file.path(working_dir, analysis_fname, ".html")
   }
 
-  # # Read new user dataset
-  # user_data <- read.csv(data_path)
-
-  # 1) Selection of desired analysis
-  
-  # # Determine the type of analysis that is likely desired
-  # highest_jaccard <- 0
-  # if (!(PK | PD)) {
-  #   this_data_cols <- names(user_data)
-  #   for (col_ix in length(1:dataset_columns)) {
-  #     cols <- dataset_columns[col_ix]
-  #     intersected <- length(intersect(this_data_cols, cols))
-  #     unioned <- length(union(this_data_cols, cols))
-  #     jaccard <- intersected / unioned
-  #     if (jaccard  > highest_jaccard){
-  #       highest_jaccard <- jaccard
-  #       dataset_match <- names(dataset_columns)[col_ix]
-  #     }
-  #   }
-  # }
-  
-  
   # A specific file path to an R markdown file can be given; however,
   #   if the template path is not provided, the logic below will decide the 
   #   R markdown template most likely desired from the xgx github.
@@ -95,8 +74,8 @@ xgx_auto_explore <- function(data_path = NULL,
   # 
   if (is.null(rmd_template_path)){
     rmd_str <- get_rmd_str(multiple_dosing = multiple_dosing,
-                           PK_CMT = PK_CMT,
-                           PD_CMT = PD_CMT,
+                           pk_cmt = pk_cmt,
+                           pd_cmt = pd_cmt,
                            pd_data_type = pd_data_type)
   } else{
     rmd_str <- readr::read_file(rmd_template_path)
@@ -187,27 +166,73 @@ edit_rmd_template_str <- function(rmd_str = NULL,
     ############################
     # Alter user dataset columns
     ############################
-    # While we know the original dataset columns,
-    #   we can change the new data to match
+    # # While we know the original dataset columns,
+    # #   we can change the new data to match
+    # 
+    # # Get the typical columns used for this dataset
+    # # orig_data_cols <- std_data_cols[[orig_data_name]]
+    # orig_data_cols <- names(mapping)
+    # new_data_cols <- mapping
+    # 
+    # 
+    # # Map names given by user
+    # # user_data <- user_data %>% rename_at(vars(names(user_data)),
+    # #                                      ~ orig_data_cols)
+    #   
+    # user_data <- user_data %>% rename_at(vars(new_data_cols),
+    #                                        ~ orig_data_cols)
+    # 
+    # # Save the newly formatted user data
+    # 
+    # new_data_path <- paste0(data_path, ".renamed_cols")
+    # write.csv(user_data, file = new_data_path)
 
-    # Get the typical columns used for this dataset
-    # orig_data_cols <- std_data_cols[[orig_data_name]]
-    orig_data_cols <- names(mapping)
-    new_data_cols <- mapping
 
 
-    # Map names given by user
-    # user_data <- user_data %>% rename_at(vars(names(user_data)),
-    #                                      ~ orig_data_cols)
-      
-    user_data <- user_data %>% rename_at(vars(new_data_cols),
-                                           ~ orig_data_cols)
+    # Alter dataset in Rmd
+    #   - Warning: `mutate` is assumed to be present within an Rmd template
 
-    # Save the newly formatted user data
-    
-    new_data_path <- paste0(data_path, ".renamed_cols")
-    write.csv(user_data, file = new_data_path)
+    # Find first location of `mutate``function
+    mutate_loc <- stringr::str_locate(rmd_str, "mutate\\(")[1, "start"]
 
+    # Get the string starting at this location
+    mutate_start_rmd_str <- substr(rmd_str, start = mutate_loc, stop = nchar(rmd_str))
+
+
+    # Regular Expressions do not work here, becuase comments can contain parentheses
+    # So we will get the `mutate` full expression by parsing
+    mutate_expr <- parse(text = mutate_start_rmd_str, n = 1)
+    mutate_expr_str <- getParseData(mutate_expr, includeText = TRUE)[1, "text"]
+
+    orig_cols <- names(eval(parse(text = stringr::str_replace(string = mutate_expr_str,
+                                      pattern = "mutate",
+                                      replacement = "c"))))
+
+    # All of the columns from the rmd string (orig_cols) should be present in map
+
+    # Add key/value pairs that are the same in each dataset
+    same_cols <- intersection(names(user_data), orig_cols)
+    full_mapping <- mapping
+    for (col in same_cols) {
+      full_mapping[[col]] = col
+    }
+
+    # Create new string from mapping
+    new_mutate_str <- ""
+    for(old_col in names(full_mapping)){
+      new_col<-full_mapping[old_col]
+      temp_map <- paste("\n", old_col, "=", new_col)
+      if (length(temp_map) == 0) {
+        new_mutate_str <- temp_map
+      } else {
+        new_mutate_str <- paste(new_mutate_str, temp_map)
+      }
+    }
+
+    # New Rmd
+    rmd_str <- stringr::str_replace(string = rmd_str,
+                                    pattern = Hmisc::escapeRegex(mutate_expr_str),
+                                    replacement = new_mutate_string)
     ############################
 
 
@@ -282,23 +307,23 @@ edit_rmd_template_str <- function(rmd_str = NULL,
 
 
 get_rmd_name <- function(multiple_dosing = FALSE,
-                        PK_CMT = FALSE,
-                        PD_CMT = FALSE,
-                        pd_data_type = NULL) {
+                         pk_cmt = FALSE,
+                         pd_cmt = FALSE,
+                         pd_data_type = NULL) {
 
-  # Capitalize to match naming scheme chosen on github repo
-  if (!(is.null(pd_data_type))) {
-    pd_data_type <- Hmisc::capitalize(pd_data_type)
-  }
+  # # Capitalize to match naming scheme chosen on github repo
+  # if (!(is.null(pd_data_type))) {
+  #   pd_data_type <- Hmisc::capitalize(pd_data_type)
+  # }
 
   # Construct the filename via the standard xgx rmd template filename format
-  if (!is.null(PK_CMT) & !is.null(PD_CMT)) {
+  if (!is.null(pk_cmt) & !is.null(pd_cmt)) {
     pk_str = "PKPD"
     pd_str = ""
   }
   else {
-    pk_str <- if (!is.null(PK_CMT)) "PK" else ""
-    pd_str <- if (!is.null(PD_CMT)) "PD" else ""
+    pk_str <- if (!is.null(pk_cmt)) "PK" else ""
+    pd_str <- if (!is.null(pd_cmt)) "PD" else ""
   }
   if (multiple_dosing) {
     multiple_dosing_str <- "Multiple_Ascending"
@@ -307,12 +332,13 @@ get_rmd_name <- function(multiple_dosing = FALSE,
     multiple_dosing_str <- "Single_Ascending"
   }
 
-  if (PD){
+  if (!is.null(pd_data_type)){
     rmd_fname <- glue::glue("{multiple_dosing_str}_Dose_{pk_str}{pd_str}_{pd_data_type}.Rmd")
   }
   else {
     rmd_fname <- glue::glue("{multiple_dosing_str}_Dose_PK.Rmd")
   }
+
   return(rmd_fname)
 }
 
@@ -321,28 +347,30 @@ get_rmd_name <- function(multiple_dosing = FALSE,
 #   if the doesn't work, pull the file from the cached xgxr github
 #   backup directoryinstead
 get_rmd_str <- function(multiple_dosing = FALSE,
-                            PK_CMT = FALSE,
-                            PD_CMT = FALSE,
-                            pd_data_type = NULL){
+                        pk_cmt = FALSE,
+                        pd_cmt = FALSE,
+                        pd_data_type = NULL){
 
   rmd_fname <- get_rmd_name(multiple_dosing = multiple_dosing,
-                            PK_CMT = PK_CMT,
-                            PD_CMT = PD_CMT,
+                            pk_cmt = pk_cmt,
+                            pd_cmt = pd_cmt,
                             pd_data_type = pd_data_type)
-  
-  print("reading...")
-  print(rmd_fname)
+
   # Try github first
   git_url <- "https://raw.githubusercontent.com/Novartis/xgx/master/Rmarkdown/"
   full_url <- paste0(git_url, rmd_fname)
 
   # Read the Rmd from github into a string
   rmd_str <- RCurl::getURL(full_url, ssl.verifypeer = FALSE)
-  
+
   # If no internet connection / unsuccessful, try the local files in xgxr
   if (is.null(rmd_str)) {
     rmd_str <- readr::read_file("../data/xgx_Rmd/" + rmd_fname)
   }
-  
+  else if (rmd_str == "404: Not Found") {
+    
+  }
+
   return(rmd_str)
 }
+
