@@ -264,6 +264,8 @@ StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
        
        extra_params = c("na.rm", "orientation"),
        setup_params = function(data, params) {
+         # gg_util_url <- "https://raw.githubusercontent.com/tidyverse/ggplot2/7e5ff921c50fb0beb203b115397ea33fee410a54/R/utilities.r"
+         # eval(text = RCurl::getURL(gg_util_url, ssl.verifypeer = FALSE))
          params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
          params
        },
@@ -301,3 +303,111 @@ StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
          return(out)
        }
 )
+
+
+#
+#
+# From ggplot.untilites
+#
+#
+"%||%" <- function(a, b) {
+  if (!is.null(a)) a else b
+}
+
+has_flipped_aes <- function(data, params = list(), main_is_orthogonal = NA,
+                            range_is_orthogonal = NA, group_has_equal = FALSE,
+                            ambiguous = FALSE, main_is_continuous = FALSE,
+                            main_is_optional = FALSE) {
+  # Is orientation already encoded in data?
+  if (!is.null(data$flipped_aes)) {
+    not_na <- which(!is.na(data$flipped_aes))
+    if (length(not_na) != 0) {
+      return(data$flipped_aes[[not_na[1L]]])
+    }
+  }
+  
+  # Is orientation requested in the params
+  if (!is.null(params$orientation) && !is.na(params$orientation)) {
+    return(params$orientation == "y")
+  }
+  
+  x <- data$x %||% params$x
+  y <- data$y %||% params$y
+  xmin <- data$xmin %||% params$xmin
+  ymin <- data$ymin %||% params$ymin
+  xmax <- data$xmax %||% params$xmax
+  ymax <- data$ymax %||% params$ymax
+  
+  # Does a single x or y aesthetic corespond to a specific orientation
+  if (!is.na(main_is_orthogonal) && xor(is.null(x), is.null(y))) {
+    return(is.null(y) == main_is_orthogonal)
+  }
+  
+  has_x <- !is.null(x)
+  has_y <- !is.null(y)
+  
+  # Does a provided range indicate an orientation
+  if (!is.na(range_is_orthogonal)) {
+    if (!is.null(ymin) || !is.null(ymax)) {
+      return(!range_is_orthogonal)
+    }
+    if (!is.null(xmin) || !is.null(xmax)) {
+      return(range_is_orthogonal)
+    }
+  }
+  
+  # If ambiguous orientation = NA will give FALSE
+  if (ambiguous && (is.null(params$orientation) || is.na(params$orientation))) {
+    return(FALSE)
+  }
+  
+  # Is there a single actual discrete position
+  y_is_discrete <- is_mapped_discrete(y)
+  x_is_discrete <- is_mapped_discrete(x)
+  if (xor(y_is_discrete, x_is_discrete)) {
+    return(y_is_discrete != main_is_continuous)
+  }
+  
+  # Does each group have a single x or y value
+  if (group_has_equal) {
+    if (has_x) {
+      if (length(x) == 1) return(FALSE)
+      x_groups <- vapply(split(data$x, data$group), function(x) length(unique(x)), integer(1))
+      if (all(x_groups == 1)) {
+        return(FALSE)
+      }
+    }
+    if (has_y) {
+      if (length(y) == 1) return(TRUE)
+      y_groups <- vapply(split(data$y, data$group), function(x) length(unique(x)), integer(1))
+      if (all(y_groups == 1)) {
+        return(TRUE)
+      }
+    }
+  }
+  
+  # default to no
+  FALSE
+}
+#' @rdname bidirection
+#' @export
+flip_data <- function(data, flip = NULL) {
+  flip <- flip %||% any(data$flipped_aes) %||% FALSE
+  if (isTRUE(flip)) {
+    names(data) <- switch_orientation(names(data))
+  }
+  data
+}
+#' @rdname bidirection
+#' @export
+flipped_names <- function(flip = FALSE) {
+  x_aes <- ggplot_global$x_aes
+  y_aes <- ggplot_global$y_aes
+  if (flip) {
+    ret <- as.list(c(y_aes, x_aes))
+  } else {
+    ret <- as.list(c(x_aes, y_aes))
+  }
+  names(ret) <- c(x_aes, y_aes)
+  ret
+}

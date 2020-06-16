@@ -26,81 +26,61 @@ xgx_ordinal_regression_plot <- function(data = NULL,
   data <- data %>% mutate(Response = factor(data[, dependent_variable],
                                             levels = levels,
                                             ordered = TRUE))
+  print(data)
 
+  # Bootstrapping script from Fariba/Andy
+  B <- 100
+  pred_df <- NULL
   # Ordinal Regression Model
-  model <-  brms::brm(formula = as.formula(paste("Response ~ ", as.character(independent_variables))),
-                      family = brms::cumulative("logit", threshold="flexible"),
+  model <- MASS::polr(formula = formula,
                       data = data,
-                      refresh = 0)
-
-  # Bootstrap with fitted_draws for CI
-  n_steps = 100
-  pframe <- list()
-  for (var_ix in 1:length(independent_variables)) {
-    mi = min(data[[independent_variables[var_ix]]])
-    ma = max(data[[independent_variables[var_ix]]])
-    seqs <- seq(mi, ma, abs(ma-mi)/n_steps)
-
-    pframe[[var_ix]] <- seqs
+                      Hess = TRUE, method = "probit")
+  
+  data$Pred <- unlist(predict(model, type = "probs"))
+  
+  for(i in 1:B){
+    # Boostrap by resampling entire dataset
+    #   (prediction + residual doesn't work with ordinal data)
+    data_boot <- sample_n(tbl = data,
+                          size = nrow(data),
+                          replace = TRUE)
+    
+    model_boot <- MASS::polr(formula = formula,
+                             data = data,
+                             Hess = TRUE, method = "probit")
+    # extract predictions
+    new_preds <- data.frame(x = data_boot$CONC,
+                            y = unlist(predict(model_boot, type="probs")))
+    if (is.null(pred_df)) {
+      pred_df <- new_preds
+    }
+    else {
+      pred_df <- rbind(pred_df, new_preds)
+    }
   }
-  pframe <- data.frame(do.call("cbind", pframe))
-  pframe <- setNames(pframe, independent_variables)
-
-  predictions <- tidybayes::fitted_draws(model = model,
-                                         newdata = pframe,
-                                         # n = 20,
-                                         category ="Response",
-                                         value = "Value") %>%
-                            ungroup() %>%
-                            select(independent_variables, Response, Value)
   
+  response_classes = paste0("y.", levels)
+  pred_df$pred <- response_classes[apply(pred_df[response_classes],1,which.max)]
+  pred_df <- pivot_longer(data = pred_df, cols = response_classes)
   
 
-  # Dataframe with renamed columns for alignment
-  pred_probabilities <- predict(model)%>%
-                                as.data.frame %>%
-                                setNames(levels(predictions$Response))
-  pred_labels = colnames(pred_probabilities)[apply(pred_probabilities, 1, which.max)]
-
-  # Store all data and predictions together
-  ord_reg_prediction_data <- data %>%
-                            cbind(predict(model)) %>%
-                            mutate(predicted_label = factor(pred_labels,
-                                                              levels = levels(data$Response),
-                                                              ordered = TRUE)) %>%
-                            # Add one-hot vectors
-                            cbind(dummies::dummy.data.frame(data, 
-                                                            names = "Response",
-                                                            all = FALSE))
-
-  gg <- ggplot(predictions,
-               aes_string(x = independent_variables[1], y = "Value",
-                   color = "Response",
-                   fill = "Response"))
-
-  percentile_value <- conf_level + (1 - conf_level) / 2
+  gg <- ggplot(pred_df,
+               aes_string(x = independent_variables[1],
+                          y = "value",
+                          color = "name",
+                          fill = "name"))
 
   # Plot confidence interval ribbon for fitted draw predictions
-  gg <- gg + xgx_geom_pi(percent_level = percentile_value, geom = "ribbon")
+  gg <- gg + stat_summary(geom = "ribbon")
   
   # Plot confidence intervals for observed data binned by quantiles
-  response_cols = paste("Response", levels(predictions$Response), sep = "")
-  for (ix in 1:length(response_cols)){
-    color <- colors[[ix]]
-    response_col <- response_cols[[ix]]
-    
-    breaks <- quantile(x = ord_reg_prediction_data[[independent_variables[1]]], seq(0,1,1/nbins))
-    gg <- gg + stat_summary_bin(data = ord_reg_prediction_data,
-                                show.legend = TRUE,
-                                fun.data = binom_ci,
-                                aes_string(x = independent_variables[1],
-                                           y = response_col),
-                                color = color,
-                                # shape = "square",
-                                fill = color,
-                                breaks = breaks)
-  }
-  
+  gg <- gg + xgx_stat_ci(data = data,
+                         aes_string(x=independent_variables[1],
+                                    y = "Response",
+                                    color = "Response"),
+                         bins = nbins,
+                         distribution = "ordinal")
+
   # Clean up remaining aesthetics of plot
   gg <- gg + xgx_scale_x_log10()
   gg <- gg + labs(x = independent_variables[1],

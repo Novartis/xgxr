@@ -1,50 +1,54 @@
 #' Plot all functions for the given dataset
 #'
-#' \code{xgx_ci_summary} returns a PDF document with plots describing the
-#' provided dataset
+#' \code{xgx_auto_explore} returns an HTML and PDF document with plots
+#' describing the provided dataset
 #' 
 #' This function can be used quickly explore your data by generating 
 #' overview plots before constructing non-linear mixed effects models.
 #'
-#' @param multiple_dosing This described whether or not the data has multiple
-#' time points for which the individual has taken a treatment dose
+#' @param data_path Path (as a string) to the dataset that is to be analyzed
+#' @param mapping A list of column name mappings from the
+#' original (template) dataset column names
+#' to the corresponding columns in the new dataset
+#' @param author_name The name of the author to be displayed on the template
+#' @param multiple_dosing 
+#' @param pk_cmt 
+#' @param pd_cmt
+#' @param pd_data_type 
+#' @param rmd_template_path 
+#' @param rmd_output_path 
+#' @param pdf_output_path 
+#' @param html_output_path 
+#' @param alter_datetime 
+#' @param show_explanation 
 #'
 #' @return NULL
 #'
 #' @examples
 #'     Name mapping: 
 #'     
-#' 
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
-#' @importFrom ggplot2 aes
+#' @importFrom magrittr "%>%"
 #' @export
-
-library(knitr)
-library(stringr)
 xgx_auto_explore <- function(data_path = NULL,
-                             mapping = NULL,
+                             mapping = list(),
                              author_name = NULL,
                              multiple_dosing = FALSE,
                              pk_cmt = NULL,
                              pd_cmt = NULL,
                              pd_data_type = NULL,
+                             dose_cmt = NULL,
+                             steady_state_day = NULL,
+                             time_between_doses = NULL,
                              rmd_template_path = NULL,
                              rmd_output_path = NULL,
                              pdf_output_path = NULL,
                              html_output_path = NULL,
                              alter_datetime = TRUE,
                              show_explanation = TRUE) {
-
-  if (is.null(mapping)) { warning("Names need to be mapped
-                                  
-                                  Examples:
-                                  {}
-                                  ")
-  }
-    
   
-  # Setup defaults
+  # Setup default output paths
   file_prefix = "xgx_autoexplore_"
   analysis_fname <- tools::file_path_sans_ext(
                            get_rmd_name(multiple_dosing = multiple_dosing,
@@ -53,25 +57,21 @@ xgx_auto_explore <- function(data_path = NULL,
                                         pd_data_type = pd_data_type))
   if (is.null(rmd_output_path)) {
     working_dir <- getwd()
-    rmd_output_path <- file.path(working_dir, analysis_fname, ".Rmd")
+    rmd_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".Rmd"))
   }
   if (is.null(pdf_output_path)) {
     working_dir <- getwd()
-    pdf_output_path <- file.path(working_dir, analysis_fname, ".pdf")
+    pdf_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".pdf"))
   }
   if (is.null(html_output_path)) {
     working_dir <- getwd()
-    html_output_path <- file.path(working_dir, analysis_fname, ".html")
+    html_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".html"))
   }
 
+
   # A specific file path to an R markdown file can be given; however,
-  #   if the template path is not provided, the logic below will decide the 
-  #   R markdown template most likely desired from the xgx github.
-  #
-  #   - Note: The processing / editing of non-xgx Rmd templates will likely
-  #             end in strange results.  It is best to use this function with 
-  #             xgx Rmd templates
-  # 
+  #   if the template path is not provided, the R markdown template
+  #   from the xgx github will be downloaded.
   if (is.null(rmd_template_path)){
     rmd_str <- get_rmd_str(multiple_dosing = multiple_dosing,
                            pk_cmt = pk_cmt,
@@ -81,172 +81,218 @@ xgx_auto_explore <- function(data_path = NULL,
     rmd_str <- readr::read_file(rmd_template_path)
   }
 
-  # 2) Edit the Rmd template and your data to fit the standard dataset type
+
+  # Edit the Rmd template and your data to fit the standard dataset type
   rmd_ouput_path <- edit_rmd_template_str(rmd_str = rmd_str,
+                                          mapping = mapping,
                                           rmd_output_path = rmd_output_path,
                                           data_path = data_path,
+                                          pk_cmt = pk_cmt,
+                                          pd_cmt = pd_cmt,
+                                          dose_cmt = dose_cmt,
+                                          steady_state_day = steady_state_day,
+                                          time_between_doses = time_between_doses,
                                           author_name = author_name,
-                                          alter_datetime = alter_datetime)
+                                          alter_datetime = alter_datetime,
+                                          show_explanation = show_explanation)
 
-  # 3) Run and save the analysis
 
   # Render and save the HTML document
   rmarkdown::render(input = rmd_output_path,
                     output_file = html_output_path,
-                    output_format = "html_document")
-  
+                    output_format = "html_document",
+                    quiet = TRUE)
+
   # Render and save the PDF
   rmarkdown::render(input = rmd_output_path,
                     output_file = pdf_output_path,
-                    output_format = "pdf_document")
+                    output_format = "pdf_document",
+                    quiet = TRUE)
 }
 
 
 
 
-
-
-
-# Edit Rmd Template
+#' Edit a Rmd Template from xgx
+#'
+#' \code{edit_rmd_template_str} returns a path to the altered Rmd template
+#' 
+#' @param rmd_str A character string containing the Rmd template raw characters
+#' @param mapping A list of column name mappings from the
+#' original (template) dataset column names
+#' to the corresponding columns in the new dataset
+#' @param rmd_output_path 
+#' @param data_path Path (as a string) to the dataset that is to be analyzed
+#' @param pk_cmt 
+#' @param pd_cmt
+#' @param author_name The name of the author to be displayed on the template
+#' @param pd_data_type 
+#' @param alter_datetime 
+#' @param show_explanation 
+#'
+#' @return NULL
+#'
+#' @examples
+#'     Name mapping: 
+#'     
+#' @importFrom stringr str_replace
+#' @importFrom readr read_file
+#' @importFrom(magrittr, "%>%")
+#' @export
 edit_rmd_template_str <- function(rmd_str = NULL,
                                   mapping = NULL,
                                   rmd_output_path = NULL,
                                   data_path = NULL,
+                                  multiple_dosing = FALSE,
+                                  pk_cmt = NULL,
+                                  pd_cmt = NULL,
+                                  dose_cmt = NULL,
+                                  steady_state_day = NULL,
+                                  time_between_doses = NULL,
                                   author_name = NULL,
-                                  alter_datetime = TRUE) {
+                                  alter_datetime = TRUE,
+                                  show_explanation = TRUE) {
+  library(magrittr)
+  library(dplyr)
 
-  std_data_cols = list(
-    "Single_Ascending_Dose_Dataset2" = c("ID" ,"TIME" ,"NOMTIME" ,"TIMEUNIT" ,
-                                         "AMT" ,"LIDV" ,"CMT", "NAME" ,"EVENTU",
-                                         "CENS" ,"EVID" ,"WEIGHTB" ,"SEX" ,
-                                         "TRTACT" ,"DOSE"),
-    "Multiple_Ascending_Dose_Dataset2" = c("ID" ,"TIME" ,"NOMTIME" ,"TIMEUNIT" ,
-                                           "AMT" ,"LIDV" ,"CMT" , "NAME" ,"EVENTU",
-                                           "CENS" ,"EVID" , "WEIGHTB" ,"SEX" ,
-                                           "TRTACT" ,"DOSE",
-                                           "PROFDAY" ,"PROFTIME" ,"CYCLE"),
-    "AE_xgx" =     c("SUBJID" ,"DAY","time","Dose","AUC","Cmax","Cmin","Cave",
-                     "AUCDAY1","AUCAVE","AETOXGRS","AETOXGRDN","AE"),
-    "AUC_Safety" = c("SUBJID" ,"time_hr" ,"AUC_day" ,"AUC_popPK",
-                     "Cmax_popPK" ,"Cmin_popPK" ,"Cave_popPK"),
-    "dzz_PKConc" = c("SUBJID" ,"ARM" ,"VISIT" ,"PCDTC" ,"TMTPT" ,"RESN" ,"RESU"),
-    "mt12345" =    c("ID" ,"TIME" ,"TIM" ,"NTIM" ,"TAD" ,"AMT" ,"DOSE" ,
-                     "LIDV", "LNDV" ,"EVID" ,"MDV",
-                     "CMT","UNIT" ,"TRTTXT" ,
-                     "RNDDOSE" ,"NT" ,"CENS"),
-    "PPtmp_NCA" = c("SUBJID" ,"ARM" ,"WNLPARM" ,"PPORRESN" ,"PPORRESU"),
-    
-    "Oncology_Efficacy_Data" = c("IDSHORT" ,"BOR" ,"BPCHG" ,"OR" ,"BORNUM" ,
-                                 "psld" ,"DOSE_ABC" ,"DOSE_DEF" ,"DOSE_combo" ,
-                                 "binary_BOR" ,"PR_rate" ,"n" ,"count_cr_pr" ,
-                                 "TIME" ,"COMB" ,"TIME_OR" ,"auc0_24"),
-    "Oncology_Efficacy_Dose" = c("IDSHORT" ,"DOSE" ,"TIME" ,"COMB")
-  )
-
-  user_data <- read.csv(data_path)
   author_name_re <- 'author: \\"(.*)\\"'
 
-  # 1) Alter the path to the data, to match the user given path
+  user_data <- read.csv(data_path)
+
+
+  # Alter the path to the data, to match the user given path
   if (!is.null(data_path)) {
-  
-    # Regular Expressions to extract / insert user alterations into Rmd template
-    read_csv_re <- 'read.csv\\(\\"'
-    prefix_path_re <- "\\.\\.\\/Data\\/"
-    read_csv_extension_re <- '\\.csv\\"\\)'
-    orig_data_re <- paste0(read_csv_re,
-                           prefix_path_re,
-                           '(.*)',
-                           read_csv_extension_re)
-    
-    # Extract the filename (w/o extansion) for the original dataset used within
-    #   the Rmd template. This is used to find the column names from that dataset.
-    orig_data_name <- stringr::str_match(string = rmd_str,
-                                         pattern = orig_data_re)[2]
-
-    ############################
-    # Alter user dataset columns
-    ############################
-    # # While we know the original dataset columns,
-    # #   we can change the new data to match
-    # 
-    # # Get the typical columns used for this dataset
-    # # orig_data_cols <- std_data_cols[[orig_data_name]]
-    # orig_data_cols <- names(mapping)
-    # new_data_cols <- mapping
-    # 
-    # 
-    # # Map names given by user
-    # # user_data <- user_data %>% rename_at(vars(names(user_data)),
-    # #                                      ~ orig_data_cols)
-    #   
-    # user_data <- user_data %>% rename_at(vars(new_data_cols),
-    #                                        ~ orig_data_cols)
-    # 
-    # # Save the newly formatted user data
-    # 
-    # new_data_path <- paste0(data_path, ".renamed_cols")
-    # write.csv(user_data, file = new_data_path)
-
-
-
-    # Alter dataset in Rmd
-    #   - Warning: `mutate` is assumed to be present within an Rmd template
-
-    # Find first location of `mutate``function
-    mutate_loc <- stringr::str_locate(rmd_str, "mutate\\(")[1, "start"]
-
-    # Get the string starting at this location
-    mutate_start_rmd_str <- substr(rmd_str, start = mutate_loc, stop = nchar(rmd_str))
-
-
-    # Regular Expressions do not work here, becuase comments can contain parentheses
-    # So we will get the `mutate` full expression by parsing
-    mutate_expr <- parse(text = mutate_start_rmd_str, n = 1)
-    mutate_expr_str <- getParseData(mutate_expr, includeText = TRUE)[1, "text"]
-
-    orig_cols <- names(eval(parse(text = stringr::str_replace(string = mutate_expr_str,
-                                      pattern = "mutate",
-                                      replacement = "c"))))
-
-    # All of the columns from the rmd string (orig_cols) should be present in map
-
-    # Add key/value pairs that are the same in each dataset
-    same_cols <- intersection(names(user_data), orig_cols)
-    full_mapping <- mapping
-    for (col in same_cols) {
-      full_mapping[[col]] = col
-    }
-
-    # Create new string from mapping
-    new_mutate_str <- ""
-    for(old_col in names(full_mapping)){
-      new_col<-full_mapping[old_col]
-      temp_map <- paste("\n", old_col, "=", new_col)
-      if (length(temp_map) == 0) {
-        new_mutate_str <- temp_map
-      } else {
-        new_mutate_str <- paste(new_mutate_str, temp_map)
-      }
-    }
-
-    # New Rmd
-    rmd_str <- stringr::str_replace(string = rmd_str,
-                                    pattern = Hmisc::escapeRegex(mutate_expr_str),
-                                    replacement = new_mutate_string)
-    ############################
-
 
     # Edit the Rmd string to contain the csv desired filepath
     user_data_path_replacement_re = paste0("\\1", '\\"',
-                                           Hmisc::escapeRegex(new_data_path),
+                                           Hmisc::escapeRegex(data_path),
                                            '\\"\\)')
     rmd_str <- stringr::str_replace(string = rmd_str,
                                     pattern = "(read.csv\\()(.*)",
                                     replacement = user_data_path_replacement_re)
   }
 
+  # Change the column name mapping
+  if (!is.null(mapping)) {
 
-  # Add authorname
+    # Alter dataset in Rmd
+    #   - Note: `mutate` is assumed to be used at the top of an Rmd template
+    #           similar to all xgx Rmd templates
+
+    # Find first location of `mutate` function
+    mutate_loc <- stringr::str_locate(rmd_str, "mutate\\(")[1, "start"]
+
+    # Get the string starting at this location
+    mutate_start_rmd_str <- substr(rmd_str,
+                                   start = mutate_loc,
+                                   stop = nchar(rmd_str))
+
+    # Regular Expressions do not work here, becuase comments can contain parentheses
+    # So we will get the `mutate` full expression by parsing
+    mutate_expr <- parse(text = mutate_start_rmd_str, n = 1)
+    mutate_expr_parse_data <- getParseData(mutate_expr, includeText = TRUE)
+    mutate_expr_str <- mutate_expr_parse_data[1, "text"]
+
+    # Split the main `mutate` function parameters into 
+    #   'right' and 'left' hand side expressions
+    main_parent <- mutate_expr_parse_data[1,"id"]
+    orig_mapping_right <- mutate_expr_parse_data %>%
+                              subset(token == "expr") %>%
+                              subset(parent == main_parent) %>%
+                              select(text)
+    orig_mapping_right <- tail(orig_mapping_right[[1]], -1)
+
+    orig_mapping_left <- mutate_expr_parse_data %>% 
+                              subset(token == "SYMBOL_SUB") %>%
+                              subset(parent == main_parent) %>%
+                              select(text)
+    
+    # Original mapping is stored as a list with the 
+    #   names as the 'right hand' expressions, and values as 'left hand' exprs
+    orig_mapping <- orig_mapping_right
+    names(orig_mapping) <- orig_mapping_left[[1]]
+
+    # Now we add the original map to the new map
+    #   if the new mapping is missing anything in the original map
+    for (old_col in names(orig_mapping)) {
+      # Value for key value pair in orig_mapping
+      old_col_value <- orig_mapping[[old_col]]
+      
+      # Add columns from old mapping that are not yet present in mapping
+      if (!(old_col %in% names(mapping))) {
+        mapping[old_col] <- old_col_value
+      }
+    }
+
+    # The new mapping must be stored as a string in order to insert
+    new_mutate_str <- paste(capture.output(dput(mapply(as.name, mapping))),
+                            sep='\n',
+                            collapse = "")
+    # Change 'list' to 'mutate' in mapping string representation
+    new_mutate_str <- stringr::str_replace(string = new_mutate_str,
+                                           pattern = "list",
+                                           replacement = "mutate")
+    # Remove newlines, to add them in in a more consistent manner later
+    new_mutate_str <- stringr::str_replace_all(string = new_mutate_str,
+                                               pattern = "\\\\n",
+                                               replacement = "")
+    # Remove string punctuation such that expressions are evaluated correctly
+    new_mutate_str <- stringr::str_replace_all(string = new_mutate_str,
+                                           pattern = "`",
+                                           replacement = "")
+
+    # New Rmd
+    rmd_str <- stringr::str_replace(string = rmd_str,
+                                    pattern = Hmisc::escapeRegex(mutate_expr_str),
+                                    replacement = new_mutate_str)
+  }
+
+  # Change the PK compartment
+  if (!is.null(pk_cmt)) {
+    pattern <- "PK_CMT\\s*=\\s*(\\d)"
+    replace_str <- glue::glue("PK_CMT = {pk_cmt}")
+    rmd_str <- stringr::str_replace(string = rmd_str,
+                                    pattern = pattern,
+                                    replacement = replace_str)
+  }
+
+  # Change the PD compartment
+  if (!is.null(pd_cmt)) {
+    pattern <- "PD_CMT\\s*=\\s*(\\d)"
+    replace_str <- glue::glue("PD_CMT = {pd_cmt}")
+    rmd_str <- stringr::str_replace(string = rmd_str,
+                                    pattern = pattern,
+                                    replacement = replace_str)
+  }
+
+  # Change the dose compartment
+  if (!is.null(dose_cmt)) {
+    pattern <- "DOSE_CMT\\s*=\\s*(\\d)"
+    replace_str <- glue::glue("DOSE_CMT = {dose_cmt}")
+    rmd_str <- stringr::str_replace(string = rmd_str,
+                                    pattern = pattern,
+                                    replacement = replace_str)
+  }
+
+  # Change the steady state day
+  if (!is.null(steady_state_day)) {
+    pattern <- "SS_PROFDAY\\s*=\\s*(\\d)"
+    replace_str <- glue::glue("SS_PROFDAY = {steady_state_day}")
+    rmd_str <- stringr::str_replace(string = rmd_str,
+                                    pattern = pattern,
+                                    replacement = replace_str)
+  }
+
+  # Change tau
+  if (!is.null(time_between_doses)) {
+    pattern <- "TAU\\s*=\\s*(\\d)"
+    replace_str <- glue::glue("TAU = {time_between_doses}")
+    rmd_str <- stringr::str_replace(string = rmd_str,
+                                    pattern = pattern,
+                                    replacement = replace_str)
+  }
+
+  # Add author name
   if (!is.null(author_name)) {
     replacement_str <- glue::glue('author: \"{author_name}\"')
     rmd_str <- stringr::str_replace(string = rmd_str,
@@ -280,17 +326,23 @@ edit_rmd_template_str <- function(rmd_str = NULL,
                                 pattern = search_date_re,
                                 replacement = Hmisc::escapeRegex(replacement_str))
   }
-  
-  # Add mapping at mutate in rmd
-  # if (!is.null())
-  
 
-  # Create a default Rmd path to save the Rmd file, if one is not provided
-  if (is.null(rmd_output_path)) {
-    working_dir <- getwd()
-    rmd_output_path <- file.path(working_dir, "xgx_autoexplore_markdown.Rmd")
+  if(!(show_explanation)) {
+    pattern = "(---\n\n|```\n\n)(#+[\\s\\S]*?)(?=\\s*```\\{r)"
+    texts = stringr::str_match_all(rmd_str,
+                                   pattern = pattern)[[1]][,3]
+    for (text in as.list(texts)){
+      explanation_texts <- stringr::str_match_all(string = text,
+                                        pattern = "\n[^#][\\S\\s]*\n")[[1]]
+      for (explanation_text in explanation_texts) {
+        explanation_text <- Hmisc::escapeRegex(explanation_text)
+        rmd_str <- stringr::str_replace(string = rmd_str,
+                                        pattern = explanation_text,
+                                        replacement = "\n")
+      }
+    }
+
   }
-  print(rmd_output_path)
   
   # Save the R markdown document
   fileConn <- file(rmd_output_path)
@@ -306,9 +358,39 @@ edit_rmd_template_str <- function(rmd_str = NULL,
 
 
 
+#' Edit a Rmd Template from xgx
+#'
+#' \code{edit_rmd_template_str} returns a path to the altered Rmd template
+#' 
+#'
+#' @param data_path Path (as a string) to the dataset that is to be analyzed
+#' @param mapping A list of column name mappings from the
+#' original (template) dataset column names
+#' to the corresponding columns in the new dataset
+#' @param author_name The name of the author to be displayed on the template
+#' @param multiple_dosing 
+#' @param pk_cmt 
+#' @param pd_cmt
+#' @param pd_data_type 
+#' @param rmd_template_path 
+#' @param rmd_output_path 
+#' @param pdf_output_path 
+#' @param html_output_path 
+#' @param alter_datetime 
+#' @param show_explanation 
+#'
+#' @return NULL
+#'
+#' @examples
+#'     Name mapping: 
+#'     
+#' @importFrom stringr str_replace
+#' @importFrom readr read_file
+#' @importFrom magrittr "%>%"
+#' @export
 get_rmd_name <- function(multiple_dosing = FALSE,
-                         pk_cmt = FALSE,
-                         pd_cmt = FALSE,
+                         pk_cmt = NULL,
+                         pd_cmt = NULL,
                          pd_data_type = NULL) {
 
   # # Capitalize to match naming scheme chosen on github repo
@@ -317,14 +399,8 @@ get_rmd_name <- function(multiple_dosing = FALSE,
   # }
 
   # Construct the filename via the standard xgx rmd template filename format
-  if (!is.null(pk_cmt) & !is.null(pd_cmt)) {
-    pk_str = "PKPD"
-    pd_str = ""
-  }
-  else {
-    pk_str <- if (!is.null(pk_cmt)) "PK" else ""
-    pd_str <- if (!is.null(pd_cmt)) "PD" else ""
-  }
+  pk_str <- if (!is.null(pk_cmt)) "PK" else ""
+  pd_str <- if (!is.null(pd_cmt)) "PD" else ""
   if (multiple_dosing) {
     multiple_dosing_str <- "Multiple_Ascending"
   }
@@ -332,7 +408,7 @@ get_rmd_name <- function(multiple_dosing = FALSE,
     multiple_dosing_str <- "Single_Ascending"
   }
 
-  if (!is.null(pd_data_type)){
+  if (!is.null(pd_data_type) & !is.null(pd_cmt)){
     rmd_fname <- glue::glue("{multiple_dosing_str}_Dose_{pk_str}{pd_str}_{pd_data_type}.Rmd")
   }
   else {
@@ -347,8 +423,8 @@ get_rmd_name <- function(multiple_dosing = FALSE,
 #   if the doesn't work, pull the file from the cached xgxr github
 #   backup directoryinstead
 get_rmd_str <- function(multiple_dosing = FALSE,
-                        pk_cmt = FALSE,
-                        pd_cmt = FALSE,
+                        pk_cmt = NULL,
+                        pd_cmt = NULL,
                         pd_data_type = NULL){
 
   rmd_fname <- get_rmd_name(multiple_dosing = multiple_dosing,
