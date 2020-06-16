@@ -333,15 +333,15 @@ edit_rmd_template_str <- function(rmd_str = NULL,
                                    pattern = pattern)[[1]][,3]
     for (text in as.list(texts)){
       explanation_texts <- stringr::str_match_all(string = text,
-                                        pattern = "\n[^#][\\S\\s]*\n")[[1]]
-      for (explanation_text in explanation_texts) {
+                                        pattern = "[^#][\\S\\s]*\n")
+      for (explanation_text in as.list(explanation_texts)) {
+        print(explanation_text)
         explanation_text <- Hmisc::escapeRegex(explanation_text)
         rmd_str <- stringr::str_replace(string = rmd_str,
                                         pattern = explanation_text,
                                         replacement = "\n")
       }
     }
-
   }
   
   # Save the R markdown document

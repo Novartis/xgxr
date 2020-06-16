@@ -47,7 +47,7 @@ xgx_ordinal_regression_plot <- function(data = NULL,
                           replace = TRUE)
     
     model_boot <- MASS::polr(formula = formula,
-                             data = data,
+                             data = data_boot,
                              Hess = TRUE, method = "probit")
     # extract predictions
     new_preds <- data.frame(x = data_boot$CONC,
