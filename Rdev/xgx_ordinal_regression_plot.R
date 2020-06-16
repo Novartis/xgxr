@@ -26,7 +26,7 @@ xgx_ordinal_regression_plot <- function(data = NULL,
   data <- data %>% mutate(Response = factor(data[, dependent_variable],
                                             levels = levels,
                                             ordered = TRUE))
-  print(data)
+
 
   # Bootstrapping script from Fariba/Andy
   B <- 100
@@ -34,10 +34,11 @@ xgx_ordinal_regression_plot <- function(data = NULL,
   # Ordinal Regression Model
   model <- MASS::polr(formula = formula,
                       data = data,
-                      Hess = TRUE, method = "probit")
+                      Hess = TRUE,
+                      method = "probit")
   
   data$Pred <- unlist(predict(model, type = "probs"))
-  
+
   for(i in 1:B){
     # Boostrap by resampling entire dataset
     #   (prediction + residual doesn't work with ordinal data)
@@ -62,24 +63,23 @@ xgx_ordinal_regression_plot <- function(data = NULL,
   response_classes = paste0("y.", levels)
   pred_df$pred <- response_classes[apply(pred_df[response_classes],1,which.max)]
   pred_df <- pivot_longer(data = pred_df, cols = response_classes)
-  
+ 
 
   gg <- ggplot(pred_df,
-               aes_string(x = independent_variables[1],
+               aes_string(x = "x",
                           y = "value",
                           color = "name",
                           fill = "name"))
 
   # Plot confidence interval ribbon for fitted draw predictions
   gg <- gg + stat_summary(geom = "ribbon")
-  
+
   # Plot confidence intervals for observed data binned by quantiles
-  gg <- gg + xgx_stat_ci(data = data,
-                         aes_string(x=independent_variables[1],
-                                    y = "Response",
-                                    color = "Response"),
-                         bins = nbins,
-                         distribution = "ordinal")
+  # gg <- gg + xgx_stat_ci(data = data,
+  #                        aes(x=independent_variables[1],
+  #                            color = Response),
+  #                        bins = nbins,
+  #                        distribution = "ordinal")
 
   # Clean up remaining aesthetics of plot
   gg <- gg + xgx_scale_x_log10()
