@@ -62,8 +62,12 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
                                  level = 0.95, method.args = list(), na.rm = FALSE,
                                  show.legend = NA, inherit.aes = TRUE){
   if(missing(formula)) {
-    warning("Formula not specified.\nUsing default formula y ~ E0 + Emax*x/(exp(logED50) + x)")
-    formula = y ~ E0 + Emax*x/(exp(logED50) + x)
+    warning("Formula not specified.\nUsing default formula y ~ E0 + Emax*x/(ED50 + x), 
+            initializing E0, Emax, and ED50 to 1, 
+            and setting lower bound on ED50 to 0")
+    formula = y ~ E0 + Emax*x/(ED50 + x)
+    method.args$start = list(E0 = 1, Emax = 1, ED50 = 1)
+    method.args$lower = c(-Inf, -Inf, 0)
   }
 
   ggplot2::stat_smooth(mapping = mapping, data = data, geom = geom, 
