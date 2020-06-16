@@ -1,5 +1,5 @@
 #' Plot Emax fit to data
-#' Uses nlsLM, predictdf.nls, and stat_smooth to display Emax model fit to data
+#' Uses minpack.lm::nlsLM, predictdf.nls, and stat_smooth to display Emax model fit to data
 #' 
 #' @section Warning:
 #' \code{nlsLM} uses \code{nls.lm} which implements the Levenberg-Marquardt
@@ -105,26 +105,41 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
 #'
 #' @return dataframe with x and y values, if se is TRUE dataframe also includes ymin and ymax
 #'
-#' @importFrom stats deriv
+#' @importFrom Deriv Deriv
 #' @importFrom ggplot2 predictdf.default
 #' @export
 predictdf.nls <- function(model, xseq, se, level) {
   
   if(se){
     # function to calculate gradient wrt model parameters
-    fun_grad <- function(model, x){
-      # extract the model parameters to the local environment
-      list2env(model$m$getPars() %>% as.list(), envir = environment())
+    # value is the function value
+    # grad is the gradient
+    fun_grad <- function(form, x, pars){
       
-      # deriv returns the function value along with the gradient
-      eval(stats::deriv(model$m$formula(), names(model$m$getPars())))
+      # extract the model parameters to the local environment
+      list2env(pars %>% as.list(), envir = environment())
+      
+      ret <- list()
+      ret$value <- eval(form[[3L]]) # this is the value of the formula
+      
+      ret$grad <- list()
+      xvec <- x      
+      for(i in 1:length(xvec)){
+        x = xvec[i]
+        ret$grad[[i]] <- eval(Deriv::Deriv(form, names(pars), cache.exp = FALSE)) %>% as.list()
+      }
+      
+      ret$grad <- bind_rows(ret$grad) %>% as.matrix
+      
+      return(ret)
     }
     
-    # calculate the model prediction, as well as the gradient, at the supplied x values 
-    f.new <- fun_grad(model, xseq)
+    fg <- fun_grad(form = model$m$formula(), x = xseq, pars = model$m$getPars())
     
-    # extract the gradient
-    grad.new <- attr(f.new, "gradient")
+    f.new <- fg$value # value of function
+    grad.new <- fg$grad # value of gradient
+    
+    
     vcov <- vcov(model)
     GS = rowSums((grad.new%*%vcov)*grad.new)
     
