@@ -53,7 +53,8 @@ Imports:
     scales,
     stats,
     tibble,
-    utils
+    utils,
+    vdiffr
 Suggests: 
     caTools,
     gridExtra,
