@@ -328,24 +328,33 @@ edit_rmd_template_str <- function(rmd_str = NULL,
   }
 
   if(!(show_explanation)) {
-    pattern = "(---\n\n|```\n\n)(#+[\\s\\S]*?)(?=\\s*```\\{r)"
-    texts = stringr::str_match_all(rmd_str,
-                                   pattern = pattern)[[1]][,3]
-    for (text in as.list(texts)){
-      explanation_texts <- stringr::str_match_all(string = text,
-                                        pattern = "[^#][\\S\\s]*\n")
-      for (explanation_text in as.list(explanation_texts)) {
-        print(explanation_text)
-        explanation_text <- Hmisc::escapeRegex(explanation_text)
-        rmd_str <- stringr::str_replace(string = rmd_str,
-                                        pattern = explanation_text,
-                                        replacement = "\n")
-      }
-    }
+    start_comment <- "<!--START_EXPLANATION-->"
+    end_comment <- "<!--END_EXPLANATION-->"
+    pattern <- paste0(start_comment, "(\\s\\S)*", end_comment)
+    replace <- "" # paste0("<!--", "\\1", "-->")
+    rmd_str <- stringr::str_replace_all(rmd_str,
+                                        pattern = "(START_EXPLANATION-->|<!--END_EXPLANATION)",
+                                        replacement = replace)
+    # pattern = "(---\n\n*|```\n\n*)(#+[\\s\\S]*?)(?=\\s*```\\{r)"
+    # texts = stringr::str_match_all(rmd_str,
+    #                                pattern = pattern)[[1]][,3]
+    # print(texts)
+    # for (text in as.list(texts)){
+    #   explanation_texts <- stringr::str_match_all(string = text,
+    #                                     pattern = "\n\\s*[^#][\\S\\s]*\n")
+    #   for (explanation_text in as.list(explanation_texts)) {
+    #     print(explanation_text)
+    #     explanation_text <- Hmisc::escapeRegex(explanation_text)
+    #     rmd_str <- stringr::str_replace(string = rmd_str,
+    #                                     pattern = explanation_text,
+    #                                     replacement = "\n")
+      # }
+    # }
   }
-  
+
   # Save the R markdown document
-  fileConn <- file(rmd_output_path)
+  print(rmd_output_path)
+  fileConn <- file(rmd_output_path, 'w')
   writeChar(rmd_str, fileConn)
   close(fileConn)
 

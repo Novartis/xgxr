@@ -196,10 +196,6 @@ xgx_stat_ci <- function(mapping = NULL,
 
 
 
-
-
-
-
 #' Stat ggproto object for creating ggplot layers of binned confidence intervals
 #' for probabiliities of classes in ordinal data
 #'
