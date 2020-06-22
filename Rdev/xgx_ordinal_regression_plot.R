@@ -221,7 +221,7 @@ predictdf.polr <- function(model, xseq, se, level){
 stat_smooth_ordinal <- function(mapping = NULL, data = NULL,
                                 geom = "smooth", position = "identity",
                                 ...,
-                                method = NULL,
+                                method = "polr",
                                 formula = NULL,
                                 se = TRUE,
                                 n = 80,
@@ -322,8 +322,7 @@ StatSmoothOrdinal <- ggproto("StatSmoothOrdinal", Stat,
          }
          
          base.args <- list(quote(formula), data = quote(data), weights = quote(weight))
-         
-         
+
          n_bootstrap = 200
          iter_failed = 0
          prediction = NULL
