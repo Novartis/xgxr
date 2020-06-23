@@ -42,6 +42,7 @@ Depends:
 Imports:
     assertthat,
     binom,
+    Deriv,
     dplyr,
     ggplot2,
     graphics,
