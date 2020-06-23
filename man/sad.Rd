@@ -4,8 +4,7 @@
 \name{sad}
 \alias{sad}
 \title{Single Ascending Dose Data Set}
-\format{
-A data frame with the following 16 columns:
+\format{A data frame with the following 16 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab numeric; unique subject ID\cr
   column 2: \tab \code{TIME} \tab numeric; time relative to first drug 
@@ -33,8 +32,7 @@ A data frame with the following 16 columns:
   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
   column 16: \tab \code{DOSE} \tab numeric; randomized dose in mg 
   received
-}
-}
+}}
 \usage{
 sad
 }
