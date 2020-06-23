@@ -124,6 +124,7 @@ xgx_stat_ci <- function(mapping = NULL,
                                          distribution = distribution)
   }
 
+<<<<<<< HEAD
   # Default parameters
   gg_params = list(
     fun.args = fun.args,
@@ -152,6 +153,37 @@ xgx_stat_ci <- function(mapping = NULL,
       ggproto_stat <- StatSummaryBinQuant
       gg_params = append(gg_params, list(bins = bins,
                                          breaks = breaks))
+=======
+  percentile_value <- conf_level + (1 - conf_level) / 2
+
+  conf_int <- function(y, conf_level, distribution) {
+    y <- stats::na.omit(y)
+
+    if (distribution == "normal") {
+      conf_int_out <- data.frame(
+        y = mean(y),
+        ymin = mean(y) - stats::qt(percentile_value,
+                                   length(y)) * sqrt(stats::var(y) / length(y)),
+        ymax = mean(y) + stats::qt(percentile_value,
+                                   length(y)) * sqrt(stats::var(y) / length(y))
+      )
+    } else if (distribution == "lognormal") {
+      yy <- log(y)
+      conf_int_out <- data.frame(
+        y = exp(mean(yy)),
+        ymin = exp(mean(yy) - stats::qt(percentile_value, length(yy)) * sqrt(stats::var(yy) / length(yy))),
+        ymax = exp(mean(yy) + stats::qt(percentile_value, length(yy)) * sqrt(stats::var(yy) / length(yy)))
+      )
+    } else if (distribution == "binomial") {
+      conf_int_out <- data.frame(
+        y = mean(y),
+        ymin = binom::binom.exact(sum(y), length(y),
+                                  conf.level = conf_level)$lower,
+        ymax = binom::binom.exact(sum(y), length(y),
+                                  conf.level = conf_level)$upper)
+    } else {
+      stop("distribution must be either normal, lognormal, or binomial")
+>>>>>>> 2d1409fc793533a2c910284b689d8d9824600d51
     }
   }
 

@@ -14,15 +14,16 @@ xgx_ordinal_regression_plot <- function(data = NULL,
                                                n_bootstrap = n_bootstrap,
                                                n_resolution = n_resolution,
                                                y_as_probability = TRUE)
+print(pred_df)
 
-  gg <- ggplot(pred_df,
+  gg <- ggplot(data = pred_df,
                aes_string(x = "x",
                           y = "y",
-                          color = "name",
-                          fill = "name"))
-
+                          color = "class_for_probability",
+                          fill = "class_for_probability"))
+  
   # Plot confidence interval ribbon for fitted draw predictions
-  gg <- gg + stat_summary(geom = "ribbon")
+  gg <- gg + stat_smooth_ordinal(aes(response = class_for_probability))
 
   # Plot confidence intervals for observed data binned by quantiles
   gg <- gg + xgx_stat_ci(data = data,
@@ -51,6 +52,7 @@ xgx_ordinal_bootstrap_predictions <- function(data,
                                               formula = "y ~ x",
                                               n_bootstrap = 100,
                                               n_resolution = 50,
+                                              levels = NULL,
                                               y_as_probability = TRUE) {
     # Formula can be string or NSE
     if (class(formula) == "character"){
@@ -108,7 +110,7 @@ xgx_ordinal_bootstrap_predictions <- function(data,
       model_boot <- MASS::polr(formula = formula,
                                data = data_boot,
                                Hess = TRUE,
-                               method = "probit")
+                               method = "logit")
 
       # Extract Bootstrapped Predictions
       new_preds <- data.frame(x = new_x,
@@ -218,21 +220,24 @@ predictdf.polr <- function(model, xseq, se, level){
 #' 
 #' @export
 #' @rdname geom_smooth
-stat_smooth_ordinal <- function(mapping = NULL, data = NULL,
-                                geom = "smooth", position = "identity",
-                                ...,
-                                method = "polr",
-                                formula = NULL,
-                                se = TRUE,
-                                n = 80,
-                                span = 0.75,
-                                fullrange = FALSE,
-                                level = 0.95,
-                                method.args = list(),
-                                na.rm = FALSE,
-                                orientation = NA,
-                                show.legend = NA,
-                                inherit.aes = TRUE) {
+stat_smooth_ordinal <- function(mapping = NULL,
+                        data = NULL,
+                        geom = "smooth",
+                        position = "identity",
+                        distribution = "ordinal",
+                        ...,
+                        method = "polr",
+                        formula = NULL,
+                        se = TRUE,
+                        n = 80,
+                        span = 0.75,
+                        fullrange = FALSE,
+                        level = 0.95,
+                        method.args = list(),
+                        na.rm = FALSE,
+                        orientation = NA,
+                        show.legend = NA,
+                        inherit.aes = TRUE) {
   layer(
     data = data,
     mapping = mapping,
@@ -363,7 +368,7 @@ StatSmoothOrdinal <- ggproto("StatSmoothOrdinal", Stat,
                      y = median(y)) %>%
            ungroup()
          
-         prediction <- merge(prediction, data %>% subset(,-c(x), by = response))
+         prediction <- merge(prediction, data %>% subset(,-c(x), by = response))  # %>% subset(,-c(x), by = response))
          
        },
        
