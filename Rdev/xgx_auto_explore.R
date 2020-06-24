@@ -41,45 +41,64 @@ xgx_auto_explore <- function(data_path = NULL,
                              dose_cmt = NULL,
                              steady_state_day = NULL,
                              time_between_doses = NULL,
+                             rmd_template_name = NULL,
                              rmd_template_path = NULL,
                              rmd_output_path = NULL,
                              pdf_output_path = NULL,
                              html_output_path = NULL,
                              alter_datetime = TRUE,
                              show_explanation = TRUE) {
-  
-  # Setup default output paths
-  file_prefix = "xgx_autoexplore_"
-  analysis_fname <- tools::file_path_sans_ext(
-                           get_rmd_name(multiple_dosing = multiple_dosing,
-                                        pk_cmt = pk_cmt,
-                                        pd_cmt = pd_cmt,
-                                        pd_data_type = pd_data_type))
-  if (is.null(rmd_output_path)) {
-    working_dir <- getwd()
-    rmd_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".Rmd"))
-  }
-  if (is.null(pdf_output_path)) {
-    working_dir <- getwd()
-    pdf_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".pdf"))
-  }
-  if (is.null(html_output_path)) {
-    working_dir <- getwd()
-    html_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".html"))
-  }
 
+  working_dir <- getwd()
 
   # A specific file path to an R markdown file can be given; however,
   #   if the template path is not provided, the R markdown template
   #   from the xgx github will be downloaded.
   if (is.null(rmd_template_path)){
-    rmd_str <- get_rmd_str(multiple_dosing = multiple_dosing,
+    rmd_str <- get_rmd_str(rmd_template_name = rmd_template_name,
+                           multiple_dosing = multiple_dosing,
                            pk_cmt = pk_cmt,
                            pd_cmt = pd_cmt,
                            pd_data_type = pd_data_type)
+
+    rmd_template_name <- tools::file_path_sans_ext(
+                            get_rmd_name(rmd_template_name = rmd_template_name,
+                                         multiple_dosing = multiple_dosing,
+                                         pk_cmt = pk_cmt,
+                                         pd_cmt = pd_cmt,
+                                         pd_data_type = pd_data_type))
   } else{
     rmd_str <- readr::read_file(rmd_template_path)
+    if (is.null(rmd_template_name)) {
+      rmd_template_name <- tools::file_path_sans_ext(basename(rmd_template_path))
+    }
   }
+
+  # Setup default output paths
+  dataset_name = tools::file_path_sans_ext(basename(data_path))
+  autoexplore_out_dir = file.path(working_dir,
+                                  "xgx_autoexplore_ouput",
+                                  dataset_name,
+                                  rmd_template_name)
+  # Ensure that the direcotyr exists by creating it - must be done iteratively for heirarchical directories
+  dir.create(working_dir, showWarnings = FALSE)
+  dir.create(file.path(working_dir, "xgx_autoexplore_ouput"), showWarnings = FALSE)
+  dir.create(file.path(working_dir, "xgx_autoexplore_ouput", dataset_name), showWarnings = FALSE)
+  dir.create(file.path(working_dir, "xgx_autoexplore_ouput", dataset_name, rmd_template_name), showWarnings = FALSE)
+
+  
+  if (is.null(rmd_output_path)) {
+    rmd_output_path <- file.path(autoexplore_out_dir, paste0(rmd_template_name, ".Rmd"))
+  }
+  if (is.null(pdf_output_path)) {
+    pdf_output_path <- file.path(autoexplore_out_dir, paste0(rmd_template_name, ".pdf"))
+  }
+  if (is.null(html_output_path)) {
+    html_output_path <- file.path(autoexplore_out_dir, paste0(rmd_template_name, ".html"))
+  }
+
+
+
 
 
   # Edit the Rmd template and your data to fit the standard dataset type
@@ -100,12 +119,14 @@ xgx_auto_explore <- function(data_path = NULL,
   # Render and save the HTML document
   rmarkdown::render(input = rmd_output_path,
                     output_file = html_output_path,
+                    output_dir = autoexplore_out_dir,
                     output_format = "html_document",
                     quiet = TRUE)
 
   # Render and save the PDF
   rmarkdown::render(input = rmd_output_path,
                     output_file = pdf_output_path,
+                    output_dir = autoexplore_out_dir,
                     output_format = "pdf_document",
                     quiet = TRUE)
 }
@@ -335,25 +356,20 @@ edit_rmd_template_str <- function(rmd_str = NULL,
     rmd_str <- stringr::str_replace_all(rmd_str,
                                         pattern = "(START_EXPLANATION-->|<!--END_EXPLANATION)",
                                         replacement = replace)
-    # pattern = "(---\n\n*|```\n\n*)(#+[\\s\\S]*?)(?=\\s*```\\{r)"
-    # texts = stringr::str_match_all(rmd_str,
-    #                                pattern = pattern)[[1]][,3]
-    # print(texts)
-    # for (text in as.list(texts)){
-    #   explanation_texts <- stringr::str_match_all(string = text,
-    #                                     pattern = "\n\\s*[^#][\\S\\s]*\n")
-    #   for (explanation_text in as.list(explanation_texts)) {
-    #     print(explanation_text)
-    #     explanation_text <- Hmisc::escapeRegex(explanation_text)
-    #     rmd_str <- stringr::str_replace(string = rmd_str,
-    #                                     pattern = explanation_text,
-    #                                     replacement = "\n")
-      # }
-    # }
   }
+  
+  # Add source files
+  rmd_str <- stringr::str_replace_all(rmd_str,
+                                      pattern = "library\\(xgxr\\)",
+                                      replacement = Hmisc::escapeRegex("library(xgxr)
+# For testing:
+source('~/xgxr/R/xgx_conf_int.R', echo=FALSE)
+source('~/xgxr/R/xgx_stat_ci.R', echo=FALSE)
+source('~/xgxr/Rdev/xgx_ordinal_regression_plot.R', echo=FALSE)
+source('~/xgxr/Rdev/xgx_stat_smooth.R', echo=FALSE)"))
 
   # Save the R markdown document
-  print(rmd_output_path)
+  dir.create(dirname(rmd_output_path), showWarnings = FALSE)
   fileConn <- file(rmd_output_path, 'w')
   writeChar(rmd_str, fileConn)
   close(fileConn)
@@ -397,16 +413,33 @@ edit_rmd_template_str <- function(rmd_str = NULL,
 #' @importFrom readr read_file
 #' @importFrom magrittr "%>%"
 #' @export
-get_rmd_name <- function(multiple_dosing = FALSE,
+get_rmd_name <- function(rmd_template_name = NULL,
+                         multiple_dosing = FALSE,
                          pk_cmt = NULL,
                          pd_cmt = NULL,
                          pd_data_type = NULL) {
 
-  # # Capitalize to match naming scheme chosen on github repo
-  # if (!(is.null(pd_data_type))) {
-  #   pd_data_type <- Hmisc::capitalize(pd_data_type)
-  # }
+  if (!is.null(rmd_template_name)) {
+    # For Adverse_Events, Oncology_Efficacy_Plots
+    # Perhaps Multiple_Ascending_Dose_PK_KeyPlots ?
+    return(paste0(rmd_template_name, ".Rmd"))
+  }
 
+  allowable_pd_data_types <- c("binary",
+                               "continuous",
+                               "count",
+                               "ordinal",
+                               "real_example",
+                               "receptor_occupancy",
+                               "time_to_event")
+
+  if (!(is.null(pd_data_type))) {
+    if (!(pd_data_type %in% allowable_pd_data_types)) {
+      warning(glue::glue("The provided pd_data_type `{pd_data_type}` is not allowable.
+                         Please choose a value from the list {allowable_pd_data_types}"))
+    }
+  }
+  
   # Construct the filename via the standard xgx rmd template filename format
   pk_str <- if (!is.null(pk_cmt)) "PK" else ""
   pd_str <- if (!is.null(pd_cmt)) "PD" else ""
@@ -431,12 +464,14 @@ get_rmd_name <- function(multiple_dosing = FALSE,
 # Extract the Rmd document from the xgx github
 #   if the doesn't work, pull the file from the cached xgxr github
 #   backup directoryinstead
-get_rmd_str <- function(multiple_dosing = FALSE,
+get_rmd_str <- function(rmd_template_name = NULL,
+                        multiple_dosing = FALSE,
                         pk_cmt = NULL,
                         pd_cmt = NULL,
                         pd_data_type = NULL){
 
-  rmd_fname <- get_rmd_name(multiple_dosing = multiple_dosing,
+  rmd_fname <- get_rmd_name(rmd_template_name = rmd_template_name,
+                            multiple_dosing = multiple_dosing,
                             pk_cmt = pk_cmt,
                             pd_cmt = pd_cmt,
                             pd_data_type = pd_data_type)
@@ -453,7 +488,7 @@ get_rmd_str <- function(multiple_dosing = FALSE,
     rmd_str <- readr::read_file("../data/xgx_Rmd/" + rmd_fname)
   }
   else if (rmd_str == "404: Not Found") {
-    
+    rmd_str <- readr::read_file("../data/xgx_Rmd/" + rmd_fname)
   }
 
   return(rmd_str)

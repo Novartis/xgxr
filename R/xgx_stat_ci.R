@@ -1,3 +1,4 @@
+
 #' Plot data with mean and confidence intervals
 #'
 #' \code{xgx_stat_ci} returns a ggplot layer plotting mean +/- confidence 
@@ -90,6 +91,41 @@
 #'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial", 
 #'               ggplot2::aes(color = factor(group)),
 #'               position = ggplot2::position_dodge(width = 0.5))
+#'               
+#' # plotting ordinal or multinomial data
+#' set.seed(12345) 
+#' data = data.frame(x = 120*exp(rnorm(100,0,1)), 
+#'               response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
+#'               covariate = sample(c("Male","Female"), 100, replace = TRUE))
+#'   
+#' xgx_plot(data = data) + 
+#'   xgx_stat_ci(mapping = aes(x = x, response = response, colour = covariate), 
+#'               distribution = "ordinal", bins = 4) + 
+#'   scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~response)
+#' 
+#' xgx_plot(data = data) + 
+#'   xgx_stat_ci(mapping = aes(x = x, response = response, colour = response), 
+#'               distribution = "ordinal", bins = 4) + 
+#'   scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~covariate)
+#' 
+#' # Example plotting categorical vs categorical data
+#' set.seed(12345)
+#' data = data.frame(x = 120*exp(rnorm(100,0,1)),
+#'                   response = sample(c("Trt1", "Trt2", "Trt3"), 100, replace = TRUE),
+#'                   covariate = factor(sample(c("White","Black","Asian","Other"), 100, replace = TRUE), 
+#'                                      levels = c("White", "Black", "Asian", "Other")))
+#' 
+#' xgx_plot(data = data) +
+#'   xgx_stat_ci(mapping = aes(x = response, response = covariate),
+#'               distribution = "ordinal") +
+#'   xgx_stat_ci(mapping = aes(x = 1, response = covariate), geom = "hline",
+#'               distribution = "ordinal") +
+#'   scale_y_continuous(labels = scales::percent_format()) + 
+#'   facet_wrap(~covariate) + 
+#'   xlab("Treatment group") + ylab("Percent of subjects by category")
+#' 
+#' 
+#' 
 #'  
 #' @importFrom stats rnorm
 #' @importFrom stats rbinom
@@ -115,38 +151,48 @@ xgx_stat_ci <- function(mapping = NULL,
                         show.legend = NA,
                         inherit.aes = TRUE,
                         ...) {
-
+  
   lays <- list()
-
+  
   # Confidence intervals via `xgx_conf_int` is the default function
   if (is.null(fun.data)) {
     fun.data <- function(y) xgx_conf_int(y = y,conf_level = conf_level,
                                          distribution = distribution)
   }
-
+  
   # Default parameters
   gg_params = list(
     fun.args = fun.args,
     fun.data = fun.data,
     na.rm = na.rm,
     ...)
-
+  
   # Non-binned
   if (is.null(bins) & is.null(breaks)) {
-    ggproto_stat <- StatSummary
+    if(distribution %in% c("ordinal", "multinomial")){
+      ggproto_stat <- StatSummaryBinOrdinal
+      
+      gg_params = append(gg_params, list(conf_level = conf_level,
+                                         distribution = distribution,
+                                         bins = bins,
+                                         breaks = breaks))
+      
+    }else{
+      ggproto_stat <- StatSummary
+    }
   }
   # Binned
   else {
     # Ordinal binned
-    if (distribution %in% c("ordinal", "binomial", "multinomial")) {
+    if (distribution %in% c("ordinal", "multinomial")) {
       ggproto_stat <- StatSummaryBinOrdinal
-
+      
       gg_params = append(gg_params, list(conf_level = conf_level,
-                                      distribution = distribution,
-                                      bins = bins,
-                                      breaks = breaks))
+                                         distribution = distribution,
+                                         bins = bins,
+                                         breaks = breaks))
     }
-
+    
     # Continuous binned
     else {
       ggproto_stat <- StatSummaryBinQuant
@@ -154,7 +200,7 @@ xgx_stat_ci <- function(mapping = NULL,
                                          breaks = breaks))
     }
   }
-
+  
   for (igeom in geom) {
     lay = layer(
       stat = ggproto_stat,
@@ -166,7 +212,7 @@ xgx_stat_ci <- function(mapping = NULL,
       inherit.aes = inherit.aes,
       params = gg_params
     )
-
+    
     # Adjust aes to default xgx preference
     if (igeom == "point") {
       if (is.null(lay$aes_params$size)) lay$aes_params$size <- 2
@@ -187,10 +233,10 @@ xgx_stat_ci <- function(mapping = NULL,
         lay$geom$geom_params$fatten <- 2
       }
     }
-
+    
     lays[[paste0("geom_", igeom)]] <- lay  
   }
-
+  
   return(lays)
 }
 
@@ -207,41 +253,154 @@ xgx_stat_ci <- function(mapping = NULL,
 #'
 #' @export
 StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat,
-
-     required_aes = c("x"),
-     # default_aes = aes(fill = ..y..),
-     
-     compute_group = function(data, scales, conf_level, distribution, bins, breaks,
-                              fun.data = NULL,
-                              fun.args = list()) {
-       return(data)
-     },
-
-     setup_data = function(data, params) {
-
-       # Calculate percentages for each category across each bin
-       # Get median x value for each bin
-       median_x <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-         group_by(quantile_index) %>%
-         summarize(x = median(x))
-       
-       # Get the number of each category in each bin 
-       counts <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-         group_by(quantile_index, colour, PANEL, group) %>%
-         summarize(count = length(x))
-
-       # Combine the x and y data
-       data <- merge(median_x, counts, by = "quantile_index", all = TRUE)
-
-       # Now calculate the confidence intervals for the multinomial data
-       data <- data %>% group_by(quantile_index) %>%
-         mutate(x = median(x),
-                y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
-                ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
-                ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
-         ungroup() %>% group_by(group)
-       return(data)
-     }
+                                          
+                                          required_aes = c("x", "response"),
+                                          
+                                          compute_group = function(data, scales, conf_level, distribution, bins, breaks,
+                                                                   fun.data = NULL,
+                                                                   fun.args = list()) {
+                                            return(data)
+                                          },
+                                          
+                                          setup_params = function(data, params) {
+                                            msg <- character()
+                                            
+                                            # aes_to_group are the aesthetics that are different from response,
+                                            # it's assumed that these should split the data into groups for calculating CI,
+                                            # e.g. coloring by a covariate
+                                            #
+                                            # aes_not_to_group are aesthetics that are identical to response,
+                                            # it's assumed that these are only for applyng aesthetics to the end result, 
+                                            # e.g. coloring by response category
+                                            params$aes_to_group <- c()
+                                            params$aes_not_to_group <- c()
+                                            
+                                            # go through PANEL, colour, fill, linetype, shape
+                                            if( (data %>% subset(, c(response, PANEL)) %>% unique() %>% dim)[1] == length(unique(data$response) )){
+                                              params$aes_not_to_group <- c(params$aes_not_to_group, "PANEL")
+                                            }else{
+                                              params$aes_to_group <- c(params$aes_to_group, "PANEL")
+                                            }
+                                            
+                                            if(is.null(data$colour)){
+                                              
+                                            }else if((data %>% subset(, c(response, colour)) %>% unique() %>% dim)[1] == length(unique(data$response))){
+                                              params$aes_not_to_group <- c(params$aes_not_to_group, "colour")
+                                            }else{
+                                              params$aes_to_group <- c(params$aes_to_group, "colour")
+                                            }
+                                            
+                                            if(is.null(data$linetype)){
+                                              
+                                            }else if((data %>% subset(, c(response, linetype)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+                                              params$aes_not_to_group <- c(params$aes_not_to_group, "linetype")
+                                            }else{
+                                              params$aes_to_group <- c(params$aes_to_group, "linetype")
+                                            }
+                                            
+                                            if(is.null(data$fill)){
+                                              
+                                            }else if((data %>% subset(, c(response, fill)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+                                              params$aes_not_to_group <- c(params$aes_not_to_group, "fill")
+                                            }else{
+                                              params$aes_to_group <- c(params$aes_to_group, "fill")
+                                            }
+                                            
+                                            if(is.null(data$shape)){
+                                              
+                                            }else if((data %>% subset(, c(response, shape)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+                                              params$aes_not_to_group <- c(params$aes_not_to_group, "shape")
+                                            }else{
+                                              params$aes_to_group <- c(params$aes_to_group, "shape")
+                                            }
+                                            
+                                            msg <- c(msg, paste0("Aesthetics identical to response: ", 
+                                                                 paste0(params$aes_not_to_group, collapse = ", "), 
+                                                                 "; These will only be used for identifying response categories within a grouping.") )
+                                            msg <- c(msg, paste0("Aesthetics different from response: ", 
+                                                                 paste0(params$aes_to_group, collapse = ", "), 
+                                                                 "; These will be used to divide data into different groups for calculating CI.", collapse = ","))
+                                            message(msg)
+                                            params
+                                          },
+                                          
+                                          setup_data = function(self, data, params) {
+                                            # check required aesthetics
+                                            ggplot2:::check_required_aesthetics(
+                                              self$required_aes,
+                                              c(names(data), names(params)),
+                                              ggplot2:::snake_class(self)
+                                            )
+                                            
+                                            # Make sure required_aes consists of the used set of aesthetics in case of
+                                            # "|" notation in self$required_aes
+                                            required_aes <- intersect(
+                                              names(data),
+                                              unlist(strsplit(self$required_aes, "|", fixed = TRUE))
+                                            )
+                                            
+                                            # Define new grouping variable for which to split the data computation 
+                                            # (excludes aesthetics that are identical to the Response variable)
+                                            if(is.null(params$aes_to_group)){
+                                              data <- data %>% mutate(group2 = 1)
+                                            }else{
+                                              groups <- unique(data %>% subset(, params$aes_to_group))
+                                              groups <- groups %>%
+                                                mutate(group2 = 1:dim(groups)[1])
+                                              
+                                              data <- data %>% merge(groups)
+                                            }
+                                            
+                                            if(is.null(params$breaks)){
+                                              if(is.null(params$bins)){
+                                                data <- data %>% mutate(x_bin = x)
+                                              }else{
+                                                
+                                                # Calculate percentages for each category across each bin
+                                                data <- data %>% mutate(x_bin = dplyr::ntile(data$x, params$bins))
+                                              }
+                                              
+                                            }else{
+                                              data <- data %>% mutate(x_bin = cut(data$x, params$breaks))
+                                            }
+                                            
+                                            # Get median x value for each bin
+                                            median_x <- data %>%
+                                              group_by(x_bin, group2) %>%
+                                              summarize(x = median(x))
+                                            
+                                            # Get the number of each category in each bin 
+                                            counts <- data %>%
+                                              group_by(x_bin, group2, response) %>%
+                                              summarize(count = length(x)) %>% 
+                                              merge(data %>% subset(,-c(x)), 
+                                                    by = c("response","group2","x_bin")) %>% 
+                                              unique()
+                                            
+                                            # Combine the x and y data
+                                            data <- merge(median_x, counts, by = c("x_bin", "group2"), all = TRUE)
+                                            
+                                            # Now calculate the confidence intervals for the multinomial data
+                                            data <- data %>% group_by(x_bin, group2) %>%
+                                              mutate(x = median(x),
+                                                     y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
+                                                     ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
+                                                     ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
+                                              ungroup() %>% group_by(group, group2)
+                                            
+                                            # if you want to use geom hline, then need yintercept defined
+                                            data <- data %>% mutate(yintercept = y)
+                                            
+                                            return(data)
+                                          },
+                                          
+                                          compute_layer = function(self, data, params, layout) {
+                                            data
+                                          },
+                                          
+                                          compute_panel = function(self, data, scales, ...) {
+                                            data
+                                          }
 )
 
 #' Stat ggproto object for binning by quantile for xgx_stat_ci
@@ -256,48 +415,48 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
 #'
 #' @export
 StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
-       required_aes = c("x", "y"),
-       
-       extra_params = c("na.rm", "orientation"),
-       setup_params = function(data, params) {
-         # gg_util_url <- "https://raw.githubusercontent.com/tidyverse/ggplot2/7e5ff921c50fb0beb203b115397ea33fee410a54/R/utilities.r"
-         # eval(text = RCurl::getURL(gg_util_url, ssl.verifypeer = FALSE))
-         params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
-         params
-       },
-
-       compute_group = function(data, scales,
-                                fun.data = NULL,
-                                fun = NULL,
-                                fun.max = NULL,
-                                fun.min = NULL,
-                                fun.args = list(),
-                                bins = NULL,
-                                binwidth = NULL,
-                                breaks = NULL,
-                                origin = NULL,
-                                right = FALSE,
-                                na.rm = FALSE,
-                                flipped_aes = FALSE) {
-         # data <- flip_data(data, flipped_aes)
-         fun <- ggplot2:::make_summary_fun(fun.data, fun, fun.max, fun.min, fun.args)
-
-         # Use breaks if available instead of bins
-         if (!is.null(breaks)) {
-           breaks <- breaks
-         }
-         else {
-           # Calculate breaks from number of bins
-           breaks <- quantile(data$x,probs = seq(0, 1, 1/bins))
-         }
-         
-         data$bin <- cut(data$x, breaks, include.lowest = TRUE, labels = FALSE)
-         out <- ggplot2:::dapply(data, "bin", fun)
-         
-         locs <- ggplot2:::bin_loc(breaks, out$bin)
-         out$x <- locs$mid
-         return(out)
-       }
+                               required_aes = c("x", "y"),
+                               
+                               extra_params = c("na.rm", "orientation"),
+                               setup_params = function(data, params) {
+                                 # gg_util_url <- "https://raw.githubusercontent.com/tidyverse/ggplot2/7e5ff921c50fb0beb203b115397ea33fee410a54/R/utilities.r"
+                                 # eval(text = RCurl::getURL(gg_util_url, ssl.verifypeer = FALSE))
+                                 params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
+                                 params
+                               },
+                               
+                               compute_group = function(data, scales,
+                                                        fun.data = NULL,
+                                                        fun = NULL,
+                                                        fun.max = NULL,
+                                                        fun.min = NULL,
+                                                        fun.args = list(),
+                                                        bins = NULL,
+                                                        binwidth = NULL,
+                                                        breaks = NULL,
+                                                        origin = NULL,
+                                                        right = FALSE,
+                                                        na.rm = FALSE,
+                                                        flipped_aes = FALSE) {
+                                 # data <- flip_data(data, flipped_aes)
+                                 fun <- ggplot2:::make_summary_fun(fun.data, fun, fun.max, fun.min, fun.args)
+                                 
+                                 # Use breaks if available instead of bins
+                                 if (!is.null(breaks)) {
+                                   breaks <- breaks
+                                 }
+                                 else {
+                                   # Calculate breaks from number of bins
+                                   breaks <- quantile(data$x,probs = seq(0, 1, 1/bins))
+                                 }
+                                 
+                                 data$bin <- cut(data$x, breaks, include.lowest = TRUE, labels = FALSE)
+                                 out <- ggplot2:::dapply(data, "bin", fun)
+                                 
+                                 locs <- ggplot2:::bin_loc(breaks, out$bin)
+                                 out$x <- locs$mid
+                                 return(out)
+                               }
 )
 
 
