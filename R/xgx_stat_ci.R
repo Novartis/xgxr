@@ -262,8 +262,6 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
      },
      
      setup_params = function(data, params) {
-       msg <- character()
-       
        # aes_to_group are the aesthetics that are different from response,
        # it's assumed that these should split the data into groups for calculating CI,
        # e.g. coloring by a covariate
@@ -313,13 +311,20 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
          params$aes_to_group <- c(params$aes_to_group, "shape")
        }
        
-       msg <- c(msg, paste0("Aesthetics identical to response: ", 
-                      paste0(params$aes_not_to_group, collapse = ", "), 
-                      "; These will only be used for identifying response categories within a grouping.") )
-       msg <- c(msg, paste0("Aesthetics different from response: ", 
-                      paste0(params$aes_to_group, collapse = ", "), 
-                      "; These will be used to divide data into different groups for calculating CI.", collapse = ","))
-       message(msg)
+       if(length(params$aes_not_to_group) == 0){
+         warning("In xgx_stat_ci: \n  No aesthetics defined to differentiate response groups.\n  Suggest to add color = response, linetype = response, or similar to aes() mapping.",
+                 call. = FALSE)
+       }else{
+         message(paste0("In xgx_stat_ci: \n  The following aesthetics are identical to response: ", 
+                        paste0(params$aes_not_to_group, collapse = ", "), 
+                        "\n  These will be used for differentiating response groups in the resulting plot."))         
+       }
+       
+       if(length(params$aes_to_group) > 0){
+         message(paste0("In xgx_stat_ci: \n  The following aesthetics are different from response: ", 
+                        paste0(params$aes_to_group, collapse = ", "), 
+                        "\n  These will be used to divide the data into different groups before calculating summary statistics on the response."))
+       }
        params
      },
 
