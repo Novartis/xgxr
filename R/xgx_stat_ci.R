@@ -166,32 +166,20 @@ xgx_stat_ci <- function(mapping = NULL,
     na.rm = na.rm,
     ...)
 
-  # Non-binned
-  if (is.null(bins) & is.null(breaks)) {
-    if(distribution %in% c("ordinal", "multinomial")){
-      ggproto_stat <- StatSummaryBinOrdinal
-      
-      gg_params = append(gg_params, list(conf_level = conf_level,
-                                         distribution = distribution,
-                                         bins = bins,
-                                         breaks = breaks))
-      
-    }else{
+  # Ordinal, binned or not binned
+  if(distribution %in% c("ordinal", "multinomial")){
+    ggproto_stat <- StatSummaryOrdinal
+    
+    gg_params = append(gg_params, list(conf_level = conf_level,
+                                       distribution = distribution,
+                                       bins = bins,
+                                       breaks = breaks))
+    
+  }else{
+    # Continuous Non-binned
+    if (is.null(bins) & is.null(breaks)) {
       ggproto_stat <- StatSummary
     }
-  }
-  # Binned
-  else {
-    # Ordinal binned
-    if (distribution %in% c("ordinal", "multinomial")) {
-      ggproto_stat <- StatSummaryBinOrdinal
-
-      gg_params = append(gg_params, list(conf_level = conf_level,
-                                      distribution = distribution,
-                                      bins = bins,
-                                      breaks = breaks))
-    }
-
     # Continuous binned
     else {
       ggproto_stat <- StatSummaryBinQuant
@@ -199,6 +187,7 @@ xgx_stat_ci <- function(mapping = NULL,
                                          breaks = breaks))
     }
   }
+
 
   for (igeom in geom) {
     lay = layer(
@@ -245,13 +234,13 @@ xgx_stat_ci <- function(mapping = NULL,
 #' for probabiliities of classes in ordinal data
 #'
 #' 
-#' \code{StatSummaryBinOrdinal} returns a ggproto object for plotting mean +/- confidence bins
+#' \code{StatSummaryOrdinal} returns a ggproto object for plotting mean +/- confidence bins
 #' 
 #'
 #' @return ggplot2 ggproto object
 #'
 #' @export
-StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat,
+StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
                                           
      required_aes = c("x", "response"),
                                           
@@ -261,7 +250,21 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
        return(data)
      },
      
-     setup_params = function(data, params) {
+     setup_params = function(self, data, params) {
+       # check required aesthetics
+       ggplot2:::check_required_aesthetics(
+         self$required_aes,
+         c(names(data), names(params)),
+         ggplot2:::snake_class(self)
+       )
+       
+       # Make sure required_aes consists of the used set of aesthetics in case of
+       # "|" notation in self$required_aes
+       required_aes <- intersect(
+         names(data),
+         unlist(strsplit(self$required_aes, "|", fixed = TRUE))
+       )
+       
        # aes_to_group are the aesthetics that are different from response,
        # it's assumed that these should split the data into groups for calculating CI,
        # e.g. coloring by a covariate
@@ -329,20 +332,7 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
      },
 
      setup_data = function(self, data, params) {
-       # check required aesthetics
-       ggplot2:::check_required_aesthetics(
-         self$required_aes,
-         c(names(data), names(params)),
-         ggplot2:::snake_class(self)
-       )
-       
-       # Make sure required_aes consists of the used set of aesthetics in case of
-       # "|" notation in self$required_aes
-       required_aes <- intersect(
-         names(data),
-         unlist(strsplit(self$required_aes, "|", fixed = TRUE))
-       )
-       
+
        # Define new grouping variable for which to split the data computation 
        # (excludes aesthetics that are identical to the Response variable)
        if(is.null(params$aes_to_group)){
