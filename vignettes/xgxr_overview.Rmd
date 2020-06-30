@@ -209,9 +209,10 @@ xgx_plot(data,aes(x = x, y = y, group = group, color = factor(group))) +
 
 The default settings calculate the confidence interval based on the 
 Student t Distribution (assuming normally distributed data). You can also 
-specify "lognormal"" or "binomial"" for the `distribution`. The former will 
-perform the confidence interval operation on the log-scaled data, the latter 
-uses the binomial exact confidence interval calculation from the `binom` package. 
+specify "lognormal"", "binomial"" or "multinomial"" for the `distribution`. The first will 
+perform the confidence interval operation on the log-scaled data, the second 
+uses the binomial exact confidence interval calculation from the `binom` package, and the 
+third uses `MultinomCI` from the `DescTools` package. 
 
 Note: you DO NOT need to use both `distribution = "lognormal"` 
 and `scale_y_log10()`, choose only one of these.
@@ -234,6 +235,54 @@ data <- data.frame(x = rep(c(1, 2, 3), each = 20),
                   group = rep(1:3, 20))
 xgx_plot(data, aes(x = x, y = y)) + 
  xgx_stat_ci(conf_level = 0.95, distribution = "binomial")
+
+
+# Example plotting the percent of subjects in a categorical covariate group by treatment.
+
+set.seed(12345)
+data = data.frame(x = 120*exp(rnorm(100,0,1)),
+                 response = sample(c("Trt1", "Trt2", "Trt3"), 100, replace = TRUE),
+                 covariate = factor(sample(c("White","Black","Asian","Other"), 100, replace = TRUE), 
+                                    levels = c("White", "Black", "Asian", "Other")))
+
+xgx_plot(data = data) +
+ xgx_stat_ci(mapping = aes(x = response, response = covariate),
+             distribution = "ordinal") +
+ xgx_stat_ci(mapping = aes(x = 1, response = covariate), geom = "hline",
+             distribution = "ordinal") +
+ scale_y_continuous(labels = scales::percent_format()) + 
+ facet_wrap(~covariate) + 
+ xlab("Treatment group") + ylab("Percent of subjects by category")
+
+```
+
+`xgx_stat_ci` can now also cut data by quantiles of `x` using the `bins` option, e.g. `bins = 4` will cut the data by quartiles of `x`. You can also supply your own breaks to cut the data. 
+
+```{r}
+
+# plotting 
+set.seed(12345)
+data = data.frame(x = 120*exp(rnorm(100,0,1)),
+              response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
+              covariate = sample(c("Male","Female"), 100, replace = TRUE)) %>%
+  mutate(y = (50 + 20*x/(200 + x))*exp(rnorm(100, 0, 0.3)))
+
+# plotting a lognormally distributed variable by quartiles of x
+xgx_plot(data = data) +
+  xgx_stat_ci(mapping = aes(x = x, y = y, colour = covariate),
+              distribution = "lognormal", bins = 4)
+
+# plotting ordinal or multinomial data, by quartiles of x
+xgx_plot(data = data) +
+  xgx_stat_ci(mapping = aes(x = x, response = response, colour = covariate),
+              distribution = "ordinal", bins = 4) +
+  scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~response)
+
+xgx_plot(data = data) +
+  xgx_stat_ci(mapping = aes(x = x, response = response, colour = response),
+              distribution = "ordinal", bins = 4) +
+  scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~covariate)
+
 ```
 
 ### Nonlinear smoothing (e.g. Emax)
