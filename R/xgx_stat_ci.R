@@ -90,6 +90,41 @@
 #'   xgx_stat_ci(conf_level = 0.95, distribution = "binomial", 
 #'               ggplot2::aes(color = factor(group)),
 #'               position = ggplot2::position_dodge(width = 0.5))
+#'               
+#' # plotting ordinal or multinomial data
+#' set.seed(12345) 
+#' data = data.frame(x = 120*exp(rnorm(100,0,1)), 
+#'               response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
+#'               covariate = sample(c("Male","Female"), 100, replace = TRUE))
+#'   
+#' xgx_plot(data = data) + 
+#'   xgx_stat_ci(mapping = aes(x = x, response = response, colour = covariate), 
+#'               distribution = "ordinal", bins = 4) + 
+#'   scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~response)
+#' 
+#' xgx_plot(data = data) + 
+#'   xgx_stat_ci(mapping = aes(x = x, response = response, colour = response), 
+#'               distribution = "ordinal", bins = 4) + 
+#'   scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~covariate)
+#' 
+#' # Example plotting categorical vs categorical data
+#' set.seed(12345)
+#' data = data.frame(x = 120*exp(rnorm(100,0,1)),
+#'                   response = sample(c("Trt1", "Trt2", "Trt3"), 100, replace = TRUE),
+#'                   covariate = factor(sample(c("White","Black","Asian","Other"), 100, replace = TRUE), 
+#'                                      levels = c("White", "Black", "Asian", "Other")))
+#' 
+#' xgx_plot(data = data) +
+#'   xgx_stat_ci(mapping = aes(x = response, response = covariate),
+#'               distribution = "ordinal") +
+#'   xgx_stat_ci(mapping = aes(x = 1, response = covariate), geom = "hline",
+#'               distribution = "ordinal") +
+#'   scale_y_continuous(labels = scales::percent_format()) + 
+#'   facet_wrap(~covariate) + 
+#'   xlab("Treatment group") + ylab("Percent of subjects by category")
+#' 
+#' 
+#' 
 #'  
 #' @importFrom stats rnorm
 #' @importFrom stats rbinom
@@ -131,22 +166,20 @@ xgx_stat_ci <- function(mapping = NULL,
     na.rm = na.rm,
     ...)
 
-  # Non-binned
-  if (is.null(bins) & is.null(breaks)) {
-    ggproto_stat <- StatSummary
-  }
-  # Binned
-  else {
-    # Ordinal binned
-    if (distribution %in% c("ordinal", "binomial", "multinomial")) {
-      ggproto_stat <- StatSummaryBinOrdinal
-
-      gg_params = append(gg_params, list(conf_level = conf_level,
-                                      distribution = distribution,
-                                      bins = bins,
-                                      breaks = breaks))
+  # Ordinal, binned or not binned
+  if(distribution %in% c("ordinal", "multinomial")){
+    ggproto_stat <- StatSummaryOrdinal
+    
+    gg_params = append(gg_params, list(conf_level = conf_level,
+                                       distribution = distribution,
+                                       bins = bins,
+                                       breaks = breaks))
+    
+  }else{
+    # Continuous Non-binned
+    if (is.null(bins) & is.null(breaks)) {
+      ggproto_stat <- StatSummary
     }
-
     # Continuous binned
     else {
       ggproto_stat <- StatSummaryBinQuant
@@ -154,6 +187,7 @@ xgx_stat_ci <- function(mapping = NULL,
                                          breaks = breaks))
     }
   }
+
 
   for (igeom in geom) {
     lay = layer(
@@ -200,47 +234,166 @@ xgx_stat_ci <- function(mapping = NULL,
 #' for probabiliities of classes in ordinal data
 #'
 #' 
-#' \code{StatSummaryBinOrdinal} returns a ggproto object for plotting mean +/- confidence bins
+#' \code{StatSummaryOrdinal} returns a ggproto object for plotting mean +/- confidence bins
 #' 
 #'
 #' @return ggplot2 ggproto object
 #'
 #' @export
-StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat,
-
-     required_aes = c("x"),
-     # default_aes = aes(fill = ..y..),
-     
+StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
+                                          
+     required_aes = c("x", "response"),
+                                          
      compute_group = function(data, scales, conf_level, distribution, bins, breaks,
                               fun.data = NULL,
                               fun.args = list()) {
        return(data)
      },
-
-     setup_data = function(data, params) {
-
-       # Calculate percentages for each category across each bin
-       # Get median x value for each bin
-       median_x <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-         group_by(quantile_index) %>%
-         summarize(x = median(x))
+     
+     setup_params = function(self, data, params) {
+       # check required aesthetics
+       ggplot2:::check_required_aesthetics(
+         self$required_aes,
+         c(names(data), names(params)),
+         ggplot2:::snake_class(self)
+       )
        
+       # Make sure required_aes consists of the used set of aesthetics in case of
+       # "|" notation in self$required_aes
+       required_aes <- intersect(
+         names(data),
+         unlist(strsplit(self$required_aes, "|", fixed = TRUE))
+       )
+       
+       # aes_to_group are the aesthetics that are different from response,
+       # it's assumed that these should split the data into groups for calculating CI,
+       # e.g. coloring by a covariate
+       #
+       # aes_not_to_group are aesthetics that are identical to response,
+       # it's assumed that these are only for applyng aesthetics to the end result, 
+       # e.g. coloring by response category
+       params$aes_to_group <- c()
+       params$aes_not_to_group <- c()
+       
+       # go through PANEL, colour, fill, linetype, shape
+       if( (data %>% subset(, c(response, PANEL)) %>% unique() %>% dim)[1] == length(unique(data$response) )){
+         params$aes_not_to_group <- c(params$aes_not_to_group, "PANEL")
+       }else{
+         params$aes_to_group <- c(params$aes_to_group, "PANEL")
+       }
+       
+       if(is.null(data$colour)){
+         
+       }else if((data %>% subset(, c(response, colour)) %>% unique() %>% dim)[1] == length(unique(data$response))){
+         params$aes_not_to_group <- c(params$aes_not_to_group, "colour")
+       }else{
+         params$aes_to_group <- c(params$aes_to_group, "colour")
+       }
+       
+       if(is.null(data$linetype)){
+         
+       }else if((data %>% subset(, c(response, linetype)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+         params$aes_not_to_group <- c(params$aes_not_to_group, "linetype")
+       }else{
+         params$aes_to_group <- c(params$aes_to_group, "linetype")
+       }
+       
+       if(is.null(data$fill)){
+         
+       }else if((data %>% subset(, c(response, fill)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+         params$aes_not_to_group <- c(params$aes_not_to_group, "fill")
+       }else{
+         params$aes_to_group <- c(params$aes_to_group, "fill")
+       }
+       
+       if(is.null(data$shape)){
+         
+       }else if((data %>% subset(, c(response, shape)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+         params$aes_not_to_group <- c(params$aes_not_to_group, "shape")
+       }else{
+         params$aes_to_group <- c(params$aes_to_group, "shape")
+       }
+       
+       if(length(params$aes_not_to_group) == 0){
+         warning("In xgx_stat_ci: \n  No aesthetics defined to differentiate response groups.\n  Suggest to add color = response, linetype = response, or similar to aes() mapping.",
+                 call. = FALSE)
+       }else{
+         message(paste0("In xgx_stat_ci: \n  The following aesthetics are identical to response: ", 
+                        paste0(params$aes_not_to_group, collapse = ", "), 
+                        "\n  These will be used for differentiating response groups in the resulting plot."))         
+       }
+       
+       if(length(params$aes_to_group) > 0){
+         message(paste0("In xgx_stat_ci: \n  The following aesthetics are different from response: ", 
+                        paste0(params$aes_to_group, collapse = ", "), 
+                        "\n  These will be used to divide the data into different groups before calculating summary statistics on the response."))
+       }
+       params
+     },
+
+     setup_data = function(self, data, params) {
+
+       # Define new grouping variable for which to split the data computation 
+       # (excludes aesthetics that are identical to the Response variable)
+       if(is.null(params$aes_to_group)){
+         data <- data %>% mutate(group2 = 1)
+       }else{
+         groups <- unique(data %>% subset(, params$aes_to_group))
+         groups <- groups %>%
+           mutate(group2 = 1:dim(groups)[1])
+         
+         data <- data %>% merge(groups)
+       }
+       
+       if(is.null(params$breaks)){
+         if(is.null(params$bins)){
+           data <- data %>% mutate(x_bin = x)
+         }else{
+
+           # Calculate percentages for each category across each bin
+           data <- data %>% mutate(x_bin = dplyr::ntile(data$x, params$bins))
+         }
+       
+       }else{
+         data <- data %>% mutate(x_bin = cut(data$x, params$breaks))
+       }
+       
+       # Get median x value for each bin
+       median_x <- data %>%
+         group_by(x_bin, group2) %>%
+         summarize(x = median(x))
+
        # Get the number of each category in each bin 
-       counts <- data %>% mutate(quantile_index = dplyr::ntile(data$x, params$bins)) %>%
-         group_by(quantile_index, colour, PANEL, group) %>%
-         summarize(count = length(x))
+       counts <- data %>%
+         group_by(x_bin, group2, response) %>%
+         summarize(count = length(x)) %>% 
+         merge(data %>% subset(,-c(x)), 
+               by = c("response","group2","x_bin")) %>% 
+         unique()
 
        # Combine the x and y data
-       data <- merge(median_x, counts, by = "quantile_index", all = TRUE)
+       data <- merge(median_x, counts, by = c("x_bin", "group2"), all = TRUE)
 
        # Now calculate the confidence intervals for the multinomial data
-       data <- data %>% group_by(quantile_index) %>%
+       data <- data %>% group_by(x_bin, group2) %>%
          mutate(x = median(x),
                 y=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$est,
                 ymin=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$lwr.ci,
                 ymax=as.data.frame(DescTools::MultinomCI(count, params$conf_level))$upr.ci) %>%
-         ungroup() %>% group_by(group)
+         ungroup() %>% group_by(group, group2)
+       
+       # if you want to use geom hline, then need yintercept defined
+         data <- data %>% mutate(yintercept = y)
+       
        return(data)
+     },
+     
+     compute_layer = function(self, data, params, layout) {
+       data
+     },
+     
+     compute_panel = function(self, data, scales, ...) {
+       data
      }
 )
 
