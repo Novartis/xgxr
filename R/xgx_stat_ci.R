@@ -245,12 +245,16 @@ xgx_stat_ci <- function(mapping = NULL,
 #' Stat ggproto object for creating ggplot layers of binned confidence intervals
 #' for probabiliities of classes in ordinal data
 #'
-#' 
-#' \code{StatSummaryBinOrdinal} returns a ggproto object for plotting mean +/- confidence bins
+#' \code{StatSummaryBinOrdinal} returns a ggproto object for binning values on
+#' the independent axis, while plotting mean +/- confidence interval values
 #' 
 #'
 #' @return ggplot2 ggproto object
-#'
+#' 
+#' @importFrom dplyr mutate
+#' @importFrom dplyr subset
+#' @importFrom dplyr summarize
+#' @importFrom ggplot2 aes
 #' @export
 StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat,
                                           
@@ -403,6 +407,7 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
                                           }
 )
 
+
 #' Stat ggproto object for binning by quantile for xgx_stat_ci
 #'
 #' Source:
@@ -412,7 +417,11 @@ StatSummaryBinOrdinal <- ggplot2::ggproto("StatSummaryBinOrdinal", ggplot2::Stat
 #' 
 #'
 #' @return ggplot2 ggproto object
-#'
+#' 
+#' @importFrom dplyr mutate
+#' @importFrom dplyr subset
+#' @importFrom dplyr summarize
+#' @importFrom ggplot2 aes
 #' @export
 StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
                                required_aes = c("x", "y"),
@@ -462,7 +471,7 @@ StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
 
 #
 #
-# From ggplot.untilites
+# From ggplot2::utilites github
 #
 #
 "%||%" <- function(a, b) {

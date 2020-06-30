@@ -1,4 +1,57 @@
 #' Wrapper for stat_smooth that also can deal with class (ordinal, multinomial, or binary variables)
+#' \code{xgx_stat_smooth} Smooths categorical or continuous data
+#'
+#' 
+#'
+#' @param mapping Set of aesthetic mappings created by `aes` or `aes_`. 
+#' If specified and `inherit.aes = TRUE` (the default), it is combined with the 
+#' default mapping at the top level of the plot. You must supply mapping if 
+#' there is no plot mapping.
+#' @param data The data to be displayed in this layer. There are three options:
+#' 
+#' If NULL, the default, the data is inherited from the plot data as specified 
+#' in the call to ggplot.
+#' 
+#' A data.frame, or other object, will override the plot data. All objects 
+#' will be fortified to produce a data frame. See fortify for which variables 
+#' will be created.
+#' 
+#' A function will be called with a single argument, the plot data. The return 
+#' value must be a data.frame., and will be used as the layer data.
+#' @param conf_level The percentile for the confidence interval (should fall 
+#' between 0 and 1). The default is 0.95, which corresponds to a 95 percent 
+#' confidence interval.
+#' @param geom Use to override the default geom. Can be a list of multiple 
+#' geoms, e.g. list("point","line","errorbar"), which is the default.
+#' @param position Position adjustment, either as a string, or the result of 
+#' a call to a position adjustment function.
+#' 
+#' @param method method (function) to use, eg. lm, glm, gam, loess, rlm. For datasets with n < 1000 default is loess. For datasets with 1000 or more observations defaults to gam.
+#' Example: `"polr"` for ordinal data. If this is left as `NULL`, then a typical `StatSmooth` is applied
+#' @param formula formula to use in smoothing function, eg. y ~ x, y ~ poly(x, 2), y ~ log(x)
+#' @param se display confidence interval around smooth? (TRUE by default, see level to control)
+#' @param fullrange should the fit span the full range of the plot, or just the data
+#' @param n number of points to evaluate smoother at
+#' @param method.args Optional additional arguments passed on to the method.
+#' @param na.rm If FALSE, the default, missing values are removed with a 
+#' warning. If TRUE, missing values are silently removed.
+#' @param show.legend logical. Should this layer be included in the legends? 
+#' NA, the default, includes if any aesthetics are mapped. FALSE never 
+#' includes, and TRUE always includes.
+#' @param inherit.aes If FALSE, overrides the default aesthetics, rather 
+#' than combining with them. This is most useful for helper functions that 
+#' define both data and aesthetics and shouldn't inherit behaviour from the 
+#' default plot specification, e.g. borders.
+#' @param ... other arguments passed on to layer. These are often aesthetics, 
+#' used to set an aesthetic to a fixed value, like color = "red" or size = 3. 
+#' They may also be parameters to the paired geom/stat.
+#'
+#' @return ggplot2 plot layer
+#'
+#'
+#'
+#' @importFrom magrittr "%>%"
+#' @export
 xgx_stat_smooth <- function(mapping = NULL,
                         data = NULL,
                         conf_level = 0.95,
