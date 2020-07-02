@@ -571,3 +571,4 @@ flipped_names <- function(flip = FALSE) {
   names(ret) <- c(x_aes, y_aes)
   ret
 }
+                         
