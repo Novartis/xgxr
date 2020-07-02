@@ -18,3 +18,6 @@ usethis::use_data(sad, overwrite = TRUE)
 
 data_specification_columns = read.csv("data_create/raw/data_specification_columns.csv", stringsAsFactors = FALSE)
 usethis::use_data(data_specification_columns, overwrite = TRUE)
+
+nl_pkpd = read.csv("data_create/raw/nonlinear_pkpd.csv", stringsAsFactors = FALSE)
+usethis::use_data(nl_pkpd, overwrite = TRUE)
