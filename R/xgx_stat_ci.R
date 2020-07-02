@@ -1,3 +1,4 @@
+
 #' Plot data with mean and confidence intervals
 #'
 #' \code{xgx_stat_ci} returns a ggplot layer plotting mean +/- confidence 
@@ -150,15 +151,15 @@ xgx_stat_ci <- function(mapping = NULL,
                         show.legend = NA,
                         inherit.aes = TRUE,
                         ...) {
-
+  
   lays <- list()
-
+  
   # Confidence intervals via `xgx_conf_int` is the default function
   if (is.null(fun.data)) {
     fun.data <- function(y) xgx_conf_int(y = y,conf_level = conf_level,
                                          distribution = distribution)
   }
-
+  
   # Default parameters
   gg_params = list(
     fun.args = fun.args,
@@ -180,6 +181,7 @@ xgx_stat_ci <- function(mapping = NULL,
     if (is.null(bins) & is.null(breaks)) {
       ggproto_stat <- StatSummary
     }
+
     # Continuous binned
     else {
       ggproto_stat <- StatSummaryBinQuant
@@ -187,7 +189,6 @@ xgx_stat_ci <- function(mapping = NULL,
                                          breaks = breaks))
     }
   }
-
 
   for (igeom in geom) {
     lay = layer(
@@ -200,7 +201,7 @@ xgx_stat_ci <- function(mapping = NULL,
       inherit.aes = inherit.aes,
       params = gg_params
     )
-
+    
     # Adjust aes to default xgx preference
     if (igeom == "point") {
       if (is.null(lay$aes_params$size)) lay$aes_params$size <- 2
@@ -221,10 +222,10 @@ xgx_stat_ci <- function(mapping = NULL,
         lay$geom$geom_params$fatten <- 2
       }
     }
-
+    
     lays[[paste0("geom_", igeom)]] <- lay  
   }
-
+  
   return(lays)
 }
 
@@ -233,13 +234,18 @@ xgx_stat_ci <- function(mapping = NULL,
 #' Stat ggproto object for creating ggplot layers of binned confidence intervals
 #' for probabiliities of classes in ordinal data
 #'
-#' 
-#' \code{StatSummaryOrdinal} returns a ggproto object for plotting mean +/- confidence bins
+#' \code{StatSummaryOrdinal} returns a ggproto object for plotting mean +/- confidence intervals
+#' for ordinal data. It also allows for binning values on the independent axis.
 #' 
 #'
 #' @return ggplot2 ggproto object
-#'
+#' 
+#' @importFrom dplyr mutate
+#' @importFrom dplyr subset
+#' @importFrom dplyr summarize
+#' @importFrom ggplot2 aes
 #' @export
+
 StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
                                           
      required_aes = c("x", "response"),
@@ -397,6 +403,7 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
      }
 )
 
+
 #' Stat ggproto object for binning by quantile for xgx_stat_ci
 #'
 #' Source:
@@ -406,57 +413,61 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
 #' 
 #'
 #' @return ggplot2 ggproto object
-#'
+#' 
+#' @importFrom dplyr mutate
+#' @importFrom dplyr subset
+#' @importFrom dplyr summarize
+#' @importFrom ggplot2 aes
 #' @export
 StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
-       required_aes = c("x", "y"),
-       
-       extra_params = c("na.rm", "orientation"),
-       setup_params = function(data, params) {
-         # gg_util_url <- "https://raw.githubusercontent.com/tidyverse/ggplot2/7e5ff921c50fb0beb203b115397ea33fee410a54/R/utilities.r"
-         # eval(text = RCurl::getURL(gg_util_url, ssl.verifypeer = FALSE))
-         params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
-         params
-       },
-
-       compute_group = function(data, scales,
-                                fun.data = NULL,
-                                fun = NULL,
-                                fun.max = NULL,
-                                fun.min = NULL,
-                                fun.args = list(),
-                                bins = NULL,
-                                binwidth = NULL,
-                                breaks = NULL,
-                                origin = NULL,
-                                right = FALSE,
-                                na.rm = FALSE,
-                                flipped_aes = FALSE) {
-         # data <- flip_data(data, flipped_aes)
-         fun <- ggplot2:::make_summary_fun(fun.data, fun, fun.max, fun.min, fun.args)
-
-         # Use breaks if available instead of bins
-         if (!is.null(breaks)) {
-           breaks <- breaks
-         }
-         else {
-           # Calculate breaks from number of bins
-           breaks <- quantile(data$x,probs = seq(0, 1, 1/bins))
-         }
-         
-         data$bin <- cut(data$x, breaks, include.lowest = TRUE, labels = FALSE)
-         out <- ggplot2:::dapply(data, "bin", fun)
-         
-         locs <- ggplot2:::bin_loc(breaks, out$bin)
-         out$x <- locs$mid
-         return(out)
-       }
+                               required_aes = c("x", "y"),
+                               
+                               extra_params = c("na.rm", "orientation"),
+                               setup_params = function(data, params) {
+                                 # gg_util_url <- "https://raw.githubusercontent.com/tidyverse/ggplot2/7e5ff921c50fb0beb203b115397ea33fee410a54/R/utilities.r"
+                                 # eval(text = RCurl::getURL(gg_util_url, ssl.verifypeer = FALSE))
+                                 params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
+                                 params
+                               },
+                               
+                               compute_group = function(data, scales,
+                                                        fun.data = NULL,
+                                                        fun = NULL,
+                                                        fun.max = NULL,
+                                                        fun.min = NULL,
+                                                        fun.args = list(),
+                                                        bins = NULL,
+                                                        binwidth = NULL,
+                                                        breaks = NULL,
+                                                        origin = NULL,
+                                                        right = FALSE,
+                                                        na.rm = FALSE,
+                                                        flipped_aes = FALSE) {
+                                 # data <- flip_data(data, flipped_aes)
+                                 fun <- ggplot2:::make_summary_fun(fun.data, fun, fun.max, fun.min, fun.args)
+                                 
+                                 # Use breaks if available instead of bins
+                                 if (!is.null(breaks)) {
+                                   breaks <- breaks
+                                 }
+                                 else {
+                                   # Calculate breaks from number of bins
+                                   breaks <- quantile(data$x,probs = seq(0, 1, 1/bins))
+                                 }
+                                 
+                                 data$bin <- cut(data$x, breaks, include.lowest = TRUE, labels = FALSE)
+                                 out <- ggplot2:::dapply(data, "bin", fun)
+                                 
+                                 locs <- ggplot2:::bin_loc(breaks, out$bin)
+                                 out$x <- locs$mid
+                                 return(out)
+                               }
 )
 
 
 #
 #
-# From ggplot.untilites
+# From ggplot2::utilites github
 #
 #
 "%||%" <- function(a, b) {

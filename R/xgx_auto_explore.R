@@ -1,31 +1,87 @@
-#' Plot all functions for the given dataset
+#' Produce an xgx-styled report the given dataset using xgx R markdown templates,
+#' or a user-provided R markdown template.  (Note: The R markdown template provided must
+#' be formatted in a similar manner to that of the xgx R markdown templates to work.)
+#' The working directory will contain a new directory (`xgx_autoexplore_output`) after running this function,
+#'  which will contain a directory for the dataset, and futher a directory for the type of analysis / R markdown template.
 #'
 #' \code{xgx_auto_explore} returns an HTML and PDF document with plots
 #' describing the provided dataset
 #' 
-#' This function can be used quickly explore your data by generating 
+#' This function can be used quickly to explore your data by generating 
 #' overview plots before constructing non-linear mixed effects models.
 #'
 #' @param data_path Path (as a string) to the dataset that is to be analyzed
 #' @param mapping A list of column name mappings from the
 #' original (template) dataset column names
-#' to the corresponding columns in the new dataset
+#' to the corresponding columns in the new dataset.
 #' @param author_name The name of the author to be displayed on the template
-#' @param multiple_dosing 
-#' @param pk_cmt 
-#' @param pd_cmt
-#' @param pd_data_type 
-#' @param rmd_template_path 
-#' @param rmd_output_path 
-#' @param pdf_output_path 
-#' @param html_output_path 
-#' @param alter_datetime 
-#' @param show_explanation 
+#' @param multiple_dosing Whether or not to use a "Multiple" or "Single" Ascending dose template
+#' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
+#' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data
+#' @param pd_data_type The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
+#' @param rmd_template_path A user provided custom template (as a string)
+#' @param rmd_output_path A custom output path for the generated Rmd file
+#' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
+#' @param pdf_output_path  A custom output path for the generated PDF file
+#' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
+#' @param html_output_path  A custom output path for the generated HTML file
+#' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
+#' @param add_datetime Boolean indicating additon of a date stamp to the beginnning of the Rmd file
+#' @param show_explanation Boolean indicating if the additional explanations (text in between figures) are needed for the user.
 #'
 #' @return NULL
 #'
 #' @examples
-#'     Name mapping: 
+#' source('~/xgxr/Rdev/xgx_auto_explore.R')
+#' 
+#' author_name = "Your Name Here"
+#' show_explanation = FALSE
+#' 
+#' # Try out the nonlinear_pkpd dataset with the
+#' # Multiple Ascending Dose PK Rmd template
+#' data_path <- "~/nonlinear_pkpd.csv"
+#' 
+#' # Specify the mapping of column names
+#' mapping <- list(
+#'   "TIME" = "TIM2",
+#'   "NOMTIME" = "NT",
+#'   "EVID" = 0,
+#'   "CENS" = 0,
+#'   "DOSE" = "MGKG",
+#'   "TRTACT" = "TRT",
+#'   "LIDV_NORM" = "LIDV/MGKG",
+#'   "LIDV_UNIT" = "UNIT",
+#'   "PROFDAY" = 1,
+#'   "SEX" = 0,
+#'   "WEIGHTB" = 0)
+#' 
+#' 
+#' 
+#' # 5 contains the PK Concentration in this dataset
+#' pk_cmt = 5
+#' # We don't need PD right now
+#' pd_cmt = NULL
+#' pd_data_type = NULL
+#' 
+#' 
+#' dose_cmt = 1
+#' steady_state_day = c(0, 6)
+#' time_between_doses = 24
+#' multiple_dosing = TRUE
+#' 
+#' xgx_auto_explore(data_path = data_path,
+#'                  mapping = mapping,
+#'                  author_name = author_name,
+#'                  pk_cmt = pk_cmt,
+#'                  pd_cmt = pd_cmt,
+#'                  dose_cmt = dose_cmt,
+#'                  steady_state_day = steady_state_day,
+#'                  time_between_doses = time_between_doses,
+#'                  multiple_dosing = multiple_dosing,
+#'                  pd_data_type = pd_data_type,
+#'                  show_explanation = show_explanation)
 #'     
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
@@ -41,45 +97,64 @@ xgx_auto_explore <- function(data_path = NULL,
                              dose_cmt = NULL,
                              steady_state_day = NULL,
                              time_between_doses = NULL,
+                             rmd_template_name = NULL,
                              rmd_template_path = NULL,
                              rmd_output_path = NULL,
                              pdf_output_path = NULL,
                              html_output_path = NULL,
                              alter_datetime = TRUE,
                              show_explanation = TRUE) {
-  
-  # Setup default output paths
-  file_prefix = "xgx_autoexplore_"
-  analysis_fname <- tools::file_path_sans_ext(
-                           get_rmd_name(multiple_dosing = multiple_dosing,
-                                        pk_cmt = pk_cmt,
-                                        pd_cmt = pd_cmt,
-                                        pd_data_type = pd_data_type))
-  if (is.null(rmd_output_path)) {
-    working_dir <- getwd()
-    rmd_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".Rmd"))
-  }
-  if (is.null(pdf_output_path)) {
-    working_dir <- getwd()
-    pdf_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".pdf"))
-  }
-  if (is.null(html_output_path)) {
-    working_dir <- getwd()
-    html_output_path <- file.path(working_dir, paste0(file_prefix, analysis_fname, ".html"))
-  }
 
+  working_dir <- getwd()
 
   # A specific file path to an R markdown file can be given; however,
   #   if the template path is not provided, the R markdown template
   #   from the xgx github will be downloaded.
   if (is.null(rmd_template_path)){
-    rmd_str <- get_rmd_str(multiple_dosing = multiple_dosing,
+    rmd_str <- get_rmd_str(rmd_template_name = rmd_template_name,
+                           multiple_dosing = multiple_dosing,
                            pk_cmt = pk_cmt,
                            pd_cmt = pd_cmt,
                            pd_data_type = pd_data_type)
+
+    rmd_template_name <- tools::file_path_sans_ext(
+                            get_rmd_name(rmd_template_name = rmd_template_name,
+                                         multiple_dosing = multiple_dosing,
+                                         pk_cmt = pk_cmt,
+                                         pd_cmt = pd_cmt,
+                                         pd_data_type = pd_data_type))
   } else{
     rmd_str <- readr::read_file(rmd_template_path)
+    if (is.null(rmd_template_name)) {
+      rmd_template_name <- tools::file_path_sans_ext(basename(rmd_template_path))
+    }
   }
+
+  # Setup default output paths
+  dataset_name = tools::file_path_sans_ext(basename(data_path))
+  autoexplore_out_dir = file.path(working_dir,
+                                  "xgx_autoexplore_ouput",
+                                  dataset_name,
+                                  rmd_template_name)
+  # Ensure that the direcotyr exists by creating it - must be done iteratively for heirarchical directories
+  dir.create(working_dir, showWarnings = FALSE)
+  dir.create(file.path(working_dir, "xgx_autoexplore_ouput"), showWarnings = FALSE)
+  dir.create(file.path(working_dir, "xgx_autoexplore_ouput", dataset_name), showWarnings = FALSE)
+  dir.create(file.path(working_dir, "xgx_autoexplore_ouput", dataset_name, rmd_template_name), showWarnings = FALSE)
+
+  
+  if (is.null(rmd_output_path)) {
+    rmd_output_path <- file.path(autoexplore_out_dir, paste0(rmd_template_name, ".Rmd"))
+  }
+  if (is.null(pdf_output_path)) {
+    pdf_output_path <- file.path(autoexplore_out_dir, paste0(rmd_template_name, ".pdf"))
+  }
+  if (is.null(html_output_path)) {
+    html_output_path <- file.path(autoexplore_out_dir, paste0(rmd_template_name, ".html"))
+  }
+
+
+
 
 
   # Edit the Rmd template and your data to fit the standard dataset type
@@ -100,12 +175,14 @@ xgx_auto_explore <- function(data_path = NULL,
   # Render and save the HTML document
   rmarkdown::render(input = rmd_output_path,
                     output_file = html_output_path,
+                    output_dir = autoexplore_out_dir,
                     output_format = "html_document",
                     quiet = TRUE)
 
   # Render and save the PDF
   rmarkdown::render(input = rmd_output_path,
                     output_file = pdf_output_path,
+                    output_dir = autoexplore_out_dir,
                     output_format = "pdf_document",
                     quiet = TRUE)
 }
@@ -121,20 +198,20 @@ xgx_auto_explore <- function(data_path = NULL,
 #' @param mapping A list of column name mappings from the
 #' original (template) dataset column names
 #' to the corresponding columns in the new dataset
-#' @param rmd_output_path 
+#' @param rmd_output_path A custom output path for the generated Rmd file
+#' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
 #' @param data_path Path (as a string) to the dataset that is to be analyzed
-#' @param pk_cmt 
-#' @param pd_cmt
+#' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
+#' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data
+#' @param pd_data_type The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
 #' @param author_name The name of the author to be displayed on the template
-#' @param pd_data_type 
-#' @param alter_datetime 
-#' @param show_explanation 
+#' @param add_datetime Boolean indicating additon of a date stamp to the beginnning of the Rmd file
+#' @param show_explanation Boolean indicating if the additional explanations (text in between figures) are needed for the user.
+#' 
+#' @return A string of the new R markdown template
 #'
-#' @return NULL
-#'
-#' @examples
-#'     Name mapping: 
-#'     
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
 #' @importFrom(magrittr, "%>%")
@@ -335,25 +412,20 @@ edit_rmd_template_str <- function(rmd_str = NULL,
     rmd_str <- stringr::str_replace_all(rmd_str,
                                         pattern = "(START_EXPLANATION-->|<!--END_EXPLANATION)",
                                         replacement = replace)
-    # pattern = "(---\n\n*|```\n\n*)(#+[\\s\\S]*?)(?=\\s*```\\{r)"
-    # texts = stringr::str_match_all(rmd_str,
-    #                                pattern = pattern)[[1]][,3]
-    # print(texts)
-    # for (text in as.list(texts)){
-    #   explanation_texts <- stringr::str_match_all(string = text,
-    #                                     pattern = "\n\\s*[^#][\\S\\s]*\n")
-    #   for (explanation_text in as.list(explanation_texts)) {
-    #     print(explanation_text)
-    #     explanation_text <- Hmisc::escapeRegex(explanation_text)
-    #     rmd_str <- stringr::str_replace(string = rmd_str,
-    #                                     pattern = explanation_text,
-    #                                     replacement = "\n")
-      # }
-    # }
   }
+  
+  # Add source files
+#   rmd_str <- stringr::str_replace_all(rmd_str,
+#                                       pattern = "library\\(xgxr\\)",
+#                                       replacement = Hmisc::escapeRegex("library(xgxr)
+# # For testing:
+# source('~/xgxr/R/xgx_conf_int.R', echo=FALSE)
+# source('~/xgxr/R/xgx_stat_ci.R', echo=FALSE)
+# source('~/xgxr/Rdev/xgx_ordinal_regression_plot.R', echo=FALSE)
+# source('~/xgxr/Rdev/xgx_stat_smooth.R', echo=FALSE)"))
 
   # Save the R markdown document
-  print(rmd_output_path)
+  dir.create(dirname(rmd_output_path), showWarnings = FALSE)
   fileConn <- file(rmd_output_path, 'w')
   writeChar(rmd_str, fileConn)
   close(fileConn)
@@ -367,46 +439,53 @@ edit_rmd_template_str <- function(rmd_str = NULL,
 
 
 
-#' Edit a Rmd Template from xgx
+#' Determine the name of a Rmd template
 #'
-#' \code{edit_rmd_template_str} returns a path to the altered Rmd template
+#' \code{get_rmd_name} returns a name for an Rmd template, based on the desired PKPD parameters
 #' 
 #'
-#' @param data_path Path (as a string) to the dataset that is to be analyzed
-#' @param mapping A list of column name mappings from the
-#' original (template) dataset column names
-#' to the corresponding columns in the new dataset
-#' @param author_name The name of the author to be displayed on the template
+#' @param rmd_template_name A custom output name for the generated Rmd file
 #' @param multiple_dosing 
-#' @param pk_cmt 
-#' @param pd_cmt
-#' @param pd_data_type 
-#' @param rmd_template_path 
-#' @param rmd_output_path 
-#' @param pdf_output_path 
-#' @param html_output_path 
-#' @param alter_datetime 
-#' @param show_explanation 
+#' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
+#' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data
+#' @param pd_data_type The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
+#' 
+#' @return a string for the Rmd template name
 #'
-#' @return NULL
-#'
-#' @examples
-#'     Name mapping: 
 #'     
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
 #' @importFrom magrittr "%>%"
 #' @export
-get_rmd_name <- function(multiple_dosing = FALSE,
+get_rmd_name <- function(rmd_template_name = NULL,
+                         multiple_dosing = FALSE,
                          pk_cmt = NULL,
                          pd_cmt = NULL,
                          pd_data_type = NULL) {
 
-  # # Capitalize to match naming scheme chosen on github repo
-  # if (!(is.null(pd_data_type))) {
-  #   pd_data_type <- Hmisc::capitalize(pd_data_type)
-  # }
+  if (!is.null(rmd_template_name)) {
+    # For Adverse_Events, Oncology_Efficacy_Plots
+    # Perhaps Multiple_Ascending_Dose_PK_KeyPlots ?
+    return(paste0(rmd_template_name, ".Rmd"))
+  }
 
+  allowable_pd_data_types <- c("binary",
+                               "continuous",
+                               "count",
+                               "ordinal",
+                               "real_example",
+                               "receptor_occupancy",
+                               "time_to_event")
+
+  if (!(is.null(pd_data_type))) {
+    if (!(pd_data_type %in% allowable_pd_data_types)) {
+      warning(glue::glue("The provided pd_data_type `{pd_data_type}` is not allowable.
+                         Please choose a value from the list {allowable_pd_data_types}"))
+    }
+  }
+  
   # Construct the filename via the standard xgx rmd template filename format
   pk_str <- if (!is.null(pk_cmt)) "PK" else ""
   pd_str <- if (!is.null(pd_cmt)) "PD" else ""
@@ -431,12 +510,33 @@ get_rmd_name <- function(multiple_dosing = FALSE,
 # Extract the Rmd document from the xgx github
 #   if the doesn't work, pull the file from the cached xgxr github
 #   backup directoryinstead
-get_rmd_str <- function(multiple_dosing = FALSE,
+#'
+#' \code{get_rmd_str} returns a Rmd template string, based on the desired PKPD parameters
+#' 
+#'
+#' @param rmd_template_name A custom output name for the generated Rmd file
+#' @param multiple_dosing 
+#' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
+#' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
+#' have these integers, where each row may contain either PK or PD data
+#' @param pd_data_type The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
+#' 
+#' @return a string for the Rmd template name
+#'
+#'
+#' @importFrom stringr str_replace
+#' @importFrom readr read_file
+#' @importFrom magrittr "%>%"
+#' @export
+get_rmd_str <- function(rmd_template_name = NULL,
+                        multiple_dosing = FALSE,
                         pk_cmt = NULL,
                         pd_cmt = NULL,
                         pd_data_type = NULL){
 
-  rmd_fname <- get_rmd_name(multiple_dosing = multiple_dosing,
+  rmd_fname <- get_rmd_name(rmd_template_name = rmd_template_name,
+                            multiple_dosing = multiple_dosing,
                             pk_cmt = pk_cmt,
                             pd_cmt = pd_cmt,
                             pd_data_type = pd_data_type)
@@ -453,7 +553,7 @@ get_rmd_str <- function(multiple_dosing = FALSE,
     rmd_str <- readr::read_file("../data/xgx_Rmd/" + rmd_fname)
   }
   else if (rmd_str == "404: Not Found") {
-    
+    rmd_str <- readr::read_file("../data/xgx_Rmd/" + rmd_fname)
   }
 
   return(rmd_str)
