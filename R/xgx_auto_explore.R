@@ -85,7 +85,6 @@
 #'     
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
-#' @importFrom magrittr "%>%"
 #' @export
 xgx_auto_explore <- function(data_path = NULL,
                              mapping = list(),
@@ -214,7 +213,6 @@ xgx_auto_explore <- function(data_path = NULL,
 #'
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
-#' @importFrom(magrittr, "%>%")
 #' @export
 edit_rmd_template_str <- function(rmd_str = NULL,
                                   mapping = NULL,
@@ -229,8 +227,6 @@ edit_rmd_template_str <- function(rmd_str = NULL,
                                   author_name = NULL,
                                   alter_datetime = TRUE,
                                   show_explanation = TRUE) {
-  library(magrittr)
-  library(dplyr)
 
   author_name_re <- 'author: \\"(.*)\\"'
 
@@ -457,7 +453,6 @@ edit_rmd_template_str <- function(rmd_str = NULL,
 #'     
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
-#' @importFrom magrittr "%>%"
 #' @export
 get_rmd_name <- function(rmd_template_name = NULL,
                          multiple_dosing = FALSE,
@@ -527,7 +522,6 @@ get_rmd_name <- function(rmd_template_name = NULL,
 #'
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
-#' @importFrom magrittr "%>%"
 #' @export
 get_rmd_str <- function(rmd_template_name = NULL,
                         multiple_dosing = FALSE,

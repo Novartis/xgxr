@@ -241,11 +241,9 @@ xgx_stat_ci <- function(mapping = NULL,
 #' @return ggplot2 ggproto object
 #' 
 #' @importFrom dplyr mutate
-#' @importFrom dplyr subset
 #' @importFrom dplyr summarize
 #' @importFrom ggplot2 aes
 #' @export
-
 StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
                                           
      required_aes = c("x", "response"),
@@ -415,11 +413,10 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
 #' @return ggplot2 ggproto object
 #' 
 #' @importFrom dplyr mutate
-#' @importFrom dplyr subset
 #' @importFrom dplyr summarize
 #' @importFrom ggplot2 aes
 #' @export
-StatSummaryBinQuant <- ggproto("StatSummaryBinQuant", Stat,
+StatSummaryBinQuant <- ggplot2::ggproto("StatSummaryBinQuant", ggplot2::Stat,
                                required_aes = c("x", "y"),
                                
                                extra_params = c("na.rm", "orientation"),

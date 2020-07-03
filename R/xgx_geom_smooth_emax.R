@@ -110,7 +110,6 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
 #' @return dataframe with x and y values, if se is TRUE dataframe also includes ymin and ymax
 #'
 #' @importFrom Deriv Deriv
-#' @importFrom ggplot2 predictdf.default
 #' @export
 predictdf.nls <- function(model, xseq, se, level) {
   
@@ -156,7 +155,7 @@ predictdf.nls <- function(model, xseq, se, level) {
 
     pred <- ggplot2:::predictdf.default(model, xseq, se, level)
   }
-  
+
   return(pred)
 }
 
