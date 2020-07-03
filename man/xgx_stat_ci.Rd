@@ -5,9 +5,10 @@
 \title{Plot data with mean and confidence intervals}
 \usage{
 xgx_stat_ci(mapping = NULL, data = NULL, conf_level = 0.95,
-  distribution = "normal", geom = list("point", "line", "errorbar"),
-  position = "identity", fun.args = list(), na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE, bins = NULL, ...)
+  distribution = "normal", bins = NULL, breaks = NULL,
+  geom = list("point", "line", "errorbar"), position = "identity",
+  fun.args = list(), fun.data = NULL, na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by `aes` or `aes_`. 
@@ -113,5 +114,40 @@ xgx_plot(data, ggplot2::aes(x = x, y = y)) +
   xgx_stat_ci(conf_level = 0.95, distribution = "binomial", 
               ggplot2::aes(color = factor(group)),
               position = ggplot2::position_dodge(width = 0.5))
+              
+# plotting ordinal or multinomial data
+set.seed(12345) 
+data = data.frame(x = 120*exp(rnorm(100,0,1)), 
+              response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
+              covariate = sample(c("Male","Female"), 100, replace = TRUE))
+  
+xgx_plot(data = data) + 
+  xgx_stat_ci(mapping = aes(x = x, response = response, colour = covariate), 
+              distribution = "ordinal", bins = 4) + 
+  scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~response)
+
+xgx_plot(data = data) + 
+  xgx_stat_ci(mapping = aes(x = x, response = response, colour = response), 
+              distribution = "ordinal", bins = 4) + 
+  scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~covariate)
+
+# Example plotting categorical vs categorical data
+set.seed(12345)
+data = data.frame(x = 120*exp(rnorm(100,0,1)),
+                  response = sample(c("Trt1", "Trt2", "Trt3"), 100, replace = TRUE),
+                  covariate = factor(sample(c("White","Black","Asian","Other"), 100, replace = TRUE), 
+                                     levels = c("White", "Black", "Asian", "Other")))
+
+xgx_plot(data = data) +
+  xgx_stat_ci(mapping = aes(x = response, response = covariate),
+              distribution = "ordinal") +
+  xgx_stat_ci(mapping = aes(x = 1, response = covariate), geom = "hline",
+              distribution = "ordinal") +
+  scale_y_continuous(labels = scales::percent_format()) + 
+  facet_wrap(~covariate) + 
+  xlab("Treatment group") + ylab("Percent of subjects by category")
+
+
+
  
 }

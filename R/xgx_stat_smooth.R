@@ -49,8 +49,6 @@
 #' @return ggplot2 plot layer
 #'
 #'
-#'
-#' @importFrom magrittr "%>%"
 #' @export
 xgx_stat_smooth <- function(mapping = NULL,
                         data = NULL,
@@ -130,7 +128,7 @@ predictdf.polr <- function(model, xseq, se, level){
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSmoothOrdinal <- ggproto("StatSmoothOrdinal", Stat,
+StatSmoothOrdinal <- ggplot2::ggproto("StatSmoothOrdinal", ggplot2::Stat,
         setup_params = function(data, params) {
          # params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
          msg <- character()
