@@ -4,6 +4,8 @@
   * try your best to follow the tidyverse style guide
 * update DESCRIPTION with new version number
 * update the NEWS
+* R>> devtools::document()
+  * updates documentation
 * R>> devtools::build()
   * green check marks are good, red x's are bad.  fix them
   * this step makes sure you can build the package
