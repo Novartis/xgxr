@@ -1,7 +1,10 @@
-#' Wrapper for stat_smooth that also can deal with class (ordinal, multinomial, or binary variables)
-#' \code{xgx_stat_smooth} Smooths categorical or continuous data
+#' Wrapper for stat_smooth that also can deal with ordinal, multinomial, or binary variables, 
+#' and also works for nonlinear least squares methods
+#' \code{xgx_stat_smooth} Smooths continuous or categorical data. 
+#' For categorical, ordinal, or multinomial data use method = polr. 
+#' This wrapper also works with nonlinear methods like nls and nlsLM for continuous data.
 #'
-#' 
+#' @aliases xgx_geom_smooth
 #'
 #' @param mapping Set of aesthetic mappings created by `aes` or `aes_`. 
 #' If specified and `inherit.aes = TRUE` (the default), it is combined with the 
@@ -18,7 +21,7 @@
 #' 
 #' A function will be called with a single argument, the plot data. The return 
 #' value must be a data.frame., and will be used as the layer data.
-#' @param conf_level The percentile for the confidence interval (should fall 
+#' @param level The percentile for the confidence interval (should fall 
 #' between 0 and 1). The default is 0.95, which corresponds to a 95 percent 
 #' confidence interval.
 #' @param geom Use to override the default geom. Can be a list of multiple 
@@ -26,8 +29,11 @@
 #' @param position Position adjustment, either as a string, or the result of 
 #' a call to a position adjustment function.
 #' 
-#' @param method method (function) to use, eg. lm, glm, gam, loess, rlm. For datasets with n < 1000 default is loess. For datasets with 1000 or more observations defaults to gam.
-#' Example: `"polr"` for ordinal data. If this is left as `NULL`, then a typical `StatSmooth` is applied
+#' @param method method (function) to use, eg. lm, glm, gam, loess, rlm. 
+#' Example: `"polr"` for ordinal data. For nonlinear least squares try nlsLM.
+#' If method is left as `NULL`, then a typical `StatSmooth` is applied, 
+#' with the corresponding defaults, i.e. For datasets with n < 1000 default is loess. 
+#' For datasets with 1000 or more observations defaults to gam.
 #' @param formula formula to use in smoothing function, eg. y ~ x, y ~ poly(x, 2), y ~ log(x)
 #' @param se display confidence interval around smooth? (TRUE by default, see level to control)
 #' @param fullrange should the fit span the full range of the plot, or just the data
@@ -49,11 +55,56 @@
 #' @return ggplot2 plot layer
 #'
 #'
+#'
+#' @examples 
+#' 
+#' # Example with nonlinear least squares (method = "nlsLM")
+#' Nsubj <- 10
+#' Doses <- c(0, 25, 50, 100, 200)
+#' Ntot <- Nsubj*length(Doses)
+#' times <- c(0,14,30,60,90)
+#' 
+#' dat1 <- data.frame(ID = 1:(Ntot),
+#'                    DOSE = rep(Doses, Nsubj),
+#'                    PD0 = rlnorm(Ntot, log(100), 1),
+#'                    Kout = exp(rnorm(Ntot,-2, 0.3)),
+#'                    Imax = 1,
+#'                    ED50 = 25) %>%
+#'   dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, 0.05, 0.3))  ) %>%
+#'   merge(data.frame(ID = rep(1:(Ntot), each = length(times)), Time = times), by = "ID") %>%
+#'   dplyr::mutate(PD = ((PD0 - PDSS)*(exp(-Kout*Time)) + PDSS), 
+#'                 PCHG = (PD - PD0)/PD0)
+#' 
+#' gg <- ggplot2::ggplot(dat1 %>% subset(Time == 90), 
+#'                       ggplot2::aes(x = DOSE, y = PCHG)) +
+#'   ggplot2::geom_boxplot(aes(group = DOSE)) +
+#'   xgx_theme() +
+#'   xgx_scale_y_percentchangelog10() +
+#'   ylab("Percent Change from Baseline") +
+#'   xlab("Dose (mg)")
+#' 
+#' gg + 
+#'   xgx_stat_smooth(method = "nlsLM", formula = y ~ E0 + Emax*x/(exp(logED50) + x), 
+#'               method.args = list(start = list(Emax = -0.50, logED50 = log(25), E0 = 0)), 
+#'               se = TRUE)
+#'               
+#'
+#' # example with ordinal data (method = "polr")
+#' set.seed(12345)
+#' data = data.frame(x = 120*exp(rnorm(100,0,1)),
+#'                   response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
+#'                   covariate = sample(c("Male","Female"), 100, replace = TRUE)) %>%
+#'   mutate(y = (50 + 20*x/(200 + x))*exp(rnorm(100, 0, 0.3)))
+#'   
+#' xgx_plot(data = data) +
+#' xgx_stat_smooth(mapping = aes(x = x, response = response, colour = response, fill = response),
+#'                 method = "polr") 
+#'               
+#'
+#'
 #' @export
 xgx_stat_smooth <- function(mapping = NULL,
                         data = NULL,
-                        conf_level = 0.95,
-                        
                         geom = "smooth",
                         position = "identity",
                         ...,
