@@ -592,54 +592,23 @@ StatSmoothOrdinal <- ggplot2::ggproto(
             }
 
             n_bootstrap = n_boot
-            iter_failed = 0
-            prediction_all <- list()
+            prediction <- list()
             for(igroup in unique(data$group2)){
-              data_group <- data %>% subset(group2 == igroup)
+              idata <- data %>% subset(group2 == igroup)
               
-              prediction_group = list()
-            for (iboot in 1:n_bootstrap) {
-              new_pred <- tryCatch ({
-                # Boostrap by resampling entire dataset
-                #   (prediction + residual doesn't work with ordinal data)
-                data_boot <- sample_n(tbl = data_group,
-                                      size = nrow(data_group),
-                                      replace = TRUE)
-                base.args <- list(quote(formula), data = quote(data_boot), weights = quote(weight))
-
-                model_boot <- do.call(method, c(base.args, method.args))
-                
-                # Extract Bootstrapped Predictions
-                predictdf.polr(model_boot, xseq, se, level)
-              }, warning = function(w) {
-                "There was a problem in the sampling."
-              }
-              )
+              base.args <- list(quote(formula), data = quote(idata), weights = quote(weight))
               
-              if (is.character(new_pred)) {
-                iter_failed <- 1 + iter_failed
-                next
-              }
+              model <- do.call(method, c(base.args, method.args))
               
-                prediction_group[[iboot]] <- new_pred
-
-            }
-              prediction_group <- bind_rows(prediction_group) %>%
-                mutate(group2 = igroup)
+              iprediction <- predictdf.polr(model, xseq, se, level, 
+                                            data = idata, method, formula, method.args, base.args, n_bootstrap)
               
-              prediction_all[[igroup]] <- prediction_group
+              iprediction <- merge(iprediction, idata %>% subset(,-c(x)), by = "response")
+              
+              prediction[[igroup]] <- iprediction
             }
             
-            prediction_all <- bind_rows(prediction_all)
-            
-            prediction <- prediction_all %>%
-              group_by(x, response, group2) %>%
-              summarize(ymin = quantile(na.omit(y), 1 - percentile_value),
-                        ymax = quantile(na.omit(y), percentile_value),
-                        y = median(y)) %>%
-              ungroup()
-            
-            prediction <- merge(prediction, data %>% subset(,-c(x), by = c(response, group2)))
+            prediction <- dplyr::bind_rows(prediction)
             
           },
 
