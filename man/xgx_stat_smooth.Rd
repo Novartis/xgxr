@@ -103,7 +103,7 @@ than combining with them. This is most useful for helper functions that
 define both data and aesthetics and shouldn't inherit behaviour from the 
 default plot specification, e.g. borders.}
 
-\item{n_boot}{number of bootstraps to perform to compute confidence interval, currently only used for method = "polr"}
+\item{n_boot}{number of bootstraps to perform to compute confidence interval, currently only used for method = "polr", default is 200}
 
 \item{mapping}{Set of aesthetic mappings created by `aes` or `aes_`. 
 If specified and `inherit.aes = TRUE` (the default), it is combined with the 

@@ -40,7 +40,7 @@
 #' @param se display confidence interval around smooth? (TRUE by default, see level to control)
 #' @param fullrange should the fit span the full range of the plot, or just the data
 #' @param n number of points to evaluate smoother at
-#' @param n_boot number of bootstraps to perform to compute confidence interval, currently only used for method = "polr"
+#' @param n_boot number of bootstraps to perform to compute confidence interval, currently only used for method = "polr", default is 200
 #' @param method.args Optional additional arguments passed on to the method.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
@@ -372,15 +372,33 @@ predictdf.nls <- function(model, xseq, se, level) {
 }
 
 
-
+#' Prediction data frame for polr
+#' 
+#' Get predictions with standard errors into data frame for use with geom_smooth
+#'
+#' \code{predictdf.polr} is used by xgx_geom_smooth when method = "polr" 
+#' to calculate confidence intervals via bootstraps.
+#'
+#' @param model object returned from polr
+#' @param xseq sequence of x values for which to compute the smooth
+#' @param se if TRUE then confidence intervals are returned
+#' @param level confidence level for confidence intervals
+#' @param data data to fit
+#' @param method only works for method MASS::polr
+#' @param formula formula to fit
+#' @param method.args arguments to pass to method
+#' @param weight weights to use for method
+#' @param n_boot number of bootstraps to perform for confidence interval calculation, default is 200
+#' 
+#' @export
 predictdf.polr <- function(model, xseq, se, level, 
-                           data, method, formula, method.args, base.args, n_bootstrap = 200){
+                           data, method, formula, method.args, weight, n_boot = 200){
   
   percentile_value <- level + (1 - level) / 2
   
   pred.df_boot = list()
   iter_failed = 0
-  for (iboot in 1:n_bootstrap) {
+  for (iboot in 1:n_boot) {
     new_pred <- tryCatch ({
       # Boostrap by resampling entire dataset
       #   (prediction + residual doesn't work with ordinal data)
@@ -593,7 +611,7 @@ StatSmoothOrdinal <- ggplot2::ggproto(
       data <- data %>% merge(groups)
     }
     
-    n_bootstrap = n_boot
+    n_boot = n_boot
     prediction <- list()
     for(igroup in unique(data$group2)){
       idata <- data %>% subset(group2 == igroup)
@@ -603,7 +621,7 @@ StatSmoothOrdinal <- ggplot2::ggproto(
       model <- do.call(method, c(base.args, method.args))
       
       iprediction <- predictdf.polr(model, xseq, se, level, 
-                                    data = idata, method, formula, method.args, base.args, n_bootstrap)
+                                    data = idata, method, formula, method.args, weight, n_boot)
       
       iprediction <- merge(iprediction, idata %>% subset(,-c(x)), by = "response")
       
