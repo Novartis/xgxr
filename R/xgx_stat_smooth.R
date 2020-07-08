@@ -95,13 +95,16 @@
 #'   ggplot2::geom_boxplot(aes(group = DOSE)) +
 #'   xgx_theme() +
 #'   xgx_scale_y_percentchangelog10() +
-#'   ylab("Percent Change from Baseline") +
-#'   xlab("Dose (mg)")
+#'   ggplot2::ylab("Percent Change from Baseline") +
+#'   ggplot2::xlab("Dose (mg)")
 #' 
-#' gg + 
-#'   xgx_stat_smooth(method = "nlsLM", formula = y ~ E0 + Emax*x/(exp(logED50) + x), 
-#'               method.args = list(start = list(Emax = -0.50, logED50 = log(25), E0 = 0)), 
-#'               se = TRUE)
+#' gg +
+#'   xgx_stat_smooth(method = "nlsLM", formula = y ~ E0 + Emax*x/(ED50 + x),
+#'                   method.args = list(
+#'                     start = list(Emax = -0.50, ED50 = 25, E0 = 0),
+#'                     lower = c(-Inf, 0, -Inf)
+#'                   ),
+#'                   se = TRUE)
 #'               
 #' gg + 
 #'   xgx_geom_smooth_emax()  
@@ -129,6 +132,7 @@
 #' 
 #' @importFrom minpack.lm nlsLM
 #' @importFrom stats nls
+#' @importFrom ggplot2 StatSmooth
 #' @export
 xgx_stat_smooth <- function(mapping = NULL,
                         data = NULL,
@@ -151,7 +155,7 @@ xgx_stat_smooth <- function(mapping = NULL,
   lays <- list()
 
   # Assume OLS / LM / nls / nlsLM / glm etc. model
-  ggproto_stat <- StatSmooth
+  ggproto_stat <- ggplot2::StatSmooth
 
   # Class Model
   if (is.null(method)){ }
@@ -186,7 +190,7 @@ xgx_stat_smooth <- function(mapping = NULL,
                   ...)
 
   for (igeom in geom) {
-    lay = layer(
+    lay = ggplot2::layer(
       stat = ggproto_stat,
       data = data,
       mapping = mapping,

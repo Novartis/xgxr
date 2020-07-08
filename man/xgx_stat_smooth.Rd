@@ -136,13 +136,16 @@ gg <- ggplot2::ggplot(dat1 \%>\% subset(Time == 90),
   ggplot2::geom_boxplot(aes(group = DOSE)) +
   xgx_theme() +
   xgx_scale_y_percentchangelog10() +
-  ylab("Percent Change from Baseline") +
-  xlab("Dose (mg)")
+  ggplot2::ylab("Percent Change from Baseline") +
+  ggplot2::xlab("Dose (mg)")
 
-gg + 
-  xgx_stat_smooth(method = "nlsLM", formula = y ~ E0 + Emax*x/(exp(logED50) + x), 
-              method.args = list(start = list(Emax = -0.50, logED50 = log(25), E0 = 0)), 
-              se = TRUE)
+gg +
+  xgx_stat_smooth(method = "nlsLM", formula = y ~ E0 + Emax*x/(ED50 + x),
+                  method.args = list(
+                    start = list(Emax = -0.50, ED50 = 25, E0 = 0),
+                    lower = c(-Inf, 0, -Inf)
+                  ),
+                  se = TRUE)
               
 gg + 
   xgx_geom_smooth_emax()  
