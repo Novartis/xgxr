@@ -1,10 +1,11 @@
-#' Wrapper for stat_smooth that also can deal with ordinal, multinomial, or binary variables, 
-#' and also works for nonlinear least squares methods
-#' \code{xgx_stat_smooth} Smooths continuous or categorical data. 
+#' Wrapper for stat_smooth 
+#' 
+#' \code{xgx_stat_smooth} and \code{xgx_geom_smooth} produce smooth fits through continuous or categorical data. 
 #' For categorical, ordinal, or multinomial data use method = polr. 
-#' This wrapper also works with nonlinear methods like nls and nlsLM for continuous data.
+#' This wrapper also works with nonlinear methods like nls and nlsLM for continuous data. 
+#' 
+#' @seealso \code{\link{predictdf.nls}} for information on how nls confidence intervals are calculated.
 #'
-#' @aliases xgx_geom_smooth
 #'
 #' @param mapping Set of aesthetic mappings created by `aes` or `aes_`. 
 #' If specified and `inherit.aes = TRUE` (the default), it is combined with the 
@@ -55,7 +56,20 @@
 #'
 #' @return ggplot2 plot layer
 #'
-#'
+#' @section Warning:
+#' \code{nlsLM} uses \code{nls.lm} which implements the Levenberg-Marquardt
+#' algorithm for fitting a nonlinear model, and may fail to converge for a
+#' number of reasons. See \code{?nls.lm} for more information.
+#' 
+#' \code{nls} uses Gauss-Newton method for estimating parameters, 
+#' and could fail if the parameters are not identifiable. If this happens 
+#' you will see the following warning message: 
+#' Warning message:
+#' Computation failed in `stat_smooth()`:
+#'   singular gradient
+#'   
+#' \code{nls} will also fail if used on artificial "zero-residual" data, 
+#' use \code{nlsLM} instead.
 #'
 #' @examples 
 #' 
@@ -89,7 +103,10 @@
 #'               method.args = list(start = list(Emax = -0.50, logED50 = log(25), E0 = 0)), 
 #'               se = TRUE)
 #'               
-#'
+#' gg + 
+#'   xgx_geom_smooth_emax()  
+#'   
+#'   
 #' # example with ordinal data (method = "polr")
 #' set.seed(12345)
 #' data = data.frame(x = 120*exp(rnorm(100,0,1)),
@@ -110,6 +127,8 @@
 #'                 facet_wrap(~response) + 
 #'                 scale_y_continuous(labels = scales::percent_format())
 #' 
+#' @importFrom minpack.lm nlsLM
+#' @importFrom stats nls
 #' @export
 xgx_stat_smooth <- function(mapping = NULL,
                         data = NULL,
@@ -185,7 +204,85 @@ xgx_stat_smooth <- function(mapping = NULL,
 }
 
 
+#' 
+#' 
+#' @rdname xgx_stat_smooth
+#' 
+#' @importFrom minpack.lm nlsLM
+#' @importFrom stats nls
+#' @export
+#' 
+xgx_geom_smooth <- function(mapping = NULL,
+                            data = NULL,
+                            geom = "smooth",
+                            position = "identity",
+                            ...,
+                            method = NULL,
+                            formula = NULL,
+                            se = TRUE,
+                            n = 80,
+                            span = 0.75,
+                            fullrange = FALSE,
+                            level = 0.95,
+                            method.args = list(),
+                            na.rm = FALSE,
+                            orientation = NA,
+                            show.legend = NA,
+                            inherit.aes = TRUE) {
+  
+  return(list(xgx_stat_smooth(mapping = mapping, 
+                              data = data, 
+                              geom = geom,
+                              position = position,
+                              method = method,
+                              formula = formula,
+                              se = se,
+                              n = n,
+                              span = span,
+                              fullrange = fullrange,
+                              level = level,
+                              method.args = method.args,
+                              na.rm = na.rm,
+                              orientation = orientation,
+                              show.legend = show.legend,
+                              inherit.aes = inherit.aes,
+                              ...)))
+}
+
+#' Plot Emax fit to data
+#' 
+#' \code{xgx_geom_smooth_emax} uses minpack.lm::nlsLM, predictdf.nls, and stat_smooth to display Emax model fit to data
+#' 
+#' @rdname xgx_stat_smooth
+#' 
+#' @importFrom minpack.lm nlsLM
+#' @importFrom stats nls
+#' @export
+xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
+                                 position = "identity", ..., method = "nlsLM", formula, 
+                                 se = TRUE, n = 80, span = 0.75, fullrange = FALSE,
+                                 level = 0.95, method.args = list(), na.rm = FALSE,
+                                 show.legend = NA, inherit.aes = TRUE){
+  if(missing(formula)) {
+    warning("Formula not specified.\nUsing default formula y ~ E0 + Emax*x/(ED50 + x), 
+            initializing E0, Emax, and ED50 to 1, 
+            and setting lower bound on ED50 to 0")
+    formula = y ~ E0 + Emax*x/(ED50 + x)
+    method.args$start = list(E0 = 1, Emax = 1, ED50 = 1)
+    method.args$lower = c(-Inf, -Inf, 0)
+  }
+  
+  ggplot2::stat_smooth(mapping = mapping, data = data, geom = geom, 
+                       position = position, ..., method = method, formula = formula,
+                       se = se, n = n, span = span, fullrange = fullrange, 
+                       level = level, method.args = method.args, na.rm = na.rm,
+                       show.legend = show.legend, inherit.aes = inherit.aes)
+}
+
+
+
 #' Prediction data frame for nls
+#' 
 #' Get predictions with standard errors into data frame for use with geom_smooth
 #'
 #' \code{ggplot2::geom_smooth} produces confidence intervals by silently calling functions 
@@ -217,6 +314,8 @@ xgx_stat_smooth <- function(mapping = NULL,
 #' @return dataframe with x and y values, if se is TRUE dataframe also includes ymin and ymax
 #'
 #' @importFrom Deriv Deriv
+#' @importFrom minpack.lm nlsLM
+#' @importFrom stats nls
 #' @export
 predictdf.nls <- function(model, xseq, se, level) {
   
