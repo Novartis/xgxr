@@ -371,13 +371,62 @@ predictdf.nls <- function(model, xseq, se, level) {
 
 
 
-predictdf.polr <- function(model, xseq, se, level){
+predictdf.polr <- function(model, xseq, se, level, 
+                           data, method, formula, method.args, base.args, n_bootstrap = 200){
+  
+  percentile_value <- level + (1 - level) / 2
+  
+  pred.df_boot = list()
+  iter_failed = 0
+  for (iboot in 1:n_bootstrap) {
+    new_pred <- tryCatch ({
+      # Boostrap by resampling entire dataset
+      #   (prediction + residual doesn't work with ordinal data)
+      data_boot <- dplyr::sample_n(tbl = data,
+                                   size = nrow(data),
+                                   replace = TRUE)
+      
+      base.args <- list(quote(formula), data = quote(data_boot), weights = quote(weight))
+      model_boot <- do.call(method, c(base.args, method.args))
+      
+      # Extract Bootstrapped Predictions
+      # predictdf.polr(model_boot, xseq, se, level)
+      
+      pred <- predict(model_boot, newdata = data.frame(x = xseq), type = "probs") %>%
+        data.frame() %>%
+        dplyr::mutate( x = xseq)
+      pred.df <- tidyr::pivot_longer(data = pred, cols = -x, names_to = "response", values_to = "y")
+      
+    }, warning = function(w) {
+      "There was a problem in the sampling."
+    }
+    )
+    
+    if (is.character(new_pred)) {
+      iter_failed <- 1 + iter_failed
+      next
+    }
+    
+    pred.df_boot[[iboot]] <- new_pred
+    
+  }
+  pred.df_boot <- dplyr::bind_rows(pred.df_boot) %>%
+    dplyr::group_by(x, response) %>%
+    dplyr::summarize(ymin = quantile(na.omit(y), 1 - percentile_value),
+                     ymax = quantile(na.omit(y), percentile_value)) %>%
+    dplyr::ungroup()
+  
   pred <- predict(model, newdata = data.frame(x = xseq), type = "probs") %>%
     data.frame() %>%
-    mutate( x = xseq)
-  pred.df <- pivot_longer(data = pred, cols = -x, names_to = "response", values_to = "y")
+    dplyr::mutate( x = xseq)
+  
+  pred.df <- tidyr::pivot_longer(data = pred, cols = -x, names_to = "response", values_to = "y")
+  
+  pred.df_group <- merge(pred.df, pred.df_boot, by = c("x","response"))
+  
+  ret <- pred.df_group %>% subset(,c(x, y, ymin, ymax, response))
+  
 }
-
 
 
 #' @rdname ggplot2-ggproto
