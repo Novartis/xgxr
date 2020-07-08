@@ -40,6 +40,7 @@
 #' @param se display confidence interval around smooth? (TRUE by default, see level to control)
 #' @param fullrange should the fit span the full range of the plot, or just the data
 #' @param n number of points to evaluate smoother at
+#' @param n_boot number of bootstraps to perform to compute confidence interval, currently only used for method = "polr"
 #' @param method.args Optional additional arguments passed on to the method.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
@@ -144,6 +145,7 @@ xgx_stat_smooth <- function(mapping = NULL,
                             se = TRUE,
                             n = 80,
                             span = 0.75,
+                            n_boot = 200,
                             fullrange = FALSE,
                             level = 0.95,
                             method.args = list(),
