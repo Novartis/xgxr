@@ -40,6 +40,7 @@
 #' @param se display confidence interval around smooth? (TRUE by default, see level to control)
 #' @param fullrange should the fit span the full range of the plot, or just the data
 #' @param n number of points to evaluate smoother at
+#' @param n_boot number of bootstraps to perform to compute confidence interval, currently only used for method = "polr", default is 200
 #' @param method.args Optional additional arguments passed on to the method.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
@@ -115,7 +116,7 @@
 #' data = data.frame(x = 120*exp(rnorm(100,0,1)),
 #'                   response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
 #'                   covariate = sample(c("Male","Female"), 100, replace = TRUE)) %>%
-#'   mutate(y = (50 + 20*x/(200 + x))*exp(rnorm(100, 0, 0.3)))
+#'   dplyr::mutate(y = (50 + 20*x/(200 + x))*exp(rnorm(100, 0, 0.3)))
 #'   
 #' # example coloring by the response categories
 #' xgx_plot(data = data) +
@@ -135,34 +136,35 @@
 #' @importFrom ggplot2 StatSmooth
 #' @export
 xgx_stat_smooth <- function(mapping = NULL,
-                        data = NULL,
-                        geom = "smooth",
-                        position = "identity",
-                        ...,
-                        method = NULL,
-                        formula = NULL,
-                        se = TRUE,
-                        n = 80,
-                        span = 0.75,
-                        fullrange = FALSE,
-                        level = 0.95,
-                        method.args = list(),
-                        na.rm = FALSE,
-                        orientation = NA,
-                        show.legend = NA,
-                        inherit.aes = TRUE) {
-
+                            data = NULL,
+                            geom = "smooth",
+                            position = "identity",
+                            ...,
+                            method = NULL,
+                            formula = NULL,
+                            se = TRUE,
+                            n = 80,
+                            span = 0.75,
+                            n_boot = 200,
+                            fullrange = FALSE,
+                            level = 0.95,
+                            method.args = list(),
+                            na.rm = FALSE,
+                            orientation = NA,
+                            show.legend = NA,
+                            inherit.aes = TRUE) {
+  
   lays <- list()
-
+  
   # Assume OLS / LM / nls / nlsLM / glm etc. model
   ggproto_stat <- ggplot2::StatSmooth
-
+  
   # Class Model
   if (is.null(method)){ }
   else{
     if (method %in% c("polr")) {
       ggproto_stat <- StatSmoothOrdinal
-
+      
       if(!is.null(mapping$y)){
         if(is.null(mapping$response) ){
           mapping$response <- mapping$y
@@ -172,23 +174,23 @@ xgx_stat_smooth <- function(mapping = NULL,
         }
         mapping$y <- NULL
       }
-
+      
     }
   }
   
   # Default parameters
   gg_params = list(method = method,
-                  formula = formula,
-                  se = se,
-                  n = n,
-                  fullrange = fullrange,
-                  level = level,
-                  na.rm = na.rm,
-                  orientation = orientation,
-                  method.args = method.args,
-                  span = span,
-                  ...)
-
+                   formula = formula,
+                   se = se,
+                   n = n,
+                   fullrange = fullrange,
+                   level = level,
+                   na.rm = na.rm,
+                   orientation = orientation,
+                   method.args = method.args,
+                   span = span,
+                   ...)
+  
   for (igeom in geom) {
     lay = ggplot2::layer(
       stat = ggproto_stat,
@@ -342,7 +344,7 @@ predictdf.nls <- function(model, xseq, se, level) {
         ret$grad[[i]] <- eval(Deriv::Deriv(form, names(pars), cache.exp = FALSE)) %>% as.list()
       }
       
-      ret$grad <- bind_rows(ret$grad) %>% as.matrix
+      ret$grad <- dplyr::bind_rows(ret$grad) %>% as.matrix
       
       return(ret)
     }
@@ -370,14 +372,81 @@ predictdf.nls <- function(model, xseq, se, level) {
 }
 
 
-
-predictdf.polr <- function(model, xseq, se, level){
+#' Prediction data frame for polr
+#' 
+#' Get predictions with standard errors into data frame for use with geom_smooth
+#'
+#' \code{predictdf.polr} is used by xgx_geom_smooth when method = "polr" 
+#' to calculate confidence intervals via bootstraps.
+#'
+#' @param model object returned from polr
+#' @param xseq sequence of x values for which to compute the smooth
+#' @param se if TRUE then confidence intervals are returned
+#' @param level confidence level for confidence intervals
+#' @param data data to fit
+#' @param method only works for method MASS::polr
+#' @param formula formula to fit
+#' @param method.args arguments to pass to method
+#' @param weight weights to use for method
+#' @param n_boot number of bootstraps to perform for confidence interval calculation, default is 200
+#' 
+#' @export
+predictdf.polr <- function(model, xseq, se, level, 
+                           data, method, formula, method.args, weight, n_boot = 200){
+  
+  percentile_value <- level + (1 - level) / 2
+  
+  pred.df_boot = list()
+  iter_failed = 0
+  for (iboot in 1:n_boot) {
+    new_pred <- tryCatch ({
+      # Boostrap by resampling entire dataset
+      #   (prediction + residual doesn't work with ordinal data)
+      data_boot <- dplyr::sample_n(tbl = data,
+                                   size = nrow(data),
+                                   replace = TRUE)
+      
+      base.args <- list(quote(formula), data = quote(data_boot), weights = quote(weight))
+      model_boot <- do.call(method, c(base.args, method.args))
+      
+      # Extract Bootstrapped Predictions
+      # predictdf.polr(model_boot, xseq, se, level)
+      
+      pred <- predict(model_boot, newdata = data.frame(x = xseq), type = "probs") %>%
+        data.frame() %>%
+        dplyr::mutate( x = xseq)
+      pred.df <- tidyr::pivot_longer(data = pred, cols = -x, names_to = "response", values_to = "y")
+      
+    }, warning = function(w) {
+      "There was a problem in the sampling."
+    }
+    )
+    
+    if (is.character(new_pred)) {
+      iter_failed <- 1 + iter_failed
+      next
+    }
+    
+    pred.df_boot[[iboot]] <- new_pred
+    
+  }
+  pred.df_boot <- dplyr::bind_rows(pred.df_boot) %>%
+    dplyr::group_by(x, response) %>%
+    dplyr::summarize(ymin = quantile(na.omit(y), 1 - percentile_value),
+                     ymax = quantile(na.omit(y), percentile_value)) %>%
+    dplyr::ungroup()
+  
   pred <- predict(model, newdata = data.frame(x = xseq), type = "probs") %>%
     data.frame() %>%
-    mutate( x = xseq)
-  pred.df <- pivot_longer(data = pred, cols = -x, names_to = "response", values_to = "y")
+    dplyr::mutate( x = xseq)
+  
+  pred.df <- tidyr::pivot_longer(data = pred, cols = -x, names_to = "response", values_to = "y")
+  
+  pred.df_group <- merge(pred.df, pred.df_boot, by = c("x","response"))
+  
+  ret <- pred.df_group %>% subset(,c(x, y, ymin, ymax, response))
+  
 }
-
 
 
 #' @rdname ggplot2-ggproto
@@ -387,222 +456,191 @@ predictdf.polr <- function(model, xseq, se, level){
 StatSmoothOrdinal <- ggplot2::ggproto(
   "StatSmoothOrdinal", 
   ggplot2::Stat,
-                                      
+  
   required_aes = c("x", "response"),
   
   compute_group = function(data, params) {
     return(data)
   },
-                                      
-        setup_params = function(self, data, params, ...) {
-
-         # params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
-         msg <- character()
-         
-         if (is.null(params$formula)) {
-           params$formula <- response ~ x
-           msg <- c(msg, paste0("formula '", deparse(params$formula), "'"))
-         }
-         
-         if (length(msg) > 0) {
-           message("`geom_smooth()` using ", paste0(msg, collapse = " and "))
-         }
-         
-         # check required aesthetics
-         ggplot2:::check_required_aesthetics(
-           self$required_aes,
-           c(names(data), names(params)),
-           ggplot2:::snake_class(self)
-         )
-         
-         # Make sure required_aes consists of the used set of aesthetics in case of
-         # "|" notation in self$required_aes
-         required_aes <- intersect(
-           names(data),
-           unlist(strsplit(self$required_aes, "|", fixed = TRUE))
-         )
-         
-         # aes_to_group are the aesthetics that are different from response,
-         # it's assumed that these should split the data into groups for calculating CI,
-         # e.g. coloring by a covariate
-         #
-         # aes_not_to_group are aesthetics that are identical to response,
-         # it's assumed that these are only for applyng aesthetics to the end result, 
-         # e.g. coloring by response category
-         params$aes_to_group <- c()
-         params$aes_not_to_group <- c()
-         
-         # go through PANEL, colour, fill, linetype, shape
-         if( (data %>% subset(, c(response, PANEL)) %>% unique() %>% dim)[1] == length(unique(data$response) )){
-           params$aes_not_to_group <- c(params$aes_not_to_group, "PANEL")
-         }else{
-           params$aes_to_group <- c(params$aes_to_group, "PANEL")
-         }
-         
-         if(is.null(data$colour)){
-           
-         }else if((data %>% subset(, c(response, colour)) %>% unique() %>% dim)[1] == length(unique(data$response))){
-           params$aes_not_to_group <- c(params$aes_not_to_group, "colour")
-         }else{
-           params$aes_to_group <- c(params$aes_to_group, "colour")
-         }
-         
-         if(is.null(data$linetype)){
-           
-         }else if((data %>% subset(, c(response, linetype)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
-           params$aes_not_to_group <- c(params$aes_not_to_group, "linetype")
-         }else{
-           params$aes_to_group <- c(params$aes_to_group, "linetype")
-         }
-         
-         if(is.null(data$fill)){
-           
-         }else if((data %>% subset(, c(response, fill)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
-           params$aes_not_to_group <- c(params$aes_not_to_group, "fill")
-         }else{
-           params$aes_to_group <- c(params$aes_to_group, "fill")
-         }
-         
-         if(is.null(data$shape)){
-           
-         }else if((data %>% subset(, c(response, shape)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
-           params$aes_not_to_group <- c(params$aes_not_to_group, "shape")
-         }else{
-           params$aes_to_group <- c(params$aes_to_group, "shape")
-         }
-         
-         if(length(params$aes_not_to_group) == 0){
-           warning("In xgx_stat_smooth: \n  No aesthetics defined to differentiate response groups.\n  Suggest to add color = response, linetype = response, or similar to aes() mapping.",
-                   call. = FALSE)
-         }else{
-           message(paste0("In xgx_stat_smooth: \n  The following aesthetics are identical to response: ", 
-                          paste0(params$aes_not_to_group, collapse = ", "), 
-                          "\n  These will be used for differentiating response groups in the resulting plot."))         
-         }
-         
-         if(length(params$aes_to_group) > 0){
-           message(paste0("In xgx_stat_smooth: \n  The following aesthetics are different from response: ", 
-                          paste0(params$aes_to_group, collapse = ", "), 
-                          "\n  These will be used to divide the data into different groups before calculating summary statistics on the response."))
-         }
-
-         params
-        },
-        
-        setup_data = function(self, data, params, scales, xseq = NULL, method.args = list(), n_boot = 200) {
-
-            list2env(params, envir = environment())
-
-            percentile_value <- level + (1 - level) / 2
-            
-            
-            if (length(unique(data$x)) < 2) {
-              # Not enough data to perform fit
-              return(new_data_frame())
-            }
-            
-            if (is.null(data$weight)) data$weight <- 1
-            
-            if (is.null(xseq)) {
-              if (is.integer(data$x)) {
-                if (fullrange) {
-                  xseq <- scales$x$dimension()
-                } else {
-                  xseq <- sort(unique(data$x))
-                }
-              } else {
-                if (fullrange) {
-                  range <- scales$x$dimension()
-                } else {
-                  range <- range(data$x, na.rm = TRUE)
-                }
-                xseq <- seq(range[1], range[2], length.out = n)
-              }
-            }
-
-            if (is.character(method)) {
-              if (identical(method, "polr")) {
-                method <- MASS::polr
-              } else {
-                method <- match.fun(method)
-              }
-            }
-            
-            # base.args <- list(quote(formula), data = quote(data), weights = quote(weight))
-            
-            # Define new grouping variable for which to split the data computation 
-            # (excludes aesthetics that are identical to the Response variable)
-            if(is.null(params$aes_to_group)){
-              data <- data %>% mutate(group2 = 1)
-            }else{
-              groups <- unique(data %>% subset(, params$aes_to_group))
-              groups <- groups %>%
-                mutate(group2 = 1:dim(groups)[1])
-              
-              data <- data %>% merge(groups)
-            }
-
-            n_bootstrap = n_boot
-            iter_failed = 0
-            prediction_all <- list()
-            for(igroup in unique(data$group2)){
-              data_group <- data %>% subset(group2 == igroup)
-              
-              prediction_group = list()
-            for (iboot in 1:n_bootstrap) {
-              new_pred <- tryCatch ({
-                # Boostrap by resampling entire dataset
-                #   (prediction + residual doesn't work with ordinal data)
-                data_boot <- sample_n(tbl = data_group,
-                                      size = nrow(data_group),
-                                      replace = TRUE)
-                base.args <- list(quote(formula), data = quote(data_boot), weights = quote(weight))
-
-                model_boot <- do.call(method, c(base.args, method.args))
-                
-                # Extract Bootstrapped Predictions
-                predictdf.polr(model_boot, xseq, se, level)
-              }, warning = function(w) {
-                "There was a problem in the sampling."
-              }
-              )
-              
-              if (is.character(new_pred)) {
-                iter_failed <- 1 + iter_failed
-                next
-              }
-              
-                prediction_group[[iboot]] <- new_pred
-
-            }
-              prediction_group <- bind_rows(prediction_group) %>%
-                mutate(group2 = igroup)
-              
-              prediction_all[[igroup]] <- prediction_group
-            }
-            
-            prediction_all <- bind_rows(prediction_all)
-            
-            prediction <- prediction_all %>%
-              group_by(x, response, group2) %>%
-              summarize(ymin = quantile(na.omit(y), 1 - percentile_value),
-                        ymax = quantile(na.omit(y), percentile_value),
-                        y = median(y)) %>%
-              ungroup()
-            
-            prediction <- merge(prediction, data %>% subset(,-c(x), by = c(response, group2)))
-            
-          },
-
-        extra_params = c("na.rm", "orientation", "method","formula","se","n","span","fullrange","level","method.args","na.rm","n_boot","xseq"),
-        
-        compute_layer = function(self, data, params, layout) {
-          data
-        },
-
-        compute_panel = function(data, params) {
-          data
-        },
-        
-        required_aes = c("x","response")
+  
+  setup_params = function(self, data, params, ...) {
+    
+    # params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
+    msg <- character()
+    
+    if (is.null(params$formula)) {
+      params$formula <- response ~ x
+      msg <- c(msg, paste0("formula '", deparse(params$formula), "'"))
+    }
+    
+    if (length(msg) > 0) {
+      message("`geom_smooth()` using ", paste0(msg, collapse = " and "))
+    }
+    
+    # check required aesthetics
+    ggplot2:::check_required_aesthetics(
+      self$required_aes,
+      c(names(data), names(params)),
+      ggplot2:::snake_class(self)
+    )
+    
+    # Make sure required_aes consists of the used set of aesthetics in case of
+    # "|" notation in self$required_aes
+    required_aes <- intersect(
+      names(data),
+      unlist(strsplit(self$required_aes, "|", fixed = TRUE))
+    )
+    
+    # aes_to_group are the aesthetics that are different from response,
+    # it's assumed that these should split the data into groups for calculating CI,
+    # e.g. coloring by a covariate
+    #
+    # aes_not_to_group are aesthetics that are identical to response,
+    # it's assumed that these are only for applyng aesthetics to the end result, 
+    # e.g. coloring by response category
+    params$aes_to_group <- c()
+    params$aes_not_to_group <- c()
+    
+    # go through PANEL, colour, fill, linetype, shape
+    if( (data %>% subset(, c(response, PANEL)) %>% unique() %>% dim)[1] == length(unique(data$response) )){
+      params$aes_not_to_group <- c(params$aes_not_to_group, "PANEL")
+    }else{
+      params$aes_to_group <- c(params$aes_to_group, "PANEL")
+    }
+    
+    if(is.null(data$colour)){
+      
+    }else if((data %>% subset(, c(response, colour)) %>% unique() %>% dim)[1] == length(unique(data$response))){
+      params$aes_not_to_group <- c(params$aes_not_to_group, "colour")
+    }else{
+      params$aes_to_group <- c(params$aes_to_group, "colour")
+    }
+    
+    if(is.null(data$linetype)){
+      
+    }else if((data %>% subset(, c(response, linetype)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+      params$aes_not_to_group <- c(params$aes_not_to_group, "linetype")
+    }else{
+      params$aes_to_group <- c(params$aes_to_group, "linetype")
+    }
+    
+    if(is.null(data$fill)){
+      
+    }else if((data %>% subset(, c(response, fill)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+      params$aes_not_to_group <- c(params$aes_not_to_group, "fill")
+    }else{
+      params$aes_to_group <- c(params$aes_to_group, "fill")
+    }
+    
+    if(is.null(data$shape)){
+      
+    }else if((data %>% subset(, c(response, shape)) %>% unique() %>% dim)[1] == length(unique(data$response))){ 
+      params$aes_not_to_group <- c(params$aes_not_to_group, "shape")
+    }else{
+      params$aes_to_group <- c(params$aes_to_group, "shape")
+    }
+    
+    if(length(params$aes_not_to_group) == 0){
+      warning("In xgx_stat_smooth: \n  No aesthetics defined to differentiate response groups.\n  Suggest to add color = response, linetype = response, or similar to aes() mapping.",
+              call. = FALSE)
+    }else{
+      message(paste0("In xgx_stat_smooth: \n  The following aesthetics are identical to response: ", 
+                     paste0(params$aes_not_to_group, collapse = ", "), 
+                     "\n  These will be used for differentiating response groups in the resulting plot."))         
+    }
+    
+    if(length(params$aes_to_group) > 0){
+      message(paste0("In xgx_stat_smooth: \n  The following aesthetics are different from response: ", 
+                     paste0(params$aes_to_group, collapse = ", "), 
+                     "\n  These will be used to divide the data into different groups before calculating summary statistics on the response."))
+    }
+    
+    params
+  },
+  
+  setup_data = function(self, data, params, scales, xseq = NULL, method.args = list(), n_boot = 200) {
+    
+    list2env(params, envir = environment())
+    
+    percentile_value <- level + (1 - level) / 2
+    
+    
+    if (length(unique(data$x)) < 2) {
+      # Not enough data to perform fit
+      return(new_data_frame())
+    }
+    
+    if (is.null(data$weight)) data$weight <- 1
+    
+    if (is.null(xseq)) {
+      if (is.integer(data$x)) {
+        if (fullrange) {
+          xseq <- scales$x$dimension()
+        } else {
+          xseq <- sort(unique(data$x))
+        }
+      } else {
+        if (fullrange) {
+          range <- scales$x$dimension()
+        } else {
+          range <- range(data$x, na.rm = TRUE)
+        }
+        xseq <- seq(range[1], range[2], length.out = n)
+      }
+    }
+    
+    if (is.character(method)) {
+      if (identical(method, "polr")) {
+        method <- MASS::polr
+      } else {
+        method <- match.fun(method)
+      }
+    }
+    
+    # base.args <- list(quote(formula), data = quote(data), weights = quote(weight))
+    
+    # Define new grouping variable for which to split the data computation 
+    # (excludes aesthetics that are identical to the Response variable)
+    if(is.null(params$aes_to_group)){
+      data <- data %>% dplyr::mutate(group2 = 1)
+    }else{
+      groups <- unique(data %>% subset(, params$aes_to_group))
+      groups <- groups %>%
+        dplyr::mutate(group2 = 1:dim(groups)[1])
+      
+      data <- data %>% merge(groups)
+    }
+    
+    n_boot = n_boot
+    prediction <- list()
+    for(igroup in unique(data$group2)){
+      idata <- data %>% subset(group2 == igroup)
+      
+      base.args <- list(quote(formula), data = quote(idata), weights = quote(weight))
+      
+      model <- do.call(method, c(base.args, method.args))
+      
+      iprediction <- predictdf.polr(model, xseq, se, level, 
+                                    data = idata, method, formula, method.args, weight, n_boot)
+      
+      iprediction <- merge(iprediction, idata %>% subset(,-c(x)), by = "response")
+      
+      prediction[[igroup]] <- iprediction
+    }
+    
+    prediction <- dplyr::bind_rows(prediction)
+    
+  },
+  
+  extra_params = c("na.rm", "orientation", "method","formula","se","n","span","fullrange","level","method.args","na.rm","n_boot","xseq"),
+  
+  compute_layer = function(self, data, params, layout) {
+    data
+  },
+  
+  compute_panel = function(data, params) {
+    data
+  },
+  
+  required_aes = c("x","response")
 )
