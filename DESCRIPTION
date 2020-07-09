@@ -43,6 +43,7 @@ Imports:
     assertthat,
     binom,
     Deriv,
+    DescTools,
     dplyr,
     ggplot2,
     graphics,
