@@ -332,15 +332,18 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
                         paste0(params$aes_to_group, collapse = ", "), 
                         "\n  These will be used to divide the data into different groups before calculating summary statistics on the response."))
        }
+       
+       if("mapped_discrete" %in% attr(data$x, "class") & (!is.null(params$breaks) | !is.null(params$bins))){
+         message("In xgx_stat_ci: \n ignoring bins or breaks supplied with discrete x values")
+         params$breaks <- NULL
+         params$bins <- NULL
+       }
+       
        params
      },
 
      setup_data = function(self, data, params) {
 
-       if(is.character(data$x) | is.factor(data$x)){
-         data <- data %>% dplyr::mutate(x = as.numeric(as.factor(x)))
-       }
-       
        # Define new grouping variable for which to split the data computation 
        # (excludes aesthetics that are identical to the Response variable)
        if(is.null(params$aes_to_group)){
@@ -356,6 +359,11 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
        if(is.null(params$breaks)){
          if(is.null(params$bins)){
            data <- data %>% mutate(x_bin = x)
+           median_x <- data %>% 
+             subset(,c(x_bin, group2, x)) %>% 
+             unique() %>%  
+             ungroup() %>% group_by(x_bin, group2)
+             
          }else{
 
            # Calculate percentages for each category across each bin
@@ -366,22 +374,24 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
          data <- data %>% mutate(x_bin = cut(data$x, params$breaks))
        }
        
-       # Get median x value for each bin
-       median_x <- data %>%
-         group_by(x_bin, group2) %>%
-         summarize(x = median(x))
-
+       if(!is.null(params$breaks) | !is.null(params$bins)){
+         # Get median x value for each bin
+         median_x <- data %>% ungroup() %>%
+           group_by(x_bin, group2) %>%
+           summarize(x = median(x), .groups = "keep")
+       }
+       
        # Get the number of each category in each bin 
-       counts <- data %>%
+       counts <- data %>% ungroup() %>%
          group_by(x_bin, group2, response) %>%
-         summarize(count = length(x)) %>% 
+         summarize(count = length(x), .groups = "keep") %>% 
          merge(data %>% subset(,-c(x)), 
                by = c("response","group2","x_bin")) %>% 
          unique()
-
+       
        # Combine the x and y data
        data <- merge(median_x, counts, by = c("x_bin", "group2"), all = TRUE)
-
+       
        # Now calculate the confidence intervals for the multinomial data
        data <- data %>% group_by(x_bin, group2) %>%
          mutate(x = median(x),
