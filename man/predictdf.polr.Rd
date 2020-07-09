@@ -5,7 +5,7 @@
 \title{Prediction data frame for polr}
 \usage{
 predictdf.polr(model, xseq, se, level, data, method, formula, method.args,
-  base.args, n_bootstrap = 200)
+  weight, n_boot = 200)
 }
 \arguments{
 \item{model}{object returned from polr}
