@@ -56,8 +56,7 @@ Imports:
     scales,
     stats,
     tibble,
-    utils,
-    vdiffr
+    utils
 Suggests: 
     caTools,
     gridExtra,
@@ -66,7 +65,8 @@ Suggests:
     RxODE,
     stringr,
     testthat,
-    tidyr
+    tidyr,
+    vdiffr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
