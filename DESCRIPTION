@@ -61,6 +61,7 @@ Suggests:
     caTools,
     gridExtra,
     knitr,
+    readr,
     rmarkdown,
     RxODE,
     stringr,
