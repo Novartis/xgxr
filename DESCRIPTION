@@ -43,6 +43,7 @@ Imports:
     assertthat,
     binom,
     Deriv,
+    DescTools,
     dplyr,
     ggplot2,
     graphics,
@@ -55,7 +56,8 @@ Imports:
     scales,
     stats,
     tibble,
-    utils
+    utils,
+    vdiffr
 Suggests: 
     caTools,
     gridExtra,

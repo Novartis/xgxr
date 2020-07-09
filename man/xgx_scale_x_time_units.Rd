@@ -2,13 +2,27 @@
 % Please edit documentation in R/xgx_scale_x_time_units.R
 \name{xgx_scale_x_time_units}
 \alias{xgx_scale_x_time_units}
+\alias{xgx_scale_y_time_units}
 \title{Convert time units for plotting}
 \usage{
-xgx_scale_x_time_units(units_dataset, units_plot = NULL, breaks = NULL,
-  labels = NULL, ...)
+xgx_scale_x_time_units(
+  units_dataset,
+  units_plot = NULL,
+  breaks = NULL,
+  labels = NULL,
+  ...
+)
+
+xgx_scale_y_time_units(
+  units_dataset,
+  units_plot = NULL,
+  breaks = NULL,
+  labels = NULL,
+  ...
+)
 }
 \arguments{
-\item{units_dataset}{units of the input dataset, must be specified by user 
+\item{units_dataset}{units of the input dataset, must be specified by user
 as "h", "d", "w", "m", or "y"}
 
 \item{units_plot}{units of the plot, will be units of the dataset if empty}
@@ -17,10 +31,10 @@ as "h", "d", "w", "m", or "y"}
 \itemize{
 \item \code{NULL} for no breaks
 \item \code{waiver()} for the default breaks computed by the
-transformation object
+\link[scales:trans_new]{transformation object}
 \item A numeric vector of positions
 \item A function that takes the limits as input and returns breaks
-as output
+as output (e.g., a function returned by \code{\link[scales:extended_breaks]{scales::extended_breaks()}})
 }}
 
 \item{labels}{One of:
@@ -33,20 +47,20 @@ transformation object
 as output
 }}
 
-\item{...}{other parameters for 
+\item{...}{other parameters for
 \code{\link[ggplot2:scale_continuous]{scale_x_continuous}}}
 }
 \value{
 ggplot2 compatible scale object
 }
 \description{
-\code{xgx_scale_x_time_units} converts x axis scale from one time unit 
-to another.  
-Supported units include hours, days, weeks, months, and years, which 
+\code{xgx_scale_x_time_units} converts x axis scale from one time unit
+to another.
+Supported units include hours, days, weeks, months, and years, which
 can also be called using just the first letter (h, d, w, m, y).
 }
 \details{
-Note: \code{xgx_scale_x_time_units} only scales the plot axis, all other 
+Note: \code{xgx_scale_x_time_units} only scales the plot axis, all other
 specifications must be on the original scale of the dataset (e.g. breaks,
 position, width)
 }
@@ -55,5 +69,5 @@ data <- data.frame(x = 1:1000, y = rnorm(1000))
 ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
   ggplot2::geom_point() +
   xgx_scale_x_time_units(units_dataset = "hours", units_plot = "weeks")
-  
+
 }
