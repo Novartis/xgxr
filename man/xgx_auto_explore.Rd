@@ -8,14 +8,25 @@ be formatted in a similar manner to that of the xgx R markdown templates to work
 The working directory will contain a new directory (`xgx_autoexplore_output`) after running this function,
  which will contain a directory for the dataset, and futher a directory for the type of analysis / R markdown template.}
 \usage{
-xgx_auto_explore(data_path = NULL, mapping = list(),
-  author_name = NULL, multiple_dosing = FALSE, pk_cmt = NULL,
-  pd_cmt = NULL, pd_data_type = NULL, dose_cmt = NULL,
-  steady_state_day = NULL, time_between_doses = NULL,
-  rmd_template_name = NULL, rmd_template_path = NULL,
-  rmd_output_path = NULL, pdf_output_path = NULL,
-  html_output_path = NULL, alter_datetime = TRUE,
-  show_explanation = TRUE)
+xgx_auto_explore(
+  data_path = NULL,
+  mapping = list(),
+  author_name = NULL,
+  multiple_dosing = FALSE,
+  pk_cmt = NULL,
+  pd_cmt = NULL,
+  pd_data_type = NULL,
+  dose_cmt = NULL,
+  steady_state_day = NULL,
+  time_between_doses = NULL,
+  rmd_template_name = NULL,
+  rmd_template_path = NULL,
+  rmd_output_path = NULL,
+  pdf_output_path = NULL,
+  html_output_path = NULL,
+  add_datetime = TRUE,
+  show_explanation = TRUE
+)
 }
 \arguments{
 \item{data_path}{Path (as a string) to the dataset that is to be analyzed}
@@ -29,12 +40,20 @@ to the corresponding columns in the new dataset.}
 \item{multiple_dosing}{Whether or not to use a "Multiple" or "Single" Ascending dose template}
 
 \item{pk_cmt}{An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
-have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)}
+have these integers, where each row may contain PK, PD, dosing or other events/observations data}
 
-\item{pd_cmt}{An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
-have these integers, where each row may contain either PK or PD data}
+\item{pd_cmt}{An integer denoting the "compartment" containing the PD data, 
+of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
+have these integers, where each row may contain PK, PD, dosing or other events/observations data}
 
-\item{pd_data_type}{The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]}
+\item{pd_data_type}{The type of PD data - acceptable values exist in the following list: 
+["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]}
+
+\item{dose_cmt}{Integer denoting the compartment for dosing records}
+
+\item{steady_state_day}{used to denote the day of rich sampling of PK at steady state}
+
+\item{time_between_doses}{dosing interval, has units to match the time variable of the dataset}
 
 \item{rmd_template_path}{A user provided custom template (as a string)}
 
@@ -47,9 +66,9 @@ have these integers, where each row may contain either PK or PD data}
 \item{html_output_path}{A custom output path for the generated HTML file
 (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))}
 
-\item{show_explanation}{Boolean indicating if the additional explanations (text in between figures) are needed for the user.}
-
 \item{add_datetime}{Boolean indicating additon of a date stamp to the beginnning of the Rmd file}
+
+\item{show_explanation}{Boolean indicating if the additional explanations (text in between figures) are needed for the user.}
 }
 \description{
 \code{xgx_auto_explore} returns an HTML and PDF document with plots
@@ -60,11 +79,11 @@ This function can be used quickly to explore your data by generating
 overview plots before constructing non-linear mixed effects models.
 }
 \examples{
-source('~/xgxr/Rdev/xgx_auto_explore.R')
 
 author_name = "Your Name Here"
 show_explanation = FALSE
 
+\dontrun{
 # Try out the nonlinear_pkpd dataset with the
 # Multiple Ascending Dose PK Rmd template
 data_path <- "~/nonlinear_pkpd.csv"
@@ -84,7 +103,6 @@ mapping <- list(
   "WEIGHTB" = 0)
 
 
-
 # 5 contains the PK Concentration in this dataset
 pk_cmt = 5
 # We don't need PD right now
@@ -97,6 +115,8 @@ steady_state_day = c(0, 6)
 time_between_doses = 24
 multiple_dosing = TRUE
 
+output_directory = tempdir()
+
 xgx_auto_explore(data_path = data_path,
                  mapping = mapping,
                  author_name = author_name,
@@ -107,6 +127,8 @@ xgx_auto_explore(data_path = data_path,
                  time_between_doses = time_between_doses,
                  multiple_dosing = multiple_dosing,
                  pd_data_type = pd_data_type,
+                 rmd_output_path = output_directory,
                  show_explanation = show_explanation)
+}
     
 }

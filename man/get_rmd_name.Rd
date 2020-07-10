@@ -4,8 +4,13 @@
 \alias{get_rmd_name}
 \title{Determine the name of a Rmd template}
 \usage{
-get_rmd_name(rmd_template_name = NULL, multiple_dosing = FALSE,
-  pk_cmt = NULL, pd_cmt = NULL, pd_data_type = NULL)
+get_rmd_name(
+  rmd_template_name = NULL,
+  multiple_dosing = FALSE,
+  pk_cmt = NULL,
+  pd_cmt = NULL,
+  pd_data_type = NULL
+)
 }
 \arguments{
 \item{rmd_template_name}{A custom output name for the generated Rmd file}

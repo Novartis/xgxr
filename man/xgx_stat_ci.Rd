@@ -4,11 +4,22 @@
 \alias{xgx_stat_ci}
 \title{Plot data with mean and confidence intervals}
 \usage{
-xgx_stat_ci(mapping = NULL, data = NULL, conf_level = 0.95,
-  distribution = "normal", bins = NULL, breaks = NULL,
-  geom = list("point", "line", "errorbar"), position = "identity",
-  fun.args = list(), fun.data = NULL, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE, ...)
+xgx_stat_ci(
+  mapping = NULL,
+  data = NULL,
+  conf_level = 0.95,
+  distribution = "normal",
+  bins = NULL,
+  breaks = NULL,
+  geom = list("point", "line", "errorbar"),
+  position = "identity",
+  fun.args = list(),
+  fun.data = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE,
+  ...
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by `aes` or `aes_`. 
@@ -41,6 +52,10 @@ data to the log space first. The "binomial" option will use the
 confidence 
 intervals. Note: binomial data must be numeric and contain only 1's and 0's.}
 
+\item{bins}{number of bins to cut up the x data, cuts data into quantiles.}
+
+\item{breaks}{breaks to cut up the x data, if this option is used, bins is ignored}
+
 \item{geom}{Use to override the default geom. Can be a list of multiple 
 geoms, e.g. list("point","line","errorbar"), which is the default.}
 
@@ -48,6 +63,9 @@ geoms, e.g. list("point","line","errorbar"), which is the default.}
 a call to a position adjustment function.}
 
 \item{fun.args}{Optional additional arguments passed on to the functions.}
+
+\item{fun.data}{A function that is given the complete data and should return 
+a data frame with variables ymin, y, and ymax.}
 
 \item{na.rm}{If FALSE, the default, missing values are removed with a 
 warning. If TRUE, missing values are silently removed.}
@@ -117,35 +135,37 @@ xgx_plot(data, ggplot2::aes(x = x, y = y)) +
               
 # plotting ordinal or multinomial data
 set.seed(12345) 
-data = data.frame(x = 120*exp(rnorm(100,0,1)), 
+data = data.frame(x = 120*exp(stats::rnorm(100,0,1)), 
               response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
               covariate = sample(c("Male","Female"), 100, replace = TRUE))
   
 xgx_plot(data = data) + 
-  xgx_stat_ci(mapping = aes(x = x, response = response, colour = covariate), 
+  xgx_stat_ci(mapping = ggplot2::aes(x = x, response = response, colour = covariate), 
               distribution = "ordinal", bins = 4) + 
-  scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~response)
+  ggplot2::scale_y_continuous(labels = scales::percent_format()) + ggplot2::facet_wrap(~response)
 
 xgx_plot(data = data) + 
-  xgx_stat_ci(mapping = aes(x = x, response = response, colour = response), 
+  xgx_stat_ci(mapping = ggplot2::aes(x = x, response = response, colour = response), 
               distribution = "ordinal", bins = 4) + 
-  scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~covariate)
+  ggplot2::scale_y_continuous(labels = scales::percent_format()) + ggplot2::facet_wrap(~covariate)
 
 # Example plotting categorical vs categorical data
 set.seed(12345)
-data = data.frame(x = 120*exp(rnorm(100,0,1)),
+data = data.frame(x = 120*exp(stats::rnorm(100,0,1)),
                   response = sample(c("Trt1", "Trt2", "Trt3"), 100, replace = TRUE),
-                  covariate = factor(sample(c("White","Black","Asian","Other"), 100, replace = TRUE), 
+                  covariate = factor(
+                    sample(c("White","Black","Asian","Other"), 100, replace = TRUE),
                                      levels = c("White", "Black", "Asian", "Other")))
 
 xgx_plot(data = data) +
-  xgx_stat_ci(mapping = aes(x = response, response = covariate),
+  xgx_stat_ci(mapping = ggplot2::aes(x = response, response = covariate),
               distribution = "ordinal") +
-  xgx_stat_ci(mapping = aes(x = 1, response = covariate), geom = "hline",
+  xgx_stat_ci(mapping = ggplot2::aes(x = 1, response = covariate), geom = "hline",
               distribution = "ordinal") +
-  scale_y_continuous(labels = scales::percent_format()) + 
-  facet_wrap(~covariate) + 
-  xlab("Treatment group") + ylab("Percent of subjects by category")
+  ggplot2::scale_y_continuous(labels = scales::percent_format()) + 
+  ggplot2::facet_wrap(~covariate) + 
+  ggplot2::xlab("Treatment group") + 
+  ggplot2::ylab("Percent of subjects by category")
 
 
 

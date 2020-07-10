@@ -27,6 +27,8 @@
 #' geoms, e.g. list("line","ribbon"), which is the default.
 #' @param position Position adjustment, either as a string, or the result of 
 #' a call to a position adjustment function.
+#' @param bins number of bins to cut up the x data, cuts data into quantiles.
+#' @param breaks breaks to cut up the x data, if this option is used, bins is ignored
 #' @param fun.args Optional additional arguments passed on to the functions.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.

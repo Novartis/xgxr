@@ -4,11 +4,21 @@
 \alias{xgx_geom_ci}
 \title{Plot data with mean and confidence intervals}
 \usage{
-xgx_geom_ci(mapping = NULL, data = NULL, conf_level = 0.95,
-  distribution = "normal", bins = NULL, breaks = NULL,
-  geom = list("point", "line", "errorbar"), position = "identity",
-  fun.args = list(), na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, ...)
+xgx_geom_ci(
+  mapping = NULL,
+  data = NULL,
+  conf_level = 0.95,
+  distribution = "normal",
+  bins = NULL,
+  breaks = NULL,
+  geom = list("point", "line", "errorbar"),
+  position = "identity",
+  fun.args = list(),
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE,
+  ...
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by `aes` or `aes_`. 
@@ -40,6 +50,10 @@ data to the log space first. The "binomial" option will use the
 \code{\link[binom:binom.confint]{binom.exact}} function to calculate the
 confidence 
 intervals. Note: binomial data must be numeric and contain only 1's and 0's.}
+
+\item{bins}{number of bins to cut up the x data, cuts data into quantiles.}
+
+\item{breaks}{breaks to cut up the x data, if this option is used, bins is ignored}
 
 \item{geom}{Use to override the default geom. Can be a list of multiple 
 geoms, e.g. list("point","line","errorbar"), which is the default.}

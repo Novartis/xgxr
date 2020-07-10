@@ -5,7 +5,9 @@
 \alias{StatSummaryOrdinal}
 \title{Stat ggproto object for creating ggplot layers of binned confidence intervals
 for probabiliities of classes in ordinal data}
-\format{An object of class \code{StatSummaryOrdinal} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 7.}
+\format{
+An object of class \code{StatSummaryOrdinal} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 7.
+}
 \usage{
 StatSummaryOrdinal
 }

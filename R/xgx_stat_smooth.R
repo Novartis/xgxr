@@ -40,7 +40,10 @@
 #' @param se display confidence interval around smooth? (TRUE by default, see level to control)
 #' @param fullrange should the fit span the full range of the plot, or just the data
 #' @param n number of points to evaluate smoother at
-#' @param n_boot number of bootstraps to perform to compute confidence interval, currently only used for method = "polr", default is 200
+#' @param span Controls the amount of smoothing for the default loess smoother. 
+#' Smaller numbers produce wigglier lines, larger numbers produce smoother lines.
+#' @param n_boot number of bootstraps to perform to compute confidence interval, 
+#' currently only used for method = "polr", default is 200
 #' @param method.args Optional additional arguments passed on to the method.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
@@ -82,18 +85,18 @@
 #' 
 #' dat1 <- data.frame(ID = 1:(Ntot),
 #'                    DOSE = rep(Doses, Nsubj),
-#'                    PD0 = rlnorm(Ntot, log(100), 1),
-#'                    Kout = exp(rnorm(Ntot,-2, 0.3)),
+#'                    PD0 = stats::rlnorm(Ntot, log(100), 1),
+#'                    Kout = exp(stats::rnorm(Ntot,-2, 0.3)),
 #'                    Imax = 1,
 #'                    ED50 = 25) %>%
-#'   dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, 0.05, 0.3))  ) %>%
+#'   dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(stats::rnorm(Ntot, 0.05, 0.3))) %>%
 #'   merge(data.frame(ID = rep(1:(Ntot), each = length(times)), Time = times), by = "ID") %>%
 #'   dplyr::mutate(PD = ((PD0 - PDSS)*(exp(-Kout*Time)) + PDSS), 
 #'                 PCHG = (PD - PD0)/PD0)
 #' 
 #' gg <- ggplot2::ggplot(dat1 %>% subset(Time == 90), 
 #'                       ggplot2::aes(x = DOSE, y = PCHG)) +
-#'   ggplot2::geom_boxplot(aes(group = DOSE)) +
+#'   ggplot2::geom_boxplot(ggplot2::aes(group = DOSE)) +
 #'   xgx_theme() +
 #'   xgx_scale_y_percentchangelog10() +
 #'   ggplot2::ylab("Percent Change from Baseline") +
@@ -113,25 +116,26 @@
 #'   
 #' # example with ordinal data (method = "polr")
 #' set.seed(12345)
-#' data = data.frame(x = 120*exp(rnorm(100,0,1)),
+#' data = data.frame(x = 120*exp(stats::rnorm(100,0,1)),
 #'                   response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
 #'                   covariate = sample(c("Male","Female"), 100, replace = TRUE)) %>%
-#'   dplyr::mutate(y = (50 + 20*x/(200 + x))*exp(rnorm(100, 0, 0.3)))
+#'   dplyr::mutate(y = (50 + 20*x/(200 + x))*exp(stats::rnorm(100, 0, 0.3)))
 #'   
 #' # example coloring by the response categories
 #' xgx_plot(data = data) +
-#' xgx_stat_smooth(mapping = aes(x = x, response = response, colour = response, fill = response),
-#'                 method = "polr") + 
-#'                 scale_y_continuous(labels = scales::percent_format())
+#'   xgx_stat_smooth(mapping = ggplot2::aes(x = x, response = response,
+#'                                          colour = response, fill = response),
+#'                   method = "polr") +
+#'   ggplot2::scale_y_continuous(labels = scales::percent_format())
 #'
-#' # example faceting by the response categories, coloring by a different covariate                             
+#' # example faceting by the response categories, coloring by a different covariate 
 #' xgx_plot(data = data) +
-#' xgx_stat_smooth(mapping = aes(x = x, response = response, colour = covariate, fill = covariate),
+#' xgx_stat_smooth(mapping = ggplot2::aes(x = x, response = response, 
+#'                                        colour = covariate, fill = covariate),
 #'                 method = "polr", level = 0.80) + 
-#'                 facet_wrap(~response) + 
-#'                 scale_y_continuous(labels = scales::percent_format())
+#'                 ggplot2::facet_wrap(~response) + 
+#'                 ggplot2::scale_y_continuous(labels = scales::percent_format())
 #' 
-#' @importFrom minpack.lm nlsLM
 #' @importFrom stats nls
 #' @importFrom ggplot2 StatSmooth
 #' @export
@@ -209,13 +213,15 @@ xgx_stat_smooth <- function(mapping = NULL,
   return(lays)
 }
 
+##' @importFrom minpack.lm nlsLM
+##' @export
+minpack.lm::nlsLM
 
-#' 
+
+#' Wrapper for stat_smooth 
 #' 
 #' @rdname xgx_stat_smooth
 #' 
-#' @importFrom minpack.lm nlsLM
-#' @importFrom stats nls
 #' @export
 #' 
 xgx_geom_smooth <- function(mapping = NULL,
@@ -261,8 +267,6 @@ xgx_geom_smooth <- function(mapping = NULL,
 #' 
 #' @rdname xgx_stat_smooth
 #' 
-#' @importFrom minpack.lm nlsLM
-#' @importFrom stats nls
 #' @export
 xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
                                  position = "identity", ..., method = "nlsLM", formula, 
@@ -320,23 +324,22 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
 #' @return dataframe with x and y values, if se is TRUE dataframe also includes ymin and ymax
 #'
 #' @importFrom Deriv Deriv
-#' @importFrom minpack.lm nlsLM
 #' @importFrom stats nls
 #' @export
 predictdf.nls <- function(model, xseq, se, level) {
   
-  if(se){
-    # function to calculate gradient wrt model parameters
-    # value is the function value
-    # grad is the gradient
-    fun_grad <- function(form, x, pars){
-      
-      # extract the model parameters to the local environment
-      list2env(pars %>% as.list(), envir = environment())
-      
-      ret <- list()
-      ret$value <- eval(form[[3L]]) # this is the value of the formula
-      
+  # function to calculate gradient wrt model parameters
+  # value is the function value
+  # grad is the gradient
+  fun_grad <- function(form, x, pars, se){
+    
+    # extract the model parameters to the local environment
+    list2env(pars %>% as.list(), envir = environment())
+    
+    ret <- list()
+    ret$value <- eval(form[[3L]]) # this is the value of the formula
+    
+    if(se){
       ret$grad <- list()
       xvec <- x      
       for(i in 1:length(xvec)){
@@ -345,13 +348,18 @@ predictdf.nls <- function(model, xseq, se, level) {
       }
       
       ret$grad <- dplyr::bind_rows(ret$grad) %>% as.matrix
-      
-      return(ret)
     }
     
-    fg <- fun_grad(form = model$m$formula(), x = xseq, pars = model$m$getPars())
-    
-    f.new <- fg$value # value of function
+    return(ret)
+  }
+  
+
+  fg <- fun_grad(form = model$m$formula(), x = xseq, pars = model$m$getPars(), se)
+  
+  f.new <- fg$value # value of function
+  pred <- data.frame(x = xseq, y = f.new)
+  
+  if(se){
     grad.new <- fg$grad # value of gradient
     
     
@@ -361,11 +369,11 @@ predictdf.nls <- function(model, xseq, se, level) {
     alpha = 1 - level
     deltaf <- sqrt(GS)*qt(1 - alpha/2, df = summary(model)$df[2])
     
-    pred <- data.frame(x = xseq, y = f.new, ymin = f.new - deltaf, ymax = f.new + deltaf)
+    pred$ymin <- f.new - deltaf
+    pred$ymax <- f.new + deltaf
     
   }else{
-    
-    pred <- ggplot2:::predictdf.default(model, xseq, se, level)
+    pred <- data.frame(x = xseq, y = f.new)
   }
   
   return(pred)
@@ -390,9 +398,12 @@ predictdf.nls <- function(model, xseq, se, level) {
 #' @param weight weights to use for method
 #' @param n_boot number of bootstraps to perform for confidence interval calculation, default is 200
 #' 
+#' @importFrom stats predict
+#' 
 #' @export
 predictdf.polr <- function(model, xseq, se, level, 
                            data, method, formula, method.args, weight, n_boot = 200){
+  x <- y <- response <- NULL
   
   percentile_value <- level + (1 - level) / 2
   
@@ -412,7 +423,7 @@ predictdf.polr <- function(model, xseq, se, level,
       # Extract Bootstrapped Predictions
       # predictdf.polr(model_boot, xseq, se, level)
       
-      pred <- predict(model_boot, newdata = data.frame(x = xseq), type = "probs") %>%
+      pred <- stats::predict(model_boot, newdata = data.frame(x = xseq), type = "probs") %>%
         data.frame() %>%
         dplyr::mutate( x = xseq)
       pred.df <- tidyr::pivot_longer(data = pred, cols = -x, names_to = "response", values_to = "y")
@@ -432,11 +443,11 @@ predictdf.polr <- function(model, xseq, se, level,
   }
   pred.df_boot <- dplyr::bind_rows(pred.df_boot) %>%
     dplyr::group_by(x, response) %>%
-    dplyr::summarize(ymin = quantile(na.omit(y), 1 - percentile_value),
-                     ymax = quantile(na.omit(y), percentile_value)) %>%
+    dplyr::summarize(ymin = quantile(stats::na.omit(y), 1 - percentile_value),
+                     ymax = quantile(stats::na.omit(y), percentile_value), .groups = "keep") %>%
     dplyr::ungroup()
   
-  pred <- predict(model, newdata = data.frame(x = xseq), type = "probs") %>%
+  pred <- stats::predict(model, newdata = data.frame(x = xseq), type = "probs") %>%
     data.frame() %>%
     dplyr::mutate( x = xseq)
   
@@ -444,14 +455,16 @@ predictdf.polr <- function(model, xseq, se, level,
   
   pred.df_group <- merge(pred.df, pred.df_boot, by = c("x","response"))
   
-  ret <- pred.df_group %>% subset(,c(x, y, ymin, ymax, response))
+  ret <- pred.df_group %>% subset(,c("x", "y", "ymin", "ymax", "response"))
   
 }
 
 
-#' @rdname ggplot2-ggproto
-#' @format NULL
-#' @usage NULL
+#' Stat object for producing smooths through ordinal data
+#' 
+#' @inherit ggplot2::StatSmooth
+#' 
+#' @importFrom ggplot2 ggproto
 #' @export
 StatSmoothOrdinal <- ggplot2::ggproto(
   "StatSmoothOrdinal", 
@@ -564,6 +577,10 @@ StatSmoothOrdinal <- ggplot2::ggproto(
     
     percentile_value <- level + (1 - level) / 2
     
+    if(!is.factor(data$response)){
+      data$response <- factor(data$response)
+      message(paste0("In xgx_stat_smooth: \n  response should be a factor, converting to factor using as.factor(response) with default levels"))
+    }
     
     if (length(unique(data$x)) < 2) {
       # Not enough data to perform fit
