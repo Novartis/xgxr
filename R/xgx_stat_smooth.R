@@ -136,7 +136,6 @@
 #'                 ggplot2::facet_wrap(~response) + 
 #'                 ggplot2::scale_y_continuous(labels = scales::percent_format())
 #' 
-#' @importFrom minpack.lm nlsLM
 #' @importFrom stats nls
 #' @importFrom ggplot2 StatSmooth
 #' @export
@@ -213,6 +212,10 @@ xgx_stat_smooth <- function(mapping = NULL,
   
   return(lays)
 }
+
+##' @importFrom minpack.lm nlsLM
+##' @export
+minpack.lm::nlsLM
 
 
 #' Wrapper for stat_smooth 
@@ -321,7 +324,6 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
 #' @return dataframe with x and y values, if se is TRUE dataframe also includes ymin and ymax
 #'
 #' @importFrom Deriv Deriv
-#' @importFrom minpack.lm nlsLM
 #' @importFrom stats nls
 #' @export
 predictdf.nls <- function(model, xseq, se, level) {
@@ -442,7 +444,7 @@ predictdf.polr <- function(model, xseq, se, level,
   pred.df_boot <- dplyr::bind_rows(pred.df_boot) %>%
     dplyr::group_by(x, response) %>%
     dplyr::summarize(ymin = quantile(stats::na.omit(y), 1 - percentile_value),
-                     ymax = quantile(stats::na.omit(y), percentile_value)) %>%
+                     ymax = quantile(stats::na.omit(y), percentile_value), .groups = "keep") %>%
     dplyr::ungroup()
   
   pred <- stats::predict(model, newdata = data.frame(x = xseq), type = "probs") %>%
@@ -575,6 +577,10 @@ StatSmoothOrdinal <- ggplot2::ggproto(
     
     percentile_value <- level + (1 - level) / 2
     
+    if(!is.factor(data$response)){
+      data$response <- factor(data$response)
+      message(paste0("In xgx_stat_smooth: \n  response should be a factor, converting to factor using as.factor(response) with default levels"))
+    }
     
     if (length(unique(data$x)) < 2) {
       # Not enough data to perform fit

@@ -4,7 +4,8 @@
 \name{mad_nca}
 \alias{mad_nca}
 \title{Multiple Ascending Dose Noncompartmental Analysis (NCA) dataset}
-\format{A data frame with the following 7 columns:
+\format{
+A data frame with the following 7 columns:
 \tabular{rll}{
   column 1: \tab \code{ID} \tab numeric; unique subject ID\cr
   column 2: \tab \code{PARAM} \tab character; NCA parameter\cr
@@ -13,7 +14,8 @@
   column 15: \tab \code{TRTACT} \tab factor; treatment group label\cr
   column 14: \tab \code{SEX} \tab character; sex\cr
   column 13: \tab \code{WEIGHTB} \tab numeric; baseline body weight (kg)
-}}
+}
+}
 \usage{
 mad_nca
 }

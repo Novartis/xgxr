@@ -4,8 +4,14 @@
 \alias{xgx_scale_y_percentchangelog10}
 \title{percentchangelog10 transform for the y scale.}
 \usage{
-xgx_scale_y_percentchangelog10(breaks = NULL, minor_breaks = NULL,
-  labels = NULL, accuracy = 1, n_breaks = 7, ...)
+xgx_scale_y_percentchangelog10(
+  breaks = NULL,
+  minor_breaks = NULL,
+  labels = NULL,
+  accuracy = 1,
+  n_breaks = 7,
+  ...
+)
 }
 \arguments{
 \item{breaks}{if NULL, then default is to use a variant of 2^(labeling::extended(log2(PCHG + 1))) - 1, where PCHG represents the range of the data}
