@@ -2,6 +2,7 @@
 #'
 #' \code{xgx_conf_int} returns a dataframe with mean +/- confidence intervals
 #'
+#' @param y data to compute confidence interval of
 #' @param conf_level The percentile for the confidence interval (should fall 
 #' between 0 and 1). The default is 0.95, which corresponds to a 95 percent 
 #' confidence interval.
@@ -31,7 +32,7 @@
 #' @importFrom binom binom.exact
 #' @importFrom DescTools MultinomCI
 #' @export
-xgx_conf_int = function(y, conf_level, distribution) {
+xgx_conf_int = function(y, conf_level = 0.95, distribution = "normal") {
   
   if (!(conf_level > 0.5 && conf_level < 1)) {
     stop("conf_level should be greater than 0.5 and less than 1")

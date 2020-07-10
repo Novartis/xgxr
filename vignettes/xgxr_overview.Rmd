@@ -33,9 +33,10 @@ reverse-log-transform-scale functions for more readable axes).
 ## Required Packages
 
 ```{r, message=FALSE}
-library(xgxr)
-library(ggplot2)
+library(tidyr)
 library(dplyr)
+library(ggplot2)
+library(xgxr)
 ```
 
 <!-- ## Data exploration

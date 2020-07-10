@@ -41,6 +41,10 @@ data to the log space first. The "binomial" option will use the
 confidence 
 intervals. Note: binomial data must be numeric and contain only 1's and 0's.}
 
+\item{bins}{number of bins to cut up the x data, cuts data into quantiles.}
+
+\item{breaks}{breaks to cut up the x data, if this option is used, bins is ignored}
+
 \item{geom}{Use to override the default geom. Can be a list of multiple 
 geoms, e.g. list("point","line","errorbar"), which is the default.}
 

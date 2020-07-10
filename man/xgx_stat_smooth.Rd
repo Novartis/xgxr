@@ -66,7 +66,11 @@ For datasets with 1000 or more observations defaults to gam.}
 
 \item{n}{number of points to evaluate smoother at}
 
-\item{n_boot}{number of bootstraps to perform to compute confidence interval, currently only used for method = "polr", default is 200}
+\item{span}{Controls the amount of smoothing for the default loess smoother. 
+Smaller numbers produce wigglier lines, larger numbers produce smoother lines.}
+
+\item{n_boot}{number of bootstraps to perform to compute confidence interval, 
+currently only used for method = "polr", default is 200}
 
 \item{fullrange}{should the fit span the full range of the plot, or just the data}
 
@@ -125,18 +129,18 @@ times <- c(0,14,30,60,90)
 
 dat1 <- data.frame(ID = 1:(Ntot),
                    DOSE = rep(Doses, Nsubj),
-                   PD0 = rlnorm(Ntot, log(100), 1),
-                   Kout = exp(rnorm(Ntot,-2, 0.3)),
+                   PD0 = stats::rlnorm(Ntot, log(100), 1),
+                   Kout = exp(stats::rnorm(Ntot,-2, 0.3)),
                    Imax = 1,
                    ED50 = 25) \%>\%
-  dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(rnorm(Ntot, 0.05, 0.3))  ) \%>\%
+  dplyr::mutate(PDSS = PD0*(1 - Imax*DOSE/(DOSE + ED50))*exp(stats::rnorm(Ntot, 0.05, 0.3))) \%>\%
   merge(data.frame(ID = rep(1:(Ntot), each = length(times)), Time = times), by = "ID") \%>\%
   dplyr::mutate(PD = ((PD0 - PDSS)*(exp(-Kout*Time)) + PDSS), 
                 PCHG = (PD - PD0)/PD0)
 
 gg <- ggplot2::ggplot(dat1 \%>\% subset(Time == 90), 
                       ggplot2::aes(x = DOSE, y = PCHG)) +
-  ggplot2::geom_boxplot(aes(group = DOSE)) +
+  ggplot2::geom_boxplot(ggplot2::aes(group = DOSE)) +
   xgx_theme() +
   xgx_scale_y_percentchangelog10() +
   ggplot2::ylab("Percent Change from Baseline") +
@@ -156,23 +160,25 @@ gg +
   
 # example with ordinal data (method = "polr")
 set.seed(12345)
-data = data.frame(x = 120*exp(rnorm(100,0,1)),
+data = data.frame(x = 120*exp(stats::rnorm(100,0,1)),
                   response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
                   covariate = sample(c("Male","Female"), 100, replace = TRUE)) \%>\%
-  dplyr::mutate(y = (50 + 20*x/(200 + x))*exp(rnorm(100, 0, 0.3)))
+  dplyr::mutate(y = (50 + 20*x/(200 + x))*exp(stats::rnorm(100, 0, 0.3)))
   
 # example coloring by the response categories
 xgx_plot(data = data) +
-xgx_stat_smooth(mapping = aes(x = x, response = response, colour = response, fill = response),
-                method = "polr") + 
-                scale_y_continuous(labels = scales::percent_format())
+  xgx_stat_smooth(mapping = ggplot2::aes(x = x, response = response,
+                                         colour = response, fill = response),
+                  method = "polr") +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
 
-# example faceting by the response categories, coloring by a different covariate                             
+# example faceting by the response categories, coloring by a different covariate 
 xgx_plot(data = data) +
-xgx_stat_smooth(mapping = aes(x = x, response = response, colour = covariate, fill = covariate),
+xgx_stat_smooth(mapping = ggplot2::aes(x = x, response = response, 
+                                       colour = covariate, fill = covariate),
                 method = "polr", level = 0.80) + 
-                facet_wrap(~response) + 
-                scale_y_continuous(labels = scales::percent_format())
+                ggplot2::facet_wrap(~response) + 
+                ggplot2::scale_y_continuous(labels = scales::percent_format())
 
 }
 \seealso{

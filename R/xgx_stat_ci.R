@@ -34,11 +34,15 @@
 #' \code{\link[binom:binom.confint]{binom.exact}} function to calculate the
 #' confidence 
 #' intervals. Note: binomial data must be numeric and contain only 1's and 0's. 
+#' @param bins number of bins to cut up the x data, cuts data into quantiles.
+#' @param breaks breaks to cut up the x data, if this option is used, bins is ignored
 #' @param geom Use to override the default geom. Can be a list of multiple 
 #' geoms, e.g. list("point","line","errorbar"), which is the default.
 #' @param position Position adjustment, either as a string, or the result of 
 #' a call to a position adjustment function.
 #' @param fun.args Optional additional arguments passed on to the functions.
+#' @param fun.data A function that is given the complete data and should return 
+#' a data frame with variables ymin, y, and ymax.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
 #' @param show.legend logical. Should this layer be included in the legends? 
@@ -94,35 +98,37 @@
 #'               
 #' # plotting ordinal or multinomial data
 #' set.seed(12345) 
-#' data = data.frame(x = 120*exp(rnorm(100,0,1)), 
+#' data = data.frame(x = 120*exp(stats::rnorm(100,0,1)), 
 #'               response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
 #'               covariate = sample(c("Male","Female"), 100, replace = TRUE))
 #'   
 #' xgx_plot(data = data) + 
-#'   xgx_stat_ci(mapping = aes(x = x, response = response, colour = covariate), 
+#'   xgx_stat_ci(mapping = ggplot2::aes(x = x, response = response, colour = covariate), 
 #'               distribution = "ordinal", bins = 4) + 
-#'   scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~response)
+#'   ggplot2::scale_y_continuous(labels = scales::percent_format()) + ggplot2::facet_wrap(~response)
 #' 
 #' xgx_plot(data = data) + 
-#'   xgx_stat_ci(mapping = aes(x = x, response = response, colour = response), 
+#'   xgx_stat_ci(mapping = ggplot2::aes(x = x, response = response, colour = response), 
 #'               distribution = "ordinal", bins = 4) + 
-#'   scale_y_continuous(labels = scales::percent_format()) + facet_wrap(~covariate)
+#'   ggplot2::scale_y_continuous(labels = scales::percent_format()) + ggplot2::facet_wrap(~covariate)
 #' 
 #' # Example plotting categorical vs categorical data
 #' set.seed(12345)
-#' data = data.frame(x = 120*exp(rnorm(100,0,1)),
+#' data = data.frame(x = 120*exp(stats::rnorm(100,0,1)),
 #'                   response = sample(c("Trt1", "Trt2", "Trt3"), 100, replace = TRUE),
-#'                   covariate = factor(sample(c("White","Black","Asian","Other"), 100, replace = TRUE), 
+#'                   covariate = factor(
+#'                     sample(c("White","Black","Asian","Other"), 100, replace = TRUE),
 #'                                      levels = c("White", "Black", "Asian", "Other")))
 #' 
 #' xgx_plot(data = data) +
-#'   xgx_stat_ci(mapping = aes(x = response, response = covariate),
+#'   xgx_stat_ci(mapping = ggplot2::aes(x = response, response = covariate),
 #'               distribution = "ordinal") +
-#'   xgx_stat_ci(mapping = aes(x = 1, response = covariate), geom = "hline",
+#'   xgx_stat_ci(mapping = ggplot2::aes(x = 1, response = covariate), geom = "hline",
 #'               distribution = "ordinal") +
-#'   scale_y_continuous(labels = scales::percent_format()) + 
-#'   facet_wrap(~covariate) + 
-#'   xlab("Treatment group") + ylab("Percent of subjects by category")
+#'   ggplot2::scale_y_continuous(labels = scales::percent_format()) + 
+#'   ggplot2::facet_wrap(~covariate) + 
+#'   ggplot2::xlab("Treatment group") + 
+#'   ggplot2::ylab("Percent of subjects by category")
 #' 
 #' 
 #' 
@@ -133,9 +139,11 @@
 #' @importFrom stats qt
 #' @importFrom stats var
 #' @importFrom binom binom.exact
-#' @importFrom ggplot2 stat_summary
 #' @importFrom ggplot2 aes
+#' @importFrom ggplot2 layer
 #' @importFrom ggplot2 position_dodge
+#' @importFrom ggplot2 StatSummary
+#' 
 #' @export
 xgx_stat_ci <- function(mapping = NULL,
                         data = NULL,
@@ -179,7 +187,7 @@ xgx_stat_ci <- function(mapping = NULL,
   }else{
     # Continuous Non-binned
     if (is.null(bins) & is.null(breaks)) {
-      ggproto_stat <- StatSummary
+      ggproto_stat <- ggplot2::StatSummary
     }
 
     # Continuous binned
@@ -191,7 +199,7 @@ xgx_stat_ci <- function(mapping = NULL,
   }
 
   for (igeom in geom) {
-    lay = layer(
+    lay = ggplot2::layer(
       stat = ggproto_stat,
       data = data,
       mapping = mapping,
@@ -485,6 +493,8 @@ StatSummaryBinQuant <- ggplot2::ggproto("StatSummaryBinQuant", ggplot2::Stat,
   if (!is.null(a)) a else b
 }
 
+is_mapped_discrete <- function(x) inherits(x, "mapped_discrete")
+
 has_flipped_aes <- function(data, params = list(), main_is_orthogonal = NA,
                             range_is_orthogonal = NA, group_has_equal = FALSE,
                             ambiguous = FALSE, main_is_continuous = FALSE,
@@ -560,26 +570,6 @@ has_flipped_aes <- function(data, params = list(), main_is_orthogonal = NA,
   # default to no
   FALSE
 }
-#' @rdname bidirection
-#' @export
-flip_data <- function(data, flip = NULL) {
-  flip <- flip %||% any(data$flipped_aes) %||% FALSE
-  if (isTRUE(flip)) {
-    names(data) <- switch_orientation(names(data))
-  }
-  data
-}
-#' @rdname bidirection
-#' @export
-flipped_names <- function(flip = FALSE) {
-  x_aes <- ggplot_global$x_aes
-  y_aes <- ggplot_global$y_aes
-  if (flip) {
-    ret <- as.list(c(y_aes, x_aes))
-  } else {
-    ret <- as.list(c(x_aes, y_aes))
-  }
-  names(ret) <- c(x_aes, y_aes)
-  ret
-}
+
+
                          

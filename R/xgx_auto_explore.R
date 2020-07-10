@@ -16,11 +16,16 @@
 #' to the corresponding columns in the new dataset.
 #' @param author_name The name of the author to be displayed on the template
 #' @param multiple_dosing Whether or not to use a "Multiple" or "Single" Ascending dose template
+#' @param dose_cmt Integer denoting the compartment for dosing records
 #' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
-#' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
-#' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
-#' have these integers, where each row may contain either PK or PD data
-#' @param pd_data_type The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
+#' have these integers, where each row may contain PK, PD, dosing or other events/observations data
+#' @param pd_cmt An integer denoting the "compartment" containing the PD data, 
+#' of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
+#' have these integers, where each row may contain PK, PD, dosing or other events/observations data
+#' @param pd_data_type The type of PD data - acceptable values exist in the following list: 
+#' ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
+#' @param steady_state_day used to denote the day of rich sampling of PK at steady state
+#' @param time_between_doses dosing interval, has units to match the time variable of the dataset
 #' @param rmd_template_path A user provided custom template (as a string)
 #' @param rmd_output_path A custom output path for the generated Rmd file
 #' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
@@ -34,11 +39,11 @@
 #' @return NULL
 #'
 #' @examples
-#' source('~/xgxr/Rdev/xgx_auto_explore.R')
 #' 
 #' author_name = "Your Name Here"
 #' show_explanation = FALSE
 #' 
+#' \dontrun{
 #' # Try out the nonlinear_pkpd dataset with the
 #' # Multiple Ascending Dose PK Rmd template
 #' data_path <- "~/nonlinear_pkpd.csv"
@@ -58,7 +63,6 @@
 #'   "WEIGHTB" = 0)
 #' 
 #' 
-#' 
 #' # 5 contains the PK Concentration in this dataset
 #' pk_cmt = 5
 #' # We don't need PD right now
@@ -71,6 +75,8 @@
 #' time_between_doses = 24
 #' multiple_dosing = TRUE
 #' 
+#' output_directory = tempdir()
+#' 
 #' xgx_auto_explore(data_path = data_path,
 #'                  mapping = mapping,
 #'                  author_name = author_name,
@@ -81,7 +87,9 @@
 #'                  time_between_doses = time_between_doses,
 #'                  multiple_dosing = multiple_dosing,
 #'                  pd_data_type = pd_data_type,
+#'                  rmd_output_path = output_directory,
 #'                  show_explanation = show_explanation)
+#' }
 #'     
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
@@ -101,7 +109,7 @@ xgx_auto_explore <- function(data_path = NULL,
                              rmd_output_path = NULL,
                              pdf_output_path = NULL,
                              html_output_path = NULL,
-                             alter_datetime = TRUE,
+                             add_datetime = TRUE,
                              show_explanation = TRUE) {
 
   working_dir <- getwd()
@@ -135,7 +143,7 @@ xgx_auto_explore <- function(data_path = NULL,
                                   "xgx_autoexplore_ouput",
                                   dataset_name,
                                   rmd_template_name)
-  # Ensure that the direcotyr exists by creating it - must be done iteratively for heirarchical directories
+  # Ensure that the directory exists by creating it - must be done iteratively for heirarchical directories
   dir.create(working_dir, showWarnings = FALSE)
   dir.create(file.path(working_dir, "xgx_autoexplore_ouput"), showWarnings = FALSE)
   dir.create(file.path(working_dir, "xgx_autoexplore_ouput", dataset_name), showWarnings = FALSE)
@@ -167,7 +175,7 @@ xgx_auto_explore <- function(data_path = NULL,
                                           steady_state_day = steady_state_day,
                                           time_between_doses = time_between_doses,
                                           author_name = author_name,
-                                          alter_datetime = alter_datetime,
+                                          add_datetime = add_datetime,
                                           show_explanation = show_explanation)
 
 
@@ -211,8 +219,15 @@ xgx_auto_explore <- function(data_path = NULL,
 #' 
 #' @return A string of the new R markdown template
 #'
-#' @importFrom stringr str_replace
+#' @importFrom glue glue
+#' @importFrom Hmisc escapeRegex
 #' @importFrom readr read_file
+#' @importFrom stringr str_replace
+#' @importFrom utils capture.output
+#' @importFrom utils getParseData
+#' @importFrom utils read.csv
+#' @importFrom utils tail
+#' 
 #' @export
 edit_rmd_template_str <- function(rmd_str = NULL,
                                   mapping = NULL,
@@ -225,12 +240,14 @@ edit_rmd_template_str <- function(rmd_str = NULL,
                                   steady_state_day = NULL,
                                   time_between_doses = NULL,
                                   author_name = NULL,
-                                  alter_datetime = TRUE,
+                                  add_datetime = TRUE,
                                   show_explanation = TRUE) {
+  
+  token <- parent <- NULL
 
   author_name_re <- 'author: \\"(.*)\\"'
 
-  user_data <- read.csv(data_path)
+  user_data <- utils::read.csv(data_path)
 
 
   # Alter the path to the data, to match the user given path
@@ -263,7 +280,7 @@ edit_rmd_template_str <- function(rmd_str = NULL,
     # Regular Expressions do not work here, becuase comments can contain parentheses
     # So we will get the `mutate` full expression by parsing
     mutate_expr <- parse(text = mutate_start_rmd_str, n = 1)
-    mutate_expr_parse_data <- getParseData(mutate_expr, includeText = TRUE)
+    mutate_expr_parse_data <- utils::getParseData(mutate_expr, includeText = TRUE)
     mutate_expr_str <- mutate_expr_parse_data[1, "text"]
 
     # Split the main `mutate` function parameters into 
@@ -273,7 +290,7 @@ edit_rmd_template_str <- function(rmd_str = NULL,
                               subset(token == "expr") %>%
                               subset(parent == main_parent) %>%
                               select(text)
-    orig_mapping_right <- tail(orig_mapping_right[[1]], -1)
+    orig_mapping_right <- utils::tail(orig_mapping_right[[1]], -1)
 
     orig_mapping_left <- mutate_expr_parse_data %>% 
                               subset(token == "SYMBOL_SUB") %>%
@@ -298,7 +315,7 @@ edit_rmd_template_str <- function(rmd_str = NULL,
     }
 
     # The new mapping must be stored as a string in order to insert
-    new_mutate_str <- paste(capture.output(dput(mapply(as.name, mapping))),
+    new_mutate_str <- paste(utils::capture.output(dput(mapply(as.name, mapping))),
                             sep='\n',
                             collapse = "")
     # Change 'list' to 'mutate' in mapping string representation
@@ -374,7 +391,7 @@ edit_rmd_template_str <- function(rmd_str = NULL,
   }
 
   # Add datetime
-  if (alter_datetime) {
+  if (add_datetime) {
     date_re <- 'date: \\"(.*)\\"'
 
     rmd_date_str <- stringr::str_match(string = rmd_str,
@@ -451,6 +468,7 @@ edit_rmd_template_str <- function(rmd_str = NULL,
 #' @return a string for the Rmd template name
 #'
 #'     
+#' @importFrom glue glue
 #' @importFrom stringr str_replace
 #' @importFrom readr read_file
 #' @export
@@ -520,8 +538,10 @@ get_rmd_name <- function(rmd_template_name = NULL,
 #' @return a string for the Rmd template name
 #'
 #'
-#' @importFrom stringr str_replace
+#' @importFrom RCurl getURL
 #' @importFrom readr read_file
+#' @importFrom stringr str_replace
+#' 
 #' @export
 get_rmd_str <- function(rmd_template_name = NULL,
                         multiple_dosing = FALSE,

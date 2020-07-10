@@ -8,7 +8,7 @@ edit_rmd_template_str(rmd_str = NULL, mapping = NULL,
   rmd_output_path = NULL, data_path = NULL, multiple_dosing = FALSE,
   pk_cmt = NULL, pd_cmt = NULL, dose_cmt = NULL,
   steady_state_day = NULL, time_between_doses = NULL,
-  author_name = NULL, alter_datetime = TRUE, show_explanation = TRUE)
+  author_name = NULL, add_datetime = TRUE, show_explanation = TRUE)
 }
 \arguments{
 \item{rmd_str}{A character string containing the Rmd template raw characters}
@@ -30,11 +30,11 @@ have these integers, where each row may contain either PK or PD data}
 
 \item{author_name}{The name of the author to be displayed on the template}
 
+\item{add_datetime}{Boolean indicating additon of a date stamp to the beginnning of the Rmd file}
+
 \item{show_explanation}{Boolean indicating if the additional explanations (text in between figures) are needed for the user.}
 
 \item{pd_data_type}{The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]}
-
-\item{add_datetime}{Boolean indicating additon of a date stamp to the beginnning of the Rmd file}
 }
 \value{
 A string of the new R markdown template
