@@ -540,7 +540,8 @@ get_rmd_str <- function(rmd_template_name = NULL,
   full_url <- paste0(git_url, rmd_fname)
 
   # Read the Rmd from github into a string
-  rmd_str <- RCurl::getURL(full_url, ssl.verifypeer = FALSE)
+  rmd_str <- paste(readLines(con = url(full_url), warn = FALSE), collapse="\n")
+  #RCurl::getURL(full_url, ssl.verifypeer = FALSE)
 
   # If no internet connection / unsuccessful, try the local files in xgxr
   if (is.null(rmd_str)) {
