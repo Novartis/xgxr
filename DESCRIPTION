@@ -43,6 +43,7 @@ Imports:
     assertthat,
     binom,
     Deriv,
+    DescTools,
     dplyr,
     ggplot2,
     graphics,
@@ -64,7 +65,8 @@ Suggests:
     RxODE,
     stringr,
     testthat,
-    tidyr
+    tidyr,
+    vdiffr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

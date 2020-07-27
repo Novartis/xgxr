@@ -337,6 +337,10 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
 
      setup_data = function(self, data, params) {
 
+       if(is.character(data$x) | is.factor(data$x)){
+         data <- data %>% dplyr::mutate(x = as.numeric(as.factor(x)))
+       }
+       
        # Define new grouping variable for which to split the data computation 
        # (excludes aesthetics that are identical to the Response variable)
        if(is.null(params$aes_to_group)){
@@ -568,3 +572,4 @@ flipped_names <- function(flip = FALSE) {
   names(ret) <- c(x_aes, y_aes)
   ret
 }
+                         

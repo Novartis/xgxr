@@ -24,8 +24,9 @@ xgx_geom_ci <- function(mapping = NULL, data = NULL, conf_level = 0.95,
                         show.legend = NA,
                         inherit.aes = TRUE,
                         ...) {
-  return(list(xgx_stat_ci(mapping = mapping,
-                          data = data,
+  return(list(xgx_stat_ci(mapping = mapping, 
+                          data = data, 
+
                           conf_level = conf_level,
                           distribution = distribution,
                           bins = bins,
