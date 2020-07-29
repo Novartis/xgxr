@@ -42,7 +42,7 @@ xgx_geom_smooth(
   level = 0.95,
   method.args = list(),
   na.rm = FALSE,
-  orientation = NA,
+  orientation = "x",
   show.legend = NA,
   inherit.aes = TRUE
 )
@@ -62,6 +62,7 @@ xgx_geom_smooth_emax(
   level = 0.95,
   method.args = list(),
   na.rm = FALSE,
+  orientation = "x",
   show.legend = NA,
   inherit.aes = TRUE
 )

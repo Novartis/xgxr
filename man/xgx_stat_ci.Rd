@@ -177,7 +177,17 @@ xgx_plot(data = data) +
   ggplot2::xlab("Treatment group") + 
   ggplot2::ylab("Percent of subjects by category")
 
+# Same example with orientation flipped (only works for ggplot2 v.3.3.0 or later)
 
+xgx_plot(data = data) +
+xgx_stat_ci(mapping = ggplot2::aes(y = response, response = covariate), orientation = "y",
+            distribution = "ordinal") +
+  xgx_stat_ci(mapping = ggplot2::aes(y = 1, response = covariate), orientation = "y", 
+              geom = "vline", distribution = "ordinal") +
+  ggplot2::scale_x_continuous(labels = scales::percent_format()) +
+  ggplot2::facet_wrap(~covariate) +
+  ggplot2::ylab("Treatment group") +
+  ggplot2::xlab("Percent of subjects by category")
 
  
 }
