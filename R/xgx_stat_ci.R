@@ -705,8 +705,7 @@ has_flipped_aes <- function(data, params = list(), main_is_orthogonal = NA,
   FALSE
 }
 
-#' @rdname bidirection
-#' @export
+
 flip_data <- function(data, flip = NULL) {
   flip <- flip %||% any(data$flipped_aes) %||% FALSE
   if (isTRUE(flip)) {
@@ -715,8 +714,7 @@ flip_data <- function(data, flip = NULL) {
   data
 }
 
-#' @rdname bidirection
-#' @export
+
 flipped_names <- function(flip = FALSE) {
   x_aes <- ggplot_global$x_aes
   y_aes <- ggplot_global$y_aes
