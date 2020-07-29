@@ -16,6 +16,7 @@ xgx_stat_ci(
   fun.args = list(),
   fun.data = NULL,
   na.rm = FALSE,
+  orientation = "x",
   show.legend = NA,
   inherit.aes = TRUE,
   ...
@@ -69,6 +70,15 @@ a data frame with variables ymin, y, and ymax.}
 
 \item{na.rm}{If FALSE, the default, missing values are removed with a 
 warning. If TRUE, missing values are silently removed.}
+
+\item{orientation}{The orientation of the layer, passed on to ggplot2::stat_summary. 
+Only implemented for ggplot2 v.3.3.0 and later. The default ("x") summarizes y values over
+x values (same behavior as ggplot2 v.3.2.1 or earlier). Setting \code{orientation = "y"} will 
+summarize x values over y values, which may be useful in some situations where you want to flip
+the axes, e.g. to create forest plots. Setting \code{orientation = NA} will try to automatically
+determine the orientation from the aesthetic mapping (this is more stable for ggplot2 v.3.3.2
+compared to v.3.3.0).
+See \code{\link[ggplot2:stat_summary]{stat_summary}} (v.3.3.0 or greater) for more information.}
 
 \item{show.legend}{logical. Should this layer be included in the legends? 
 NA, the default, includes if any aesthetics are mapped. FALSE never 
