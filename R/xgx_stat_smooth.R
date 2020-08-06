@@ -677,7 +677,8 @@ StatSmoothOrdinal <- ggplot2::ggproto(
       
       idata <- idata %>%
         mutate(response_orig = response) %>%
-        mutate(response = paste0("X", response) %>% stringr::str_replace(" ", ".") %>% factor())
+        mutate(response = paste0("X", as.numeric(response)) %>%
+                 factor())
       
       base.args <- list(quote(formula), data = quote(idata), weights = quote(weight))
       
