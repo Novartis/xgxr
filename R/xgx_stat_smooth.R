@@ -675,6 +675,10 @@ StatSmoothOrdinal <- ggplot2::ggproto(
     for(igroup in unique(data$group2)){
       idata <- data %>% subset(group2 == igroup)
       
+      idata <- idata %>%
+        mutate(response_orig = response) %>%
+        mutate(response = paste0("X", response) %>% stringr::str_replace(" ", ".") %>% factor())
+      
       base.args <- list(quote(formula), data = quote(idata), weights = quote(weight))
       
       model <- do.call(method, c(base.args, method.args))
@@ -683,6 +687,10 @@ StatSmoothOrdinal <- ggplot2::ggproto(
                                     data = idata, method, formula, method.args, weight, n_boot)
       
       iprediction <- merge(iprediction, idata %>% subset(,-c(x)), by = "response")
+      
+      iprediction <- iprediction %>%
+        mutate(response = response_orig,
+               response_orig = NULL)
       
       prediction[[igroup]] <- iprediction
     }
