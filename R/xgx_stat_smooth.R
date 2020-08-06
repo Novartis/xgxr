@@ -47,6 +47,13 @@
 #' @param method.args Optional additional arguments passed on to the method.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
+#' @param orientation The orientation of the layer, passed on to ggplot2::stat_summary. 
+#' Only implemented for ggplot2 v.3.3.0 and later. The default ("x") summarizes y values over
+#' x values (same behavior as ggplot2 v.3.2.1 or earlier). Setting \code{orientation = "y"} will 
+#' summarize x values over y values, which may be useful in some situations where you want to flip
+#' the axes, e.g. to create forest plots. Setting \code{orientation = NA} will try to automatically
+#' determine the orientation from the aesthetic mapping (this is more stable for ggplot2 v.3.3.2
+#' compared to v.3.3.0).
 #' @param show.legend logical. Should this layer be included in the legends? 
 #' NA, the default, includes if any aesthetics are mapped. FALSE never 
 #' includes, and TRUE always includes.
@@ -154,7 +161,7 @@ xgx_stat_smooth <- function(mapping = NULL,
                             level = 0.95,
                             method.args = list(),
                             na.rm = FALSE,
-                            orientation = NA,
+                            orientation = "x",
                             show.legend = NA,
                             inherit.aes = TRUE) {
   
@@ -163,37 +170,60 @@ xgx_stat_smooth <- function(mapping = NULL,
   # Assume OLS / LM / nls / nlsLM / glm etc. model
   ggproto_stat <- ggplot2::StatSmooth
   
+  # Default parameters
+  gg_params = list(method = method,
+                   formula = formula,
+                   se = se,
+                   n = n,
+                   n_boot = n_boot,
+                   fullrange = fullrange,
+                   level = level,
+                   na.rm = na.rm,
+                   method.args = method.args,
+                   span = span,
+                   ...)
+  
+  # Compare to ggplot2 version 3.3.0
+  # If less than 3.3.0, then don't include orientation option
+  ggplot2_geq_v3.3.0 <- compareVersion(as.character(packageVersion("ggplot2")), '3.3.0') >= 0
+  
+  if(ggplot2_geq_v3.3.0){
+    gg_params$orientation = orientation
+  }else{
+    if(!(orientation %in% "x")){
+      warning('orientation other than "x" not supported for ggplot2 versions less than 3.3.0, setting orientation to "x"')
+    }
+    gg_params$orientation = "x"
+  }
+  
   # Class Model
   if (is.null(method)){ }
   else{
     if (method %in% c("polr")) {
       ggproto_stat <- StatSmoothOrdinal
       
-      if(!is.null(mapping$y)){
+      if(!(gg_params$orientation %in% c("y")) & !is.null(mapping$y)){
         if(is.null(mapping$response) ){
           mapping$response <- mapping$y
           warning("response aesthetic is not defined for ordinal data, but y is, reassigning y to response")
         }else{
-          warning("y aesthetic is not used for ordinal data")    
+          warning("y aesthetic is not used for ordinal data when orientation = 'x'")    
         }
         mapping$y <- NULL
       }
       
+      if(!(gg_params$orientation %in% c("x")) & !is.null(mapping$x)){
+        if(is.null(mapping$response) ){
+          mapping$response <- mapping$x
+          warning("response aesthetic is not defined for ordinal data, but x is, reassigning x to response")
+        }else{
+          warning("x aesthetic is not used for ordinal data when orientation = 'y'")    
+        }
+        mapping$x <- NULL
+      }
+      
     }
   }
-  
-  # Default parameters
-  gg_params = list(method = method,
-                   formula = formula,
-                   se = se,
-                   n = n,
-                   fullrange = fullrange,
-                   level = level,
-                   na.rm = na.rm,
-                   orientation = orientation,
-                   method.args = method.args,
-                   span = span,
-                   ...)
   
   for (igeom in geom) {
     lay = ggplot2::layer(
@@ -238,7 +268,7 @@ xgx_geom_smooth <- function(mapping = NULL,
                             level = 0.95,
                             method.args = list(),
                             na.rm = FALSE,
-                            orientation = NA,
+                            orientation = "x",
                             show.legend = NA,
                             inherit.aes = TRUE) {
   
@@ -272,7 +302,7 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
                                  position = "identity", ..., method = "nlsLM", formula, 
                                  se = TRUE, n = 80, span = 0.75, fullrange = FALSE,
                                  level = 0.95, method.args = list(), na.rm = FALSE,
-                                 show.legend = NA, inherit.aes = TRUE){
+                                 orientation = "x", show.legend = NA, inherit.aes = TRUE){
   if(missing(formula)) {
     warning("Formula not specified.\nUsing default formula y ~ E0 + Emax*x/(ED50 + x), 
             initializing E0, Emax, and ED50 to 1, 
@@ -286,7 +316,7 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
                        position = position, ..., method = method, formula = formula,
                        se = se, n = n, span = span, fullrange = fullrange, 
                        level = level, method.args = method.args, na.rm = na.rm,
-                       show.legend = show.legend, inherit.aes = inherit.aes)
+                       orientation = "x", show.legend = show.legend, inherit.aes = inherit.aes)
 }
 
 
@@ -472,6 +502,8 @@ StatSmoothOrdinal <- ggplot2::ggproto(
   
   required_aes = c("x", "response"),
   
+  extra_params = c("na.rm", "orientation", "method","formula","se","n","span","fullrange","level","method.args","na.rm","n_boot","xseq"),
+  
   compute_group = function(data, params) {
     return(data)
   },
@@ -479,6 +511,14 @@ StatSmoothOrdinal <- ggplot2::ggproto(
   setup_params = function(self, data, params, ...) {
     
     # params$flipped_aes <- has_flipped_aes(data, params, ambiguous = TRUE)
+    params$flipped_aes <- has_flipped_aes(data, params)
+    
+    required_aes <- self$required_aes
+    
+    if(params$flipped_aes){
+      required_aes <- switch_orientation(self$required_aes)
+    }
+    
     msg <- character()
     
     if (is.null(params$formula)) {
@@ -492,7 +532,7 @@ StatSmoothOrdinal <- ggplot2::ggproto(
     
     # check required aesthetics
     ggplot2:::check_required_aesthetics(
-      self$required_aes,
+      required_aes,
       c(names(data), names(params)),
       ggplot2:::snake_class(self)
     )
@@ -501,7 +541,7 @@ StatSmoothOrdinal <- ggplot2::ggproto(
     # "|" notation in self$required_aes
     required_aes <- intersect(
       names(data),
-      unlist(strsplit(self$required_aes, "|", fixed = TRUE))
+      unlist(strsplit(required_aes, "|", fixed = TRUE))
     )
     
     # aes_to_group are the aesthetics that are different from response,
@@ -573,6 +613,8 @@ StatSmoothOrdinal <- ggplot2::ggproto(
   
   setup_data = function(self, data, params, scales, xseq = NULL, method.args = list(), n_boot = 200) {
     
+    data <- flip_data(data, params$flipped_aes)
+    
     list2env(params, envir = environment())
     
     percentile_value <- level + (1 - level) / 2
@@ -633,6 +675,11 @@ StatSmoothOrdinal <- ggplot2::ggproto(
     for(igroup in unique(data$group2)){
       idata <- data %>% subset(group2 == igroup)
       
+      idata <- idata %>%
+        mutate(response_orig = response) %>%
+        mutate(response = paste0("X", as.numeric(response)) %>%
+                 factor())
+      
       base.args <- list(quote(formula), data = quote(idata), weights = quote(weight))
       
       model <- do.call(method, c(base.args, method.args))
@@ -642,22 +689,27 @@ StatSmoothOrdinal <- ggplot2::ggproto(
       
       iprediction <- merge(iprediction, idata %>% subset(,-c(x)), by = "response")
       
+      iprediction <- iprediction %>%
+        mutate(response = response_orig,
+               response_orig = NULL)
+      
       prediction[[igroup]] <- iprediction
     }
     
     prediction <- dplyr::bind_rows(prediction)
     
+    prediction <- flip_data(prediction, params$flipped_aes)
+    
+    return(prediction)
+    
   },
-  
-  extra_params = c("na.rm", "orientation", "method","formula","se","n","span","fullrange","level","method.args","na.rm","n_boot","xseq"),
-  
+
   compute_layer = function(self, data, params, layout) {
     data
   },
   
   compute_panel = function(data, params) {
     data
-  },
+  }
   
-  required_aes = c("x","response")
 )

@@ -45,6 +45,14 @@
 #' a data frame with variables ymin, y, and ymax.
 #' @param na.rm If FALSE, the default, missing values are removed with a 
 #' warning. If TRUE, missing values are silently removed.
+#' @param orientation The orientation of the layer, passed on to ggplot2::stat_summary. 
+#' Only implemented for ggplot2 v.3.3.0 and later. The default ("x") summarizes y values over
+#' x values (same behavior as ggplot2 v.3.2.1 or earlier). Setting \code{orientation = "y"} will 
+#' summarize x values over y values, which may be useful in some situations where you want to flip
+#' the axes, e.g. to create forest plots. Setting \code{orientation = NA} will try to automatically
+#' determine the orientation from the aesthetic mapping (this is more stable for ggplot2 v.3.3.2
+#' compared to v.3.3.0).
+#' See \code{\link[ggplot2:stat_summary]{stat_summary}} (v.3.3.0 or greater) for more information. 
 #' @param show.legend logical. Should this layer be included in the legends? 
 #' NA, the default, includes if any aesthetics are mapped. FALSE never 
 #' includes, and TRUE always includes.
@@ -130,7 +138,17 @@
 #'   ggplot2::xlab("Treatment group") + 
 #'   ggplot2::ylab("Percent of subjects by category")
 #' 
+#' # Same example with orientation flipped (only works for ggplot2 v.3.3.0 or later)
 #' 
+#' xgx_plot(data = data) +
+#' xgx_stat_ci(mapping = ggplot2::aes(y = response, response = covariate), orientation = "y",
+#'             distribution = "ordinal") +
+#'   xgx_stat_ci(mapping = ggplot2::aes(y = 1, response = covariate), orientation = "y", 
+#'               geom = "vline", distribution = "ordinal") +
+#'   ggplot2::scale_x_continuous(labels = scales::percent_format()) +
+#'   ggplot2::facet_wrap(~covariate) +
+#'   ggplot2::ylab("Treatment group") +
+#'   ggplot2::xlab("Percent of subjects by category")
 #' 
 #'  
 #' @importFrom stats rnorm
@@ -156,6 +174,7 @@ xgx_stat_ci <- function(mapping = NULL,
                         fun.args = list(),
                         fun.data = NULL,
                         na.rm = FALSE,
+                        orientation = "x",
                         show.legend = NA,
                         inherit.aes = TRUE,
                         ...) {
@@ -174,6 +193,18 @@ xgx_stat_ci <- function(mapping = NULL,
     fun.data = fun.data,
     na.rm = na.rm,
     ...)
+  
+  # Compare to ggplot2 version 3.3.0
+  # If less than 3.3.0, then don't include orientation option
+  ggplot2_geq_v3.3.0 <- compareVersion(as.character(packageVersion("ggplot2")), '3.3.0') >= 0
+  
+  if(ggplot2_geq_v3.3.0){
+    gg_params$orientation = orientation
+  }else{
+    if(!(orientation %in% "x")){
+      warning('orientation other than "x" not supported for ggplot2 versions less than 3.3.0')
+    }
+  }
 
   # Ordinal, binned or not binned
   if(distribution %in% c("ordinal", "multinomial")){
@@ -344,6 +375,8 @@ xgx_conf_int = function(y, conf_level = 0.95, distribution = "normal") {
 StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
                                           
      required_aes = c("x", "response"),
+     
+     extra_params = c("na.rm", "orientation"),
                                           
      compute_group = function(data, scales, conf_level, distribution, bins, breaks,
                               fun.data = NULL,
@@ -352,9 +385,17 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
      },
      
      setup_params = function(self, data, params) {
+       params$flipped_aes <- has_flipped_aes(data, params)
+       
+       required_aes <- self$required_aes
+       
+       if(params$flipped_aes){
+         required_aes <- switch_orientation(self$required_aes)
+       }
+       
        # check required aesthetics
        ggplot2:::check_required_aesthetics(
-         self$required_aes,
+         required_aes,
          c(names(data), names(params)),
          ggplot2:::snake_class(self)
        )
@@ -363,7 +404,7 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
        # "|" notation in self$required_aes
        required_aes <- intersect(
          names(data),
-         unlist(strsplit(self$required_aes, "|", fixed = TRUE))
+         unlist(strsplit(required_aes, "|", fixed = TRUE))
        )
        
        # aes_to_group are the aesthetics that are different from response,
@@ -440,7 +481,9 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
      },
 
      setup_data = function(self, data, params) {
-
+       
+       data <- flip_data(data, params$flipped_aes)
+       
        # Define new grouping variable for which to split the data computation 
        # (excludes aesthetics that are identical to the Response variable)
        if(is.null(params$aes_to_group)){
@@ -499,7 +542,9 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
        
        # if you want to use geom hline, then need yintercept defined
          data <- data %>% mutate(yintercept = y)
-       
+         
+         data <- flip_data(data, params$flipped_aes)
+         
        return(data)
      },
      
@@ -661,4 +706,45 @@ has_flipped_aes <- function(data, params = list(), main_is_orthogonal = NA,
 }
 
 
+flip_data <- function(data, flip = NULL) {
+  flip <- flip %||% any(data$flipped_aes) %||% FALSE
+  if (isTRUE(flip)) {
+    names(data) <- switch_orientation(names(data))
+  }
+  data
+}
+
+
+flipped_names <- function(flip = FALSE) {
+  x_aes <- ggplot_global$x_aes
+  y_aes <- ggplot_global$y_aes
+  if (flip) {
+    ret <- as.list(c(y_aes, x_aes))
+  } else {
+    ret <- as.list(c(x_aes, y_aes))
+  }
+  names(ret) <- c(x_aes, y_aes)
+  ret
+}
+
+switch_orientation <- function(aesthetics) {
+  ggplot_global <- list2env(
+    list(x_aes = c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper", "x0"),
+    y_aes = c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final", "ylower", "ymiddle", "yupper", "y0")))
+  
+  # We should have these as globals somewhere
+  x <- ggplot_global$x_aes
+  y <- ggplot_global$y_aes
+  x_aes <- match(aesthetics, x)
+  x_aes_pos <- which(!is.na(x_aes))
+  y_aes <- match(aesthetics, y)
+  y_aes_pos <- which(!is.na(y_aes))
+  if (length(x_aes_pos) > 0) {
+    aesthetics[x_aes_pos] <- y[x_aes[x_aes_pos]]
+  }
+  if (length(y_aes_pos) > 0) {
+    aesthetics[y_aes_pos] <- x[y_aes[y_aes_pos]]
+  }
+  aesthetics
+}
                          

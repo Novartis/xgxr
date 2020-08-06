@@ -2,6 +2,7 @@
 % Please edit documentation in R/xgx_scale_y_percentchangelog10.R
 \name{xgx_scale_y_percentchangelog10}
 \alias{xgx_scale_y_percentchangelog10}
+\alias{xgx_scale_x_percentchangelog10}
 \title{percentchangelog10 transform for the y scale.}
 \usage{
 xgx_scale_y_percentchangelog10(
@@ -12,15 +13,26 @@ xgx_scale_y_percentchangelog10(
   n_breaks = 7,
   ...
 )
+
+xgx_scale_x_percentchangelog10(
+  breaks = NULL,
+  minor_breaks = NULL,
+  labels = NULL,
+  accuracy = 1,
+  n_breaks = 7,
+  ...
+)
 }
 \arguments{
-\item{breaks}{if NULL, then default is to use a variant of 2^(labeling::extended(log2(PCHG + 1))) - 1, where PCHG represents the range of the data}
+\item{breaks}{if NULL, then default is to use a variant of 
+2^(labeling::extended(log2(PCHG + 1))) - 1, where PCHG represents the range of the data}
 
 \item{minor_breaks}{if NULL, then default is to use nicely spaced log10(PCHG + 1) minor breaks}
 
 \item{labels}{if NULL, then the default is to use scales::percent_format()}
 
-\item{accuracy}{accuracy to use with scales::percent_format(), if NULL, then the default is set to 1}
+\item{accuracy}{accuracy to use with scales::percent_format(), if NULL, 
+then the default is set to 1}
 
 \item{n_breaks}{number of desired breaks, if NULL, then the default is set to 7}
 
@@ -31,8 +43,8 @@ xgx_scale_y_percentchangelog10(
 ggplot2 compatible scale object
 }
 \description{
-\code{xgx_scale_y_percentchangelog10} is designed to be used with 
-percent change (PCHG) from baseline data (on a scale of -1 to +Inf)
+\code{xgx_scale_y_percentchangelog10} and \code{xgx_scale_x_percentchangelog10} are designed 
+to be used with percent change (PCHG) from baseline data (on a scale of -1 to +Inf).
 Common examples include % weight loss, % reduction in LDL, % change in tumor diameter.  
 It is used when you have a wide range of data on a percent change scale, 
 especially data close to -100%, and/or several fold increase from baseline.
