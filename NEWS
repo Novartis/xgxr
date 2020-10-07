@@ -1,6 +1,7 @@
-*CHANGES IN VERSION 1.1.0
-    o *** MANY CHANGES TO BE ADDED ***
-    o Added error checking to xgx_save() and xgx_dirs2char()
+*CHANGES IN VERSION 1.0.10
+------------------------
+    o xgx_save and xgx_dirs2char: Added error checking that dirs variable is list. 
+    o xgx_save: Enable change in font color and size for directories caption
     
 CHANGES IN VERSION 1.0.9
 ------------------------

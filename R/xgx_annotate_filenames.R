@@ -39,10 +39,10 @@
 #' @importFrom ggplot2 theme
 #' @importFrom ggplot2 element_text
 #' @export
-xgx_annotate_filenames <- function(dirs, hjust = 0.5) {
+xgx_annotate_filenames <- function(dirs, hjust = 0.5, color = "black", size = 11) {
   caption <- xgx_dirs2char(dirs)
   return(list(
     ggplot2::labs(caption = caption),
-    ggplot2::theme(plot.caption = ggplot2::element_text(hjust = hjust))
+    ggplot2::theme(plot.caption = ggplot2::element_text(hjust = hjust, color = color, size = size))
   ))
 }
