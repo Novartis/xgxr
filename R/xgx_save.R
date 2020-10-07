@@ -26,6 +26,8 @@
 #' @param status_y y location of the status in plot
 #' @param status_fontcolor font color for status in plot
 #' @param status_fontsize font size for status in plot
+#' @param filenames_fontcolor font color for filenames info in plot
+#' @param filenames_fontsize font size for filenames info in plot
 #'
 #' @return ggplot2 plot object
 #'

@@ -18,6 +18,8 @@
 #' \item filename    = Filename
 #' }
 #' @param hjust horizontal justification of the caption
+#' @param color font color for caption, default black
+#' @param size font size for caption, default 11
 #' 
 #' @return None
 #'
