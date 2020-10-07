@@ -57,6 +57,9 @@ xgx_save <- function(width,
                      status_x = Inf,
                      status_y = Inf,
                      status_fontsize = 7) {
+  if (typeof(dirs)!="list") {
+    stop("dirs variable must be a list")
+  }
   if (is.null(dirs$parent_dir)) {
     stop("The parent directory for your programs and results must be specified: dirs$parent_dir")
   }
