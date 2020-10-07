@@ -1,6 +1,7 @@
 ^CRAN-RELEASE$
 ^Meta$
 ^doc$
+^.github$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^data_create$
