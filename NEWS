@@ -1,3 +1,7 @@
+*CHANGES IN VERSION 1.1.0
+    o *** MANY CHANGES TO BE ADDED ***
+    o Added error checking to xgx_save() and xgx_dirs2char()
+    
 CHANGES IN VERSION 1.0.9
 ------------------------
     o changes to xgx_check_data() because some errors are new with regards to checking for negative values or NAs in the dataset
