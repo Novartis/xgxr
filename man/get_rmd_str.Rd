@@ -4,8 +4,13 @@
 \alias{get_rmd_str}
 \title{\code{get_rmd_str} returns a Rmd template string, based on the desired PKPD parameters}
 \usage{
-get_rmd_str(rmd_template_name = NULL, multiple_dosing = FALSE,
-  pk_cmt = NULL, pd_cmt = NULL, pd_data_type = NULL)
+get_rmd_str(
+  rmd_template_name = NULL,
+  multiple_dosing = FALSE,
+  pk_cmt = NULL,
+  pd_cmt = NULL,
+  pd_data_type = NULL
+)
 }
 \arguments{
 \item{rmd_template_name}{A custom output name for the generated Rmd file}

@@ -6,24 +6,66 @@
 \alias{xgx_geom_smooth_emax}
 \title{Wrapper for stat_smooth}
 \usage{
-xgx_stat_smooth(mapping = NULL, data = NULL, geom = "smooth",
-  position = "identity", ..., method = NULL, formula = NULL,
-  se = TRUE, n = 80, span = 0.75, n_boot = 200,
-  fullrange = FALSE, level = 0.95, method.args = list(),
-  na.rm = FALSE, orientation = "x", show.legend = NA,
-  inherit.aes = TRUE)
+xgx_stat_smooth(
+  mapping = NULL,
+  data = NULL,
+  geom = "smooth",
+  position = "identity",
+  ...,
+  method = NULL,
+  formula = NULL,
+  se = TRUE,
+  n = 80,
+  span = 0.75,
+  n_boot = 200,
+  fullrange = FALSE,
+  level = 0.95,
+  method.args = list(),
+  na.rm = FALSE,
+  orientation = "x",
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-xgx_geom_smooth(mapping = NULL, data = NULL, geom = "smooth",
-  position = "identity", ..., method = NULL, formula = NULL,
-  se = TRUE, n = 80, span = 0.75, fullrange = FALSE,
-  level = 0.95, method.args = list(), na.rm = FALSE,
-  orientation = "x", show.legend = NA, inherit.aes = TRUE)
+xgx_geom_smooth(
+  mapping = NULL,
+  data = NULL,
+  geom = "smooth",
+  position = "identity",
+  ...,
+  method = NULL,
+  formula = NULL,
+  se = TRUE,
+  n = 80,
+  span = 0.75,
+  fullrange = FALSE,
+  level = 0.95,
+  method.args = list(),
+  na.rm = FALSE,
+  orientation = "x",
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-xgx_geom_smooth_emax(mapping = NULL, data = NULL, geom = "smooth",
-  position = "identity", ..., method = "nlsLM", formula, se = TRUE,
-  n = 80, span = 0.75, fullrange = FALSE, level = 0.95,
-  method.args = list(), na.rm = FALSE, orientation = "x",
-  show.legend = NA, inherit.aes = TRUE)
+xgx_geom_smooth_emax(
+  mapping = NULL,
+  data = NULL,
+  geom = "smooth",
+  position = "identity",
+  ...,
+  method = "nlsLM",
+  formula,
+  se = TRUE,
+  n = 80,
+  span = 0.75,
+  fullrange = FALSE,
+  level = 0.95,
+  method.args = list(),
+  na.rm = FALSE,
+  orientation = "x",
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by `aes` or `aes_`. 

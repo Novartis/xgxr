@@ -4,8 +4,18 @@
 \alias{predictdf.polr}
 \title{Prediction data frame for polr}
 \usage{
-predictdf.polr(model, xseq, se, level, data, method, formula, method.args,
-  weight, n_boot = 200)
+predictdf.polr(
+  model,
+  xseq,
+  se,
+  level,
+  data,
+  method,
+  formula,
+  method.args,
+  weight,
+  n_boot = 200
+)
 }
 \arguments{
 \item{model}{object returned from polr}

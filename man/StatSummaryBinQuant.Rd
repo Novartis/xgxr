@@ -4,7 +4,9 @@
 \name{StatSummaryBinQuant}
 \alias{StatSummaryBinQuant}
 \title{Stat ggproto object for binning by quantile for xgx_stat_ci}
-\format{An object of class \code{StatSummaryBinQuant} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.}
+\format{
+An object of class \code{StatSummaryBinQuant} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.
+}
 \usage{
 StatSummaryBinQuant
 }

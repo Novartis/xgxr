@@ -68,7 +68,6 @@ Suggests:
     gridExtra,
     knitr,
     rmarkdown,
-    RxODE,
     testthat,
     tidyr
 VignetteBuilder: 
