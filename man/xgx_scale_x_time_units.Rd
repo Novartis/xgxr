@@ -5,21 +5,11 @@
 \alias{xgx_scale_y_time_units}
 \title{Convert time units for plotting}
 \usage{
-xgx_scale_x_time_units(
-  units_dataset,
-  units_plot = NULL,
-  breaks = NULL,
-  labels = NULL,
-  ...
-)
+xgx_scale_x_time_units(units_dataset, units_plot = NULL, breaks = NULL,
+  labels = NULL, ...)
 
-xgx_scale_y_time_units(
-  units_dataset,
-  units_plot = NULL,
-  breaks = NULL,
-  labels = NULL,
-  ...
-)
+xgx_scale_y_time_units(units_dataset, units_plot = NULL, breaks = NULL,
+  labels = NULL, ...)
 }
 \arguments{
 \item{units_dataset}{units of the input dataset, must be specified by user
@@ -31,10 +21,10 @@ as "h", "d", "w", "m", or "y"}
 \itemize{
 \item \code{NULL} for no breaks
 \item \code{waiver()} for the default breaks computed by the
-\link[scales:trans_new]{transformation object}
+transformation object
 \item A numeric vector of positions
 \item A function that takes the limits as input and returns breaks
-as output (e.g., a function returned by \code{\link[scales:breaks_extended]{scales::extended_breaks()}})
+as output
 }}
 
 \item{labels}{One of:

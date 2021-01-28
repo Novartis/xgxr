@@ -4,18 +4,9 @@
 \alias{xgx_annotate_status}
 \title{Create a status (e.g. DRAFT) annotation layer}
 \usage{
-xgx_annotate_status(
-  status = "DRAFT",
-  x = Inf,
-  y = Inf,
-  color = "grey",
-  hjust = 1.2,
-  vjust = 1.2,
-  fontsize = 7,
-  fontface = "bold",
-  alpha = 0.5,
-  ...
-)
+xgx_annotate_status(status = "DRAFT", x = Inf, y = Inf,
+  color = "grey", hjust = 1.2, vjust = 1.2, fontsize = 7,
+  fontface = "bold", alpha = 0.5, ...)
 }
 \arguments{
 \item{status}{the text to}

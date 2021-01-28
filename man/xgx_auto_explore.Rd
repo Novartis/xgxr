@@ -8,25 +8,14 @@ be formatted in a similar manner to that of the xgx R markdown templates to work
 The working directory will contain a new directory (`xgx_autoexplore_output`) after running this function,
  which will contain a directory for the dataset, and futher a directory for the type of analysis / R markdown template.}
 \usage{
-xgx_auto_explore(
-  data_path = NULL,
-  mapping = list(),
-  author_name = NULL,
-  multiple_dosing = FALSE,
-  pk_cmt = NULL,
-  pd_cmt = NULL,
-  pd_data_type = NULL,
-  dose_cmt = NULL,
-  steady_state_day = NULL,
-  time_between_doses = NULL,
-  rmd_template_name = NULL,
-  rmd_template_path = NULL,
-  rmd_output_path = NULL,
-  pdf_output_path = NULL,
-  html_output_path = NULL,
-  add_datetime = TRUE,
-  show_explanation = TRUE
-)
+xgx_auto_explore(data_path = NULL, mapping = list(),
+  author_name = NULL, multiple_dosing = FALSE, pk_cmt = NULL,
+  pd_cmt = NULL, pd_data_type = NULL, dose_cmt = NULL,
+  steady_state_day = NULL, time_between_doses = NULL,
+  rmd_template_name = NULL, rmd_template_path = NULL,
+  rmd_output_path = NULL, pdf_output_path = NULL,
+  html_output_path = NULL, add_datetime = TRUE,
+  show_explanation = TRUE)
 }
 \arguments{
 \item{data_path}{Path (as a string) to the dataset that is to be analyzed}
