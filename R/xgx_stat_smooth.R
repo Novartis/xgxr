@@ -490,9 +490,12 @@ predictdf.polr <- function(model, xseq, se, level,
 }
 
 
+##' @importFrom gtable gtable
+##' @export
+gtable::gtable
+
 #' Stat object for producing smooths through ordinal data
 #' 
-#' @inherit ggplot2::StatSmooth
 #' 
 #' @importFrom ggplot2 ggproto
 #' @export
