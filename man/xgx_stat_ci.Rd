@@ -167,7 +167,8 @@ xgx_plot(data = data) +
 
 # Same example with orientation flipped (only works for ggplot2 v.3.3.0 or later)
 # only run if ggplot2 v.3.3.0 or later
-ggplot2_geq_v3.3.0 <- utils::compareVersion(as.character(utils::packageVersion("ggplot2")), '3.3.0') >= 0
+ggplot2_geq_v3.3.0 <- utils::compareVersion(
+  as.character(utils::packageVersion("ggplot2")), '3.3.0') >= 0
 
 if(ggplot2_geq_v3.3.0){
 
