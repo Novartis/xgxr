@@ -49,6 +49,7 @@ Imports:
     glue,
     graphics,
     grDevices,
+    gtable,
     Hmisc,
     labeling,
     magrittr,
