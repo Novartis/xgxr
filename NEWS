@@ -1,3 +1,8 @@
+CHANGES IN VERSION 1.1.0
+------------------------
+    o xgx_stat_smooth() added to allow for nonlinear fitting + confidence intervals, including emax fitting, and ordinal response fitting
+    o xgx_stat_ci() updated with binning by quantiles, and ordinal/multinomial confidence intervals
+
 CHANGES IN VERSION 1.0.9
 ------------------------
     o changes to xgx_check_data() because some errors are new with regards to checking for negative values or NAs in the dataset
