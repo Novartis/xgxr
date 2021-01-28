@@ -10,7 +10,7 @@ get_rmd_str(rmd_template_name = NULL, multiple_dosing = FALSE,
 \arguments{
 \item{rmd_template_name}{A custom output name for the generated Rmd file}
 
-\item{multiple_dosing}{}
+\item{multiple_dosing}{if FALSE use single ascending dose template, if TRUE use multiple}
 
 \item{pk_cmt}{An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)}
