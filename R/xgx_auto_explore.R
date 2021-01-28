@@ -26,6 +26,7 @@
 #' ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
 #' @param steady_state_day used to denote the day of rich sampling of PK at steady state
 #' @param time_between_doses dosing interval, has units to match the time variable of the dataset
+#' @param rmd_template_name A custom output name for the generated Rmd file
 #' @param rmd_template_path A user provided custom template (as a string)
 #' @param rmd_output_path A custom output path for the generated Rmd file
 #' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
