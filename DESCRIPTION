@@ -1,6 +1,6 @@
 Package: xgxr
 Title: Exploratory Graphics for Pharmacometrics
-Version: 1.0.10
+Version: 1.1.0
 Authors@R: 
     c(person(given = "Andrew",
              family = "Stein",
@@ -49,6 +49,7 @@ Imports:
     glue,
     graphics,
     grDevices,
+    gtable,
     Hmisc,
     labeling,
     magrittr,
@@ -67,10 +68,8 @@ Suggests:
     gridExtra,
     knitr,
     rmarkdown,
-    RxODE,
     testthat,
-    tidyr,
-    vdiffr
+    tidyr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

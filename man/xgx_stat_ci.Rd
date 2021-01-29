@@ -178,6 +178,11 @@ xgx_plot(data = data) +
   ggplot2::ylab("Percent of subjects by category")
 
 # Same example with orientation flipped (only works for ggplot2 v.3.3.0 or later)
+# only run if ggplot2 v.3.3.0 or later
+ggplot2_geq_v3.3.0 <- utils::compareVersion(
+  as.character(utils::packageVersion("ggplot2")), '3.3.0') >= 0
+
+if(ggplot2_geq_v3.3.0){
 
 xgx_plot(data = data) +
 xgx_stat_ci(mapping = ggplot2::aes(y = response, response = covariate), orientation = "y",
@@ -188,6 +193,8 @@ xgx_stat_ci(mapping = ggplot2::aes(y = response, response = covariate), orientat
   ggplot2::facet_wrap(~covariate) +
   ggplot2::ylab("Treatment group") +
   ggplot2::xlab("Percent of subjects by category")
+  
+}
 
  
 }

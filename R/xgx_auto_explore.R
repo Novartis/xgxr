@@ -26,6 +26,7 @@
 #' ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
 #' @param steady_state_day used to denote the day of rich sampling of PK at steady state
 #' @param time_between_doses dosing interval, has units to match the time variable of the dataset
+#' @param rmd_template_name A custom output name for the generated Rmd file
 #' @param rmd_template_path A user provided custom template (as a string)
 #' @param rmd_output_path A custom output path for the generated Rmd file
 #' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
@@ -208,11 +209,14 @@ xgx_auto_explore <- function(data_path = NULL,
 #' @param rmd_output_path A custom output path for the generated Rmd file
 #' (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))
 #' @param data_path Path (as a string) to the dataset that is to be analyzed
+#' @param multiple_dosing if FALSE use single ascending dose template, if TRUE use multiple
 #' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 #' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
 #' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
 #' have these integers, where each row may contain either PK or PD data
-#' @param pd_data_type The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]
+#' @param dose_cmt CMT associated with dosing event
+#' @param steady_state_day For multiple ascending dose, what day is steady state rich profile?
+#' @param time_between_doses time interval between doses
 #' @param author_name The name of the author to be displayed on the template
 #' @param add_datetime Boolean indicating additon of a date stamp to the beginnning of the Rmd file
 #' @param show_explanation Boolean indicating if the additional explanations (text in between figures) are needed for the user.
@@ -458,7 +462,7 @@ edit_rmd_template_str <- function(rmd_str = NULL,
 #' 
 #'
 #' @param rmd_template_name A custom output name for the generated Rmd file
-#' @param multiple_dosing 
+#' @param multiple_dosing if FALSE use single ascending dose template, if TRUE use multiple
 #' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 #' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
 #' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
@@ -528,7 +532,7 @@ get_rmd_name <- function(rmd_template_name = NULL,
 #' 
 #'
 #' @param rmd_template_name A custom output name for the generated Rmd file
-#' @param multiple_dosing 
+#' @param multiple_dosing if FALSE use single ascending dose template, if TRUE use multiple
 #' @param pk_cmt An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 #' have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)
 #' @param pd_cmt An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically

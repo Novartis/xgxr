@@ -70,10 +70,9 @@ xgx_scale_y_percentchangelog10 <- function(breaks = NULL,
                               breaks = breaks, ...)
 }
 
-#' 
+
 #' @rdname xgx_scale_y_percentchangelog10
 #' 
-#' @export
 #' 
 #' @importFrom scales trans_new
 #' @importFrom scales percent_format

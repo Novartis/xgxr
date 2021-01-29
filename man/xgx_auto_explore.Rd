@@ -55,6 +55,8 @@ have these integers, where each row may contain PK, PD, dosing or other events/o
 
 \item{time_between_doses}{dosing interval, has units to match the time variable of the dataset}
 
+\item{rmd_template_name}{A custom output name for the generated Rmd file}
+
 \item{rmd_template_path}{A user provided custom template (as a string)}
 
 \item{rmd_output_path}{A custom output path for the generated Rmd file

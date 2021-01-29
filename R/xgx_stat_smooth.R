@@ -185,7 +185,7 @@ xgx_stat_smooth <- function(mapping = NULL,
   
   # Compare to ggplot2 version 3.3.0
   # If less than 3.3.0, then don't include orientation option
-  ggplot2_geq_v3.3.0 <- compareVersion(as.character(packageVersion("ggplot2")), '3.3.0') >= 0
+  ggplot2_geq_v3.3.0 <- utils::compareVersion(as.character(utils::packageVersion("ggplot2")), '3.3.0') >= 0
   
   if(ggplot2_geq_v3.3.0){
     gg_params$orientation = orientation
@@ -490,9 +490,12 @@ predictdf.polr <- function(model, xseq, se, level,
 }
 
 
+##' @importFrom gtable gtable
+##' @export
+gtable::gtable
+
 #' Stat object for producing smooths through ordinal data
 #' 
-#' @inherit ggplot2::StatSmooth
 #' 
 #' @importFrom ggplot2 ggproto
 #' @export

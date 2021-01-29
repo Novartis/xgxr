@@ -32,19 +32,25 @@ to the corresponding columns in the new dataset}
 
 \item{data_path}{Path (as a string) to the dataset that is to be analyzed}
 
+\item{multiple_dosing}{if FALSE use single ascending dose template, if TRUE use multiple}
+
 \item{pk_cmt}{An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)}
 
 \item{pd_cmt}{An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
 have these integers, where each row may contain either PK or PD data}
 
+\item{dose_cmt}{CMT associated with dosing event}
+
+\item{steady_state_day}{For multiple ascending dose, what day is steady state rich profile?}
+
+\item{time_between_doses}{time interval between doses}
+
 \item{author_name}{The name of the author to be displayed on the template}
 
 \item{add_datetime}{Boolean indicating additon of a date stamp to the beginnning of the Rmd file}
 
 \item{show_explanation}{Boolean indicating if the additional explanations (text in between figures) are needed for the user.}
-
-\item{pd_data_type}{The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]}
 }
 \value{
 A string of the new R markdown template
