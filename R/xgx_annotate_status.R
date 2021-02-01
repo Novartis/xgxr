@@ -9,7 +9,7 @@
 #' @param status the text to 
 #' @param x x location, default Inf (right most point)
 #' @param y y location, default Inf (up most point)
-#' @param color default "grey"
+#' @param color font color, default "grey"
 #' @param hjust horizontal justification, default 1.2
 #' @param vjust vertical justification, default 1.2
 #' @param fontsize font size to use, default 7

@@ -24,7 +24,10 @@
 #' @param filetype file extension (e.g. "pdf","csv" etc.)
 #' @param status_x x location of the status in plot
 #' @param status_y y location of the status in plot
+#' @param status_fontcolor font color for status in plot
 #' @param status_fontsize font size for status in plot
+#' @param filenames_fontcolor font color for filenames info in plot
+#' @param filenames_fontsize font size for filenames info in plot
 #'
 #' @return ggplot2 plot object
 #'
@@ -56,7 +59,13 @@ xgx_save <- function(width,
                      filetype = "png",
                      status_x = Inf,
                      status_y = Inf,
-                     status_fontsize = 7) {
+                     status_fontsize = 7,
+                     status_fontcolor = "grey",
+                     filenames_fontsize = 11,
+                     filenames_fontcolor = "black") {
+  if (typeof(dirs)!="list") {
+    stop("dirs variable must be a list")
+  }
   if (is.null(dirs$parent_dir)) {
     stop("The parent directory for your programs and results must be specified: dirs$parent_dir")
   }
@@ -79,8 +88,11 @@ xgx_save <- function(width,
   filedir <- file.path(dirs$results_dir)
   dirs$filename <- paste0(dirs$filename_prefix, filename_main, ".", filetype)
 
-  g <- g + xgx_annotate_filenames(dirs)
+  g <- g + xgx_annotate_filenames(dirs,
+                                  color = filenames_fontcolor,
+                                  size = filenames_fontsize)
   g <- g + xgx_annotate_status(status, x = status_x, y = status_y,
+                               color    = status_fontcolor,
                                fontsize = status_fontsize)
 
   ggplot2::ggsave(plot = g, width = width, height = height,

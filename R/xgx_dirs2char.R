@@ -30,6 +30,9 @@
 #' @export
 xgx_dirs2char <- function(dirs, include_time = TRUE) {
   # check to make sure all filenames dirs
+  if (typeof(dirs)!="list") {
+    stop("dirs variable must be a list")
+  }
   missing_filenames <- setdiff(c("parent_dir", "rscript_dir", "rscript_name",
                                  "results_dir", "filename"),
                               names(dirs))
