@@ -136,66 +136,24 @@ This wrapper also works with nonlinear methods like nls and nlsLM for continuous
 <p><code>xgx_geom_smooth_emax</code> uses minpack.lm::nlsLM, predictdf.nls, and stat_smooth to display Emax model fit to data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>xgx_stat_smooth</span><span class='op'>(</span>
-  mapping <span class='op'>=</span> <span class='cn'>NULL</span>,
-  data <span class='op'>=</span> <span class='cn'>NULL</span>,
-  geom <span class='op'>=</span> <span class='st'>"smooth"</span>,
-  position <span class='op'>=</span> <span class='st'>"identity"</span>,
-  <span class='va'>...</span>,
-  method <span class='op'>=</span> <span class='cn'>NULL</span>,
-  formula <span class='op'>=</span> <span class='cn'>NULL</span>,
-  se <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  n <span class='op'>=</span> <span class='fl'>80</span>,
-  span <span class='op'>=</span> <span class='fl'>0.75</span>,
-  n_boot <span class='op'>=</span> <span class='fl'>200</span>,
-  fullrange <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  method.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  orientation <span class='op'>=</span> <span class='st'>"x"</span>,
-  show.legend <span class='op'>=</span> <span class='cn'>NA</span>,
-  inherit.aes <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
+    <pre class="usage"><span class='fu'>xgx_stat_smooth</span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='cn'>NULL</span>, data <span class='op'>=</span> <span class='cn'>NULL</span>, geom <span class='op'>=</span> <span class='st'>"smooth"</span>,
+  position <span class='op'>=</span> <span class='st'>"identity"</span>, <span class='va'>...</span>, method <span class='op'>=</span> <span class='cn'>NULL</span>, formula <span class='op'>=</span> <span class='cn'>NULL</span>,
+  se <span class='op'>=</span> <span class='cn'>TRUE</span>, n <span class='op'>=</span> <span class='fl'>80</span>, span <span class='op'>=</span> <span class='fl'>0.75</span>, n_boot <span class='op'>=</span> <span class='fl'>200</span>,
+  fullrange <span class='op'>=</span> <span class='cn'>FALSE</span>, level <span class='op'>=</span> <span class='fl'>0.95</span>, method.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, orientation <span class='op'>=</span> <span class='st'>"x"</span>, show.legend <span class='op'>=</span> <span class='cn'>NA</span>,
+  inherit.aes <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>xgx_geom_smooth</span><span class='op'>(</span>
-  mapping <span class='op'>=</span> <span class='cn'>NULL</span>,
-  data <span class='op'>=</span> <span class='cn'>NULL</span>,
-  geom <span class='op'>=</span> <span class='st'>"smooth"</span>,
-  position <span class='op'>=</span> <span class='st'>"identity"</span>,
-  <span class='va'>...</span>,
-  method <span class='op'>=</span> <span class='cn'>NULL</span>,
-  formula <span class='op'>=</span> <span class='cn'>NULL</span>,
-  se <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  n <span class='op'>=</span> <span class='fl'>80</span>,
-  span <span class='op'>=</span> <span class='fl'>0.75</span>,
-  fullrange <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  method.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  orientation <span class='op'>=</span> <span class='st'>"x"</span>,
-  show.legend <span class='op'>=</span> <span class='cn'>NA</span>,
-  inherit.aes <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
+<span class='fu'>xgx_geom_smooth</span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='cn'>NULL</span>, data <span class='op'>=</span> <span class='cn'>NULL</span>, geom <span class='op'>=</span> <span class='st'>"smooth"</span>,
+  position <span class='op'>=</span> <span class='st'>"identity"</span>, <span class='va'>...</span>, method <span class='op'>=</span> <span class='cn'>NULL</span>, formula <span class='op'>=</span> <span class='cn'>NULL</span>,
+  se <span class='op'>=</span> <span class='cn'>TRUE</span>, n <span class='op'>=</span> <span class='fl'>80</span>, span <span class='op'>=</span> <span class='fl'>0.75</span>, fullrange <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  level <span class='op'>=</span> <span class='fl'>0.95</span>, method.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  orientation <span class='op'>=</span> <span class='st'>"x"</span>, show.legend <span class='op'>=</span> <span class='cn'>NA</span>, inherit.aes <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>xgx_geom_smooth_emax</span><span class='op'>(</span>
-  mapping <span class='op'>=</span> <span class='cn'>NULL</span>,
-  data <span class='op'>=</span> <span class='cn'>NULL</span>,
-  geom <span class='op'>=</span> <span class='st'>"smooth"</span>,
-  position <span class='op'>=</span> <span class='st'>"identity"</span>,
-  <span class='va'>...</span>,
-  method <span class='op'>=</span> <span class='st'>"nlsLM"</span>,
-  <span class='va'>formula</span>,
-  se <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  n <span class='op'>=</span> <span class='fl'>80</span>,
-  span <span class='op'>=</span> <span class='fl'>0.75</span>,
-  fullrange <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  method.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  orientation <span class='op'>=</span> <span class='st'>"x"</span>,
-  show.legend <span class='op'>=</span> <span class='cn'>NA</span>,
-  inherit.aes <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+<span class='fu'>xgx_geom_smooth_emax</span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='cn'>NULL</span>, data <span class='op'>=</span> <span class='cn'>NULL</span>, geom <span class='op'>=</span> <span class='st'>"smooth"</span>,
+  position <span class='op'>=</span> <span class='st'>"identity"</span>, <span class='va'>...</span>, method <span class='op'>=</span> <span class='st'>"nlsLM"</span>, <span class='va'>formula</span>, se <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  n <span class='op'>=</span> <span class='fl'>80</span>, span <span class='op'>=</span> <span class='fl'>0.75</span>, fullrange <span class='op'>=</span> <span class='cn'>FALSE</span>, level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  method.args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, orientation <span class='op'>=</span> <span class='st'>"x"</span>,
+  show.legend <span class='op'>=</span> <span class='cn'>NA</span>, inherit.aes <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -374,7 +332,7 @@ use <code>nlsLM</code> instead.</p>
 #&gt; <span class='warning'>            initializing E0, Emax, and ED50 to 1, </span>
 #&gt; <span class='warning'>            and setting lower bound on ED50 to 0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_smooth()`:</span>
 #&gt; <span class='warning'>$ operator is invalid for atomic vectors</span></div><div class='img'><img src='xgx_stat_smooth-2.png' alt='' width='700' height='433' /></div><div class='input'>  
-  
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>  
 <span class='co'># example with ordinal data (method = "polr")</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12345</span><span class='op'>)</span>
 <span class='va'>data</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>120</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,
@@ -388,10 +346,8 @@ use <code>nlsLM</code> instead.</p>
                                          colour <span class='op'>=</span> <span class='va'>response</span>, fill <span class='op'>=</span> <span class='va'>response</span><span class='op'>)</span>,
                   method <span class='op'>=</span> <span class='st'>"polr"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent_format</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'response ~ x'</span></div><div class='output co'>#&gt; <span class='message'>In xgx_stat_smooth: </span>
-#&gt; <span class='message'>  The following aesthetics are identical to response: PANEL, colour, fill</span>
-#&gt; <span class='message'>  These will be used for differentiating response groups in the resulting plot.</span></div><div class='output co'>#&gt; <span class='message'>In xgx_stat_smooth: </span>
-#&gt; <span class='message'>  response should be a factor, converting to factor using as.factor(response) with default levels</span></div><div class='img'><img src='xgx_stat_smooth-3.png' alt='' width='700' height='433' /></div><div class='input'>
+
+
 <span class='co'># example faceting by the response categories, coloring by a different covariate </span>
 <span class='fu'><a href='xgx_plot.html'>xgx_plot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>data</span><span class='op'>)</span> <span class='op'>+</span>
 <span class='fu'>xgx_stat_smooth</span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, response <span class='op'>=</span> <span class='va'>response</span>, 
@@ -399,12 +355,8 @@ use <code>nlsLM</code> instead.</p>
                 method <span class='op'>=</span> <span class='st'>"polr"</span>, level <span class='op'>=</span> <span class='fl'>0.80</span><span class='op'>)</span> <span class='op'>+</span> 
                 <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>response</span><span class='op'>)</span> <span class='op'>+</span> 
                 <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent_format</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'response ~ x'</span></div><div class='output co'>#&gt; <span class='message'>In xgx_stat_smooth: </span>
-#&gt; <span class='message'>  The following aesthetics are identical to response: PANEL</span>
-#&gt; <span class='message'>  These will be used for differentiating response groups in the resulting plot.</span></div><div class='output co'>#&gt; <span class='message'>In xgx_stat_smooth: </span>
-#&gt; <span class='message'>  The following aesthetics are different from response: colour, fill</span>
-#&gt; <span class='message'>  These will be used to divide the data into different groups before calculating summary statistics on the response.</span></div><div class='output co'>#&gt; <span class='message'>In xgx_stat_smooth: </span>
-#&gt; <span class='message'>  response should be a factor, converting to factor using as.factor(response) with default levels</span></div><div class='img'><img src='xgx_stat_smooth-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

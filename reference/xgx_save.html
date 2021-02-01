@@ -130,18 +130,11 @@
     <p>Saving plot, automatically annotating the status and denoting the filenames</p>
     </div>
 
-    <pre class="usage"><span class='fu'>xgx_save</span><span class='op'>(</span>
-  <span class='va'>width</span>,
-  <span class='va'>height</span>,
-  dirs <span class='op'>=</span> <span class='cn'>NULL</span>,
-  filename_main <span class='op'>=</span> <span class='cn'>NULL</span>,
-  status <span class='op'>=</span> <span class='st'>"DRAFT"</span>,
-  g <span class='op'>=</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/last_plot.html'>last_plot</a></span><span class='op'>(</span><span class='op'>)</span>,
-  filetype <span class='op'>=</span> <span class='st'>"png"</span>,
-  status_x <span class='op'>=</span> <span class='cn'>Inf</span>,
-  status_y <span class='op'>=</span> <span class='cn'>Inf</span>,
-  status_fontsize <span class='op'>=</span> <span class='fl'>7</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>xgx_save</span><span class='op'>(</span><span class='va'>width</span>, <span class='va'>height</span>, dirs <span class='op'>=</span> <span class='cn'>NULL</span>, filename_main <span class='op'>=</span> <span class='cn'>NULL</span>,
+  status <span class='op'>=</span> <span class='st'>"DRAFT"</span>, g <span class='op'>=</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/last_plot.html'>last_plot</a></span><span class='op'>(</span><span class='op'>)</span>, filetype <span class='op'>=</span> <span class='st'>"png"</span>,
+  status_x <span class='op'>=</span> <span class='cn'>Inf</span>, status_y <span class='op'>=</span> <span class='cn'>Inf</span>, status_fontsize <span class='op'>=</span> <span class='fl'>7</span>,
+  status_fontcolor <span class='op'>=</span> <span class='st'>"grey"</span>, filenames_fontsize <span class='op'>=</span> <span class='fl'>11</span>,
+  filenames_fontcolor <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -198,6 +191,18 @@ no default</p></td>
     <tr>
       <th>status_fontsize</th>
       <td><p>font size for status in plot</p></td>
+    </tr>
+    <tr>
+      <th>status_fontcolor</th>
+      <td><p>font color for status in plot</p></td>
+    </tr>
+    <tr>
+      <th>filenames_fontsize</th>
+      <td><p>font size for filenames info in plot</p></td>
+    </tr>
+    <tr>
+      <th>filenames_fontcolor</th>
+      <td><p>font color for filenames info in plot</p></td>
     </tr>
     </table>
 

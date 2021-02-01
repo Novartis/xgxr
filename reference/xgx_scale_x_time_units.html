@@ -136,21 +136,11 @@ Supported units include hours, days, weeks, months, and years, which
 can also be called using just the first letter (h, d, w, m, y).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>xgx_scale_x_time_units</span><span class='op'>(</span>
-  <span class='va'>units_dataset</span>,
-  units_plot <span class='op'>=</span> <span class='cn'>NULL</span>,
-  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
-  labels <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
+    <pre class="usage"><span class='fu'>xgx_scale_x_time_units</span><span class='op'>(</span><span class='va'>units_dataset</span>, units_plot <span class='op'>=</span> <span class='cn'>NULL</span>, breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  labels <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>xgx_scale_y_time_units</span><span class='op'>(</span>
-  <span class='va'>units_dataset</span>,
-  units_plot <span class='op'>=</span> <span class='cn'>NULL</span>,
-  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
-  labels <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='fu'>xgx_scale_y_time_units</span><span class='op'>(</span><span class='va'>units_dataset</span>, units_plot <span class='op'>=</span> <span class='cn'>NULL</span>, breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  labels <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,10 +159,10 @@ as "h", "d", "w", "m", or "y"</p></td>
       <td><p>One of:</p><ul>
 <li><p><code>NULL</code> for no breaks</p></li>
 <li><p><code>waiver()</code> for the default breaks computed by the
-<a href='https://scales.r-lib.org//reference/trans_new.html'>transformation object</a></p></li>
+transformation object</p></li>
 <li><p>A numeric vector of positions</p></li>
 <li><p>A function that takes the limits as input and returns breaks
-as output (e.g., a function returned by <code><a href='https://scales.r-lib.org//reference/breaks_extended.html'>scales::extended_breaks()</a></code>)</p></li>
+as output</p></li>
 </ul></td>
     </tr>
     <tr>
