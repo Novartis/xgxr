@@ -1,10 +1,8 @@
 ^CRAN-RELEASE$
 ^Meta$
 ^doc$
-^.github$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^.github$
 ^data_create$
 ^vignettes/png_example.png$
 ^png_example.png$

@@ -4,21 +4,11 @@
 \alias{edit_rmd_template_str}
 \title{Edit a Rmd Template from xgx}
 \usage{
-edit_rmd_template_str(
-  rmd_str = NULL,
-  mapping = NULL,
-  rmd_output_path = NULL,
-  data_path = NULL,
-  multiple_dosing = FALSE,
-  pk_cmt = NULL,
-  pd_cmt = NULL,
-  dose_cmt = NULL,
-  steady_state_day = NULL,
-  time_between_doses = NULL,
-  author_name = NULL,
-  add_datetime = TRUE,
-  show_explanation = TRUE
-)
+edit_rmd_template_str(rmd_str = NULL, mapping = NULL,
+  rmd_output_path = NULL, data_path = NULL, multiple_dosing = FALSE,
+  pk_cmt = NULL, pd_cmt = NULL, dose_cmt = NULL,
+  steady_state_day = NULL, time_between_doses = NULL,
+  author_name = NULL, add_datetime = TRUE, show_explanation = TRUE)
 }
 \arguments{
 \item{rmd_str}{A character string containing the Rmd template raw characters}

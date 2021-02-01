@@ -4,18 +4,11 @@
 \alias{xgx_save}
 \title{Saving plot, automatically annotating the status and denoting the filenames}
 \usage{
-xgx_save(
-  width,
-  height,
-  dirs = NULL,
-  filename_main = NULL,
-  status = "DRAFT",
-  g = ggplot2::last_plot(),
-  filetype = "png",
-  status_x = Inf,
-  status_y = Inf,
-  status_fontsize = 7
-)
+xgx_save(width, height, dirs = NULL, filename_main = NULL,
+  status = "DRAFT", g = ggplot2::last_plot(), filetype = "png",
+  status_x = Inf, status_y = Inf, status_fontsize = 7,
+  status_fontcolor = "grey", filenames_fontsize = 11,
+  filenames_fontcolor = "black")
 }
 \arguments{
 \item{width}{width of plot}
@@ -51,6 +44,12 @@ no default}
 \item{status_y}{y location of the status in plot}
 
 \item{status_fontsize}{font size for status in plot}
+
+\item{status_fontcolor}{font color for status in plot}
+
+\item{filenames_fontsize}{font size for filenames info in plot}
+
+\item{filenames_fontcolor}{font color for filenames info in plot}
 }
 \value{
 ggplot2 plot object

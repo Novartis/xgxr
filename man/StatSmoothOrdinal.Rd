@@ -4,9 +4,7 @@
 \name{StatSmoothOrdinal}
 \alias{StatSmoothOrdinal}
 \title{Stat object for producing smooths through ordinal data}
-\format{
-An object of class \code{StatSmoothOrdinal} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 8.
-}
+\format{An object of class \code{StatSmoothOrdinal} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 8.}
 \usage{
 StatSmoothOrdinal
 }

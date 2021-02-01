@@ -4,7 +4,7 @@
 \alias{xgx_annotate_filenames}
 \title{Append filenames to bottom of the plot}
 \usage{
-xgx_annotate_filenames(dirs, hjust = 0.5)
+xgx_annotate_filenames(dirs, hjust = 0.5, color = "black", size = 11)
 }
 \arguments{
 \item{dirs}{list containing directories and filenames.  It must contain 
@@ -20,6 +20,10 @@ used to generate the figure
 }}
 
 \item{hjust}{horizontal justification of the caption}
+
+\item{color}{font color for caption, default black}
+
+\item{size}{font size for caption, default 11}
 }
 \value{
 None
