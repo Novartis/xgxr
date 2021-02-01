@@ -120,7 +120,7 @@
 #' gg + 
 #'   xgx_geom_smooth_emax()  
 #'   
-#'   
+#' \dontrun{  
 #' # example with ordinal data (method = "polr")
 #' set.seed(12345)
 #' data = data.frame(x = 120*exp(stats::rnorm(100,0,1)),
@@ -134,7 +134,8 @@
 #'                                          colour = response, fill = response),
 #'                   method = "polr") +
 #'   ggplot2::scale_y_continuous(labels = scales::percent_format())
-#'
+#' 
+#' 
 #' # example faceting by the response categories, coloring by a different covariate 
 #' xgx_plot(data = data) +
 #' xgx_stat_smooth(mapping = ggplot2::aes(x = x, response = response, 
@@ -142,6 +143,7 @@
 #'                 method = "polr", level = 0.80) + 
 #'                 ggplot2::facet_wrap(~response) + 
 #'                 ggplot2::scale_y_continuous(labels = scales::percent_format())
+#' }
 #' 
 #' @importFrom stats nls
 #' @importFrom ggplot2 StatSmooth

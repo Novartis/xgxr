@@ -213,7 +213,8 @@ Student t Distribution (assuming normally distributed data). You can also
 specify "lognormal"", "binomial"" or "multinomial"" for the `distribution`. The first will 
 perform the confidence interval operation on the log-scaled data, the second 
 uses the binomial exact confidence interval calculation from the `binom` package, and the 
-third uses `MultinomCI` from the `DescTools` package. 
+third uses `MultinomCI` from the `DescTools` package. The "multinomial"" option
+is used for ordinal response or categorical data.
 
 Note: you DO NOT need to use both `distribution = "lognormal"` 
 and `scale_y_log10()`, choose only one of these.
@@ -286,9 +287,9 @@ xgx_plot(data = data) +
 
 ```
 
-### Nonlinear smoothing (e.g. Emax)
+### Nonlinear smoothing (e.g. Emax), and ordinal response smoothing
 
-The current ggplot2::geom_smooth does not allow for plotting confidence bands for method = "nls", as ggplot2 does not supply a `predictdf` for an object of class `nls`, which geom_smooth silently calls to calculate the ymin and ymax for the confidence bands. The xgxr package includes a definition of `predictdf.nls`, allowing for confidence bands for method = "nls". xgxr also includes an Emax smooth function called `xgx_geom_smooth_emax` which utilizes the "nlsLM" method, and silently calls the `predictdf.nls` defined by xgxr.
+The current ggplot2::geom_smooth does not allow for plotting confidence bands for method = "nls", as ggplot2 does not supply a `predictdf` for an object of class `nls`, which geom_smooth silently calls to calculate the ymin and ymax for the confidence bands. The xgxr package includes a definition of `predictdf.nls`, allowing for confidence bands for method = "nls". 
 
 ```{r}
 set.seed(123456)
@@ -306,7 +307,7 @@ dat1 <- data.frame(ID = 1:(Ntot),
   dplyr::mutate(Response = (E0 + Emax*DOSE/(DOSE + ED50))*rlnorm(Ntot, 0, 0.3)  ) %>%
   merge(data.frame(ID = rep(1:(Ntot), each = length(times)), Time = times), by = "ID") 
 
-gg <- ggplot(data = dat1, aes(x = DOSE, y = Response))
+gg <- xgx_plot(data = dat1, aes(x = DOSE, y = Response))
 gg <- gg + geom_point()
 gg
 
@@ -314,12 +315,44 @@ gg + geom_smooth(method = "nlsLM",
                  formula = y ~ E0 + Emax*x/(ED50 + x),
                  method.args = list(start = list(E0 = 1, ED50 = 1, Emax = 1),
                                     lower = c(-Inf, 0, -Inf)))
+```
 
+xgxr also includes an Emax smooth function called `xgx_geom_smooth_emax` which utilizes the "nlsLM" method, and silently calls the `predictdf.nls` defined by xgxr.
+
+```{r}
 gg + xgx_geom_smooth_emax()
 
 gg + 
   xgx_geom_smooth_emax(geom = "ribbon", color = "black", fill = NA, linetype = "dashed") + 
   xgx_geom_smooth_emax(geom = "line", color = "red")
+
+```
+
+xgxr also includes ordinal response smoothing as an option under the `xgx_stat_smooth` function, indicated by `method = "polr"`. This requires a dataset of x values and response values, to be defined in the mapping. This method also allows defining of color, fill, facet, linetype, etc. by the response category, while preserving the ordinal response fit across these categories.
+
+```{r}
+
+# example with ordinal data (method = "polr")
+set.seed(12345)
+data = data.frame(x = 120*exp(stats::rnorm(100,0,1)),
+                  response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
+                  covariate = sample(c("Male","Female"), 100, replace = TRUE)) %>%
+  dplyr::mutate(y = (50 + 20*x/(200 + x))*exp(stats::rnorm(100, 0, 0.3)))
+
+# example coloring by the response categories
+xgx_plot(data = data) +
+  xgx_stat_smooth(mapping = ggplot2::aes(x = x, response = response,
+                                         colour = response, fill = response),
+                  method = "polr") +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
+
+# example faceting by the response categories, coloring by a different covariate
+xgx_plot(data = data) +
+  xgx_stat_smooth(mapping = ggplot2::aes(x = x, response = response,
+                                         colour = covariate, fill = covariate),
+                  method = "polr", level = 0.80) +
+  ggplot2::facet_wrap(~response) +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
 
 ```
 
