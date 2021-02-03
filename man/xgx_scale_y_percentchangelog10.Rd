@@ -5,11 +5,23 @@
 \alias{xgx_scale_x_percentchangelog10}
 \title{percentchangelog10 transform for the y scale.}
 \usage{
-xgx_scale_y_percentchangelog10(breaks = NULL, minor_breaks = NULL,
-  labels = NULL, accuracy = 1, n_breaks = 7, ...)
+xgx_scale_y_percentchangelog10(
+  breaks = NULL,
+  minor_breaks = NULL,
+  labels = NULL,
+  accuracy = 1,
+  n_breaks = 7,
+  ...
+)
 
-xgx_scale_x_percentchangelog10(breaks = NULL, minor_breaks = NULL,
-  labels = NULL, accuracy = 1, n_breaks = 7, ...)
+xgx_scale_x_percentchangelog10(
+  breaks = NULL,
+  minor_breaks = NULL,
+  labels = NULL,
+  accuracy = 1,
+  n_breaks = 7,
+  ...
+)
 }
 \arguments{
 \item{breaks}{if NULL, then default is to use a variant of 
