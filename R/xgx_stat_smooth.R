@@ -314,13 +314,21 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
     method.args$lower = c(-Inf, -Inf, 0)
   }
   
-  ggplot2::stat_smooth(mapping = mapping, data = data, geom = geom, 
+  xgx_stat_smooth(mapping = mapping, data = data, geom = geom, 
                        position = position, ..., method = method, formula = formula,
                        se = se, n = n, span = span, fullrange = fullrange, 
                        level = level, method.args = method.args, na.rm = na.rm,
                        orientation = "x", show.legend = show.legend, inherit.aes = inherit.aes)
 }
 
+#' Prediction data frame from ggplot2
+#' Get predictions with standard errors into data frame
+#'
+#' @param model model object
+#' @param xseq newdata
+#' @param se Display confidence interval around smooth?
+#' @param level Level of confidence interval to use
+predictdf <- function(model, xseq, se, level) UseMethod("predictdf")
 
 
 #' Prediction data frame for nls
@@ -357,7 +365,7 @@ xgx_geom_smooth_emax <- function(mapping = NULL, data = NULL, geom = "smooth",
 #'
 #' @importFrom Deriv Deriv
 #' @importFrom stats nls
-#' @export
+#' @exportS3Method ggplot2::predictdf
 predictdf.nls <- function(model, xseq, se, level) {
   
   # function to calculate gradient wrt model parameters
@@ -432,7 +440,7 @@ predictdf.nls <- function(model, xseq, se, level) {
 #' 
 #' @importFrom stats predict
 #' 
-#' @export
+#' @exportS3Method ggplot2::predictdf
 predictdf.polr <- function(model, xseq, se, level, 
                            data, method, formula, method.args, weight, n_boot = 200){
   x <- y <- response <- NULL

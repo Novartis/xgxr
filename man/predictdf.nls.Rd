@@ -4,7 +4,7 @@
 \alias{predictdf.nls}
 \title{Prediction data frame for nls}
 \usage{
-predictdf.nls(model, xseq, se, level)
+\method{predictdf}{nls}(model, xseq, se, level)
 }
 \arguments{
 \item{model}{nls object}

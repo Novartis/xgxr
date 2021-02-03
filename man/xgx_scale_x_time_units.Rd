@@ -5,11 +5,21 @@
 \alias{xgx_scale_y_time_units}
 \title{Convert time units for plotting}
 \usage{
-xgx_scale_x_time_units(units_dataset, units_plot = NULL, breaks = NULL,
-  labels = NULL, ...)
+xgx_scale_x_time_units(
+  units_dataset,
+  units_plot = NULL,
+  breaks = NULL,
+  labels = NULL,
+  ...
+)
 
-xgx_scale_y_time_units(units_dataset, units_plot = NULL, breaks = NULL,
-  labels = NULL, ...)
+xgx_scale_y_time_units(
+  units_dataset,
+  units_plot = NULL,
+  breaks = NULL,
+  labels = NULL,
+  ...
+)
 }
 \arguments{
 \item{units_dataset}{units of the input dataset, must be specified by user
