@@ -36,7 +36,7 @@ Description: Supports a structured approach
     Finally, it provides some data checking and summarizing functions for
     rapidly exploring pharmacokinetics and pharmacodynamics (PKPD) datasets.
 License: MIT + file LICENSE
-URL: https://opensource.nibr.com/xgx
+URL: https://opensource.nibr.com/xgx/
 Depends: 
     R (>= 3.5.0)
 Imports:
