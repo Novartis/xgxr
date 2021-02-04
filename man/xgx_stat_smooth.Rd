@@ -212,7 +212,7 @@ gg +
 set.seed(12345)
 data = data.frame(x = 120*exp(stats::rnorm(100,0,1)),
                   response = sample(c("Mild","Moderate","Severe"), 100, replace = TRUE),
-                  covariate = sample(c("Male","Female"), 100, replace = TRUE)) %>%
+                  covariate = sample(c("Male","Female"), 100, replace = TRUE)) \%>\%
   dplyr::mutate(y = (50 + 20*x/(200 + x))*exp(stats::rnorm(100, 0, 0.3)))
   
 # example coloring by the response categories
