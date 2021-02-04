@@ -81,7 +81,7 @@
       <h1 data-toc-skip>xgxr Overview</h1>
                         <h4 class="author">Andrew Stein, Fariba Khanshan, Alison Margolskee</h4>
             
-            <h4 class="date">2021-02-02</h4>
+            <h4 class="date">2021-02-04</h4>
       
       
       <div class="hidden name"><code>xgxr_overview.Rmd</code></div>
@@ -170,7 +170,7 @@ Function to make key plots of pharmacokinetic (PK) data.
 <span class="va">filename</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"png_example.png"</span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a></span><span class="op">(</span><span class="va">filename</span>, plot <span class="op">=</span> <span class="va">g</span>, height <span class="op">=</span> <span class="fl">4</span>, width <span class="op">=</span> <span class="fl">4</span>, dpi <span class="op">=</span> <span class="fl">75</span><span class="op">)</span>
 <span class="fu"><a href="../reference/xgx_annotate_status_png.html">xgx_annotate_status_png</a></span><span class="op">(</span><span class="va">filename</span>, <span class="st">"./ExampleScript.R"</span><span class="op">)</span>
-<span class="co">#&gt; Add footnote to /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZcdNrB/png_example.png</span></code></pre></div>
+<span class="co">#&gt; Add footnote to /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpD9XgzO/png_example.png</span></code></pre></div>
 <!-- ![image](png_example.png) -->
 </div>
 <div id="saving-tables" class="section level3">
@@ -204,19 +204,19 @@ Function to make key plots of pharmacokinetic (PK) data.
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZcdNrB</td>
+<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpD9XgzO</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZcdNrB/example.R</td>
+<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpD9XgzO/example.R</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZcdNrB/example_unnamed_table_.csv</td>
+<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpD9XgzO/example_unnamed_table_.csv</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">Created: /2021-02-02 00:01:00</td>
+<td align="left">Created: /2021-02-04 14:09:33</td>
 <td align="left"></td>
 </tr>
 </tbody>
@@ -457,9 +457,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="va">gg</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"nlsLM"</span>, 
                  formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">E0</span> <span class="op">+</span> <span class="va">Emax</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="va">ED50</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span>,
                  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>E0 <span class="op">=</span> <span class="fl">1</span>, ED50 <span class="op">=</span> <span class="fl">1</span>, Emax <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-                                    lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0</span>, <span class="op">-</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Computation failed in `stat_smooth()`:</span>
-<span class="co">#&gt; $ operator is invalid for atomic vectors</span></code></pre></div>
+                                    lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0</span>, <span class="op">-</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="xgxr_overview_files/figure-html/unnamed-chunk-13-2.png" width="672"></p>
 <p>xgxr also includes an Emax smooth function called <code>xgx_geom_smooth_emax</code> which utilizes the “nlsLM” method, and silently calls the <code>predictdf.nls</code> defined by xgxr.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
@@ -468,8 +466,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="co">#&gt; Using default formula y ~ E0 + Emax*x/(ED50 + x), </span>
 <span class="co">#&gt;             initializing E0, Emax, and ED50 to 1, </span>
 <span class="co">#&gt;             and setting lower bound on ED50 to 0</span>
-<span class="co">#&gt; Warning: Computation failed in `stat_smooth()`:</span>
-<span class="co">#&gt; $ operator is invalid for atomic vectors</span></code></pre></div>
+<span class="co">#&gt; Warning: Ignoring unknown parameters: n_boot</span></code></pre></div>
 <p><img src="xgxr_overview_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -480,15 +477,13 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="co">#&gt; Using default formula y ~ E0 + Emax*x/(ED50 + x), </span>
 <span class="co">#&gt;             initializing E0, Emax, and ED50 to 1, </span>
 <span class="co">#&gt;             and setting lower bound on ED50 to 0</span>
+
+<span class="co">#&gt; Warning in xgx_geom_smooth_emax(geom = "ribbon", color = "black", fill = NA, : Ignoring unknown parameters: n_boot</span>
 <span class="co">#&gt; Warning in xgx_geom_smooth_emax(geom = "line", color = "red"): Formula not specified.</span>
 <span class="co">#&gt; Using default formula y ~ E0 + Emax*x/(ED50 + x), </span>
 <span class="co">#&gt;             initializing E0, Emax, and ED50 to 1, </span>
 <span class="co">#&gt;             and setting lower bound on ED50 to 0</span>
-<span class="co">#&gt; Warning: Computation failed in `stat_smooth()`:</span>
-<span class="co">#&gt; $ operator is invalid for atomic vectors</span>
-
-<span class="co">#&gt; Warning: Computation failed in `stat_smooth()`:</span>
-<span class="co">#&gt; $ operator is invalid for atomic vectors</span></code></pre></div>
+<span class="co">#&gt; Warning: Ignoring unknown parameters: n_boot</span></code></pre></div>
 <p><img src="xgxr_overview_files/figure-html/unnamed-chunk-14-2.png" width="672"></p>
 <p>xgxr also includes ordinal response smoothing as an option under the <code>xgx_stat_smooth</code> function, indicated by <code>method = "polr"</code>. This requires a dataset of x values and response values, to be defined in the mapping. This method also allows defining of color, fill, facet, linetype, etc. by the response category, while preserving the ordinal response fit across these categories.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
