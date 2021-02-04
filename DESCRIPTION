@@ -26,7 +26,7 @@ Authors@R:
              comment = c(ORCID = "0000-0001-8538-6691")),
        person("Novartis Pharma AG", role = c("cph","fnd")))
 Description: Supports a structured approach
-    for exploring PKPD data <https://opensource.nibr.com/xgx>. It also
+    for exploring PKPD data <https://opensource.nibr.com/xgx/>. It also
     contains helper functions for enabling the modeler to follow best R
     practices (by appending the program name, figure name location, and
     draft status to each plot). In addition, it enables the modeler to
