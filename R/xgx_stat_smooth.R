@@ -443,7 +443,6 @@ predictdf.nls <- function(model, xseq, se, level) {
 #' @param weight weights to use for method
 #' @param n_boot number of bootstraps to perform for confidence interval calculation, default is 200
 #' 
-#' @importFrom stats predict
 #' 
 #' @exportS3Method ggplot2::predictdf
 predictdf.polr <- function(model, xseq, se, level, 

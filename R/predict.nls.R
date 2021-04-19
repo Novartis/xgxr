@@ -1,4 +1,3 @@
-
 #' predict.nls
 #' 
 #' @param object Object of class inheriting from "nls"
@@ -7,6 +6,7 @@
 #' @param se.fit A switch indicating if standard errors are required.
 #' @param interval Type of interval calculation, "none" or "confidence"
 #' @param level Level of confidence interval to use
+#' @param ... additional arguments affecting the predictions produced.
 #'
 #' @return \code{predict.nls} produces a vector of predictions or a matrix of predictions and 
 #' bounds with column names \code{fit}, \code{lwr}, and \code{upr} if interval is set. 
@@ -25,20 +25,20 @@
 #' 
 #' set.seed(12345)
 #' data_to_plot <- data.frame(x1 = rep(c(0, 25, 50, 100, 200, 400, 600), 10)) %>%
-#'   mutate(AUC = x1*rlnorm(length(x1), 0, 0.3),
-#'          x2 = x1*rlnorm(length(x1), 0, 0.3),
-#'          Response = (15 + 50*x2/(20+x2))*rlnorm(length(x2), 0, 0.3))
+#'   dplyr::mutate(AUC = x1*rlnorm(length(x1), 0, 0.3),
+#'          x2 = x1*stats::rlnorm(length(x1), 0, 0.3),
+#'          Response = (15 + 50*x2/(20+x2))*stats::rlnorm(length(x2), 0, 0.3))
 #' 
 #' 
-#' gg <- ggplot(data = data_to_plot, aes(x = AUC, y = Response)) + 
-#'   geom_point() + 
+#' gg <- ggplot2::ggplot(data = data_to_plot, ggplot2::aes(x = AUC, y = Response)) + 
+#'   ggplot2::geom_point() + 
 #'   xgx_geom_smooth(method = "nls",  
 #'                   method.args = list(formula = y ~ E0 + Emax* x / (EC50 + x),
 #'                                      start = list(E0 = 15, Emax = 50, EC50 = 20) ), 
 #'                   color = "black", size = 0.5, alpha = 0.25)
 #' gg
 #' 
-#' mod <- nls(formula = Response ~ E0 + Emax * AUC / (EC50 + AUC), 
+#' mod <- stats::nls(formula = Response ~ E0 + Emax * AUC / (EC50 + AUC), 
 #' data = data_to_plot, 
 #' start = list(E0 = 15, Emax = 50, EC50 = 20))
 #' 
@@ -53,10 +53,16 @@
 #' predict.nls(mod, 
 #'             newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)), 
 #'             se.fit = TRUE, interval = "confidence", level = 0.95)
+#'             
+#' predict(mod, 
+#'             newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)), 
+#'             se.fit = TRUE, interval = "confidence", level = 0.95)
 #'
 #' @importFrom Deriv Deriv
+#' @importFrom stats nls
 #' @exportS3Method stats::predict
-predict.nls <- function(object, newdata, se.fit = FALSE, interval = "none", level = 0.95){
+#' @export predict.nls
+predict.nls <- function(object, newdata = NULL, se.fit = FALSE, interval = "none", level = 0.95, ...){
   
   pred <- list()
   
@@ -105,7 +111,7 @@ predict.nls <- function(object, newdata, se.fit = FALSE, interval = "none", leve
     return(ret)
   }
   
-  if(missing(newdata)){
+  if(is.null(newdata)){
     fg <- list()
     fg$value <- as.numeric(object$m$fitted())
     fg$grad <- object$m$gradient()
