@@ -13,9 +13,8 @@
 
 **Comments:**
 
-    o xgx_stat_smooth() added to allow for nonlinear fitting + confidence intervals, including emax fitting, and ordinal response fitting
-    o xgx_stat_ci() updated with binning by quantiles, and ordinal/multinomial confidence intervals
-    o (BETA) xgx_auto_explore() function to automatically compile Rmd templates from xgx website
+    o fix bug in xgx_stat_smooth / predictdf.nls that caused an error when formula had only one parameter to fit
+    o add predict.nls function to produce predictions and confidence intervals for nls objects, similar to predict.lm for lm objects
 
 ## Downstream dependencies
 

@@ -1,3 +1,8 @@
+CHANGES IN VERSION 1.1.1
+------------------------
+    o fix bug in xgx_stat_smooth / predictdf.nls that caused an error when formula had only one parameter to fit
+    o add predict.nls function to produce predictions and confidence intervals for nls objects, similar to predict.lm for lm objects
+
 CHANGES IN VERSION 1.1.0
 ------------------------
     o xgx_stat_smooth() added to allow for nonlinear fitting + confidence intervals, including emax fitting, and ordinal response fitting
