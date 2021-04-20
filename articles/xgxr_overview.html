@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">xgxr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
       <h1 data-toc-skip>xgxr Overview</h1>
                         <h4 class="author">Andrew Stein, Fariba Khanshan, Alison Margolskee</h4>
             
-            <h4 class="date">2021-02-04</h4>
+            <h4 class="date">2021-04-20</h4>
       
       
       <div class="hidden name"><code>xgxr_overview.Rmd</code></div>
@@ -170,7 +170,7 @@ Function to make key plots of pharmacokinetic (PK) data.
 <span class="va">filename</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"png_example.png"</span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a></span><span class="op">(</span><span class="va">filename</span>, plot <span class="op">=</span> <span class="va">g</span>, height <span class="op">=</span> <span class="fl">4</span>, width <span class="op">=</span> <span class="fl">4</span>, dpi <span class="op">=</span> <span class="fl">75</span><span class="op">)</span>
 <span class="fu"><a href="../reference/xgx_annotate_status_png.html">xgx_annotate_status_png</a></span><span class="op">(</span><span class="va">filename</span>, <span class="st">"./ExampleScript.R"</span><span class="op">)</span>
-<span class="co">#&gt; Add footnote to /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpTEkH8o/png_example.png</span></code></pre></div>
+<span class="co">#&gt; Add footnote to /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpsFembh/png_example.png</span></code></pre></div>
 <!-- ![image](png_example.png) -->
 </div>
 <div id="saving-tables" class="section level3">
@@ -204,19 +204,19 @@ Function to make key plots of pharmacokinetic (PK) data.
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpTEkH8o</td>
+<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpsFembh</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpTEkH8o/example.R</td>
+<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpsFembh/example.R</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpTEkH8o/example_unnamed_table_.csv</td>
+<td align="left">/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpsFembh/example_unnamed_table_.csv</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">Created: /2021-02-04 17:49:45</td>
+<td align="left">Created: /2021-04-20 14:59:14</td>
 <td align="left"></td>
 </tr>
 </tbody>
@@ -326,7 +326,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
              distribution <span class="op">=</span> <span class="st">"ordinal"</span><span class="op">)</span> <span class="op">+</span>
  <span class="fu"><a href="../reference/xgx_stat_ci.html">xgx_stat_ci</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, response <span class="op">=</span> <span class="va">covariate</span><span class="op">)</span>, geom <span class="op">=</span> <span class="st">"hline"</span>,
              distribution <span class="op">=</span> <span class="st">"ordinal"</span><span class="op">)</span> <span class="op">+</span>
- <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+ <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">covariate</span><span class="op">)</span> <span class="op">+</span> 
  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Treatment group"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Percent of subjects by category"</span><span class="op">)</span>
 <span class="co">#&gt; In xgx_stat_ci: </span>
@@ -375,7 +375,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="fu"><a href="../reference/xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/xgx_stat_ci.html">xgx_stat_ci</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, response <span class="op">=</span> <span class="va">response</span>, colour <span class="op">=</span> <span class="va">covariate</span><span class="op">)</span>,
               distribution <span class="op">=</span> <span class="st">"ordinal"</span>, bins <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">response</span><span class="op">)</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">response</span><span class="op">)</span>
 <span class="co">#&gt; In xgx_stat_ci: </span>
 <span class="co">#&gt;   The following aesthetics are identical to response: PANEL</span>
 <span class="co">#&gt;   These will be used for differentiating response groups in the resulting plot.</span>
@@ -404,7 +404,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="fu"><a href="../reference/xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/xgx_stat_ci.html">xgx_stat_ci</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, response <span class="op">=</span> <span class="va">response</span>, colour <span class="op">=</span> <span class="va">response</span><span class="op">)</span>,
               distribution <span class="op">=</span> <span class="st">"ordinal"</span>, bins <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">covariate</span><span class="op">)</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">covariate</span><span class="op">)</span>
 <span class="co">#&gt; In xgx_stat_ci: </span>
 <span class="co">#&gt;   The following aesthetics are identical to response: colour</span>
 <span class="co">#&gt;   These will be used for differentiating response groups in the resulting plot.</span>
@@ -485,8 +485,43 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="co">#&gt;             and setting lower bound on ED50 to 0</span>
 <span class="co">#&gt; Warning: Ignoring unknown parameters: n_boot</span></code></pre></div>
 <p><img src="xgxr_overview_files/figure-html/unnamed-chunk-14-2.png" width="672"></p>
-<p>xgxr also includes ordinal response smoothing as an option under the <code>xgx_stat_smooth</code> function, indicated by <code>method = "polr"</code>. This requires a dataset of x values and response values, to be defined in the mapping. This method also allows defining of color, fill, facet, linetype, etc. by the response category, while preserving the ordinal response fit across these categories.</p>
+<p>xgxr also modifies the stats method <code>predict.nls</code> for <code>nls</code> objects in order to include confidence interval prediction. Upon loading the xgxr package, the <code>predict</code> method for class <code>nls</code> should be updated to the xgxr version, and include functionality to supply confidence intervals. In order to output the confidence intervals, be sure to specify <code>interval = "confidence"</code>. The output will contain a “fit” data.frame with values for “fit”, “lwr” and “upr” representing the prediction and lower and upper confidence intervals.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/minpack.lm/man/nlsLM.html">nlsLM</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Response</span> <span class="op">~</span> <span class="va">E0</span> <span class="op">+</span> <span class="va">Emax</span> <span class="op">*</span> <span class="va">DOSE</span> <span class="op">/</span> <span class="op">(</span><span class="va">ED50</span> <span class="op">+</span> <span class="va">DOSE</span><span class="op">)</span>,
+             data <span class="op">=</span> <span class="va">dat1</span>,
+             start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>E0 <span class="op">=</span> <span class="fl">1</span>, ED50 <span class="op">=</span> <span class="fl">1</span>, Emax <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+                                    lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0</span>, <span class="op">-</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mod</span>,
+            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>DOSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span>,
+            se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; $fit</span>
+<span class="co">#&gt; [1]  44.60368  99.70517 116.14226 128.68292 136.76043</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $se.fit</span>
+<span class="co">#&gt; [1] 5.219335 4.289631 3.012974 2.969559 4.294878</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $df</span>
+<span class="co">#&gt; [1] 247</span>
+
+<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mod</span>,
+            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>DOSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span>,
+            se.fit <span class="op">=</span> <span class="cn">TRUE</span>, interval <span class="op">=</span> <span class="st">"confidence"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
+<span class="co">#&gt; $fit</span>
+<span class="co">#&gt;         fit       lwr       upr</span>
+<span class="co">#&gt; 1  44.60368  34.32360  54.88376</span>
+<span class="co">#&gt; 2  99.70517  91.25625 108.15409</span>
+<span class="co">#&gt; 3 116.14226 110.20786 122.07666</span>
+<span class="co">#&gt; 4 128.68292 122.83404 134.53181</span>
+<span class="co">#&gt; 5 136.76043 128.30118 145.21969</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $se.fit</span>
+<span class="co">#&gt; [1] 5.219335 4.289631 3.012974 2.969559 4.294878</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $df</span>
+<span class="co">#&gt; [1] 247</span></code></pre></div>
+<p>xgxr also includes ordinal response smoothing as an option under the <code>xgx_stat_smooth</code> function, indicated by <code>method = "polr"</code>. This requires a dataset of x values and response values, to be defined in the mapping. This method also allows defining of color, fill, facet, linetype, etc. by the response category, while preserving the ordinal response fit across these categories.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># example with ordinal data (method = "polr")</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
@@ -500,15 +535,15 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
   <span class="fu"><a href="../reference/xgx_stat_smooth.html">xgx_stat_smooth</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, response <span class="op">=</span> <span class="va">response</span>,
                                          colour <span class="op">=</span> <span class="va">response</span>, fill <span class="op">=</span> <span class="va">response</span><span class="op">)</span>,
                   method <span class="op">=</span> <span class="st">"polr"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; `geom_smooth()` using formula 'response ~ x'</span>
 <span class="co">#&gt; In xgx_stat_smooth: </span>
 <span class="co">#&gt;   The following aesthetics are identical to response: PANEL, colour, fill</span>
 <span class="co">#&gt;   These will be used for differentiating response groups in the resulting plot.</span>
 <span class="co">#&gt; In xgx_stat_smooth: </span>
 <span class="co">#&gt;   response should be a factor, converting to factor using as.factor(response) with default levels</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># example faceting by the response categories, coloring by a different covariate</span>
 <span class="fu"><a href="../reference/xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">+</span>
@@ -516,7 +551,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
                                          colour <span class="op">=</span> <span class="va">covariate</span>, fill <span class="op">=</span> <span class="va">covariate</span><span class="op">)</span>,
                   method <span class="op">=</span> <span class="st">"polr"</span>, level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">response</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; `geom_smooth()` using formula 'response ~ x'</span>
 <span class="co">#&gt; In xgx_stat_smooth: </span>
 <span class="co">#&gt;   The following aesthetics are identical to response: PANEL</span>
@@ -526,13 +561,13 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="co">#&gt;   These will be used to divide the data into different groups before calculating summary statistics on the response.</span>
 <span class="co">#&gt; In xgx_stat_smooth: </span>
 <span class="co">#&gt;   response should be a factor, converting to factor using as.factor(response) with default levels</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-15-2.png" width="672"></p>
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-16-2.png" width="672"></p>
 </div>
 <div id="nice-log-scale" class="section level3">
 <h3 class="hasAnchor">
 <a href="#nice-log-scale" class="anchor"></a>Nice log scale</h3>
 <p>This version of the log scale function shows the tick marks between the major breaks (i.e. at 1, 2, 3, … 10, instead of just 1 and 10). It also uses <span class="math display">\[10^x\]</span> notation when the labels are base 10 and are very small or very large (&lt;.001 or &gt;9999)</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
                  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
@@ -541,13 +576,13 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
   <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Transformation introduced infinite values in continuous x-axis</span>
 <span class="co">#&gt; Warning: Transformation introduced infinite values in continuous y-axis</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 </div>
 <div id="reverse-log-transform" class="section level3">
 <h3 class="hasAnchor">
 <a href="#reverse-log-transform" class="anchor"></a>Reverse log transform</h3>
 <p>This transform is useful for plotting data on a percentage scale that can approach 100% (such as receptor occupancy data).</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">conc</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">ec50</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>concentration <span class="op">=</span> <span class="va">conc</span>, 
@@ -565,13 +600,13 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
   <span class="fu"><a href="../reference/xgx_scale_x_reverselog10.html">xgx_scale_x_reverselog10</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span><span class="va">gy</span>, <span class="va">gx</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 </div>
 <div id="nice-scale-for-percent-change-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#nice-scale-for-percent-change-data" class="anchor"></a>Nice scale for percent change data</h3>
 <p>This transform is useful for plotting percent change from baseline data. Percent change data can range from -100% to +Inf%, and depending on the range of the data, a linear scale can lose the desired resolution. This transform plots percent change data on a scale of log10(PCHG + 100%), similar to a log scale of ratio to baseline.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">Nsubj</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 <span class="va">Doses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span>
@@ -596,8 +631,8 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
   <span class="fu"><a href="../reference/xgx_scale_y_percentchangelog10.html">xgx_scale_y_percentchangelog10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Percent Change from Baseline"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Dose (mg)"</span><span class="op">)</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dat1</span>, 
                 <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Time</span>, y <span class="op">=</span> <span class="va">PCHG</span>, group <span class="op">=</span> <span class="va">ID</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -606,8 +641,8 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
   <span class="fu"><a href="../reference/xgx_scale_y_percentchangelog10.html">xgx_scale_y_percentchangelog10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Dose (mg)"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Percent Change from Baseline"</span><span class="op">)</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-18-2.png" width="672"></p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-19-2.png" width="672"></p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">dat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">Ntot</span><span class="op">)</span>,
                   DOSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">Doses</span>, <span class="va">Nsubj</span><span class="op">)</span>,
@@ -626,8 +661,8 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
   <span class="fu"><a href="../reference/xgx_scale_y_percentchangelog10.html">xgx_scale_y_percentchangelog10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Percent Change from Baseline"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Dose (mg)"</span><span class="op">)</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-18-3.png" width="672"></p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-19-3.png" width="672"></p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dat2</span>, 
                 <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Time</span>, y <span class="op">=</span> <span class="va">PCHG</span>, group <span class="op">=</span> <span class="va">ID</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -636,13 +671,13 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
   <span class="fu"><a href="../reference/xgx_scale_y_percentchangelog10.html">xgx_scale_y_percentchangelog10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Dose (mg)"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Percent Change from Baseline"</span><span class="op">)</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-18-4.png" width="672"></p>
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-19-4.png" width="672"></p>
 </div>
 <div id="scaling-x-axis-as-a-time-scale" class="section level3">
 <h3 class="hasAnchor">
 <a href="#scaling-x-axis-as-a-time-scale" class="anchor"></a>Scaling x-axis as a time scale</h3>
 <p>For time, it’s often good for the x ticks to be spaced in a particular way. For instance, for hours, subdividing in increments by 24, 12, 6, and 3 hours can make more sense than by 10 or 100. Similarly for days, increments of 7 or 28 days are preferred over 5 or 10 days. <code>xgx_scale_x_time_units</code> allows for this, where it is the input and output units.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1000</span>, y <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span>
 <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span>
@@ -652,7 +687,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <span class="va">g4</span> <span class="op">&lt;-</span> <span class="va">g</span> <span class="op">+</span> <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="st">"hours"</span>, units_plot <span class="op">=</span> <span class="st">"months"</span><span class="op">)</span>
 
 <span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">g3</span>, <span class="va">g4</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
+<p><img src="xgxr_overview_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 </div>
 </div>
 <div id="data-checking" class="section level2">
@@ -662,7 +697,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <h3 class="hasAnchor">
 <a href="#numerical-check" class="anchor"></a>Numerical check</h3>
 <p>We’ve found that during exploration, it can be extremely important to check the dataset for issues. This can be done using the <code>xgx_check_data</code> or <code>xgx_summarize_data</code> function (the two functions are identical).</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">mad_missing_duplicates</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">CMT</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>DV      <span class="op">=</span> <span class="va">LIDV</span>,
@@ -887,7 +922,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">check</span><span class="op">$</span><span class="va">data_subset</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -950,7 +985,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 </tbody>
 </table>
 <p>You can also get an overview of the covariates in the dataset with <code>xgx_summarize_covariates</code>. The covariate summaries are also provided in the <code>xgx_check_data</code> and <code>xgx_summarize_data</code> functions.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">covar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/xgx_summarize_covariates.html">xgx_summarize_covariates</a></span><span class="op">(</span><span class="va">data</span>,<span class="va">covariates</span><span class="op">)</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">covar</span><span class="op">$</span><span class="va">cts_covariates</span><span class="op">)</span></code></pre></div>
 <table class="table">
@@ -973,7 +1008,7 @@ Spaghetti plots combine dots and lines, grouped and colored by individuals onto 
 <td align="right">109</td>
 </tr></tbody>
 </table>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">covar</span><span class="op">$</span><span class="va">cat_covariates</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
