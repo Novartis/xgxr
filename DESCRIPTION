@@ -67,6 +67,7 @@ Suggests:
     caTools,
     gridExtra,
     knitr,
+    pkgdown,
     rmarkdown,
     testthat,
     tidyr
