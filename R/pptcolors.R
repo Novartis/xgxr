@@ -12,20 +12,21 @@
 ##'
 ##' @param full boolean to return full color matrix
 ##'
-##' @param veryLight a number betweeen 0 and 1 representing the cutoff
+##' @param light a number betweeen 0 and 1 representing the cutoff
 ##'     for very light colors.  This defaults to 0.1
 ##'
-##' @param veryDark a number between 0 and 1 representing the cutoff
+##' @param dark a number between 0 and 1 representing the cutoff
 ##'     for very dark colors.  This defaults to 0.9
 ##'
 ##' @return a list of named powerpoint based on the powerpoint theme
 ##'
 ##' @author Matthew L. Fidler
+##'
 ##' @export
-xgx_ppt_colors <- function(doc, full=FALSE, veryLight = 0.1, veryDark  = 0.9){
-  ret <- pptxColors.character.single(doc);
+xgx_ppt_colors <- function(doc, full=FALSE, light = 0.1, dark  = 0.9){
+  ret <- pptxColors.character.single(doc)
   if (full){
-    tmp <- pptxFullColors(ret, veryLight = veryLight, veryDark  = veryDark)
+    tmp <- pptxFullColors(ret, veryLight = light, veryDark  = dark)
     return(tmp)
   } else {
     return(ret)
@@ -95,9 +96,9 @@ pptxColors.character.single <- function(doc){ #ppt_template Object
 
       }
     }
-    colors[[length(colors) + 1]] <- tmp;
+    colors[[length(colors) + 1]] <- tmp
   }
-  return(colors);
+  return(colors)
 }
 
 pptxFullColors <- function(col, ...){
@@ -240,6 +241,7 @@ SetTextContrastColor <- function(color)
 {
   ifelse( mean(col2rgb(color)) > 127, "black", "white")
 }
+
 ## This is adapted from http://research.stowers.org/efg/R/Color/Chart/
 plotPptColors <- function(pptx, ...){
   if (file.exists(pptx)){
