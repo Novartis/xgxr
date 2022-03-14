@@ -9,4 +9,6 @@ Detailed documentation of xgxr is available [here](https://opensource.nibr.com/x
 
 The xgxr package is also available on [CRAN](https://CRAN.R-project.org/package=xgxr).
 
+A cheatsheet for the xGx website and xgxr package is available [here](https://opensource.nibr.com/xgx/Resources/PKPD_Exploratory_Graphics_(xGx)_Cheat_Sheet.pdf)
+
 If you're interested in contributing to this package, we follow the [tidyverse style guide](https://style.tidyverse.org/index.html).
