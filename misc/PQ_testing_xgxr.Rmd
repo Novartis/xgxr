@@ -1,0 +1,180 @@
+---
+title: "xgxr"
+author: "Matt Fidler"
+date: "11/12/2022"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(testthat)
+```
+
+# Brief Package Description
+
+
+Supports a structured approach for exploring PKPD data <https://opensource.nibr.com/xgx/>. It also contains helper functions for enabling the modeler to follow best R practices (by appending the program name, figure name location, and draft status to each plot). In addition, it enables the modeler to follow best graphical practices (by providing a theme that reduces chart ink, and by providing time-scale, log-scale, and reverse-log-transform-scale functions for more readable axes). Finally, it provides some data checking and summarizing functions for rapidly exploring pharmacokinetics and pharmacodynamics (PKPD) datasets.
+
+# Datasets used for testing
+
+This describes the datasets (if any) or functions (if any) that are used
+to test the package.
+
+`nlmixr2data::theo_sd`
+
+
+# Functions that are exported
+
+## GGproto functions
+
+These functions are exported but are not expected to be used directly by the user and are not tested:
+
+- `StatSmoothOrdinal`
+- `StatSummaryBinQuant`
+- `StatSummaryOrdinal`
+
+## Interactive only functions
+
+These functions are based on interactive user input and are not tested:
+
+- `edit_rmd_template_str`
+
+## Exported from other packages
+
+- `gtable`
+- `nlsLM`
+- `predict.nls`
+
+## Functions that are display only, and do no calculation
+
+- `theme_xgr` -- changes the ggplot2 theme to black and white
+
+- `xgx_annotate_filenames` -- adds footnotes to figuers
+
+- `xgx_annotate_status` -- Adds "DRAFT" to figures
+
+- `xgx_annotate_status_png` -- nadds status to the png files
+
+- `xgx_theme`
+
+- `xgx_theme_set`
+
+# Testible functions without graphics
+
+- `xgx_breaks_log10` display log-10 breaks on scale
+
+```{r}
+test_that("log10 breaks make sense", {
+  expect_equal(xgx_breaks_log10(c(0.001, 2000)), 
+               c(0.001, 0.01, 0.1, 1, 10, 100, 1000))
+})
+
+```
+
+- `xgx_breaks_time` displays breaks with time
+
+```{r}
+test_that("xgx_breaks_time makes sense", {
+  expect_equal(xgx_breaks_time(c(0, 24*10), "h"),
+               c(0, 60, 120, 180, 240))
+               
+})
+
+```
+- `xgx_check_data`
+
+```{r}
+test_that("xgx_check_data produces no errors", {
+  expect_error(xgx_check_data(nlmixr2data::theo_sd), NA)
+})
+```
+
+- `xgx_conf_int`
+
+```{r}
+test_that("xgx_conf_int", {
+  withr::with_seed(24,{
+    expect_equal(xgx_conf_int(rnorm(1000)),
+                 structure(list(y = -0.0469587129006418, ymin = -0.109521192672548, ymax = 0.0156037668712641), class = "data.frame", row.names = c(NA, -1L)))
+  })
+})
+
+```   
+
+- `xgx_dirs2char`
+
+```{r}
+
+test_that("xgx_dirs2char", {
+  dirs <- list(parent_dir = "/your/parent/path/",
+            rscript_dir = "./Rscripts/",
+            rscript_name = "Example.R",
+            results_dir = "./Results/",
+            filename = "your_file_name.png")
+caption <- xgx_dirs2char(dirs)
+expect_equal("/your/parent/path/\n./Rscripts//Example.R\n./Results//your_file_name.png\nCreated: 2022-11-07 20:10:34",
+             caption)
+})
+
+```
+
+- `xgx_labels_log10 `
+
+```{r}
+test_that("xgx_breaks_time makes sense", {
+  expect_equal(xgx_labels_log10(xgx_breaks_log10(c(0.001, 2000))),
+               c("0.001", "0.01", "0.1", "1", "10", "100", "1000"))
+})
+```
+
+- `xgx_minor_breaks_log10`
+
+```{r}
+
+test_that("xgx_breaks_time makes sense", {
+  expect_equal(xgx_minor_breaks_log10(c(0.001, 2000)),
+               c(0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 
+                 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 
+                 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 
+                 2, 3, 4, 5, 6, 7, 8, 9, 
+                 20, 30, 40, 50, 60, 70, 80, 90, 
+                 200, 300, 400, 500, 600, 700, 800, 900, 
+                 2000))
+})
+```
+
+# Interfaces that allow creation of ggplots
+
+- `xgx_plot` -- This simply is a wrapper around `ggplot`, not sure the rationale.  This is a display-only style function
+
+
+# Save ggplot2 objects
+
+- `xgx_save` -- Save ggplot
+
+- `xgx_save_table` -- saves table as image
+
+# Scales/stats/geom
+
+These produce graphical output and need to be tested further in the future, probably using `vdiffr`
+
+- `xgx_geom_ci`
+- `xgx_geom_pi`
+- `xgx_geom_smooth`, use "polr", "nls", "nlsLM"
+- `xgx_geom_smooth` uses `minpack.lm::nlsLM`
+- `xgx_scale_x_log10`
+- `xgx_scale_x_percentchangelog10`
+- `xgx_scale_x_reverselog10`
+- `xgx_scale_x_time_units`
+- `xgx_scale_y_log10`
+- `xgx_scale_y_percentchangelog10`
+- `xgx_scale_y_reverselog10`
+- `xgx_scale_y_time_units`
+- `xgx_stat_ci`
+- `xgx_stat_pi`
+- `xgx_stat_smooth`
+- `xgx_summarize_covariates`
+- `xgx_summarize_data`
