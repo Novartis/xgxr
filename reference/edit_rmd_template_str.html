@@ -66,60 +66,87 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">edit_rmd_template_str</span><span class="op">(</span>
-  rmd_str <span class="op">=</span> <span class="cn">NULL</span>,
-  mapping <span class="op">=</span> <span class="cn">NULL</span>,
-  rmd_output_path <span class="op">=</span> <span class="cn">NULL</span>,
-  data_path <span class="op">=</span> <span class="cn">NULL</span>,
-  multiple_dosing <span class="op">=</span> <span class="cn">FALSE</span>,
-  pk_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  pd_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  dose_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  steady_state_day <span class="op">=</span> <span class="cn">NULL</span>,
-  time_between_doses <span class="op">=</span> <span class="cn">NULL</span>,
-  author_name <span class="op">=</span> <span class="cn">NULL</span>,
-  add_datetime <span class="op">=</span> <span class="cn">TRUE</span>,
-  show_explanation <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">edit_rmd_template_str</span><span class="op">(</span></span>
+<span>  rmd_str <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rmd_output_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  multiple_dosing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pk_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pd_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dose_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  steady_state_day <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  time_between_doses <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  author_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  add_datetime <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  show_explanation <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>rmd_str</dt>
 <dd><p>A character string containing the Rmd template raw characters</p></dd>
+
+
 <dt>mapping</dt>
 <dd><p>A list of column name mappings from the
 original (template) dataset column names
 to the corresponding columns in the new dataset</p></dd>
+
+
 <dt>rmd_output_path</dt>
 <dd><p>A custom output path for the generated Rmd file
 (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))</p></dd>
+
+
 <dt>data_path</dt>
 <dd><p>Path (as a string) to the dataset that is to be analyzed</p></dd>
+
+
 <dt>multiple_dosing</dt>
 <dd><p>if FALSE use single ascending dose template, if TRUE use multiple</p></dd>
+
+
 <dt>pk_cmt</dt>
 <dd><p>An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)</p></dd>
+
+
 <dt>pd_cmt</dt>
 <dd><p>An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
 have these integers, where each row may contain either PK or PD data</p></dd>
+
+
 <dt>dose_cmt</dt>
 <dd><p>CMT associated with dosing event</p></dd>
+
+
 <dt>steady_state_day</dt>
 <dd><p>For multiple ascending dose, what day is steady state rich profile?</p></dd>
+
+
 <dt>time_between_doses</dt>
 <dd><p>time interval between doses</p></dd>
+
+
 <dt>author_name</dt>
 <dd><p>The name of the author to be displayed on the template</p></dd>
+
+
 <dt>add_datetime</dt>
 <dd><p>Boolean indicating additon of a date stamp to the beginnning of the Rmd file</p></dd>
+
+
 <dt>show_explanation</dt>
 <dd><p>Boolean indicating if the additional explanations (text in between figures) are needed for the user.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A string of the new R markdown template</p>
+    
+
+<p>A string of the new R markdown template</p>
     </div>
 
   </div>
@@ -134,7 +161,7 @@ have these integers, where each row may contain either PK or PD data</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

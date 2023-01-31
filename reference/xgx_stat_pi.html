@@ -68,20 +68,20 @@ intervals</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">xgx_stat_pi</span><span class="op">(</span>
-  mapping <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  percent_level <span class="op">=</span> <span class="fl">0.95</span>,
-  geom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"line"</span>, <span class="st">"ribbon"</span><span class="op">)</span>,
-  position <span class="op">=</span> <span class="st">"identity"</span>,
-  bins <span class="op">=</span> <span class="cn">NULL</span>,
-  breaks <span class="op">=</span> <span class="cn">NULL</span>,
-  fun.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,
-  show.legend <span class="op">=</span> <span class="cn">NA</span>,
-  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xgx_stat_pi</span><span class="op">(</span></span>
+<span>  mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  percent_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  geom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"line"</span>, <span class="st">"ribbon"</span><span class="op">)</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  breaks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fun.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  show.legend <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -91,6 +91,8 @@ intervals</p>
 If specified and `inherit.aes = TRUE` (the default), it is combined with the 
 default mapping at the top level of the plot. You must supply mapping if 
 there is no plot mapping.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>The data to be displayed in this layer. There are three options:</p>
 <p>If NULL, the default, the data is inherited from the plot data as specified 
@@ -100,75 +102,98 @@ will be fortified to produce a data frame. See fortify for which variables
 will be created.</p>
 <p>A function will be called with a single argument, the plot data. The return 
 value must be a data.frame., and will be used as the layer data.</p></dd>
+
+
 <dt>percent_level</dt>
 <dd><p>The upper or lower percentile for the percent interval (should fall 
 between 0 and 1). The default is 0.95, which corresponds  
 to (0.05, 0.95) interval. Supplying 0.05 would give the same result</p></dd>
+
+
 <dt>geom</dt>
 <dd><p>Use to override the default geom. Can be a list of multiple 
 geoms, e.g. list("line","ribbon"), which is the default.</p></dd>
+
+
 <dt>position</dt>
 <dd><p>Position adjustment, either as a string, or the result of 
 a call to a position adjustment function.</p></dd>
+
+
 <dt>bins</dt>
 <dd><p>number of bins to cut up the x data, cuts data into quantiles.</p></dd>
+
+
 <dt>breaks</dt>
 <dd><p>breaks to cut up the x data, if this option is used, bins is ignored</p></dd>
+
+
 <dt>fun.args</dt>
 <dd><p>Optional additional arguments passed on to the functions.</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>If FALSE, the default, missing values are removed with a 
 warning. If TRUE, missing values are silently removed.</p></dd>
+
+
 <dt>show.legend</dt>
 <dd><p>logical. Should this layer be included in the legends? 
 NA, the default, includes if any aesthetics are mapped. FALSE never 
 includes, and TRUE always includes.</p></dd>
+
+
 <dt>inherit.aes</dt>
 <dd><p>If FALSE, overrides the default aesthetics, rather 
 than combining with them. This is most useful for helper functions that 
 define both data and aesthetics and shouldn't inherit behaviour from the 
 default plot specification, e.g. borders.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other arguments passed on to layer. These are often aesthetics, 
 used to set an aesthetic to a fixed value, like color = "red" or size = 3. 
 They may also be parameters to the paired geom/stat.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ggplot2 plot layer</p>
+    
+
+<p>ggplot2 plot layer</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># default settings for normally distributed data, (5%,95%) interval,</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span>
-<span class="r-in">                   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>,</span>
-<span class="r-in">                   group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># default settings for normally distributed data, (5%,95%) interval,</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="xgx_stat_pi-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># try different geom </span></span>
-<span class="r-in"><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span class="r-in">  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.95</span>, geom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"errorbar"</span>, <span class="st">"point"</span>, <span class="st">"line"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># try different geom </span></span></span>
+<span class="r-in"><span><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.95</span>, geom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"errorbar"</span>, <span class="st">"point"</span>, <span class="st">"line"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="xgx_stat_pi-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"> </span>
-<span class="r-in"><span class="co"># including multiple groups in same plot</span></span>
-<span class="r-in"><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span class="r-in">  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.95</span>, </span>
-<span class="r-in">              <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">              position <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown aesthetics: fill</span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="co"># including multiple groups in same plot</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.95</span>, </span></span>
+<span class="r-in"><span>              <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>              position <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown aesthetics: <span style="color: #00BB00;">fill</span></span>
 <span class="r-plt img"><img src="xgx_stat_pi-3.png" alt="" width="700" height="433"></span>
-<span class="r-in">              </span>
-<span class="r-in"><span class="co"># including multiple percent intervals in same plot              </span></span>
-<span class="r-in"><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span> <span class="op">+</span> </span>
-<span class="r-in">  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span> <span class="op">+</span> </span>
-<span class="r-in">  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.70</span><span class="op">)</span> <span class="op">+</span> </span>
-<span class="r-in">  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.60</span><span class="op">)</span>      </span>
+<span class="r-in"><span>              </span></span>
+<span class="r-in"><span><span class="co"># including multiple percent intervals in same plot              </span></span></span>
+<span class="r-in"><span><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.70</span><span class="op">)</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_pi</span><span class="op">(</span>percent_level <span class="op">=</span> <span class="fl">0.60</span><span class="op">)</span>      </span></span>
 <span class="r-plt img"><img src="xgx_stat_pi-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"> </span>
+<span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>
   </div>
@@ -183,7 +208,7 @@ They may also be parameters to the paired geom/stat.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

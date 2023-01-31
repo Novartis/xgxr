@@ -66,29 +66,33 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">xgx_save</span><span class="op">(</span>
-  <span class="va">width</span>,
-  <span class="va">height</span>,
-  dirs <span class="op">=</span> <span class="cn">NULL</span>,
-  filename_main <span class="op">=</span> <span class="cn">NULL</span>,
-  status <span class="op">=</span> <span class="st">"DRAFT"</span>,
-  g <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/last_plot.html" class="external-link">last_plot</a></span><span class="op">(</span><span class="op">)</span>,
-  filetype <span class="op">=</span> <span class="st">"png"</span>,
-  status_x <span class="op">=</span> <span class="cn">Inf</span>,
-  status_y <span class="op">=</span> <span class="cn">Inf</span>,
-  status_fontsize <span class="op">=</span> <span class="fl">7</span>,
-  status_fontcolor <span class="op">=</span> <span class="st">"grey"</span>,
-  filenames_fontsize <span class="op">=</span> <span class="fl">11</span>,
-  filenames_fontcolor <span class="op">=</span> <span class="st">"black"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xgx_save</span><span class="op">(</span></span>
+<span>  <span class="va">width</span>,</span>
+<span>  <span class="va">height</span>,</span>
+<span>  dirs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filename_main <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  status <span class="op">=</span> <span class="st">"DRAFT"</span>,</span>
+<span>  g <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/last_plot.html" class="external-link">last_plot</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  filetype <span class="op">=</span> <span class="st">"png"</span>,</span>
+<span>  status_x <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  status_y <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  status_fontsize <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>  status_fontcolor <span class="op">=</span> <span class="st">"grey"</span>,</span>
+<span>  filenames_fontsize <span class="op">=</span> <span class="fl">11</span>,</span>
+<span>  filenames_fontcolor <span class="op">=</span> <span class="st">"black"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>width</dt>
 <dd><p>width of plot</p></dd>
+
+
 <dt>height</dt>
 <dd><p>height of plot</p></dd>
+
+
 <dt>dirs</dt>
 <dd><p>list of directories.  If NULL or if directories missing, there 
 is default behavior below</p>
@@ -102,48 +106,71 @@ default "Name_Of_Script_Here.R"</p></li>
 default "./"</p></li>
 <li><p>filename_prefix = prefix of filename to be appended to filename_main</p></li>
 </ol></dd>
+
+
 <dt>filename_main</dt>
 <dd><p>main part of the filename, excluding prefix and suffix.
 no default</p></dd>
+
+
 <dt>status</dt>
 <dd><p>status to be annotated</p></dd>
+
+
 <dt>g</dt>
 <dd><p>ggplot plot object, default is ggplot::last_plot()</p></dd>
+
+
 <dt>filetype</dt>
 <dd><p>file extension (e.g. "pdf","csv" etc.)</p></dd>
+
+
 <dt>status_x</dt>
 <dd><p>x location of the status in plot</p></dd>
+
+
 <dt>status_y</dt>
 <dd><p>y location of the status in plot</p></dd>
+
+
 <dt>status_fontsize</dt>
 <dd><p>font size for status in plot</p></dd>
+
+
 <dt>status_fontcolor</dt>
 <dd><p>font color for status in plot</p></dd>
+
+
 <dt>filenames_fontsize</dt>
 <dd><p>font size for filenames info in plot</p></dd>
+
+
 <dt>filenames_fontcolor</dt>
 <dd><p>font color for filenames info in plot</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ggplot2 plot object</p>
+    
+
+<p>ggplot2 plot object</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">directory</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dirs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parent_dir  <span class="op">=</span> <span class="va">directory</span>,</span>
-<span class="r-in">             rscript_dir <span class="op">=</span> <span class="va">directory</span>,</span>
-<span class="r-in">             rscript_name <span class="op">=</span> <span class="st">"example.R"</span>,</span>
-<span class="r-in">             results_dir <span class="op">=</span> <span class="va">directory</span>,</span>
-<span class="r-in">             filename_prefix <span class="op">=</span> <span class="st">"example_"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1000</span>, y <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">directory</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dirs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parent_dir  <span class="op">=</span> <span class="va">directory</span>,</span></span>
+<span class="r-in"><span>             rscript_dir <span class="op">=</span> <span class="va">directory</span>,</span></span>
+<span class="r-in"><span>             rscript_name <span class="op">=</span> <span class="st">"example.R"</span>,</span></span>
+<span class="r-in"><span>             results_dir <span class="op">=</span> <span class="va">directory</span>,</span></span>
+<span class="r-in"><span>             filename_prefix <span class="op">=</span> <span class="st">"example_"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1000</span>, y <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="xgx_save-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">xgx_save</span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="va">dirs</span>, <span class="st">"Example"</span>, <span class="st">"DRAFT"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">xgx_save</span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="va">dirs</span>, <span class="st">"Example"</span>, <span class="st">"DRAFT"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="xgx_save-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -158,7 +185,7 @@ no default</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -66,43 +66,62 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for polr</span>
-<span class="fu"><a href="predictdf.html">predictdf</a></span><span class="op">(</span>
-  <span class="va">model</span>,
-  <span class="va">xseq</span>,
-  <span class="va">se</span>,
-  <span class="va">level</span>,
-  <span class="va">data</span>,
-  <span class="va">method</span>,
-  <span class="va">formula</span>,
-  <span class="va">method.args</span>,
-  <span class="va">weight</span>,
-  n_boot <span class="op">=</span> <span class="fl">200</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for polr</span></span>
+<span><span class="fu"><a href="predictdf.html">predictdf</a></span><span class="op">(</span></span>
+<span>  <span class="va">model</span>,</span>
+<span>  <span class="va">xseq</span>,</span>
+<span>  <span class="va">se</span>,</span>
+<span>  <span class="va">level</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">method</span>,</span>
+<span>  <span class="va">formula</span>,</span>
+<span>  <span class="va">method.args</span>,</span>
+<span>  <span class="va">weight</span>,</span>
+<span>  n_boot <span class="op">=</span> <span class="fl">200</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>model</dt>
 <dd><p>object returned from polr</p></dd>
+
+
 <dt>xseq</dt>
 <dd><p>sequence of x values for which to compute the smooth</p></dd>
+
+
 <dt>se</dt>
 <dd><p>if TRUE then confidence intervals are returned</p></dd>
+
+
 <dt>level</dt>
 <dd><p>confidence level for confidence intervals</p></dd>
+
+
 <dt>data</dt>
 <dd><p>data to fit</p></dd>
+
+
 <dt>method</dt>
 <dd><p>only works for method MASS::polr</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>formula to fit</p></dd>
+
+
 <dt>method.args</dt>
 <dd><p>arguments to pass to method</p></dd>
+
+
 <dt>weight</dt>
 <dd><p>weights to use for method</p></dd>
+
+
 <dt>n_boot</dt>
 <dd><p>number of bootstraps to perform for confidence interval calculation, default is 200</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -122,7 +141,7 @@ to calculate confidence intervals via bootstraps.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

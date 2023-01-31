@@ -84,7 +84,7 @@
       <h1 data-toc-skip>PKPD Single Ascending Dose example</h1>
                         <h4 data-toc-skip class="author">Fariba Khanshan, Andrew Stein, Alison Margolskee</h4>
             
-            <h4 data-toc-skip class="date">2022-03-14</h4>
+            <h4 data-toc-skip class="date">2023-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Novartis/xgxr/blob/HEAD/vignettes/sad_pkpd.Rmd" class="external-link"><code>vignettes/sad_pkpd.Rmd</code></a></small>
       <div class="hidden name"><code>sad_pkpd.Rmd</code></div>
@@ -102,83 +102,83 @@
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://opensource.nibr.com/xgx/" class="external-link">xgxr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
-
-<span class="co"># flag for labeling figures as draft</span>
-<span class="va">status</span> <span class="op">&lt;-</span> <span class="st">"DRAFT"</span>
- 
-<span class="co"># ggplot settings</span>
-<span class="fu"><a href="../reference/xgx_theme_set.html">xgx_theme_set</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://opensource.nibr.com/xgx/" class="external-link">xgxr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># flag for labeling figures as draft</span></span>
+<span><span class="va">status</span> <span class="op">&lt;-</span> <span class="st">"DRAFT"</span></span>
+<span> </span>
+<span><span class="co"># ggplot settings</span></span>
+<span><span class="fu"><a href="../reference/xgx_theme_set.html">xgx_theme_set</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="load-dataset">Load Dataset<a class="anchor" aria-label="anchor" href="#load-dataset"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pkpd_data</span> <span class="op">&lt;-</span> <span class="va">case1_pkpd</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>,<span class="op">-</span><span class="va">IPRED</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>TRTACT_low2high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">TRTACT</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">TRTACT</span><span class="op">)</span><span class="op">)</span>,
-         TRTACT_high2low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">TRTACT</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">TRTACT</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-         DAY_label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Day"</span>, <span class="va">PROFDAY</span><span class="op">)</span>,
-         DAY_label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">DAY_label</span> <span class="op">==</span> <span class="st">"Day 0"</span>,<span class="st">"Baseline"</span>,<span class="va">DAY_label</span><span class="op">)</span><span class="op">)</span>
- 
-<span class="va">LOQ</span> <span class="op">=</span> <span class="fl">0.05</span> <span class="co">#ng/ml</span>
-<span class="va">dose_max</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">pkpd_data</span><span class="op">$</span><span class="va">DOSE</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pk_data</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CMT</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>LIDVNORM <span class="op">=</span> <span class="va">LIDV</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">pk_data_cycle1</span> <span class="op">&lt;-</span> <span class="va">pk_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CYCLE</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
- 
-<span class="va">pd_data</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CMT</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span>
-
-<span class="va">pd_data_baseline_day85</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CMT</span> <span class="op">==</span> <span class="fl">3</span>,
-         <span class="va">DAY_label</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Day 85"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">pk_vs_pd_data</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">EVENTU</span>,<span class="va">NAME</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">spread</a></span><span class="op">(</span><span class="va">CMT</span>,<span class="va">LIDV</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Concentration <span class="op">=</span> <span class="va">`2`</span>, Response <span class="op">=</span> <span class="va">`3`</span><span class="op">)</span>
-
-<span class="va">NCA</span> <span class="op">&lt;-</span> <span class="va">pk_data_cycle1</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">ID</span>, <span class="va">DOSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>AUC_last <span class="op">=</span> <span class="fu">caTools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caTools/man/trapz.html" class="external-link">trapz</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">LIDV</span><span class="op">)</span>,
-            Cmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">gather</a></span><span class="op">(</span><span class="va">PARAM</span>,<span class="va">VALUE</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ID</span>, <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>VALUE_NORM <span class="op">=</span> <span class="va">VALUE</span> <span class="op">/</span> <span class="va">DOSE</span><span class="op">)</span>
-
-<span class="va">AUC_last</span> <span class="op">&lt;-</span> <span class="va">NCA</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAM</span> <span class="op">==</span> <span class="st">"AUC_last"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>AUC_last <span class="op">=</span> <span class="va">VALUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">DOSE</span>,<span class="va">PARAM</span>,<span class="va">VALUE_NORM</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">pk_vs_pd_data_day85</span> <span class="op">&lt;-</span> <span class="va">pk_vs_pd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DAY_label</span> <span class="op">==</span> <span class="st">"Day 85"</span>,
-         <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">Concentration</span><span class="op">)</span>,
-         <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">Response</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">AUC_last</span><span class="op">)</span>
-
-
-<span class="va">time_units_dataset</span> <span class="op">&lt;-</span> <span class="st">"hours"</span>
-<span class="va">time_units_plot</span>    <span class="op">&lt;-</span> <span class="st">"days"</span>
-<span class="va">trtact_label</span>       <span class="op">&lt;-</span> <span class="st">"Dose"</span>
-<span class="va">dose_label</span>         <span class="op">&lt;-</span> <span class="st">"Dose (mg)"</span>
-<span class="va">conc_label</span>         <span class="op">&lt;-</span> <span class="st">"Concentration (ng/ml)"</span> 
-<span class="va">auc_label</span>          <span class="op">&lt;-</span> <span class="st">"AUCtau (h.(ng/ml))"</span>
-<span class="va">concnorm_label</span>     <span class="op">&lt;-</span> <span class="st">"Normalized Concentration (ng/ml)/mg"</span>
-<span class="va">sex_label</span>          <span class="op">&lt;-</span> <span class="st">"Sex"</span>
-<span class="va">w100_label</span>         <span class="op">&lt;-</span> <span class="st">"WEIGHTB&gt;100"</span>
-<span class="va">pd_label</span>           <span class="op">&lt;-</span> <span class="st">"FEV1 (mL)"</span>
-<span class="va">cens_label</span>         <span class="op">&lt;-</span> <span class="st">"Censored"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pkpd_data</span> <span class="op">&lt;-</span> <span class="va">case1_pkpd</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>,<span class="op">-</span><span class="va">IPRED</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>TRTACT_low2high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">TRTACT</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">TRTACT</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         TRTACT_high2low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">TRTACT</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">TRTACT</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         DAY_label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Day"</span>, <span class="va">PROFDAY</span><span class="op">)</span>,</span>
+<span>         DAY_label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">DAY_label</span> <span class="op">==</span> <span class="st">"Day 0"</span>,<span class="st">"Baseline"</span>,<span class="va">DAY_label</span><span class="op">)</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="va">LOQ</span> <span class="op">=</span> <span class="fl">0.05</span> <span class="co">#ng/ml</span></span>
+<span><span class="va">dose_max</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">pkpd_data</span><span class="op">$</span><span class="va">DOSE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pk_data</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CMT</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>LIDVNORM <span class="op">=</span> <span class="va">LIDV</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">DOSE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pk_data_cycle1</span> <span class="op">&lt;-</span> <span class="va">pk_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CYCLE</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="va">pd_data</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CMT</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pd_data_baseline_day85</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CMT</span> <span class="op">==</span> <span class="fl">3</span>,</span>
+<span>         <span class="va">DAY_label</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Day 85"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pk_vs_pd_data</span> <span class="op">&lt;-</span> <span class="va">pkpd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">EVENTU</span>,<span class="va">NAME</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">spread</a></span><span class="op">(</span><span class="va">CMT</span>,<span class="va">LIDV</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Concentration <span class="op">=</span> <span class="va">`2`</span>, Response <span class="op">=</span> <span class="va">`3`</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">NCA</span> <span class="op">&lt;-</span> <span class="va">pk_data_cycle1</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">ID</span>, <span class="va">DOSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>AUC_last <span class="op">=</span> <span class="fu">caTools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caTools/man/trapz.html" class="external-link">trapz</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">LIDV</span><span class="op">)</span>,</span>
+<span>            Cmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">gather</a></span><span class="op">(</span><span class="va">PARAM</span>,<span class="va">VALUE</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ID</span>, <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>VALUE_NORM <span class="op">=</span> <span class="va">VALUE</span> <span class="op">/</span> <span class="va">DOSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">AUC_last</span> <span class="op">&lt;-</span> <span class="va">NCA</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAM</span> <span class="op">==</span> <span class="st">"AUC_last"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>AUC_last <span class="op">=</span> <span class="va">VALUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">DOSE</span>,<span class="va">PARAM</span>,<span class="va">VALUE_NORM</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pk_vs_pd_data_day85</span> <span class="op">&lt;-</span> <span class="va">pk_vs_pd_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DAY_label</span> <span class="op">==</span> <span class="st">"Day 85"</span>,</span>
+<span>         <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">Concentration</span><span class="op">)</span>,</span>
+<span>         <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">Response</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">AUC_last</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">time_units_dataset</span> <span class="op">&lt;-</span> <span class="st">"hours"</span></span>
+<span><span class="va">time_units_plot</span>    <span class="op">&lt;-</span> <span class="st">"days"</span></span>
+<span><span class="va">trtact_label</span>       <span class="op">&lt;-</span> <span class="st">"Dose"</span></span>
+<span><span class="va">dose_label</span>         <span class="op">&lt;-</span> <span class="st">"Dose (mg)"</span></span>
+<span><span class="va">conc_label</span>         <span class="op">&lt;-</span> <span class="st">"Concentration (ng/ml)"</span> </span>
+<span><span class="va">auc_label</span>          <span class="op">&lt;-</span> <span class="st">"AUCtau (h.(ng/ml))"</span></span>
+<span><span class="va">concnorm_label</span>     <span class="op">&lt;-</span> <span class="st">"Normalized Concentration (ng/ml)/mg"</span></span>
+<span><span class="va">sex_label</span>          <span class="op">&lt;-</span> <span class="st">"Sex"</span></span>
+<span><span class="va">w100_label</span>         <span class="op">&lt;-</span> <span class="st">"WEIGHTB&gt;100"</span></span>
+<span><span class="va">pd_label</span>           <span class="op">&lt;-</span> <span class="st">"FEV1 (mL)"</span></span>
+<span><span class="va">cens_label</span>         <span class="op">&lt;-</span> <span class="st">"Censored"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="provide-an-overview-of-the-data">Provide an overview of the data<a class="anchor" aria-label="anchor" href="#provide-an-overview-of-the-data"></a>
@@ -189,33 +189,33 @@
 <h3 id="concentration-over-time-colored-by-dose-mean---95-ci">Concentration over time, colored by Dose, mean +/- 95% CI<a class="anchor" aria-label="anchor" href="#concentration-over-time-colored-by-dose-mean---95-ci"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x     <span class="op">=</span> <span class="va">NOMTIME</span>,
-                                  y     <span class="op">=</span> <span class="va">LIDV</span>,
-                                  group <span class="op">=</span> <span class="va">DOSE</span>,
-                                  color <span class="op">=</span> <span class="va">TRTACT_high2low</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">conc_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x     <span class="op">=</span> <span class="va">NOMTIME</span>,</span>
+<span>                                  y     <span class="op">=</span> <span class="va">LIDV</span>,</span>
+<span>                                  group <span class="op">=</span> <span class="va">DOSE</span>,</span>
+<span>                                  color <span class="op">=</span> <span class="va">TRTACT_high2low</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">conc_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="concentration-over-time-faceted-by-dose-mean---95-ci-overlaid-on-gray-spaghetti-plots">Concentration over time, faceted by Dose, mean +/- 95% CI, overlaid on gray spaghetti plots<a class="anchor" aria-label="anchor" href="#concentration-over-time-faceted-by-dose-mean---95-ci-overlaid-on-gray-spaghetti-plots"></a>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">TIME</span>, y <span class="op">=</span> <span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">ID</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey50"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">CENS</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">CENS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_shape_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"grey50"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>, color <span class="op">=</span> <span class="cn">NULL</span>, group <span class="op">=</span> <span class="cn">NULL</span>, shape <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">conc_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">.</span><span class="op">~</span><span class="va">TRTACT_low2high</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">TIME</span>, y <span class="op">=</span> <span class="va">LIDV</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">ID</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey50"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">CENS</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">CENS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_shape_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"grey50"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>, color <span class="op">=</span> <span class="cn">NULL</span>, group <span class="op">=</span> <span class="cn">NULL</span>, shape <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">conc_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">.</span><span class="op">~</span><span class="va">TRTACT_low2high</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 </div>
 </div>
@@ -226,16 +226,16 @@
 <h3 id="dose-normalized-concentration-over-time-colored-by-dose-mean---95-ci">Dose Normalized Concentration over time, colored by Dose, mean +/- 95% CI<a class="anchor" aria-label="anchor" href="#dose-normalized-concentration-over-time-colored-by-dose-mean---95-ci"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>,
-       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>,
-           y <span class="op">=</span> <span class="va">LIDVNORM</span>,
-           group <span class="op">=</span> <span class="va">DOSE</span>,
-           color <span class="op">=</span> <span class="va">TRTACT_high2low</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">concnorm_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>,</span>
+<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>,</span>
+<span>           y <span class="op">=</span> <span class="va">LIDVNORM</span>,</span>
+<span>           group <span class="op">=</span> <span class="va">DOSE</span>,</span>
+<span>           color <span class="op">=</span> <span class="va">TRTACT_high2low</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">concnorm_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 </div>
 <div class="section level3">
@@ -243,23 +243,23 @@
 </h3>
 <p>Observe the dose normalized AUC and Cmax over different doses. Does the relationship appear to be constant across doses or do some doses stand out from the rest? Can you think of reasons why some would stand out? For example, the lowest dose may have dose normalized AUC much higher than the rest, could this be due to BLQ observations? If the highest doses have dose normalized AUC much higher than the others, could this be due to nonlinear clearance, with clearance saturating at higher doses? If the highest doses have dose normalized AUC much lower than the others, could there be saturation of bioavailability, reaching the maximum absorbable dose?</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">NCA</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">VALUE_NORM</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">PARAM</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">NCA</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">VALUE_NORM</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">PARAM</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">NCA</span><span class="op">[</span><span class="op">!</span><span class="va">NCA</span><span class="op">$</span><span class="va">DOSE</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">NCA</span><span class="op">$</span><span class="va">DOSE</span> <span class="op">==</span> <span class="fl">10</span> , <span class="op">]</span>,
-       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">VALUE_NORM</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">PARAM</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">NCA</span><span class="op">[</span><span class="op">!</span><span class="va">NCA</span><span class="op">$</span><span class="va">DOSE</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">NCA</span><span class="op">$</span><span class="va">DOSE</span> <span class="op">==</span> <span class="fl">10</span> , <span class="op">]</span>,</span>
+<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">VALUE_NORM</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">PARAM</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </div>
 </div>
@@ -270,16 +270,16 @@
 <h3 id="concentration-over-time-colored-by-categorical-covariate-mean---95-ci">Concentration over time, colored by categorical covariate, mean +/- 95% CI<a class="anchor" aria-label="anchor" href="#concentration-over-time-colored-by-categorical-covariate-mean---95-ci"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>,
-                                   y <span class="op">=</span> <span class="va">LIDV</span>,
-                                   group <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span>,
-                                   color <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">.</span><span class="op">~</span><span class="va">DOSE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">conc_label</span>, color <span class="op">=</span> <span class="va">w100_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_data_cycle1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>,</span>
+<span>                                   y <span class="op">=</span> <span class="va">LIDV</span>,</span>
+<span>                                   group <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span>,</span>
+<span>                                   color <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">.</span><span class="op">~</span><span class="va">DOSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">conc_label</span>, color <span class="op">=</span> <span class="va">w100_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 </div>
 </div>
@@ -287,29 +287,29 @@
 <h2 id="pd-marker-over-time-colored-by-dose-mean-95-ci-percentiles-by-nominal-time">PD marker over time, colored by Dose, mean (95% CI) percentiles by nominal time<a class="anchor" aria-label="anchor" href="#pd-marker-over-time-colored-by-dose-mean-95-ci-percentiles-by-nominal-time"></a>
 </h2>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x     <span class="op">=</span> <span class="va">NOMTIME</span>,
-                           y     <span class="op">=</span> <span class="va">LIDV</span>,
-                           group <span class="op">=</span> <span class="va">DOSE</span>,
-                           color <span class="op">=</span> <span class="va">TRTACT_high2low</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x     <span class="op">=</span> <span class="va">NOMTIME</span>,</span>
+<span>                           y     <span class="op">=</span> <span class="va">LIDV</span>,</span>
+<span>                           group <span class="op">=</span> <span class="va">DOSE</span>,</span>
+<span>                           color <span class="op">=</span> <span class="va">TRTACT_high2low</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="pd-marker-over-time-faceted-by-dose-dots-lines-grouped-by-individuals">PD marker over time, faceted by Dose, dots &amp; lines grouped by individuals<a class="anchor" aria-label="anchor" href="#pd-marker-over-time-faceted-by-dose-dots-lines-grouped-by-individuals"></a>
 </h2>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>, y <span class="op">=</span> <span class="va">LIDV</span>, group <span class="op">=</span> <span class="va">ID</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">TRTACT_low2high</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">NOMTIME</span>, y <span class="op">=</span> <span class="va">LIDV</span>, group <span class="op">=</span> <span class="va">ID</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_y_log10.html">xgx_scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_x_time_units.html">xgx_scale_x_time_units</a></span><span class="op">(</span>units_dataset <span class="op">=</span> <span class="va">time_units_dataset</span>, units_plot <span class="op">=</span> <span class="va">time_units_plot</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">TRTACT_low2high</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 </div>
 <div class="section level2">
@@ -323,38 +323,38 @@
 <p>Here are some questions to ask yourself when looking at Dose-Response plots: Do you see any relationship? Does response increase (decrease) with increasing dose? Are you able to detect a plateau or Emax (Emin) on the effect? If so, around what dose does this occur?</p>
 <p>Warning: Even if you don’t see an Emax, that doesn’t mean there isn’t one. Be very careful about using linear models for Dose-Response relationships. Extrapolation outside of the observed dose range could indicate a higher dose is always better (even if it isn’t).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data_baseline_day85</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>,
-                                          y <span class="op">=</span> <span class="va">LIDV</span>,
-                                          group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">DAY_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data_baseline_day85</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>,</span>
+<span>                                          y <span class="op">=</span> <span class="va">LIDV</span>,</span>
+<span>                                          group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">DAY_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="pd-marker-by-dose-faceted-by-visit-mean-95-ci-by-dose">PD marker by Dose, faceted by visit, mean (95% CI) by Dose<a class="anchor" aria-label="anchor" href="#pd-marker-by-dose-faceted-by-visit-mean-95-ci-by-dose"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">LIDV</span>, group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">DAY_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">LIDV</span>, group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">DAY_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="explore-covariate-effects-on-dose-response-relationship">Explore covariate effects on Dose-Response relationship<a class="anchor" aria-label="anchor" href="#explore-covariate-effects-on-dose-response-relationship"></a>
 </h3>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data_baseline_day85</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>,
-                                          y <span class="op">=</span> <span class="va">LIDV</span>,
-                                          group <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span>,
-                                          color <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">DAY_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">w100_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pd_data_baseline_day85</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>,</span>
+<span>                                          y <span class="op">=</span> <span class="va">LIDV</span>,</span>
+<span>                                          group <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span>,</span>
+<span>                                          color <span class="op">=</span> <span class="va">WEIGHTB</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_geom_ci.html">xgx_geom_ci</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">DAY_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">w100_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 </div>
 </div>
@@ -364,78 +364,80 @@
 <p>Plot PD marker against concentration. Do you see any relationship? Does response increase (decrease) with increasing dose? Are you able to detect a plateau or Emax (Emin) on the effect?</p>
 <p>Warning: Even if you don’t see an Emax, that doesn’t mean there isn’t one. Be very careful about using linear models for Dose-Response or Exposure-Response relationships. Extrapolation outside of the observed dose range could indicate a higher dose is always better (even if it isn’t).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">g</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_vs_pd_data_day85</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Concentration</span>, y <span class="op">=</span> <span class="va">Response</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">TRTACT_high2low</span>, shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">CENS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"black"</span>,shape<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_scale_x_log10.html">xgx_scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">conc_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span>, shape <span class="op">=</span> <span class="va">cens_label</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">g</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk_vs_pd_data_day85</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Concentration</span>, y <span class="op">=</span> <span class="va">Response</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">TRTACT_high2low</span>, shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">CENS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"black"</span>,shape<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_scale_x_log10.html">xgx_scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">conc_label</span>, y <span class="op">=</span> <span class="va">pd_label</span>, color <span class="op">=</span> <span class="va">trtact_label</span>, shape <span class="op">=</span> <span class="va">cens_label</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/xgx_annotate_status.html">xgx_annotate_status</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p>Plotting AUC vs response instead of concentration vs response may make more sense in some situations. For example, when there is a large delay between PK and PD it would be difficult to relate the time-varying concentration with the response. If rich sampling is only done at a particular point in the study, e.g. at steady state, then the AUC calculated on the rich profile could be used as the exposure variable for a number of PD visits. If PK samples are scarce, average Cmin could also be used as the exposure metric.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gAUC</span> <span class="op">=</span> <span class="va">g</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AUC_last</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="va">auc_label</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gAUC</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">gAUC</span> <span class="op">=</span> <span class="va">g</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AUC_last</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="va">auc_label</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gAUC</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sad_pkpd_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="r-session-info">R Session Info<a class="anchor" aria-label="anchor" href="#r-session-info"></a>
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; R version 4.1.3 (2022-03-10)</span>
-<span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span>
-<span class="co">#&gt; Running under: macOS Big Sur/Monterey 10.16</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Matrix products: default</span>
-<span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.0.dylib</span>
-<span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; locale:</span>
-<span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attached base packages:</span>
-<span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] tidyr_1.2.0   dplyr_1.0.8   ggplot2_3.3.5 xgxr_1.1.1   </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] nlme_3.1-155        bitops_1.0-7        fs_1.5.2           </span>
-<span class="co">#&gt;  [4] RColorBrewer_1.1-2  rprojroot_2.0.2     Deriv_4.1.3        </span>
-<span class="co">#&gt;  [7] tools_4.1.3         backports_1.4.1     bslib_0.3.1        </span>
-<span class="co">#&gt; [10] utf8_1.2.2          R6_2.5.1            rpart_4.1.16       </span>
-<span class="co">#&gt; [13] mgcv_1.8-39         Hmisc_4.6-0         colorspace_2.0-3   </span>
-<span class="co">#&gt; [16] nnet_7.3-17         withr_2.5.0         tidyselect_1.1.2   </span>
-<span class="co">#&gt; [19] gridExtra_2.3       Exact_3.1           compiler_4.1.3     </span>
-<span class="co">#&gt; [22] textshaping_0.3.6   cli_3.2.0           htmlTable_2.4.0    </span>
-<span class="co">#&gt; [25] binom_1.1-1         expm_0.999-6        desc_1.4.1         </span>
-<span class="co">#&gt; [28] labeling_0.4.2      sass_0.4.0          caTools_1.18.2     </span>
-<span class="co">#&gt; [31] scales_1.1.1        checkmate_2.0.0     mvtnorm_1.1-3      </span>
-<span class="co">#&gt; [34] readr_2.1.2         proxy_0.4-26        pkgdown_2.0.2      </span>
-<span class="co">#&gt; [37] systemfonts_1.0.4   stringr_1.4.0       digest_0.6.29      </span>
-<span class="co">#&gt; [40] foreign_0.8-82      rmarkdown_2.13      base64enc_0.1-3    </span>
-<span class="co">#&gt; [43] jpeg_0.1-9          pkgconfig_2.0.3     htmltools_0.5.2    </span>
-<span class="co">#&gt; [46] highr_0.9           fastmap_1.1.0       htmlwidgets_1.5.4  </span>
-<span class="co">#&gt; [49] rlang_1.0.2         rstudioapi_0.13     farver_2.1.0       </span>
-<span class="co">#&gt; [52] jquerylib_0.1.4     generics_0.1.2      jsonlite_1.8.0     </span>
-<span class="co">#&gt; [55] RCurl_1.98-1.6      magrittr_2.0.2      Formula_1.2-4      </span>
-<span class="co">#&gt; [58] Matrix_1.4-0        Rcpp_1.0.8.2        DescTools_0.99.44  </span>
-<span class="co">#&gt; [61] munsell_0.5.0       fansi_1.0.2         lifecycle_1.0.1    </span>
-<span class="co">#&gt; [64] stringi_1.7.6       yaml_2.3.5          MASS_7.3-55        </span>
-<span class="co">#&gt; [67] rootSolve_1.8.2.3   grid_4.1.3          crayon_1.5.0       </span>
-<span class="co">#&gt; [70] lmom_2.8            lattice_0.20-45     splines_4.1.3      </span>
-<span class="co">#&gt; [73] pander_0.6.4        hms_1.1.1           knitr_1.37         </span>
-<span class="co">#&gt; [76] pillar_1.7.0        boot_1.3-28         gld_2.6.4          </span>
-<span class="co">#&gt; [79] glue_1.6.2          evaluate_0.15       latticeExtra_0.6-29</span>
-<span class="co">#&gt; [82] data.table_1.14.2   tzdb_0.2.0          png_0.1-7          </span>
-<span class="co">#&gt; [85] vctrs_0.3.8         gtable_0.3.0        purrr_0.3.4        </span>
-<span class="co">#&gt; [88] assertthat_0.2.1    cachem_1.0.6        xfun_0.30          </span>
-<span class="co">#&gt; [91] e1071_1.7-9         ragg_1.2.2          class_7.3-20       </span>
-<span class="co">#&gt; [94] survival_3.2-13     minpack.lm_1.2-1    tibble_3.1.6       </span>
-<span class="co">#&gt; [97] memoise_2.0.1       cluster_2.1.2       ellipsis_0.3.2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.2.2 (2022-10-31)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: macOS Big Sur ... 10.16</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib</span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] tidyr_1.3.0   dplyr_1.1.0   ggplot2_3.4.0 xgxr_1.1.1   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;   [1] nlme_3.1-160        bitops_1.0-7        fs_1.6.0           </span></span>
+<span><span class="co">#&gt;   [4] RColorBrewer_1.1-3  httr_1.4.4          rprojroot_2.0.3    </span></span>
+<span><span class="co">#&gt;   [7] Deriv_4.1.3         tools_4.2.2         backports_1.4.1    </span></span>
+<span><span class="co">#&gt;  [10] bslib_0.4.2         utf8_1.2.2          R6_2.5.1           </span></span>
+<span><span class="co">#&gt;  [13] rpart_4.1.19        mgcv_1.8-41         Hmisc_4.7-2        </span></span>
+<span><span class="co">#&gt;  [16] colorspace_2.1-0    nnet_7.3-18         withr_2.5.0        </span></span>
+<span><span class="co">#&gt;  [19] tidyselect_1.2.0    gridExtra_2.3       Exact_3.2          </span></span>
+<span><span class="co">#&gt;  [22] compiler_4.2.2      textshaping_0.3.6   cli_3.6.0          </span></span>
+<span><span class="co">#&gt;  [25] htmlTable_2.4.1     binom_1.1-1.1       expm_0.999-7       </span></span>
+<span><span class="co">#&gt;  [28] desc_1.4.2          labeling_0.4.2      sass_0.4.5         </span></span>
+<span><span class="co">#&gt;  [31] caTools_1.18.2      scales_1.2.1        checkmate_2.1.0    </span></span>
+<span><span class="co">#&gt;  [34] mvtnorm_1.1-3       readr_2.1.3         proxy_0.4-27       </span></span>
+<span><span class="co">#&gt;  [37] pkgdown_2.0.7       systemfonts_1.0.4   stringr_1.5.0      </span></span>
+<span><span class="co">#&gt;  [40] digest_0.6.31       foreign_0.8-83      rmarkdown_2.20     </span></span>
+<span><span class="co">#&gt;  [43] base64enc_0.1-3     jpeg_0.1-10         pkgconfig_2.0.3    </span></span>
+<span><span class="co">#&gt;  [46] htmltools_0.5.4     highr_0.10          fastmap_1.1.0      </span></span>
+<span><span class="co">#&gt;  [49] htmlwidgets_1.6.1   rlang_1.0.6         readxl_1.4.1       </span></span>
+<span><span class="co">#&gt;  [52] rstudioapi_0.14     farver_2.1.1        jquerylib_0.1.4    </span></span>
+<span><span class="co">#&gt;  [55] generics_0.1.3      jsonlite_1.8.4      RCurl_1.98-1.10    </span></span>
+<span><span class="co">#&gt;  [58] magrittr_2.0.3      Formula_1.2-4       interp_1.1-3       </span></span>
+<span><span class="co">#&gt;  [61] Matrix_1.5-1        Rcpp_1.0.10         DescTools_0.99.47  </span></span>
+<span><span class="co">#&gt;  [64] munsell_0.5.0       fansi_1.0.4         lifecycle_1.0.3    </span></span>
+<span><span class="co">#&gt;  [67] stringi_1.7.12      yaml_2.3.7          MASS_7.3-58.1      </span></span>
+<span><span class="co">#&gt;  [70] rootSolve_1.8.2.3   grid_4.2.2          lmom_2.9           </span></span>
+<span><span class="co">#&gt;  [73] deldir_1.0-6        lattice_0.20-45     splines_4.2.2      </span></span>
+<span><span class="co">#&gt;  [76] pander_0.6.5        hms_1.1.2           knitr_1.42         </span></span>
+<span><span class="co">#&gt;  [79] pillar_1.8.1        boot_1.3-28         gld_2.6.6          </span></span>
+<span><span class="co">#&gt;  [82] glue_1.6.2          evaluate_0.20       latticeExtra_0.6-30</span></span>
+<span><span class="co">#&gt;  [85] data.table_1.14.6   tzdb_0.3.0          png_0.1-8          </span></span>
+<span><span class="co">#&gt;  [88] vctrs_0.5.2         cellranger_1.1.0    gtable_0.3.1       </span></span>
+<span><span class="co">#&gt;  [91] purrr_1.0.1         assertthat_0.2.1    cachem_1.0.6       </span></span>
+<span><span class="co">#&gt;  [94] xfun_0.36           e1071_1.7-12        ragg_1.2.5         </span></span>
+<span><span class="co">#&gt;  [97] class_7.3-20        survival_3.4-0      minpack.lm_1.2-3   </span></span>
+<span><span class="co">#&gt; [100] tibble_3.1.8        memoise_2.0.1       cluster_2.1.4      </span></span>
+<span><span class="co">#&gt; [103] ellipsis_0.3.2</span></span></code></pre></div>
 </div>
   </div>
 
@@ -456,7 +458,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

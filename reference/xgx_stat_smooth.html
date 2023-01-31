@@ -72,66 +72,66 @@ This wrapper also works with nonlinear methods like nls and nlsLM for continuous
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">xgx_stat_smooth</span><span class="op">(</span>
-  mapping <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  geom <span class="op">=</span> <span class="st">"smooth"</span>,
-  position <span class="op">=</span> <span class="st">"identity"</span>,
-  <span class="va">...</span>,
-  method <span class="op">=</span> <span class="cn">NULL</span>,
-  formula <span class="op">=</span> <span class="cn">NULL</span>,
-  se <span class="op">=</span> <span class="cn">TRUE</span>,
-  n <span class="op">=</span> <span class="fl">80</span>,
-  span <span class="op">=</span> <span class="fl">0.75</span>,
-  n_boot <span class="op">=</span> <span class="fl">200</span>,
-  fullrange <span class="op">=</span> <span class="cn">FALSE</span>,
-  level <span class="op">=</span> <span class="fl">0.95</span>,
-  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,
-  orientation <span class="op">=</span> <span class="st">"x"</span>,
-  show.legend <span class="op">=</span> <span class="cn">NA</span>,
-  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="fu">xgx_geom_smooth</span><span class="op">(</span>
-  mapping <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  geom <span class="op">=</span> <span class="st">"smooth"</span>,
-  position <span class="op">=</span> <span class="st">"identity"</span>,
-  <span class="va">...</span>,
-  method <span class="op">=</span> <span class="cn">NULL</span>,
-  formula <span class="op">=</span> <span class="cn">NULL</span>,
-  se <span class="op">=</span> <span class="cn">TRUE</span>,
-  n <span class="op">=</span> <span class="fl">80</span>,
-  span <span class="op">=</span> <span class="fl">0.75</span>,
-  fullrange <span class="op">=</span> <span class="cn">FALSE</span>,
-  level <span class="op">=</span> <span class="fl">0.95</span>,
-  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,
-  orientation <span class="op">=</span> <span class="st">"x"</span>,
-  show.legend <span class="op">=</span> <span class="cn">NA</span>,
-  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="fu">xgx_geom_smooth_emax</span><span class="op">(</span>
-  mapping <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  geom <span class="op">=</span> <span class="st">"smooth"</span>,
-  position <span class="op">=</span> <span class="st">"identity"</span>,
-  <span class="va">...</span>,
-  method <span class="op">=</span> <span class="st">"nlsLM"</span>,
-  <span class="va">formula</span>,
-  se <span class="op">=</span> <span class="cn">TRUE</span>,
-  n <span class="op">=</span> <span class="fl">80</span>,
-  span <span class="op">=</span> <span class="fl">0.75</span>,
-  fullrange <span class="op">=</span> <span class="cn">FALSE</span>,
-  level <span class="op">=</span> <span class="fl">0.95</span>,
-  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,
-  orientation <span class="op">=</span> <span class="st">"x"</span>,
-  show.legend <span class="op">=</span> <span class="cn">NA</span>,
-  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xgx_stat_smooth</span><span class="op">(</span></span>
+<span>  mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  geom <span class="op">=</span> <span class="st">"smooth"</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">80</span>,</span>
+<span>  span <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  n_boot <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  fullrange <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  orientation <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  show.legend <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">xgx_geom_smooth</span><span class="op">(</span></span>
+<span>  mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  geom <span class="op">=</span> <span class="st">"smooth"</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">80</span>,</span>
+<span>  span <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  fullrange <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  orientation <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  show.legend <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">xgx_geom_smooth_emax</span><span class="op">(</span></span>
+<span>  mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  geom <span class="op">=</span> <span class="st">"smooth"</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"nlsLM"</span>,</span>
+<span>  <span class="va">formula</span>,</span>
+<span>  se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">80</span>,</span>
+<span>  span <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  fullrange <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  orientation <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  show.legend <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -142,6 +142,8 @@ If specified and `inherit.aes = TRUE` (the default), it is combined with the
 default mapping at the top level of the plot. You must supply mapping if 
 there is no plot mapping.
 Warning: for `method = polr`, do not define `y` aesthetic, use `response` instead.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>The data to be displayed in this layer. There are three options:</p>
 <p>If NULL, the default, the data is inherited from the plot data as specified 
@@ -151,45 +153,73 @@ will be fortified to produce a data frame. See fortify for which variables
 will be created.</p>
 <p>A function will be called with a single argument, the plot data. The return 
 value must be a data.frame., and will be used as the layer data.</p></dd>
+
+
 <dt>geom</dt>
 <dd><p>Use to override the default geom. Can be a list of multiple 
 geoms, e.g. list("point","line","errorbar"), which is the default.</p></dd>
+
+
 <dt>position</dt>
 <dd><p>Position adjustment, either as a string, or the result of 
 a call to a position adjustment function.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other arguments passed on to layer. These are often aesthetics, 
 used to set an aesthetic to a fixed value, like color = "red" or size = 3. 
 They may also be parameters to the paired geom/stat.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>method (function) to use, eg. lm, glm, gam, loess, rlm. 
 Example: `"polr"` for ordinal data. `"nlsLM"` for nonlinear least squares.
 If method is left as `NULL`, then a typical `StatSmooth` is applied, 
 with the corresponding defaults, i.e. For datasets with n &lt; 1000 default is loess. 
 For datasets with 1000 or more observations defaults to gam.</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>formula to use in smoothing function, eg. y ~ x, y ~ poly(x, 2), y ~ log(x)</p></dd>
+
+
 <dt>se</dt>
 <dd><p>display confidence interval around smooth? (TRUE by default, see level to control)</p></dd>
+
+
 <dt>n</dt>
 <dd><p>number of points to evaluate smoother at</p></dd>
+
+
 <dt>span</dt>
 <dd><p>Controls the amount of smoothing for the default loess smoother. 
 Smaller numbers produce wigglier lines, larger numbers produce smoother lines.</p></dd>
+
+
 <dt>n_boot</dt>
 <dd><p>number of bootstraps to perform to compute confidence interval, 
 currently only used for method = "polr", default is 200</p></dd>
+
+
 <dt>fullrange</dt>
 <dd><p>should the fit span the full range of the plot, or just the data</p></dd>
+
+
 <dt>level</dt>
 <dd><p>The percentile for the confidence interval (should fall 
 between 0 and 1). The default is 0.95, which corresponds to a 95 percent 
 confidence interval.</p></dd>
+
+
 <dt>method.args</dt>
 <dd><p>Optional additional arguments passed on to the method.</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>If FALSE, the default, missing values are removed with a 
 warning. If TRUE, missing values are silently removed.</p></dd>
+
+
 <dt>orientation</dt>
 <dd><p>The orientation of the layer, passed on to ggplot2::stat_summary. 
 Only implemented for ggplot2 v.3.3.0 and later. The default ("x") summarizes y values over
@@ -198,19 +228,26 @@ summarize x values over y values, which may be useful in some situations where y
 the axes, e.g. to create forest plots. Setting <code>orientation = NA</code> will try to automatically
 determine the orientation from the aesthetic mapping (this is more stable for ggplot2 v.3.3.2
 compared to v.3.3.0).</p></dd>
+
+
 <dt>show.legend</dt>
 <dd><p>logical. Should this layer be included in the legends? 
 NA, the default, includes if any aesthetics are mapped. FALSE never 
 includes, and TRUE always includes.</p></dd>
+
+
 <dt>inherit.aes</dt>
 <dd><p>If FALSE, overrides the default aesthetics, rather 
 than combining with them. This is most useful for helper functions that 
 define both data and aesthetics and shouldn't inherit behaviour from the 
 default plot specification, e.g. borders.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ggplot2 plot layer</p>
+    
+
+<p>ggplot2 plot layer</p>
     </div>
     <div id="warning">
     <h2>Warning</h2>
@@ -235,76 +272,76 @@ use <code>nlsLM</code> instead.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co"># Example with nonlinear least squares (method = "nlsLM")</span></span>
-<span class="r-in"><span class="va">Nsubj</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
-<span class="r-in"><span class="va">Doses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Ntot</span> <span class="op">&lt;-</span> <span class="va">Nsubj</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Doses</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">14</span>,<span class="fl">30</span>,<span class="fl">60</span>,<span class="fl">90</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">Ntot</span><span class="op">)</span>,</span>
-<span class="r-in">                   DOSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">Doses</span>, <span class="va">Nsubj</span><span class="op">)</span>,</span>
-<span class="r-in">                   PD0 <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="va">Ntot</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">                   Kout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">Ntot</span>,<span class="op">-</span><span class="fl">2</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                   Imax <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">                   ED50 <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>PDSS <span class="op">=</span> <span class="va">PD0</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">Imax</span><span class="op">*</span><span class="va">DOSE</span><span class="op">/</span><span class="op">(</span><span class="va">DOSE</span> <span class="op">+</span> <span class="va">ED50</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">Ntot</span>, <span class="fl">0.05</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">Ntot</span><span class="op">)</span>, each <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span><span class="op">)</span>, Time <span class="op">=</span> <span class="va">times</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>PD <span class="op">=</span> <span class="op">(</span><span class="op">(</span><span class="va">PD0</span> <span class="op">-</span> <span class="va">PDSS</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">Kout</span><span class="op">*</span><span class="va">Time</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="va">PDSS</span><span class="op">)</span>, </span>
-<span class="r-in">                PCHG <span class="op">=</span> <span class="op">(</span><span class="va">PD</span> <span class="op">-</span> <span class="va">PD0</span><span class="op">)</span><span class="op">/</span><span class="va">PD0</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dat1</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">90</span><span class="op">)</span>, </span>
-<span class="r-in">                      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">PCHG</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="xgx_theme.html">xgx_theme</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="xgx_scale_y_percentchangelog10.html">xgx_scale_y_percentchangelog10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Percent Change from Baseline"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Dose (mg)"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">gg</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">xgx_stat_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"nlsLM"</span>, formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">E0</span> <span class="op">+</span> <span class="va">Emax</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="va">ED50</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span>,</span>
-<span class="r-in">                  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">                    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Emax <span class="op">=</span> <span class="op">-</span><span class="fl">0.50</span>, ED50 <span class="op">=</span> <span class="fl">25</span>, E0 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span class="r-in">                    lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0</span>, <span class="op">-</span><span class="cn">Inf</span><span class="op">)</span></span>
-<span class="r-in">                  <span class="op">)</span>,</span>
-<span class="r-in">                  se <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown parameters: n_boot</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example with nonlinear least squares (method = "nlsLM")</span></span></span>
+<span class="r-in"><span><span class="va">Nsubj</span> <span class="op">&lt;-</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="va">Doses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Ntot</span> <span class="op">&lt;-</span> <span class="va">Nsubj</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Doses</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">14</span>,<span class="fl">30</span>,<span class="fl">60</span>,<span class="fl">90</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">Ntot</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   DOSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">Doses</span>, <span class="va">Nsubj</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   PD0 <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="va">Ntot</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   Kout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">Ntot</span>,<span class="op">-</span><span class="fl">2</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   Imax <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>                   ED50 <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>PDSS <span class="op">=</span> <span class="va">PD0</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">Imax</span><span class="op">*</span><span class="va">DOSE</span><span class="op">/</span><span class="op">(</span><span class="va">DOSE</span> <span class="op">+</span> <span class="va">ED50</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">Ntot</span>, <span class="fl">0.05</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">Ntot</span><span class="op">)</span>, each <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span><span class="op">)</span>, Time <span class="op">=</span> <span class="va">times</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>PD <span class="op">=</span> <span class="op">(</span><span class="op">(</span><span class="va">PD0</span> <span class="op">-</span> <span class="va">PDSS</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">Kout</span><span class="op">*</span><span class="va">Time</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="va">PDSS</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>                PCHG <span class="op">=</span> <span class="op">(</span><span class="va">PD</span> <span class="op">-</span> <span class="va">PD0</span><span class="op">)</span><span class="op">/</span><span class="va">PD0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dat1</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">90</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>                      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DOSE</span>, y <span class="op">=</span> <span class="va">PCHG</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">DOSE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="xgx_theme.html">xgx_theme</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="xgx_scale_y_percentchangelog10.html">xgx_scale_y_percentchangelog10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Percent Change from Baseline"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Dose (mg)"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">gg</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"nlsLM"</span>, formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">E0</span> <span class="op">+</span> <span class="va">Emax</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="va">ED50</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>                    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Emax <span class="op">=</span> <span class="op">-</span><span class="fl">0.50</span>, ED50 <span class="op">=</span> <span class="fl">25</span>, E0 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0</span>, <span class="op">-</span><span class="cn">Inf</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  se <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown parameters: `n_boot`</span>
 <span class="r-plt img"><img src="xgx_stat_smooth-1.png" alt="" width="700" height="433"></span>
-<span class="r-in">              </span>
-<span class="r-in"><span class="va">gg</span> <span class="op">+</span> </span>
-<span class="r-in">  <span class="fu">xgx_geom_smooth_emax</span><span class="op">(</span><span class="op">)</span>  </span>
+<span class="r-in"><span>              </span></span>
+<span class="r-in"><span><span class="va">gg</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>  <span class="fu">xgx_geom_smooth_emax</span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Formula not specified.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Using default formula y ~ E0 + Emax*x/(ED50 + x), </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>             initializing E0, Emax, and ED50 to 1, </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>             and setting lower bound on ED50 to 0</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown parameters: n_boot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown parameters: `n_boot`</span>
 <span class="r-plt img"><img src="xgx_stat_smooth-2.png" alt="" width="700" height="433"></span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>  </span>
-<span class="r-in"><span class="co"># example with ordinal data (method = "polr")</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">120</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                  response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mild"</span>,<span class="st">"Moderate"</span>,<span class="st">"Severe"</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">                  covariate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>,<span class="st">"Female"</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="op">(</span><span class="fl">50</span> <span class="op">+</span> <span class="fl">20</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="fl">200</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="co"># example coloring by the response categories</span></span>
-<span class="r-in"><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">xgx_stat_smooth</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, response <span class="op">=</span> <span class="va">response</span>,</span>
-<span class="r-in">                                         colour <span class="op">=</span> <span class="va">response</span>, fill <span class="op">=</span> <span class="va">response</span><span class="op">)</span>,</span>
-<span class="r-in">                  method <span class="op">=</span> <span class="st">"polr"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># example faceting by the response categories, coloring by a different covariate </span></span>
-<span class="r-in"><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in"><span class="fu">xgx_stat_smooth</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, response <span class="op">=</span> <span class="va">response</span>, </span>
-<span class="r-in">                                       colour <span class="op">=</span> <span class="va">covariate</span>, fill <span class="op">=</span> <span class="va">covariate</span><span class="op">)</span>,</span>
-<span class="r-in">                method <span class="op">=</span> <span class="st">"polr"</span>, level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span> <span class="op">+</span> </span>
-<span class="r-in">                <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">response</span><span class="op">)</span> <span class="op">+</span> </span>
-<span class="r-in">                <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>  </span></span>
+<span class="r-in"><span><span class="co"># example with ordinal data (method = "polr")</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">120</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mild"</span>,<span class="st">"Moderate"</span>,<span class="st">"Severe"</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  covariate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>,<span class="st">"Female"</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="op">(</span><span class="fl">50</span> <span class="op">+</span> <span class="fl">20</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="fl">200</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co"># example coloring by the response categories</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">xgx_stat_smooth</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, response <span class="op">=</span> <span class="va">response</span>,</span></span>
+<span class="r-in"><span>                                         colour <span class="op">=</span> <span class="va">response</span>, fill <span class="op">=</span> <span class="va">response</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  method <span class="op">=</span> <span class="st">"polr"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># example faceting by the response categories, coloring by a different covariate </span></span></span>
+<span class="r-in"><span><span class="fu"><a href="xgx_plot.html">xgx_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span><span class="fu">xgx_stat_smooth</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, response <span class="op">=</span> <span class="va">response</span>, </span></span>
+<span class="r-in"><span>                                       colour <span class="op">=</span> <span class="va">covariate</span>, fill <span class="op">=</span> <span class="va">covariate</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                method <span class="op">=</span> <span class="st">"polr"</span>, level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>                <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">response</span><span class="op">)</span> <span class="op">+</span> </span></span>
+<span class="r-in"><span>                <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -319,7 +356,7 @@ use <code>nlsLM</code> instead.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -80,72 +80,105 @@ describing the provided dataset</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">xgx_auto_explore</span><span class="op">(</span>
-  data_path <span class="op">=</span> <span class="cn">NULL</span>,
-  mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  author_name <span class="op">=</span> <span class="cn">NULL</span>,
-  multiple_dosing <span class="op">=</span> <span class="cn">FALSE</span>,
-  pk_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  pd_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  pd_data_type <span class="op">=</span> <span class="cn">NULL</span>,
-  dose_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  steady_state_day <span class="op">=</span> <span class="cn">NULL</span>,
-  time_between_doses <span class="op">=</span> <span class="cn">NULL</span>,
-  rmd_template_name <span class="op">=</span> <span class="cn">NULL</span>,
-  rmd_template_path <span class="op">=</span> <span class="cn">NULL</span>,
-  rmd_output_path <span class="op">=</span> <span class="cn">NULL</span>,
-  pdf_output_path <span class="op">=</span> <span class="cn">NULL</span>,
-  html_output_path <span class="op">=</span> <span class="cn">NULL</span>,
-  add_datetime <span class="op">=</span> <span class="cn">TRUE</span>,
-  show_explanation <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xgx_auto_explore</span><span class="op">(</span></span>
+<span>  data_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  author_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  multiple_dosing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pk_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pd_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pd_data_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dose_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  steady_state_day <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  time_between_doses <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rmd_template_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rmd_template_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rmd_output_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pdf_output_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  html_output_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  add_datetime <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  show_explanation <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data_path</dt>
 <dd><p>Path (as a string) to the dataset that is to be analyzed</p></dd>
+
+
 <dt>mapping</dt>
 <dd><p>A list of column name mappings from the
 original (template) dataset column names
 to the corresponding columns in the new dataset.</p></dd>
+
+
 <dt>author_name</dt>
 <dd><p>The name of the author to be displayed on the template</p></dd>
+
+
 <dt>multiple_dosing</dt>
 <dd><p>Whether or not to use a "Multiple" or "Single" Ascending dose template</p></dd>
+
+
 <dt>pk_cmt</dt>
 <dd><p>An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 have these integers, where each row may contain PK, PD, dosing or other events/observations data</p></dd>
+
+
 <dt>pd_cmt</dt>
 <dd><p>An integer denoting the "compartment" containing the PD data, 
 of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
 have these integers, where each row may contain PK, PD, dosing or other events/observations data</p></dd>
+
+
 <dt>pd_data_type</dt>
 <dd><p>The type of PD data - acceptable values exist in the following list: 
 ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]</p></dd>
+
+
 <dt>dose_cmt</dt>
 <dd><p>Integer denoting the compartment for dosing records</p></dd>
+
+
 <dt>steady_state_day</dt>
 <dd><p>used to denote the day of rich sampling of PK at steady state</p></dd>
+
+
 <dt>time_between_doses</dt>
 <dd><p>dosing interval, has units to match the time variable of the dataset</p></dd>
+
+
 <dt>rmd_template_name</dt>
 <dd><p>A custom output name for the generated Rmd file</p></dd>
+
+
 <dt>rmd_template_path</dt>
 <dd><p>A user provided custom template (as a string)</p></dd>
+
+
 <dt>rmd_output_path</dt>
 <dd><p>A custom output path for the generated Rmd file
 (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))</p></dd>
+
+
 <dt>pdf_output_path</dt>
 <dd><p>A custom output path for the generated PDF file
 (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))</p></dd>
+
+
 <dt>html_output_path</dt>
 <dd><p>A custom output path for the generated HTML file
 (This is typically left as `NULL` in order to maintain the hierarchical directory structure of `xgx_autoexplore_output`))</p></dd>
+
+
 <dt>add_datetime</dt>
 <dd><p>Boolean indicating additon of a date stamp to the beginnning of the Rmd file</p></dd>
+
+
 <dt>show_explanation</dt>
 <dd><p>Boolean indicating if the additional explanations (text in between figures) are needed for the user.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -155,58 +188,58 @@ overview plots before constructing non-linear mixed effects models.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">author_name</span> <span class="op">=</span> <span class="st">"Your Name Here"</span></span>
-<span class="r-in"><span class="va">show_explanation</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Try out the nonlinear_pkpd dataset with the</span></span>
-<span class="r-in"><span class="co"># Multiple Ascending Dose PK Rmd template</span></span>
-<span class="r-in"><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="st">"~/nonlinear_pkpd.csv"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Specify the mapping of column names</span></span>
-<span class="r-in"><span class="va">mapping</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"TIME"</span> <span class="op">=</span> <span class="st">"TIM2"</span>,</span>
-<span class="r-in">  <span class="st">"NOMTIME"</span> <span class="op">=</span> <span class="st">"NT"</span>,</span>
-<span class="r-in">  <span class="st">"EVID"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  <span class="st">"CENS"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  <span class="st">"DOSE"</span> <span class="op">=</span> <span class="st">"MGKG"</span>,</span>
-<span class="r-in">  <span class="st">"TRTACT"</span> <span class="op">=</span> <span class="st">"TRT"</span>,</span>
-<span class="r-in">  <span class="st">"LIDV_NORM"</span> <span class="op">=</span> <span class="st">"LIDV/MGKG"</span>,</span>
-<span class="r-in">  <span class="st">"LIDV_UNIT"</span> <span class="op">=</span> <span class="st">"UNIT"</span>,</span>
-<span class="r-in">  <span class="st">"PROFDAY"</span> <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">  <span class="st">"SEX"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  <span class="st">"WEIGHTB"</span> <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 5 contains the PK Concentration in this dataset</span></span>
-<span class="r-in"><span class="va">pk_cmt</span> <span class="op">=</span> <span class="fl">5</span></span>
-<span class="r-in"><span class="co"># We don't need PD right now</span></span>
-<span class="r-in"><span class="va">pd_cmt</span> <span class="op">=</span> <span class="cn">NULL</span></span>
-<span class="r-in"><span class="va">pd_data_type</span> <span class="op">=</span> <span class="cn">NULL</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dose_cmt</span> <span class="op">=</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="va">steady_state_day</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">time_between_doses</span> <span class="op">=</span> <span class="fl">24</span></span>
-<span class="r-in"><span class="va">multiple_dosing</span> <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">output_directory</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">xgx_auto_explore</span><span class="op">(</span>data_path <span class="op">=</span> <span class="va">data_path</span>,</span>
-<span class="r-in">                 mapping <span class="op">=</span> <span class="va">mapping</span>,</span>
-<span class="r-in">                 author_name <span class="op">=</span> <span class="va">author_name</span>,</span>
-<span class="r-in">                 pk_cmt <span class="op">=</span> <span class="va">pk_cmt</span>,</span>
-<span class="r-in">                 pd_cmt <span class="op">=</span> <span class="va">pd_cmt</span>,</span>
-<span class="r-in">                 dose_cmt <span class="op">=</span> <span class="va">dose_cmt</span>,</span>
-<span class="r-in">                 steady_state_day <span class="op">=</span> <span class="va">steady_state_day</span>,</span>
-<span class="r-in">                 time_between_doses <span class="op">=</span> <span class="va">time_between_doses</span>,</span>
-<span class="r-in">                 multiple_dosing <span class="op">=</span> <span class="va">multiple_dosing</span>,</span>
-<span class="r-in">                 pd_data_type <span class="op">=</span> <span class="va">pd_data_type</span>,</span>
-<span class="r-in">                 rmd_output_path <span class="op">=</span> <span class="va">output_directory</span>,</span>
-<span class="r-in">                 show_explanation <span class="op">=</span> <span class="va">show_explanation</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in">    </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">author_name</span> <span class="op">=</span> <span class="st">"Your Name Here"</span></span></span>
+<span class="r-in"><span><span class="va">show_explanation</span> <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Try out the nonlinear_pkpd dataset with the</span></span></span>
+<span class="r-in"><span><span class="co"># Multiple Ascending Dose PK Rmd template</span></span></span>
+<span class="r-in"><span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="st">"~/nonlinear_pkpd.csv"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specify the mapping of column names</span></span></span>
+<span class="r-in"><span><span class="va">mapping</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"TIME"</span> <span class="op">=</span> <span class="st">"TIM2"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"NOMTIME"</span> <span class="op">=</span> <span class="st">"NT"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"EVID"</span> <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"CENS"</span> <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"DOSE"</span> <span class="op">=</span> <span class="st">"MGKG"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"TRTACT"</span> <span class="op">=</span> <span class="st">"TRT"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"LIDV_NORM"</span> <span class="op">=</span> <span class="st">"LIDV/MGKG"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"LIDV_UNIT"</span> <span class="op">=</span> <span class="st">"UNIT"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"PROFDAY"</span> <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"SEX"</span> <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"WEIGHTB"</span> <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 5 contains the PK Concentration in this dataset</span></span></span>
+<span class="r-in"><span><span class="va">pk_cmt</span> <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="co"># We don't need PD right now</span></span></span>
+<span class="r-in"><span><span class="va">pd_cmt</span> <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="va">pd_data_type</span> <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dose_cmt</span> <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">steady_state_day</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">time_between_doses</span> <span class="op">=</span> <span class="fl">24</span></span></span>
+<span class="r-in"><span><span class="va">multiple_dosing</span> <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">output_directory</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">xgx_auto_explore</span><span class="op">(</span>data_path <span class="op">=</span> <span class="va">data_path</span>,</span></span>
+<span class="r-in"><span>                 mapping <span class="op">=</span> <span class="va">mapping</span>,</span></span>
+<span class="r-in"><span>                 author_name <span class="op">=</span> <span class="va">author_name</span>,</span></span>
+<span class="r-in"><span>                 pk_cmt <span class="op">=</span> <span class="va">pk_cmt</span>,</span></span>
+<span class="r-in"><span>                 pd_cmt <span class="op">=</span> <span class="va">pd_cmt</span>,</span></span>
+<span class="r-in"><span>                 dose_cmt <span class="op">=</span> <span class="va">dose_cmt</span>,</span></span>
+<span class="r-in"><span>                 steady_state_day <span class="op">=</span> <span class="va">steady_state_day</span>,</span></span>
+<span class="r-in"><span>                 time_between_doses <span class="op">=</span> <span class="va">time_between_doses</span>,</span></span>
+<span class="r-in"><span>                 multiple_dosing <span class="op">=</span> <span class="va">multiple_dosing</span>,</span></span>
+<span class="r-in"><span>                 pd_data_type <span class="op">=</span> <span class="va">pd_data_type</span>,</span></span>
+<span class="r-in"><span>                 rmd_output_path <span class="op">=</span> <span class="va">output_directory</span>,</span></span>
+<span class="r-in"><span>                 show_explanation <span class="op">=</span> <span class="va">show_explanation</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span>    </span></span>
 </code></pre></div>
     </div>
   </div>
@@ -221,7 +254,7 @@ overview plots before constructing non-linear mixed effects models.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

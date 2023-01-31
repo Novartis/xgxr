@@ -68,18 +68,18 @@ directory.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">xgx_annotate_status_png</span><span class="op">(</span>
-  <span class="va">file_or_dir</span>,
-  script <span class="op">=</span> <span class="st">""</span>,
-  status <span class="op">=</span> <span class="st">"DRAFT"</span>,
-  date_format <span class="op">=</span> <span class="st">"%a %b %d %X %Y"</span>,
-  col <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html" class="external-link">grey</a></span><span class="op">(</span><span class="fl">0.8</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>,
-  font <span class="op">=</span> <span class="fl">2</span>,
-  cex_status_mult <span class="op">=</span> <span class="fl">7</span>,
-  cex_footnote_mult <span class="op">=</span> <span class="fl">0.8</span>,
-  status_angle <span class="op">=</span> <span class="fl">45</span>,
-  x11 <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xgx_annotate_status_png</span><span class="op">(</span></span>
+<span>  <span class="va">file_or_dir</span>,</span>
+<span>  script <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  status <span class="op">=</span> <span class="st">"DRAFT"</span>,</span>
+<span>  date_format <span class="op">=</span> <span class="st">"%a %b %d %X %Y"</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html" class="external-link">grey</a></span><span class="op">(</span><span class="fl">0.8</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>,</span>
+<span>  font <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  cex_status_mult <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>  cex_footnote_mult <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  status_angle <span class="op">=</span> <span class="fl">45</span>,</span>
+<span>  x11 <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -92,34 +92,55 @@ your script it will have the correct script name on it. Then if
 you create new images in a different script in the same directory
 and then annotate with the script name the second script, the PNG
 files will show the correct script location for each file.</p></dd>
+
+
 <dt>script</dt>
 <dd><p>Script name to add as a footnote; By default this is
 empty, though it could name the script that</p></dd>
+
+
 <dt>status</dt>
 <dd><p>Draft or other status; If <code>status="Final"</code> or
 <code>status=""</code> the status overlay will be removed.  By default
 the status is DRAFT.</p></dd>
+
+
 <dt>date_format</dt>
 <dd><p>Date format for adding the time the png was
 annotated.</p></dd>
+
+
 <dt>col</dt>
 <dd><p>Color for annotating the draft status</p></dd>
+
+
 <dt>font</dt>
 <dd><p>Font to use for the annotation function</p></dd>
+
+
 <dt>cex_status_mult</dt>
 <dd><p>Multiplication factor for the status
 annotation.  By default 7</p></dd>
+
+
 <dt>cex_footnote_mult</dt>
 <dd><p>Multiplication factor for the footnote
 annotation. By default 0.8</p></dd>
+
+
 <dt>status_angle</dt>
 <dd><p>Angle to rotate status</p></dd>
+
+
 <dt>x11</dt>
 <dd><p>Display on the X11/Windows device</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>nothing</p>
+    
+
+<p>nothing</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -137,17 +158,17 @@ each file based on when each file was run.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># using the examples from plot()</span></span>
-<span class="r-in"><span class="va">file.name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="va">file.name</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/lowess.html" class="external-link">lowess</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># using the examples from plot()</span></span></span>
+<span class="r-in"><span><span class="va">file.name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="va">file.name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/lowess.html" class="external-link">lowess</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> agg_png </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       2 </span>
-<span class="r-in"><span class="co"># annotate one file</span></span>
-<span class="r-in"><span class="fu">xgx_annotate_status_png</span><span class="op">(</span><span class="va">file.name</span>, <span class="st">"/tmp/script1.R"</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co"># annotate one file</span></span></span>
+<span class="r-in"><span><span class="fu">xgx_annotate_status_png</span><span class="op">(</span><span class="va">file.name</span>, <span class="st">"/tmp/script1.R"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -162,7 +183,7 @@ each file based on when each file was run.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -66,33 +66,44 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_rmd_name</span><span class="op">(</span>
-  rmd_template_name <span class="op">=</span> <span class="cn">NULL</span>,
-  multiple_dosing <span class="op">=</span> <span class="cn">FALSE</span>,
-  pk_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  pd_cmt <span class="op">=</span> <span class="cn">NULL</span>,
-  pd_data_type <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_rmd_name</span><span class="op">(</span></span>
+<span>  rmd_template_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  multiple_dosing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pk_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pd_cmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pd_data_type <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>rmd_template_name</dt>
 <dd><p>A custom output name for the generated Rmd file</p></dd>
+
+
 <dt>multiple_dosing</dt>
 <dd><p>if FALSE use single ascending dose template, if TRUE use multiple</p></dd>
+
+
 <dt>pk_cmt</dt>
 <dd><p>An integer denoting the "compartment" containing the PK data. The "CMT" column will typically
 have these integers, where each row may contain either PK or PD data, potentially of different types (continuous, ordinal, etc.)</p></dd>
+
+
 <dt>pd_cmt</dt>
 <dd><p>An integer denoting the "compartment" containing the PD data, of the desired type  (continuous, ordinal, etc.). The "CMT" column will typically
 have these integers, where each row may contain either PK or PD data</p></dd>
+
+
 <dt>pd_data_type</dt>
 <dd><p>The type of PD data - acceptable values exist in the following list: ["binary","continuous","count","ordinal","real_example","receptor_occupancy","time_to_event"]</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a string for the Rmd template name</p>
+    
+
+<p>a string for the Rmd template name</p>
     </div>
 
   </div>
@@ -107,7 +118,7 @@ have these integers, where each row may contain either PK or PD data</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
