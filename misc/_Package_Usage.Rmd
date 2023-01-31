@@ -20,7 +20,7 @@ library(ggrepel)
 xgx_theme_set()
 
 # How many overall downloads
-data <- cran_downloads(packages = c("xgxr","nlmixr","RxODE","ggPMX","RBesT","mrgsolve","PKNCA","NonCompart","ggplot2","rstan","deSolve"), 
+data <- cran_downloads(packages = c("xgxr","nlmixr","nlmixr2","RxODE","RxODE2","ggPMX","RBesT","mrgsolve","PKNCA","NonCompart","ggplot2","rstan","deSolve"), 
                        from = "2010-01-01", to = Sys.Date()-1) %>%
   group_by(package) %>%
   mutate(cumulative = cumsum(count)) %>%
