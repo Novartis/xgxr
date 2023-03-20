@@ -4,18 +4,7 @@
 \alias{predictdf.polr}
 \title{Prediction data frame for polr}
 \usage{
-\method{predictdf}{polr}(
-  model,
-  xseq,
-  se,
-  level,
-  data,
-  method,
-  formula,
-  method.args,
-  weight,
-  n_boot = 200
-)
+\method{predictdf}{polr}(model, xseq, se, level)
 }
 \arguments{
 \item{model}{object returned from polr}
@@ -25,18 +14,6 @@
 \item{se}{if TRUE then confidence intervals are returned}
 
 \item{level}{confidence level for confidence intervals}
-
-\item{data}{data to fit}
-
-\item{method}{only works for method MASS::polr}
-
-\item{formula}{formula to fit}
-
-\item{method.args}{arguments to pass to method}
-
-\item{weight}{weights to use for method}
-
-\item{n_boot}{number of bootstraps to perform for confidence interval calculation, default is 200}
 }
 \description{
 Get predictions with standard errors into data frame for use with geom_smooth

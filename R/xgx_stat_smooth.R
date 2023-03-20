@@ -425,6 +425,15 @@ predictdf.nls <- function(model, xseq, se, level) {
 }
 
 
+predictdf_polr_env <- new.env(parent = emptyenv())
+predictdf_polr_env$data        <- NULL
+predictdf_polr_env$method      <- NULL
+predictdf_polr_env$formula     <- NULL
+predictdf_polr_env$method.args <- NULL
+predictdf_polr_env$weight      <- NULL
+predictdf_polr_env$n_boot      <- NULL
+
+
 #' Prediction data frame for polr
 #' 
 #' Get predictions with standard errors into data frame for use with geom_smooth
@@ -436,17 +445,18 @@ predictdf.nls <- function(model, xseq, se, level) {
 #' @param xseq sequence of x values for which to compute the smooth
 #' @param se if TRUE then confidence intervals are returned
 #' @param level confidence level for confidence intervals
-#' @param data data to fit
-#' @param method only works for method MASS::polr
-#' @param formula formula to fit
-#' @param method.args arguments to pass to method
-#' @param weight weights to use for method
-#' @param n_boot number of bootstraps to perform for confidence interval calculation, default is 200
 #' 
 #' 
 #' @exportS3Method ggplot2::predictdf
-predictdf.polr <- function(model, xseq, se, level, 
-                           data, method, formula, method.args, weight, n_boot = 200){
+predictdf.polr <- function(model, xseq, se, level){
+  
+  data        <-  predictdf_polr_env$data        
+  method      <-  predictdf_polr_env$method      
+  formula     <-  predictdf_polr_env$formula     
+  method.args <-  predictdf_polr_env$method.args 
+  weight      <-  predictdf_polr_env$weight      
+  n_boot      <-  predictdf_polr_env$n_boot      
+  
   x <- y <- response <- NULL
   
   percentile_value <- level + (1 - level) / 2
@@ -461,7 +471,7 @@ predictdf.polr <- function(model, xseq, se, level,
                                    size = nrow(data),
                                    replace = TRUE)
       
-      base.args <- list(quote(formula), data = quote(data_boot), weights = quote(weight))
+      base.args <- list(quote(formula), data = quote(data_boot), weights = weight)
       model_boot <- do.call(method, c(base.args, method.args))
       
       # Extract Bootstrapped Predictions
@@ -701,8 +711,14 @@ StatSmoothOrdinal <- ggplot2::ggproto(
       
       model <- do.call(method, c(base.args, method.args))
       
-      iprediction <- predictdf.polr(model, xseq, se, level, 
-                                    data = idata, method, formula, method.args, weight, n_boot)
+      predictdf_polr_env$data        <- idata
+      predictdf_polr_env$method      <- method
+      predictdf_polr_env$formula     <- formula
+      predictdf_polr_env$method.args <- method.args
+      predictdf_polr_env$weight      <- quote(weight)
+      predictdf_polr_env$n_boot      <- n_boot
+      
+      iprediction <- predictdf.polr(model, xseq, se, level)
       
       iprediction <- merge(iprediction, idata %>% subset(,-c(x)), by = "response")
       

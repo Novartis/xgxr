@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.1.2
+------------------------
+    o change predictdf.polr so inputs match predictdf generic, to fix S3 method consistency warning
+
 CHANGES IN VERSION 1.1.1
 ------------------------
     o fix bug in xgx_stat_smooth / predictdf.nls that caused an error when formula had only one parameter to fit

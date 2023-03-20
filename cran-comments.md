@@ -13,8 +13,7 @@
 
 **Comments:**
 
-    o fix bug in xgx_stat_smooth / predictdf.nls that caused an error when formula had only one parameter to fit
-    o add predict.nls function to produce predictions and confidence intervals for nls objects, similar to predict.lm for lm objects
+    o change predictdf.polr so inputs match predictdf generic, to fix S3 method consistency warning
 
 ## Downstream dependencies
 
