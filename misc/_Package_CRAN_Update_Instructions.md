@@ -13,6 +13,9 @@
   * updates package documentation
   * checks for issues
   * this is the first level of checks for CRAN issues.  It is the easiest CRAN check to read
+* R>> devtools::check_win_devel() 
+  * Newly added to this to do list (2023-03-21) and haven't tried yet
+  * Takes 30 mins, then maintainer receives email.  
 * update cran-comments.md (including the # errors | # warnings | # notes)
 * from within the RStudio terminal, run>> R CMD check --as-cran xgxr_#.#.#.tar.gz
   * (this tar.gz was built from the devtools::build() command)
