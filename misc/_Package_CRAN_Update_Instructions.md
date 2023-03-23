@@ -26,3 +26,5 @@
   * devtools::release() - this will run a lot of checks that are helpful, but doesn't work with Novartis firewall.  It sometimes works on the GuestWireless network
   * Go to this website and upload the tar.gz https://CRAN.R-project.org/submit.html
 * CRAN will send you an email saying the package has been submitted and you then need to click a link to confirm the submission.
+
+A more extensive checklist is available here: https://github.com/ThinkR-open/prepare-for-cran
