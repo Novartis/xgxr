@@ -288,9 +288,13 @@ xgx_stat_ci <- function(mapping = NULL,
 #' and "binomial". The "normal" option will use the Student t Distribution 
 #' to calculate confidence intervals, the "lognormal" option will transform 
 #' data to the log space first. The "binomial" option will use the
-#' \code{\link[binom:binom.confint]{binom.exact}} function to calculate the
+#' \code{\link[binom:binom.confint]{binom.confint}} function to calculate the
 #' confidence 
 #' intervals. Note: binomial data must be numeric and contain only 1's and 0's.
+#' The "multinomial" or "ordinal" options will use DescTools::MultinomCI 
+#' @param ci_method Method to pass to binom.confint or MultinomCI. Defaults are 
+#' "exact" and "goodman", respectively.
+#'
 #'
 #' @return data.frame
 #'
@@ -306,10 +310,10 @@ xgx_stat_ci <- function(mapping = NULL,
 #' @importFrom stats na.omit
 #' @importFrom stats qt
 #' @importFrom stats var
-#' @importFrom binom binom.exact
+#' @importFrom binom binom.confint
 #' @importFrom DescTools MultinomCI
 #' @export
-xgx_conf_int = function(y, conf_level = 0.95, distribution = "normal") {
+xgx_conf_int = function(y, conf_level = 0.95, distribution = "normal", ci_method = NULL) {
   
   if (!(conf_level > 0.5 && conf_level < 1)) {
     stop("conf_level should be greater than 0.5 and less than 1")
@@ -320,20 +324,37 @@ xgx_conf_int = function(y, conf_level = 0.95, distribution = "normal") {
   y <- stats::na.omit(y)
 
   if (distribution == "normal") {
+    if(!is.null(ci_method)){ warning("Ignoring ci_method for normal CI calculation")}
+    
     mu <- mean(y)
-    qtt <- stats::qt(percentile_value, length(y))
-    s_v = sqrt(stats::var(y) / length(y))
+    qtt <- stats::qt(percentile_value, length(y) - 1)
+    s_v = sqrt(stats::var(y) / (length(y) - 1))
 
     conf_int_out <- data.frame(
       y = mu,
       ymin = mu - qtt * s_v,
       ymax = mu + qtt * s_v
     )
+    
+    if(length(y) == 1){
+      conf_int_out <- data.frame(
+        y = mu,
+        ymin = -Inf,
+        ymax = Inf
+      )
+      warning(paste("Infinite CI warning:","One of the bins of y contains only 1 value.", 
+              "Confidence interval is infinite for that bin,", 
+              "but is only displayed to the edge of the plotting area.", 
+              "Interpret with caution.", sep = "\n  "))
+    }
+    
   } else if (distribution == "lognormal") {
+    if(!is.null(ci_method)){ warning("Ignoring ci_method for lognormal CI calculation")}
+    
     yy <- log(y)
     mu <- mean(yy)
-    qtt <- stats::qt(percentile_value, length(yy))
-    s_v <- sqrt(stats::var(yy) / length(yy))
+    qtt <- stats::qt(percentile_value, (length(yy)-1) )
+    s_v <- sqrt(stats::var(yy) / (length(yy)-1))
 
     # e^mu = median value - http://jse.amstat.org/v13n1/olsson.html
     conf_int_out <- data.frame(
@@ -341,24 +362,48 @@ xgx_conf_int = function(y, conf_level = 0.95, distribution = "normal") {
       ymin = exp(mu - qtt * s_v),
       ymax = exp(mu + qtt * s_v)
     )
+    
+    if(length(y) == 1){
+      conf_int_out <- data.frame(
+        y = exp(mu),
+        ymin = 0,
+        ymax = Inf
+      )
+      warning(paste("Infinite CI warning:","One of the bins of y contains only 1 value.", 
+                    "Confidence interval is infinite for that bin,", 
+                    "but is only displayed to the edge of the plotting area.", 
+                    "Interpret with caution.", sep = "\n  "))
+    }
+    
   } else if (distribution == "binomial") {
-    stats <- binom::binom.exact(sum(y), length(y), 
-                                conf.level = conf_level)
+    
+    if(is.null(ci_method)){ 
+      ci_method = "exact" 
+      }
+    stats <- binom::binom.confint(sum(y), length(y), 
+                                conf.level = conf_level,
+                                methods = ci_method)
 
     conf_int_out <- data.frame(
       y = mean(y),
       ymin = stats$lower,
       ymax = stats$upper)
+    
   } else if (distribution %in% c("multinomial", "ordinal")) {
 
+    if(is.null(ci_method)){ 
+      ci_method = "goodman" 
+    }
+    
     # Assuming `y` is a not yet collapsed to the number of counts per category
     count <- table(y)  #as.data.frame(table(y))$Freq
-    stats <- as.data.frame(DescTools::MultinomCI(count, conf.level = conf_level))
+    stats <- as.data.frame(DescTools::MultinomCI(count, conf.level = conf_level, method = ci_method))
 
     conf_int_out <- data.frame(
       y = stats$est,
       ymin = stats$lwr.ci,
       ymax = stats$upr.ci)
+    
   } else {
     stop("distribution must be either normal, lognormal, binomial,
          or multinomial/ordinal.")

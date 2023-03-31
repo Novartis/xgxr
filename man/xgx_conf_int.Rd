@@ -4,7 +4,7 @@
 \alias{xgx_conf_int}
 \title{\code{xgx_conf_int} returns a dataframe with mean +/- confidence intervals}
 \usage{
-xgx_conf_int(y, conf_level = 0.95, distribution = "normal")
+xgx_conf_int(y, conf_level = 0.95, distribution = "normal", ci_method = NULL)
 }
 \arguments{
 \item{y}{data to compute confidence interval of}
@@ -18,9 +18,13 @@ calculating confidence intervals. The options are "normal", "lognormal",
 and "binomial". The "normal" option will use the Student t Distribution 
 to calculate confidence intervals, the "lognormal" option will transform 
 data to the log space first. The "binomial" option will use the
-\code{\link[binom:binom.confint]{binom.exact}} function to calculate the
+\code{\link[binom:binom.confint]{binom.confint}} function to calculate the
 confidence 
-intervals. Note: binomial data must be numeric and contain only 1's and 0's.}
+intervals. Note: binomial data must be numeric and contain only 1's and 0's.
+The "multinomial" or "ordinal" options will use DescTools::MultinomCI}
+
+\item{ci_method}{Method to pass to binom.confint or MultinomCI. Defaults are 
+"exact" and "goodman", respectively.}
 }
 \value{
 data.frame
