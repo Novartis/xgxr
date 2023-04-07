@@ -20,30 +20,39 @@ library(ggrepel)
 xgx_theme_set()
 
 # How many overall downloads
-data <- cran_downloads(packages = c("xgxr","nlmixr","nlmixr2","RxODE","RxODE2","ggPMX","RBesT","mrgsolve","PKNCA","NonCompart","ggplot2","rstan","deSolve"), 
+data <- cran_downloads(packages = c("xgxr","nlmixr","nlmixr2","RxODE","rxode2","ggPMX","RBesT","mrgsolve","PKNCA","NonCompart","ggplot2","rstan","deSolve","rms","brms"), 
                        from = "2010-01-01", to = Sys.Date()-1) %>%
   group_by(package) %>%
   mutate(cumulative = cumsum(count)) %>%
   filter(cumulative > 0)
 
 data_pmx = data %>%
-  filter(!(package %in% c("ggplot2","rstan","deSolve")))
+  filter(!(package %in% c("ggplot2","rstan","deSolve","rms","brms")))
+
+data_pmx_yearly = data_pmx %>%
+  mutate(year = format(date, "%Y")) %>%
+  select(-date, -cumulative) %>%
+  group_by(package, year) %>%
+  summarise(count = sum(count)) %>%
+  ungroup() %>%
+  mutate(year = as.numeric(year))
 
 data_last = data %>% 
   filter(date == max(date)) %>%
   mutate(date = date + 100)
 
 data_pmx_last = data_last %>%
-  filter(!(package %in% c("ggplot2","rstan","deSolve")))
+  filter(!(package %in% c("ggplot2","rstan","deSolve","rms","brms")))
 
-# Daily downloads
-g = ggplot(data_pmx, aes(x = date, y = count, color = package, label = package)) 
-g = g + geom_line(alpha = 0.5) 
+# Monthly downloads ----
+g = ggplot(data_pmx_yearly, aes(x = year, y = count, color = package)) 
+g = g + geom_line()
+g = g + geom_point()
 g = g + labs(x = "Date", 
-             y =  "Daily downloads",
-             title =  "Daily downloads") 
+             y =  "Yearly downloads",
+             title =  "Yearly downloads") 
+g = g + facet_wrap(~package)
 print(g)
-g0 = g
 
 # Cumulative  Downloads ----
 g = ggplot(data_pmx, aes(x = date, y = cumulative, color = package, label = package)) 
