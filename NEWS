@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.1.4
+------------------------
+    o xgx_stat_ci: for ordinal response, fix bug where response categories with count of zero were dropped and not displayed
+
 CHANGES IN VERSION 1.1.3
 ------------------------
     o xgx_conf_int: change df in xgx_conf_int from length(y) to length(y) - 1 for normal and lognormal distributions. 

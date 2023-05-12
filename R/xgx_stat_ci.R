@@ -575,10 +575,10 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
        
        # Get the number of each category in each bin 
        counts <- data %>% ungroup() %>%
-         group_by(x_bin, group2, response) %>%
+         group_by(x_bin, group2, response, .drop = FALSE) %>%
          summarize(count = length(x), .groups = "keep") %>% 
-         merge(data %>% subset(,-c(x)), 
-               by = c("response","group2","x_bin")) %>% 
+         merge(data %>% subset(,-c(x, x_bin)), 
+               by = c("response","group2")) %>% 
          unique()
        
        # Combine the x and y data
