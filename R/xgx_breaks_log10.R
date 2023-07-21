@@ -43,26 +43,31 @@
 xgx_breaks_log10 <-  function(data_range) {
   data_min <- min(log10(data_range))
   data_max <- max(log10(data_range))
-  n_breaks <- 5   # number of breaks to aim for
-  # preferred breaks, in log10-space
-  preferred_increment <- c(1, 0.5)
-
-  breaks <- labeling::extended(data_min, data_max, n_breaks, Q = preferred_increment)
-  breaks <- 10^breaks
-
-  # ensure that there are at least 2 breaks
-  # but also try to present "nice" breaks with only one significant digit
-  breaks1 <- unique(signif(breaks, 1))
-  breaks2 <- unique(signif(breaks, 2))
-  breaks3 <- unique(signif(breaks, 3))
-  if (length(breaks1) >= 2) {
-    breaks_out <- breaks1
-  } else if (length(breaks2) >= 2) {
-    breaks_out <- breaks2
-  } else if (length(breaks3) >= 2) {
-    breaks_out <- breaks3
+  
+  if (is.infinite(data_min) & is.infinite(data_max)) {
+    breaks_out = data_range
   } else {
-    breaks_out <- unique(breaks)
+    n_breaks <- 5   # number of breaks to aim for
+    # preferred breaks, in log10-space
+    preferred_increment <- c(1, 0.5)
+  
+    breaks <- labeling::extended(data_min, data_max, n_breaks, Q = preferred_increment)
+    breaks <- 10^breaks
+  
+    # ensure that there are at least 2 breaks
+    # but also try to present "nice" breaks with only one significant digit
+    breaks1 <- unique(signif(breaks, 1))
+    breaks2 <- unique(signif(breaks, 2))
+    breaks3 <- unique(signif(breaks, 3))
+    if (length(breaks1) >= 2) {
+      breaks_out <- breaks1
+    } else if (length(breaks2) >= 2) {
+      breaks_out <- breaks2
+    } else if (length(breaks3) >= 2) {
+      breaks_out <- breaks3
+    } else {
+      breaks_out <- unique(breaks)
+    }
   }
   return(breaks_out)
 }
