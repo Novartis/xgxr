@@ -658,6 +658,9 @@ StatSummaryBinQuant <- ggplot2::ggproto("StatSummaryBinQuant", ggplot2::Stat,
                                  else {
                                    # Calculate breaks from number of bins
                                    breaks <- quantile(data$x,probs = seq(0, 1, 1/bins))
+                                   if (any(duplicated(breaks)))
+                                     stop(paste("The data cannot be uniquely divided into", bins, "bins, probably because a single value is repeated many times in the dataset.\n",
+                                                "It is recommended to specify the breaks directly instead of the number of bin"))
                                  }
                                  
                                  data$bin <- cut(data$x, breaks, include.lowest = TRUE, labels = FALSE)
