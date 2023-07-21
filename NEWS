@@ -1,6 +1,8 @@
 CHANGES IN VERSION 1.1.4
 ------------------------
     o xgx_stat_ci: for ordinal response, fix bug where response categories with count of zero were dropped and not displayed
+    o xgx_scale_y_percentchangelog10: improved breaks, to use xgx_breaks_log10
+    o xgx_scale_x_percentchangelog10: improved breaks, to use xgx_breaks_log10
 
 CHANGES IN VERSION 1.1.3
 ------------------------
