@@ -43,12 +43,7 @@ xgx_scale_y_percentchangelog10 <- function(breaks = NULL,
                                            ...) {
   
   if (is.null(breaks)){
-    breaks <-  function(data_range) {
-      r <- range(log2(data_range + 1))
-      breaks <- 2^(labeling::extended(r[1], r[2], m = n_breaks, Q = c(1,2,4,8))) - 1
-      return(breaks)
-    }
-    
+    breaks <- function(data_range) xgx_breaks_log10(data_range + 1) - 1
   }
   
   if (is.null(minor_breaks)) {
