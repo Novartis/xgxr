@@ -1,18 +1,19 @@
 CHANGES IN VERSION 1.1.4
 ------------------------
-    o xgx_stat_ci: 
+    o xgx_stat_ci:
         1. for ordinal response, fix bug where response categories with count of zero were dropped and not displayed
         2. for bins option, do a check to make sure the dataset can be divided into the specified number of bins using quantile.  if not (say beacuse one value is repeated many times), then throw an error that recommends the user set the breaks directly.
     o xgx_scale_y_percentchangelog10: improved breaks, to use xgx_breaks_log10
     o xgx_scale_x_percentchangelog10: improved breaks, to use xgx_breaks_log10
     o xgx_breaks_log10: fixed error when range was c(0,0) so it now just plots an empty graph instead of throwing an error
+    o xgx_scale_x_log10, xgx_scale_y_log10: no longer return a list, always return a ggproto object (fix #50)
 
 CHANGES IN VERSION 1.1.3
 ------------------------
-    o xgx_conf_int: change df in xgx_conf_int from length(y) to length(y) - 1 for normal and lognormal distributions. 
-    o xgx_conf_int: Add warnings when length of y is 1, and change confidence interval from NaN to (-Inf, Inf) for normal and (0, Inf) for lognormal distributions. 
+    o xgx_conf_int: change df in xgx_conf_int from length(y) to length(y) - 1 for normal and lognormal distributions.
+    o xgx_conf_int: Add warnings when length of y is 1, and change confidence interval from NaN to (-Inf, Inf) for normal and (0, Inf) for lognormal distributions.
     o xgx_conf_int: Add methods options for binomial and ordinal distributions. Change default method of ordinal to "goodman"
-    o removed theoph.Rmd and sad_pkpd.Rmd from CRAN distribution (still available in GitHub) 
+    o removed theoph.Rmd and sad_pkpd.Rmd from CRAN distribution (still available in GitHub)
 
 CHANGES IN VERSION 1.1.2
 ------------------------
@@ -28,8 +29,8 @@ CHANGES IN VERSION 1.1.0
     o xgx_stat_smooth() added to allow for nonlinear fitting + confidence intervals, including emax fitting, and ordinal response fitting
     o xgx_stat_ci() updated with binning by quantiles, and ordinal/multinomial confidence intervals
     o (BETA) xgx_auto_explore() function to automatically compile Rmd templates from xgx website!
-    o xgx_save and xgx_dirs2char: Added error checking that dirs variable is list. 
-    o xgx_save: Enable change in font color and size for directories caption    
+    o xgx_save and xgx_dirs2char: Added error checking that dirs variable is list.
+    o xgx_save: Enable change in font color and size for directories caption
 
 CHANGES IN VERSION 1.0.9
 ------------------------
@@ -37,7 +38,7 @@ CHANGES IN VERSION 1.0.9
 
 CHANGES IN VERSION 1.0.8
 ------------------------
-    o theoph.Rmd vignette, for data_pk, keep only rows where TIME>0.  This fixed an 
+    o theoph.Rmd vignette, for data_pk, keep only rows where TIME>0.  This fixed an
       error in the vignette that was introduced with the March 5, 2020 ggplot2 update
 
 CHANGES IN VERSION 1.0.7
@@ -69,7 +70,7 @@ CHANGES IN VERSION 1.0.3
     o datasets are now visible to R-3.6 but this may break functionality for R-3.4
     o therefore, we now require R >= 3.5 for using this package.
     o user can still use xgxr-1.0.2 for R-3.4
-    
+
 CHANGES IN VERSION 1.0.0, 1.0.1, and 1.0.2
 -------------------------
     o fixing to get in line with CRAN policies (e.g. example code cannot save files in the user's directory)

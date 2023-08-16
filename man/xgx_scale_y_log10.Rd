@@ -18,28 +18,28 @@ xgx_scale_y_log10(
 
 \item{labels}{function for setting the labels, defined here}
 
-\item{...}{other arguments passed to 
+\item{...}{other arguments passed to
 \code{\link[ggplot2:scale_continuous]{scale_y_log10}}}
 }
 \value{
 ggplot2 compatible scale object
 }
 \description{
-\code{xgx_scale_y_log10} is similar to 
-\code{\link[ggplot2:scale_continuous]{scale_y_log10}}.  
+\code{xgx_scale_y_log10} is similar to
+\code{\link[ggplot2:scale_continuous]{scale_y_log10}}.
 But it uses what we believe to be a nicer spacing and set of tick marks
-it can be used the same as 
+it can be used the same as
 \code{\link[ggplot2:scale_continuous]{scale_y_log10}}
 }
 \examples{
 conc <- 10^(seq(-3, 3, by = 0.1))
 ec50 <- 1
-data <- data.frame(concentration = conc, 
+data <- data.frame(concentration = conc,
                    bound_receptor = 1 * conc / (conc + ec50))
 ggplot2::ggplot(data, ggplot2::aes(y = concentration, x = bound_receptor)) +
   ggplot2::geom_point() +
   ggplot2::geom_line() +
   xgx_scale_y_log10() +
   xgx_scale_x_reverselog10()
-  
+
 }
