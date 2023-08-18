@@ -27,18 +27,18 @@
 #' @return numeric vector of breaks
 #' 
 #' @examples
-#' xgx_breaks_time(c(0, 5), "h")
-#' xgx_breaks_time(c(0, 6), "h")
-#' xgx_breaks_time(c(-3, 5), "h")
-#' xgx_breaks_time(c(0, 24), "h")
-#' xgx_breaks_time(c(0, 12), "h")
-#' xgx_breaks_time(c(1, 4), "d")
-#' xgx_breaks_time(c(1, 12), "d")
-#' xgx_breaks_time(c(1, 14), "d")
-#' xgx_breaks_time(c(1, 50), "d")
-#' xgx_breaks_time(c(1000, 3000), "d")
-#' xgx_breaks_time(c(-21, 100), "d")
-#' xgx_breaks_time(c(-1, 10), "w")
+#' xgx_breaks_time(c(0, 5), "hour")
+#' xgx_breaks_time(c(0, 6), "hour")
+#' xgx_breaks_time(c(-3, 5), "hour")
+#' xgx_breaks_time(c(0, 24), "hour")
+#' xgx_breaks_time(c(0, 12), "hour")
+#' xgx_breaks_time(c(1, 4), "day")
+#' xgx_breaks_time(c(1, 12), "day")
+#' xgx_breaks_time(c(1, 14), "day")
+#' xgx_breaks_time(c(1, 50), "day")
+#' xgx_breaks_time(c(1000, 3000), "day")
+#' xgx_breaks_time(c(-21, 100), "day")
+#' xgx_breaks_time(c(-1, 10), "week")
 #' 
 #' @importFrom labeling extended
 #' @export
@@ -51,16 +51,26 @@ xgx_breaks_time <-  function(data_range, units_plot, number_breaks = 5) {
   weights_default <- c(0.25, 0.2, 0.5, 0.05)
   weights_simple <- c(1, 0.2, 0.5, 0.05)
 
-  if (units_plot %in% c("h", "m") && data_span >= 48) {
+  if (units_plot %in% c("hour", "month") && data_span >= 48) {
     preferred_increment <- c(24, 12, 6, 3)
     weights <- weights_simple
-  } else if (units_plot %in% c("h", "m") && data_span >= 24) {
+  } else if (units_plot %in% c("hour", "month") && data_span >= 24) {
     preferred_increment <- c(3, 12, 6, 2)
     weights <- weights_simple
-  } else if (units_plot %in% c("h", "m") && data_span < 24) {
+  } else if (units_plot %in% c("hour", "month") && data_span < 24) {
     preferred_increment <- c(6, 3, 2, 1)
     weights <- weights_simple
-  } else if (units_plot == "d" && data_span >= 12) {
+  } else if (units_plot == "day" && data_span >= 720) {
+    preferred_increment <- c(360, 180)
+    weights <- weights_simple
+  } else if (units_plot == "day" && data_span >= 360) {
+    preferred_increment <- c(180, 120, 60)
+    weights <- weights_simple
+  } else if (units_plot == "day" && data_span >= 90) {
+    preferred_increment <- c(30, 7)
+    weights <- weights_simple
+  }
+  else if (units_plot == "day" && data_span >= 12) {
     preferred_increment <- c(7, 14, 28)
     weights <- weights_simple
   } else {

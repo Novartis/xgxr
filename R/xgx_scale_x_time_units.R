@@ -1,33 +1,34 @@
 xgx_scale_time_units_ <- function(units_dataset, units_plot = NULL,
                                   breaks = NULL,
                                   labels = NULL, ...) {
-  # h = hours, d = days, w = weeks, m = months, y = years
-
   if (is.null(units_plot)) {
     units_plot <- units_dataset
   }
 
-  # allows for user to write out longer string for units
+# convert units to lower case and remove s from the end ot have unambiguous name
   units_plot <- units_plot %>%
     tolower() %>%
-    substr(1, 1)
+    str_replace("s$", "")
   units_dataset <- units_dataset %>%
     tolower() %>%
-    substr(1, 1)
+    str_replace("s$", "")
 
-  if (!(units_dataset %in% c("h", "d", "w", "m", "y"))) {
-    stop("units_dataset must be hours, days, weeks, months, or years")
+  unit_names = c("second", "minute", "hour", "day", "week", "month", "year")
+  if (!(units_dataset %in% unit_names)) {
+    stop("units_dataset must be second, minute, hour, day, week, month, or year")
   }
-  if (!(units_plot %in% c("h", "d", "w", "m", "y"))) {
-    stop("units_plot must be hours, days, weeks, months, or years")
+  if (!(units_plot %in% unit_names)) {
+    stop("units_dataset must be second, minute, hour, day, week, month, or year")
   }
 
   day_scale <- data.frame(
-    h = 1 / 24,
-    d = 1,
-    w = 7,
-    m = 30.4375,
-    y = 365.25
+    second   = 1 / 24 / 60 / 60,
+    minute = 1 / 24 / 60,
+    hour = 1 / 24,
+    day = 1,
+    week = 7,
+    month = 30.4375,
+    year = 365.25
   )
 
   input_scale <- day_scale[[units_dataset]]
@@ -47,11 +48,13 @@ xgx_scale_time_units_ <- function(units_dataset, units_plot = NULL,
   }
 
   xlabel_list <- data.frame(
-    h = "Hour",
-    d = "Day",
-    w = "Week",
-    m = "Month",
-    y = "Year"
+    second = "Second",
+    minute = "Minute",
+    hour = "Hour",
+    day = "Day",
+    week = "Week",
+    month = "Month",
+    year = "Year"
   )
   xlabel <- paste0("Time (", xlabel_list[[units_plot]], "s)")
   return(list(breaks = breaks, labels = labels, xlabel = xlabel))

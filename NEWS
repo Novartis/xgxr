@@ -3,9 +3,10 @@ CHANGES IN VERSION 1.1.4
     o xgx_stat_ci: 
         1. for ordinal response, fix bug where response categories with count of zero were dropped and not displayed
         2. for bins option, do a check to make sure the dataset can be divided into the specified number of bins using quantile.  if not (say beacuse one value is repeated many times), then throw an error that recommends the user set the breaks directly.
-    o xgx_scale_y_percentchangelog10: improved breaks, to use xgx_breaks_log10
-    o xgx_scale_x_percentchangelog10: improved breaks, to use xgx_breaks_log10
+    o xgx_scale_y_percentchangelog10 and xgx_scale_x_percentchangelog10: improved breaks, to use xgx_breaks_log10
     o xgx_breaks_log10: fixed error when range was c(0,0) so it now just plots an empty graph instead of throwing an error
+    o xgx_scale_x_time_units: added minutes and seconds and require input to be the full time unit (e.g. year or years) instead of just a letter (y).  Throws an error if not in the set (year, month, week, day, hour, minute, second)
+    o xgx_breaks_time: added a few lines so preference is for grouping days by 30, 60, 90, instead of 70, 140, 210
 
 CHANGES IN VERSION 1.1.3
 ------------------------
