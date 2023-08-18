@@ -77,41 +77,34 @@ Function to make key plots of pharmacokinetic (PK) data.
 
 ## Traceability: annotating and saving plots and tables
 
-### Saving figures
+### Annotating figures
 
 Our best practices require that we mark plots as "DRAFT" if not yet final, 
 and also list the program that created the plot and the location where the 
 plot is stored.  This helps with the traceability of the work, by ensuring 
 that the following information is available for every plot in a report: the 
 R script used to create the figure, the location where the figure is stored, 
-and the time and date when the figure was created.  The key functions here are:
+and the time and date when the figure was created.  The key function is:
  * `xgx_annotate_status` allows for the addition of text (like the word draft) 
  to the plots
- * `xgx_annotate_filenames` allows for printing the filenames as a caption for 
- the plot.  It requires an input list `dirs` with particular fields, as shown 
- below.
+ * The caption is set to contain the file directory, program name, output name, 
+ and time of creation
  
-The function `xgx_save` calls both of the above functions and it is 
-illustrated below.
-
-This function also requires the user to input a width and height for the graph. 
-This is because often, the plots that are created have font that is so small 
-that it's impossible to read the x and y axes.  We've found that the easiest 
-way to set the font size is "indirectly" by specifying the height and width 
-of the graph.  Note that if you have a plot window open, you can get the 
-height and width by typing `dev.size()`
-
 ```{r}
-dirs <- list(
-  parent_dir = tempdir(),
-  rscript_dir = tempdir(),
-  rscript_name = "example.R",
-  results_dir = tempdir(),
-  filename_prefix = "example_")
+caption = paste("File_Directory","\n",
+                "Progam_Name.Rmd", "\n",
+                "Output_Name.html","\n",
+                paste(Sys.time()),
+                collapse = "\n")
+ggcaption = list(labs(caption = caption),
+                 theme(plot.caption = element_text(hjust = 0.5)))
+
 data <- data.frame(x = 1:1000, y = stats::rnorm(1000))
 g <- xgx_plot(data = data, aes(x = x, y = y)) +
-  geom_point()
-xgx_save(width = 4, height = 4, dirs = dirs, filename_main = "example_plot", status = "DRAFT")
+  geom_point() + 
+  xgx_annotate_status(status = "DRAFT") + 
+  ggcaption
+  
 ```
 
 The the function `xgx_save` works only with ggplot objects.  If the figure 
@@ -128,17 +121,6 @@ xgx_annotate_status_png(filename, "./ExampleScript.R")
 ```
 
 <!-- ![image](png_example.png) -->
-
-### Saving tables
-
-We also provide a function `xgx_save_table` for annotating the relevant 
-information to csv files. The annotated table is shown below.
-
-```{r}
-x <- data.frame(ID = c(1, 2), SEX = c("male", "female"))
-data <- xgx_save_table(x, dirs = dirs, filename_main = "ExampleTable")
-knitr::kable(data)
-```
 
 ## Graphics helpers
 
@@ -503,35 +485,4 @@ g3 <- g + xgx_scale_x_time_units(units_dataset = "hours", units_plot = "weeks")
 g4 <- g + xgx_scale_x_time_units(units_dataset = "hours", units_plot = "months")
 
 gridExtra::grid.arrange(g1, g2, g3, g4, nrow = 2)
-```
-
-## Data checking
-
-### Numerical check
-
-We've found that during exploration, it can be extremely important to 
-check the dataset for issues.  This can be done using the `xgx_check_data` 
-or `xgx_summarize_data` function (the two functions are identical).
-
-```{r, message=FALSE}
-data <- mad_missing_duplicates %>%
-  filter(CMT %in% c(1, 2, 3)) %>%
-  rename(DV      = LIDV,
-         YTYPE   = CMT,
-         USUBJID = ID)
-covariates <- c("WEIGHTB", "SEX")
-check <- xgx_check_data(data, covariates)
-
-knitr::kable(check$summary)
-knitr::kable(head(check$data_subset))
-```
-
-You can also get an overview of the covariates in the dataset 
-with `xgx_summarize_covariates`.  The covariate summaries are also provided 
-in the `xgx_check_data` and `xgx_summarize_data` functions.
-
-```{r}
-covar <- xgx_summarize_covariates(data,covariates)
-knitr::kable(covar$cts_covariates)
-knitr::kable(covar$cat_covariates)
 ```
