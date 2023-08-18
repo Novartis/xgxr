@@ -7,6 +7,7 @@ CHANGES IN VERSION 1.1.4
     o xgx_breaks_log10: fixed error when range was c(0,0) so it now just plots an empty graph instead of throwing an error
     o xgx_scale_x_time_units: added minutes and seconds and require input to be the full time unit (e.g. year or years) instead of just a letter (y).  Throws an error if not in the set (year, month, week, day, hour, minute, second)
     o xgx_breaks_time: added a few lines so preference is for grouping days by 30, 60, 90, instead of 70, 140, 210
+    o xgx_scale_x_log10, xgx_scale_y_log10: no longer returns list.  now returns ggproto
     o xgxr_overview vignette: removed a few functions from vignette no longer widely used - xgx_save, xgx_save_table, xgx_
       xgx_summarize_data, xgx_summarize_covariates
 

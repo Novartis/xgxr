@@ -35,10 +35,15 @@ xgx_scale_x_log10 <-  function(breaks = xgx_breaks_log10,
     minor_breaks <- function(x) xgx_minor_breaks_log10(x)
   }
 
-  ret <- try(list(ggplot2::scale_x_log10(..., breaks = breaks,
-                                         minor_breaks = minor_breaks,
-                                         labels = labels)),
-             silent = TRUE)
+  ret <- try(
+    ggplot2::scale_x_log10(..., 
+                           breaks = breaks,
+                           minor_breaks = minor_breaks,
+                           labels = labels
+    ),
+    silent = TRUE
+  )
+  
   if  (inherits(ret, "try-error")) {
     return(ggplot2::scale_x_log10(...))
   } else {
