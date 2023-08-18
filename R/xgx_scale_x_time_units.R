@@ -109,11 +109,15 @@ xgx_scale_x_time_units <- function(units_dataset, units_plot = NULL,
 #' @rdname xgx_scale_x_time_units
 #' @export
 xgx_scale_y_time_units <-
-  function(units_dataset, units_plot = NULL, breaks = NULL, labels = NULL,
+  function(units_dataset, units_plot = NULL, 
+           breaks = NULL, 
+           labels = NULL,
            ...) {
     lst <- xgx_scale_time_units_(units_dataset, units_plot, breaks, labels, ...)
     return(list(ggplot2::scale_y_continuous(
       breaks = lst$breaks,
       labels = lst$labels, ...
-    ), ggplot2::ylab(lst$xlabel)))
+    ), 
+    ggplot2::ylab(lst$xlabel)
+    ))
   }
