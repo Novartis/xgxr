@@ -60,7 +60,7 @@ ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
   
 # for dates
   data <- data.frame(x = as.Date(c("2015-01-01", "2016-01-01")), y = c(1,2))
-  xmax <- max(na.omit(dummy_data$x))
+  xmax <- max(na.omit(data$x))
   ggplot2::ggplot(data, aes(x = x, y = y)) + geom_point() + xgx_annotate_status("DRAFT", x = xmax)
 
 }
