@@ -10,6 +10,7 @@ CHANGES IN VERSION 1.1.4
     o xgx_scale_x_log10, xgx_scale_y_log10: no longer returns list.  now returns ggproto
     o xgxr_overview vignette: removed a few functions from vignette no longer widely used - xgx_save, xgx_save_table, xgx_
       xgx_summarize_data, xgx_summarize_covariates
+    o xgx_annotate_status: added example for how to make it work with dates
 
 CHANGES IN VERSION 1.1.3
 ------------------------

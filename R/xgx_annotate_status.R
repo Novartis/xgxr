@@ -5,6 +5,9 @@
 #' The text of the annotation can be customized, the default is "DRAFT". 
 #' The color, location, size, fontface, transparency of the annotation can 
 #' also be customized.
+#' 
+#' The default value of x = Inf works in many instances, but not some special
+#' data types like Dates.  In that case, you will need to specify x
 #'
 #' @param status the text to 
 #' @param x x location, default Inf (right most point)
@@ -24,6 +27,11 @@
 #' ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) + 
 #'   ggplot2::geom_point() +
 #'   xgx_annotate_status("DRAFT")
+#'   
+#' # for dates
+#'   data <- data.frame(x = as.Date(c("2015-01-01", "2016-01-01")), y = c(1,2))
+#'   xmax <- max(na.omit(dummy_data$x))
+#'   ggplot2::ggplot(data, aes(x = x, y = y)) + geom_point() + xgx_annotate_status("DRAFT", x = xmax)
 #' 
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 aes
