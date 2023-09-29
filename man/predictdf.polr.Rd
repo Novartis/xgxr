@@ -19,6 +19,6 @@
 Get predictions with standard errors into data frame for use with geom_smooth
 }
 \details{
-\code{predictdf.polr} is used by xgx_geom_smooth when method = "polr" 
+\code{predictdf.polr} is used by xgx_geom_smooth when method = "polr"
 to calculate confidence intervals via bootstraps.
 }

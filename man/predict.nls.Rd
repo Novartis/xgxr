@@ -16,7 +16,7 @@
 \arguments{
 \item{object}{Object of class inheriting from "nls"}
 
-\item{newdata}{An optional data frame in which to look for variables with which to predict. 
+\item{newdata}{An optional data frame in which to look for variables with which to predict.
 If omitted, the fitted values are used.}
 
 \item{se.fit}{A switch indicating if standard errors are required.}
@@ -28,8 +28,8 @@ If omitted, the fitted values are used.}
 \item{...}{additional arguments affecting the predictions produced.}
 }
 \value{
-\code{predict.nls} produces a vector of predictions or a matrix of predictions and 
-bounds with column names \code{fit}, \code{lwr}, and \code{upr} if interval is set. 
+\code{predict.nls} produces a vector of predictions or a matrix of predictions and
+bounds with column names \code{fit}, \code{lwr}, and \code{upr} if interval is set.
 
 If \code{se.fit} is \code{TRUE}, a list with the following components is returned:
 
@@ -53,32 +53,32 @@ data_to_plot <- data.frame(x1 = rep(c(0, 25, 50, 100, 200, 400, 600), 10)) \%>\%
          Response = (15 + 50*x2/(20+x2))*stats::rlnorm(length(x2), 0, 0.3))
 
 
-gg <- ggplot2::ggplot(data = data_to_plot, ggplot2::aes(x = AUC, y = Response)) + 
-  ggplot2::geom_point() + 
-  xgx_geom_smooth(method = "nls",  
+gg <- ggplot2::ggplot(data = data_to_plot, ggplot2::aes(x = AUC, y = Response)) +
+  ggplot2::geom_point() +
+  xgx_geom_smooth(method = "nls",
                   method.args = list(formula = y ~ E0 + Emax* x / (EC50 + x),
-                                     start = list(E0 = 15, Emax = 50, EC50 = 20) ), 
+                                     start = list(E0 = 15, Emax = 50, EC50 = 20) ),
                   color = "black", size = 0.5, alpha = 0.25)
 gg
 
-mod <- stats::nls(formula = Response ~ E0 + Emax * AUC / (EC50 + AUC), 
-data = data_to_plot, 
+mod <- stats::nls(formula = Response ~ E0 + Emax * AUC / (EC50 + AUC),
+data = data_to_plot,
 start = list(E0 = 15, Emax = 50, EC50 = 20))
 
-predict.nls(mod)
+predict(mod)
 
-predict.nls(mod, se.fit = TRUE)
+predict(mod, se.fit = TRUE)
 
-predict.nls(mod, 
-            newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)), 
+predict(mod,
+            newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)),
             se.fit = TRUE)
-            
-predict.nls(mod, 
-            newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)), 
+
+predict(mod,
+            newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)),
             se.fit = TRUE, interval = "confidence", level = 0.95)
-            
-predict(mod, 
-            newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)), 
+
+predict(mod,
+            newdata = data.frame(AUC = c(0, 25, 50, 100, 200, 400, 600)),
             se.fit = TRUE, interval = "confidence", level = 0.95)
 
 }
