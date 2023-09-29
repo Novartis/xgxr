@@ -34,18 +34,18 @@ label overlap
 }
 }
 \examples{
-xgx_breaks_time(c(0, 5), "h")
-xgx_breaks_time(c(0, 6), "h")
-xgx_breaks_time(c(-3, 5), "h")
-xgx_breaks_time(c(0, 24), "h")
-xgx_breaks_time(c(0, 12), "h")
-xgx_breaks_time(c(1, 4), "d")
-xgx_breaks_time(c(1, 12), "d")
-xgx_breaks_time(c(1, 14), "d")
-xgx_breaks_time(c(1, 50), "d")
-xgx_breaks_time(c(1000, 3000), "d")
-xgx_breaks_time(c(-21, 100), "d")
-xgx_breaks_time(c(-1, 10), "w")
+xgx_breaks_time(c(0, 5), "hour")
+xgx_breaks_time(c(0, 6), "hour")
+xgx_breaks_time(c(-3, 5), "hour")
+xgx_breaks_time(c(0, 24), "hour")
+xgx_breaks_time(c(0, 12), "hour")
+xgx_breaks_time(c(1, 4), "day")
+xgx_breaks_time(c(1, 12), "day")
+xgx_breaks_time(c(1, 14), "day")
+xgx_breaks_time(c(1, 50), "day")
+xgx_breaks_time(c(1000, 3000), "day")
+xgx_breaks_time(c(-21, 100), "day")
+xgx_breaks_time(c(-1, 10), "week")
 
 }
 \references{
