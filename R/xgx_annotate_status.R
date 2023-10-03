@@ -28,10 +28,12 @@
 #'   ggplot2::geom_point() +
 #'   xgx_annotate_status("DRAFT")
 #'   
-#' # for dates
+#' # for dates in x-axis
 #'   data <- data.frame(x = as.Date(c("2015-01-01", "2016-01-01")), y = c(1,2))
 #'   xmax <- max(na.omit(data$x))
-#'   ggplot2::ggplot(data, aes(x = x, y = y)) + geom_point() + xgx_annotate_status("DRAFT", x = xmax)
+#'   ggplot2::ggplot(data, ggplot2::aes(x = x, y = y)) + 
+#'     ggplot2::geom_point() + 
+#'     xgx_annotate_status("DRAFT", x = xmax)
 #' 
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 aes
