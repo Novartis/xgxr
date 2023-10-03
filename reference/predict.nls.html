@@ -78,7 +78,7 @@
 
 
 <dt>newdata</dt>
-<dd><p>An optional data frame in which to look for variables with which to predict. 
+<dd><p>An optional data frame in which to look for variables with which to predict.
 If omitted, the fitted values are used.</p></dd>
 
 
@@ -102,7 +102,7 @@ If omitted, the fitted values are used.</p></dd>
     <h2>Value</h2>
     
 
-<p><code>predict.nls</code> produces a vector of predictions or a matrix of predictions and 
+<p><code>predict.nls</code> produces a vector of predictions or a matrix of predictions and
 bounds with column names <code>fit</code>, <code>lwr</code>, and <code>upr</code> if interval is set.</p>
 
 
@@ -134,22 +134,22 @@ bounds with column names <code>fit</code>, <code>lwr</code>, and <code>upr</code
 <span class="r-in"><span>         Response <span class="op">=</span> <span class="op">(</span><span class="fl">15</span> <span class="op">+</span> <span class="fl">50</span><span class="op">*</span><span class="va">x2</span><span class="op">/</span><span class="op">(</span><span class="fl">20</span><span class="op">+</span><span class="va">x2</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_to_plot</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AUC</span>, y <span class="op">=</span> <span class="va">Response</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span></span>
-<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span></span>
-<span class="r-in"><span>  <span class="fu"><a href="xgx_stat_smooth.html">xgx_geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"nls"</span>,  </span></span>
+<span class="r-in"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_to_plot</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AUC</span>, y <span class="op">=</span> <span class="va">Response</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="xgx_stat_smooth.html">xgx_geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"nls"</span>,</span></span>
 <span class="r-in"><span>                  method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">E0</span> <span class="op">+</span> <span class="va">Emax</span><span class="op">*</span> <span class="va">x</span> <span class="op">/</span> <span class="op">(</span><span class="va">EC50</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                     start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>E0 <span class="op">=</span> <span class="fl">15</span>, Emax <span class="op">=</span> <span class="fl">50</span>, EC50 <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">)</span>, </span></span>
+<span class="r-in"><span>                                     start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>E0 <span class="op">=</span> <span class="fl">15</span>, Emax <span class="op">=</span> <span class="fl">50</span>, EC50 <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">)</span>,</span></span>
 <span class="r-in"><span>                  color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown parameters: `n_boot`</span>
 <span class="r-in"><span><span class="va">gg</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using formula = 'y ~ x'</span>
 <span class="r-plt img"><img src="predict.nls-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Response</span> <span class="op">~</span> <span class="va">E0</span> <span class="op">+</span> <span class="va">Emax</span> <span class="op">*</span> <span class="va">AUC</span> <span class="op">/</span> <span class="op">(</span><span class="va">EC50</span> <span class="op">+</span> <span class="va">AUC</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>data <span class="op">=</span> <span class="va">data_to_plot</span>, </span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Response</span> <span class="op">~</span> <span class="va">E0</span> <span class="op">+</span> <span class="va">Emax</span> <span class="op">*</span> <span class="va">AUC</span> <span class="op">/</span> <span class="op">(</span><span class="va">EC50</span> <span class="op">+</span> <span class="va">AUC</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>data <span class="op">=</span> <span class="va">data_to_plot</span>,</span></span>
 <span class="r-in"><span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>E0 <span class="op">=</span> <span class="fl">15</span>, Emax <span class="op">=</span> <span class="fl">50</span>, EC50 <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">predict.nls</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 17.05332 54.15070 56.11231 57.81393 59.26947 59.23966 59.85441 17.05332</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 52.44004 55.13104 58.02762 59.53387 59.67291 59.84459 17.05332 54.31521</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 55.17472 57.89343 59.39324 59.66263 59.86729 17.05332 51.73216 54.22450</span>
@@ -160,7 +160,7 @@ bounds with column names <code>fit</code>, <code>lwr</code>, and <code>upr</code
 <span class="r-out co"><span class="r-pr">#&gt;</span> [57] 17.05332 54.32563 57.99766 56.19157 59.14335 59.35841 59.84758 17.05332</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [65] 51.84829 53.78323 58.55934 59.49175 59.69316 59.62627</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">predict.nls</span><span class="op">(</span><span class="va">mod</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 17.05332 54.15070 56.11231 57.81393 59.26947 59.23966 59.85441 17.05332</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 52.44004 55.13104 58.02762 59.53387 59.67291 59.84459 17.05332 54.31521</span>
@@ -187,8 +187,8 @@ bounds with column names <code>fit</code>, <code>lwr</code>, and <code>upr</code
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">predict.nls</span><span class="op">(</span><span class="va">mod</span>, </span></span>
-<span class="r-in"><span>            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>AUC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span>,</span></span>
+<span class="r-in"><span>            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>AUC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17.05332 52.96502 56.23071 58.09689 59.09828 59.61753 59.79347</span>
@@ -199,9 +199,9 @@ bounds with column names <code>fit</code>, <code>lwr</code>, and <code>upr</code
 <span class="r-out co"><span class="r-pr">#&gt;</span> $df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span>            </span></span>
-<span class="r-in"><span><span class="fu">predict.nls</span><span class="op">(</span><span class="va">mod</span>, </span></span>
-<span class="r-in"><span>            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>AUC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span>,</span></span>
+<span class="r-in"><span>            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>AUC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            se.fit <span class="op">=</span> <span class="cn">TRUE</span>, interval <span class="op">=</span> <span class="st">"confidence"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        fit       lwr      upr</span>
@@ -219,9 +219,9 @@ bounds with column names <code>fit</code>, <code>lwr</code>, and <code>upr</code
 <span class="r-out co"><span class="r-pr">#&gt;</span> $df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span>            </span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span>, </span></span>
-<span class="r-in"><span>            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>AUC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span>,</span></span>
+<span class="r-in"><span>            newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>AUC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            se.fit <span class="op">=</span> <span class="cn">TRUE</span>, interval <span class="op">=</span> <span class="st">"confidence"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        fit       lwr      upr</span>
