@@ -14,8 +14,6 @@
 
 **Comments:**
 
-    o change predictdf.polr so inputs match predictdf generic, to fix S3 method consistency warning
-
 ## Downstream dependencies
 
 None.
