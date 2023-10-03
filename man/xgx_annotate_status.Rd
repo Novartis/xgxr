@@ -42,10 +42,10 @@ xgx_annotate_status(
 ggplot layer
 }
 \description{
-\code{xgx_annotate_status} adds a status (e.g. DRAFT) annotation layer 
-to a plot. 
-The text of the annotation can be customized, the default is "DRAFT". 
-The color, location, size, fontface, transparency of the annotation can 
+\code{xgx_annotate_status} adds a status (e.g. DRAFT) annotation layer
+to a plot.
+The text of the annotation can be customized, the default is "DRAFT".
+The color, location, size, fontface, transparency of the annotation can
 also be customized.
 }
 \details{
@@ -54,13 +54,15 @@ data types like Dates.  In that case, you will need to specify x
 }
 \examples{
 data <- data.frame(x = 1:1000, y = rnorm(1000))
-ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) + 
+ggplot2::ggplot(data = data, ggplot2::aes(x = x, y = y)) +
   ggplot2::geom_point() +
   xgx_annotate_status("DRAFT")
-  
+
 # for dates
-  data <- data.frame(x = as.Date(c("2015-01-01", "2016-01-01")), y = c(1,2))
-  xmax <- max(na.omit(data$x))
-  ggplot2::ggplot(data, aes(x = x, y = y)) + geom_point() + xgx_annotate_status("DRAFT", x = xmax)
+data <- data.frame(x = as.Date(c("2015-01-01", "2016-01-01")), y = c(1,2))
+xmax <- max(na.omit(data$x))
+ggplot2::ggplot(data, ggplot2::aes(x = x, y = y)) +
+  ggplot2::geom_point() +
+  xgx_annotate_status("DRAFT", x = xmax)
 
 }

@@ -1,7 +1,7 @@
 Package: xgxr
 Title: Exploratory Graphics for Pharmacometrics
 Version: 1.1.4
-Authors@R: 
+Authors@R:
     c(person(given = "Andrew",
              family = "Stein",
              role = c("aut", "cre"),
@@ -38,7 +38,7 @@ Description: Supports a structured approach
 License: MIT + file LICENSE
 URL: https://opensource.nibr.com/xgx/
 BugReports: https://github.com/Novartis/xgxr/issues
-Depends: 
+Depends:
     R (>= 3.5.0)
 Imports:
     assertthat,
@@ -63,8 +63,9 @@ Imports:
     stats,
     stringr,
     tibble,
-    utils
-Suggests: 
+    utils,
+    vctrs
+Suggests:
     caTools,
     gridExtra,
     knitr,
@@ -72,8 +73,8 @@ Suggests:
     rmarkdown,
     testthat,
     tidyr
-VignetteBuilder: 
+VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
