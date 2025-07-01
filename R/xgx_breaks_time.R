@@ -46,7 +46,6 @@ xgx_breaks_time <-  function(data_range, units_plot, number_breaks = 5) {
   data_min <- min(data_range)
   data_max <- max(data_range)
   data_span <- data_max - data_min
-  number_breaks <- 5 # number of breaks to aim for
   preferred_increment_default <- c(1, 5, 2, 4, 3, 1)
   weights_default <- c(0.25, 0.2, 0.5, 0.05)
   weights_simple <- c(1, 0.2, 0.5, 0.05)
