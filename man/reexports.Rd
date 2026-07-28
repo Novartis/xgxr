@@ -12,8 +12,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{gtable}{\code{\link[gtable]{gtable}}}
+  \item{gtable}{\code{\link[gtable:gtable]{gtable()}}}
 
-  \item{minpack.lm}{\code{\link[minpack.lm]{nlsLM}}}
+  \item{minpack.lm}{\code{\link[minpack.lm:nlsLM]{nlsLM()}}}
 }}
 
