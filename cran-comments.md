@@ -1,16 +1,24 @@
+## Submission
+
+This is a bug-fix release. `xgx_stat_ci()` ignored the position scale when the
+user supplied the `breaks` argument, so combining `breaks` with a transformed
+axis such as `xgx_scale_x_log10()` silently binned the data incorrectly. See
+NEWS for the full list of changes.
+
+The previous CRAN release was 1.1.2; versions 1.1.3 through 1.1.5 were
+developed but never submitted, so this submission also carries those changes.
+
 ## Test environments
 
-* macOS 13.3.1, R 4.1.0
-* Linux, x86_64-pc-linux-gnu, R 4.1.0
-* Ubuntu 20.04 LTS (on Travis CI), R 4.2.3
-* Windows, x86_64-w64-mingw32 (on Travis CI), R 4.2.3
-* Fedora, R-devel, clang, gfortran (on R-hub)
-* Ubuntu 16.04 LTS, R-release, GCC (on R-hub)
-* Windows Server 2008 R2 SP1, R-devel (on R-hub)
+* local: macOS 14.4.1 (aarch64-apple-darwin20), R 4.5.3, ggplot2 4.0.2
+* GitHub Actions: macOS-latest (R release), Windows-latest (R release),
+  Ubuntu-latest (R devel, release, oldrel-1)
+* TODO before submitting: devtools::check_win_devel()
+* TODO before submitting: R-hub
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+Local `R CMD check --as-cran`: 0 errors | 0 warnings | 0 notes
 
 **Comments:**
 
