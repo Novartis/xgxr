@@ -13,8 +13,8 @@ developed but never submitted, so this submission also carries those changes.
 * local: macOS 14.4.1 (aarch64-apple-darwin20), R 4.5.3, ggplot2 4.0.2
 * GitHub Actions: macOS-latest (R release), Windows-latest (R release),
   Ubuntu-latest (R devel, release, oldrel-1)
-* TODO before submitting: devtools::check_win_devel()
-* TODO before submitting: R-hub
+* win-builder R-devel (via devtools::check_win_devel()): 0 errors | 0 warnings |
+  0 notes
 
 ## R CMD check results
 
