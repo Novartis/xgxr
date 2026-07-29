@@ -1,0 +1,339 @@
+---
+title: "xgxr issue #72: `breaks` ignored the position scale"
+subtitle: "Before/after demonstration for the 1.1.6 fix"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: false
+    theme: flatly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.width = 9, fig.height = 4.2, dpi = 110
+)
+library(ggplot2)
+```
+
+## The short version
+
+`xgx_stat_ci()` lets you pass `breaks` to control how the x axis is binned.
+If you also put the x axis on a log scale with `xgx_scale_x_log10()`, the
+binning was wrong: most of your data was silently dropped and the remaining
+points were placed in the wrong bins.
+
+**This was not a ggplot2 4.0 regression**, despite what the issue title says.
+It reproduces identically under ggplot2 3.5.1. Anyone combining `breaks` with a
+log x axis has been getting quietly incorrect plots for years.
+
+A second, separate bug affected `distribution = "ordinal"` **even with no log
+scale at all** — the smallest observation in the dataset fell outside every bin
+and was drawn as a spurious extra point.
+
+## How this document is built
+
+Nothing here is a mock-up or a hand-written approximation of the old behaviour.
+This document checks the last pre-fix commit out into a temporary git worktree,
+runs the identical analysis against both that version and the current working
+tree in separate R subprocesses, and plots what each one actually returns.
+
+That means it needs to be knit from inside a clone of the xgxr repository, and
+it will keep working as `xgx_stat_ci` continues to evolve.
+
+```{r run-probe}
+BEFORE_REF <- "2f8f6872142c159071308b60cb5794834336c406"
+
+repo <- normalizePath(
+  system2("git", c("rev-parse", "--show-toplevel"), stdout = TRUE, stderr = FALSE)
+)
+
+# The probe. Written to a file and run once per package version, because two
+# versions of the same package cannot live in one R session. It deliberately
+# uses only long-standing public API so it runs against old and new code alike.
+probe_src <- '
+suppressMessages(library(ggplot2))
+args    <- commandArgs(trailingOnly = TRUE)
+pkg_dir <- args[[1]]
+out_rds <- args[[2]]
+suppressMessages(devtools::load_all(pkg_dir, quiet = TRUE))
+
+set.seed(1234)
+df <- data.frame(
+  x = c(runif(300, 0.4, 2.8), runif(142, 2.8, 5.2),
+        runif(25, 5.2, 7.6), runif(3, 7.6, 10)),
+  y = rbinom(470, 1, 0.3))
+brk <- quantile(df$x)
+
+set.seed(5678)
+ord <- data.frame(
+  x = 10^runif(400, -0.5, 1),
+  response = factor(sample(c("Mild", "Moderate", "Severe"), 400, TRUE)))
+ord_brk <- quantile(ord$x)
+
+grab <- function(p, logged) {
+  d <- suppressMessages(suppressWarnings(
+    tryCatch(layer_data(p), error = function(e) NULL)))
+  if (is.null(d)) return(NULL)
+  # On a log10 axis the stat works in transformed space, so map x back to the
+  # original units to make the panels directly comparable.
+  if (logged) {
+    for (nm in c("x", "xmin", "xmax")) if (nm %in% names(d)) d[[nm]] <- 10^d[[nm]]
+  }
+  d
+}
+
+base <- ggplot(df, aes(x = x, y = y)) +
+  xgx_stat_ci(breaks = brk, geom = "point")
+ord_base <- ggplot(ord, aes(x = x, response = response, colour = response)) +
+  xgx_stat_ci(distribution = "ordinal", breaks = ord_brk, geom = "point")
+
+saveRDS(list(
+  ggplot2    = as.character(packageVersion("ggplot2")),
+  xgxr       = as.character(packageVersion("xgxr")),
+  brk        = brk,
+  ord_brk    = ord_brk,
+  cont_lin   = grab(base, FALSE),
+  cont_log   = grab(base + xgx_scale_x_log10(), TRUE),
+  ord_lin    = grab(ord_base, FALSE),
+  ord_log    = grab(ord_base + xgx_scale_x_log10(), TRUE)
+), out_rds)
+'
+
+tmp <- file.path(tempdir(), paste0("issue72-report-", Sys.getpid()))
+dir.create(tmp, showWarnings = FALSE, recursive = TRUE)
+probe_file <- file.path(tmp, "probe.R")
+writeLines(probe_src, probe_file)
+worktree <- file.path(tmp, "before")
+
+run_probe <- function(pkg_dir, label) {
+  out_rds <- file.path(tmp, paste0(label, ".rds"))
+  st <- system2("Rscript", c(shQuote(probe_file), shQuote(pkg_dir), shQuote(out_rds)),
+                stdout = FALSE, stderr = FALSE)
+  if (st != 0 || !file.exists(out_rds)) {
+    stop("probe failed for '", label, "'. Knit this from inside the xgxr repo, ",
+         "with devtools and ggplot2 installed.")
+  }
+  readRDS(out_rds)
+}
+
+st <- system2("git", c("-C", shQuote(repo), "worktree", "add", "--detach",
+                       shQuote(worktree), BEFORE_REF),
+              stdout = FALSE, stderr = FALSE)
+if (st != 0) stop("could not create the git worktree for ", BEFORE_REF)
+
+before <- run_probe(worktree, "before")
+after  <- run_probe(repo,     "after")
+
+system2("git", c("-C", shQuote(repo), "worktree", "remove", "--force",
+                 shQuote(worktree)), stdout = FALSE, stderr = FALSE)
+
+tag <- function(d, version, panel) {
+  if (is.null(d) || !nrow(d)) return(NULL)
+  d$version <- version
+  d$panel   <- panel
+  d
+}
+bind <- function(...) do.call(rbind, Filter(Negate(is.null), list(...)))
+
+pal <- c("before (1.1.5)" = "#C0392B", "after (1.1.6)" = "#1B7F79")
+```
+
+The comparison below is `r substr(BEFORE_REF, 1, 10)` (**before**) against the
+current working tree (**after**), both running ggplot2 `r after$ggplot2`.
+
+---
+
+## Bug 1 — continuous response on a log10 x axis
+
+The dataset is 470 binary observations with x spanning 0.4 to 10. `breaks` is
+set to `quantile(x)`, so there are four bins, and each should hold roughly a
+quarter of the data.
+
+The grey band is the correct answer: the same call with **no log scale**, which
+was never affected by the bug.
+
+```{r cont-plot, fig.height = 4.2}
+truth <- after$cont_lin
+
+cont <- bind(
+  tag(before$cont_log, "before (1.1.5)", "with xgx_scale_x_log10()"),
+  tag(after$cont_log,  "after (1.1.6)",  "with xgx_scale_x_log10()")
+)
+
+ggplot(cont, aes(x = x, y = y, colour = version)) +
+  geom_ribbon(
+    data = truth, aes(x = x, ymin = ymin, ymax = ymax),
+    inherit.aes = FALSE, fill = "grey70", alpha = 0.30
+  ) +
+  geom_line(
+    data = truth, aes(x = x, y = y),
+    inherit.aes = FALSE, colour = "grey40", linetype = "22"
+  ) +
+  geom_pointrange(aes(ymin = ymin, ymax = ymax), size = 0.5) +
+  facet_wrap(~version) +
+  scale_x_log10() +
+  scale_colour_manual(values = pal, guide = "none") +
+  labs(
+    x = "x (original units, log10 axis)", y = "estimated probability",
+    title = "Continuous response, breaks = quantile(x)",
+    subtitle = "Grey = the correct result (same call without a log scale)"
+  ) +
+  theme_bw() +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+```{r cont-table}
+knitr::kable(
+  data.frame(
+    version  = c("before (1.1.5)", "after (1.1.6)"),
+    bins     = c(nrow(before$cont_log), nrow(after$cont_log)),
+    expected = length(after$brk) - 1L,
+    estimates = c(
+      paste(sprintf("%.4f", before$cont_log$y), collapse = ", "),
+      paste(sprintf("%.4f", after$cont_log$y),  collapse = ", ")
+    )
+  ),
+  caption = "Binned estimates with xgx_scale_x_log10()"
+)
+```
+
+Before the fix two of the four bins vanish entirely and the two survivors sit at
+the wrong heights. After the fix all four bins are present and the estimates
+match the no-log-scale control exactly.
+
+### Why it happened
+
+By the time data reaches the stat, the position scale has already log10
+transformed it — x values of 0.4 to 10 have become -0.4 to 1. But `breaks` is
+still in the user's original units. So `cut()` compares transformed data against
+untransformed break points, and nearly every observation falls outside every bin.
+
+ggplot2's own `StatBin` has handled this for years:
+
+```r
+if (!scales[[x]]$is_discrete()) {
+  breaks <- scales[[x]]$transform(breaks)
+}
+```
+
+`xgxr::StatSummaryBinQuant` is a hand-copied fork of ggplot2's
+`stat-summary-bin.R` — its roxygen block pins it to a 2020 ggplot2 commit — and
+it simply never picked that step up. The copy contained a literal `breaks <- breaks`
+where ggplot2 does the transform.
+
+---
+
+## Bug 2 — ordinal response, no log scale required
+
+This one is independent and arguably more likely to have bitten someone quietly,
+because it needs no log scale at all. With `distribution = "ordinal"` and three
+response categories over four bins there should be exactly 12 points.
+
+```{r ord-plot, fig.height = 4.4}
+ord <- bind(
+  tag(before$ord_lin, "before (1.1.5)", "x"),
+  tag(after$ord_lin,  "after (1.1.6)",  "x")
+)
+if (!"response" %in% names(ord)) ord$response <- ord$group
+ord$response <- factor(ord$response)
+
+ggplot(ord, aes(x = x, y = y, colour = response)) +
+  geom_pointrange(aes(ymin = ymin, ymax = ymax),
+                  position = position_dodge(width = 0.25), size = 0.45) +
+  facet_wrap(~version) +
+  labs(
+    x = "x (linear axis, no log scale)", y = "estimated probability",
+    title = "Ordinal response, breaks = quantile(x), no log scale",
+    subtitle = "The stray point at y = 1.0 on the left is the bug"
+  ) +
+  theme_bw() +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+```{r ord-table}
+knitr::kable(
+  data.frame(
+    version = c("before (1.1.5)", "after (1.1.6)"),
+    `no log scale` = c(nrow(before$ord_lin), nrow(after$ord_lin)),
+    `with log10`   = c(nrow(before$ord_log), nrow(after$ord_log)),
+    expected       = (length(after$ord_brk) - 1L) * 3L,
+    check.names = FALSE
+  ),
+  caption = "Number of points returned by the ordinal stat"
+)
+```
+
+Before the fix the ordinal path produced **more** rows than it should have on a
+linear axis: the single smallest observation in the dataset fell into an `NA`
+bin and was drawn as an extra point pinned at y = 1.0. The cause was a `cut()`
+call missing `include.lowest = TRUE`. On a log axis the same path lost rows to
+the transform bug as well.
+
+The ordinal fix was structurally harder than the continuous one. Binning used to
+happen in `setup_data()`, which ggplot2 never hands the scales to, so it had to
+move to `compute_layer()` where `layout$panel_scales_x` is actually available.
+
+---
+
+## The invariant
+
+The cleanest way to state what was broken: **adding a log10 scale to a plot must
+not change the binned estimates.** It changes how the data is drawn, never what
+is computed.
+
+```{r invariant}
+holds <- function(v) {
+  if (is.null(v$cont_lin) || is.null(v$cont_log)) return(FALSE)
+  isTRUE(all.equal(v$cont_log$y, v$cont_lin$y))
+}
+knitr::kable(
+  data.frame(
+    version   = c("before (1.1.5)", "after (1.1.6)"),
+    invariant = c(if (holds(before)) "HOLDS" else "VIOLATED",
+                  if (holds(after))  "HOLDS" else "VIOLATED")
+  ),
+  caption = "log10 scale must not change the binned estimates"
+)
+```
+
+This is now asserted in `tests/testthat/test-xgx_stat_ci.R`. The tests fail
+against the pre-fix code and pass after.
+
+---
+
+## What this means for users
+
+- **Affected:** anyone passing `breaks` to `xgx_stat_ci()` together with
+  `xgx_scale_x_log10()` (or any transformed position scale), and anyone using
+  `distribution = "ordinal"` with `breaks` on any scale.
+- **Not affected:** the default binning via `bins`, and any plot without a
+  transformed x scale.
+- **Workaround on 1.1.5 and earlier:** `coord_transform(x = "log10")` instead of
+  the scale. It doesn't transform the data before the stat sees it, so the bug
+  never triggers. It still works after the fix, where the new code is simply a
+  no-op.
+
+One deliberate behaviour change: on a log10 axis each point now sits at the
+**geometric** midpoint of its bin rather than the arithmetic one. That is
+`bin_loc()` operating in transformed space, and it means the point appears at
+the visual centre of its bin on the axis as displayed — which is what you want,
+but it will shift point positions slightly in existing plots.
+
+## The wider issue
+
+The root cause is the copied-fork pattern. `StatSummaryBinQuant`,
+`StatSummaryOrdinal` and `StatSmoothOrdinal` are all snapshots of ggplot2
+internals taken at various points, and the package also reaches into
+`ggplot2:::bin_loc`, `dapply`, `make_summary_fun`, `snake_class` and
+`check_required_aesthetics`. Every one of those is a place where ggplot2 can fix
+or change something and xgxr silently keeps the old behaviour. This bug is
+exactly that failure mode. Worth a conversation about how much of it we can
+retire.
+
+---
+
+*Fix is in [PR #73](https://github.com/Novartis/xgxr/pull/73), released in xgxr 1.1.6.
+Issue: [Novartis/xgxr#72](https://github.com/Novartis/xgxr/issues/72).*
