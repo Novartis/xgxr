@@ -18,9 +18,30 @@ developed but never submitted, so this submission also carries those changes.
 
 ## R CMD check results
 
-Local `R CMD check --as-cran`: 0 errors | 0 warnings | 0 notes
+Local `R CMD check --as-cran`: 0 errors | 0 warnings | 1 note
 
-**Comments:**
+The note comes from the URL check in `checking CRAN incoming feasibility`:
+
+```
+Found the following (possibly) invalid URLs:
+  URL: https://iqrtools.intiquan.com/doc/book/analysis-dataset-preparation.html
+    From: man/xgx_check_data.Rd
+    Status: Error
+    Message: libcurl error code 60:
+        SSL certificate problem: unable to get local issuer certificate
+        (Status without verification: OK)
+  URL: https://stackoverflow.com/a/23816416
+    From: man/xgx_annotate_status_png.Rd
+    Status: 403
+    Message: Forbidden
+```
+
+Both URLs are valid and reachable in a browser:
+
+* stackoverflow.com returns 403 to non-browser clients; the page is public.
+* iqrtools.intiquan.com serves an incomplete certificate chain, so libcurl
+  cannot build the trust path. The check itself reports "Status without
+  verification: OK", i.e. the page is served correctly.
 
 ## Downstream dependencies
 
