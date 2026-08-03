@@ -532,10 +532,14 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
        params
      },
 
-     setup_data = function(self, data, params) {
-       
+     # Binning and multinomial confidence interval calculation.  This is called
+     # from compute_layer() rather than from setup_data() because it needs the
+     # position scale in order to transform user-supplied `breaks` onto the same
+     # scale as the data.  setup_data() is not passed the scales.
+     compute_ordinal = function(self, data, params) {
+
        data <- flip_data(data, params$flipped_aes)
-       
+
        # Define new grouping variable for which to split the data computation 
        # (excludes aesthetics that are identical to the Response variable)
        if(is.null(params$aes_to_group)){
@@ -563,7 +567,8 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
          }
        
        }else{
-         data <- data %>% mutate(x_bin = cut(data$x, params$breaks))
+         data <- data %>% mutate(x_bin = cut(data$x, params$breaks,
+                                             include.lowest = TRUE))
        }
        
        if(!is.null(params$breaks) | !is.null(params$bins)){
@@ -601,7 +606,16 @@ StatSummaryOrdinal <- ggplot2::ggproto("StatSummaryOrdinal", ggplot2::Stat,
      },
      
      compute_layer = function(self, data, params, layout) {
-       data
+       # `breaks` are supplied by the user on the scale of the original data,
+       # but the data reaching the stat has already been transformed by the
+       # position scale (e.g. log10), so transform the breaks to match.
+       if (!is.null(params$breaks)) {
+         scale_x <- layout$panel_scales_x[[1]]
+         if (!is.null(scale_x) && !scale_x$is_discrete()) {
+           params$breaks <- scale_x$transform(params$breaks)
+         }
+       }
+       self$compute_ordinal(data, params)
      },
      
      compute_panel = function(self, data, scales, ...) {
@@ -653,7 +667,13 @@ StatSummaryBinQuant <- ggplot2::ggproto("StatSummaryBinQuant", ggplot2::Stat,
                                  
                                  # Use breaks if available instead of bins
                                  if (!is.null(breaks)) {
-                                   breaks <- breaks
+                                   # `breaks` are supplied by the user on the scale of the original
+                                   # data, but the data reaching the stat has already been transformed
+                                   # by the position scale (e.g. log10), so transform the breaks to
+                                   # match.  This mirrors what ggplot2::StatBin does.
+                                   if (!is.null(scales$x) && !scales$x$is_discrete()) {
+                                     breaks <- scales$x$transform(breaks)
+                                   }
                                  }
                                  else {
                                    # Calculate breaks from number of bins

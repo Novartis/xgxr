@@ -1,3 +1,20 @@
+CHANGES IN VERSION 1.1.6
+------------------------
+    o xgx_stat_ci: fix bug (issue #72) where the `breaks` argument was ignored by the
+      position scale, so that combining `breaks` with a transformed axis such as
+      xgx_scale_x_log10() put the data into the wrong bins and silently dropped most of
+      them.  The user supplies `breaks` on the scale of the original data, but the data
+      reaching the stat has already been transformed by the scale, so the breaks are now
+      transformed to match.  This affects both the continuous and the ordinal/multinomial
+      paths.  Despite the issue title, this was not a regression introduced by ggplot2
+      4.0; the same behavior occurs with earlier versions of ggplot2.
+    o xgx_stat_ci: for ordinal response with the `breaks` option, fix bug where the
+      smallest observation fell outside the lowest bin and was drawn as a spurious extra
+      point.
+    o added regression tests for the above
+    o DESCRIPTION: ggplot2 dependency now declares the minimum version (>= 3.3.0) that
+      the package already required
+
 CHANGES IN VERSION 1.1.5
 ------------------------
     o xgx_breaks_time: Fix bug where user-specified `number_breaks` argument was ignored.
