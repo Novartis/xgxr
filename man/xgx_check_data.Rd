@@ -16,8 +16,7 @@ data.frame
 }
 \description{
 \code{xgx_check_data} performs a series of checks on a PK or PKPD dataset
-It was inspired by the dataset preparation table from 
-\href{https://iqrtools.intiquan.com/doc/book/analysis-dataset-preparation.html}{IntiQuan}.
+It was inspired by the dataset preparation table from IntiQuan.
 }
 \details{
 The dataset must have the following columns
