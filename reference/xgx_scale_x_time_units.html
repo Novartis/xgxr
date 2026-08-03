@@ -20,7 +20,7 @@ can also be called using just the first letter (h, d, w, m, y)."><!-- mathjax --
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">xgxr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6</span>
       </span>
     </div>
 
@@ -103,12 +103,15 @@ as "h", "d", "w", "m", or "y"</p></dd>
 <li><p>A numeric vector of positions</p></li>
 <li><p>A function that takes the limits as input and returns breaks
 as output (e.g., a function returned by <code><a href="https://scales.r-lib.org/reference/breaks_extended.html" class="external-link">scales::extended_breaks()</a></code>).
+Note that for position scales, limits are provided after scale expansion.
 Also accepts rlang <a href="https://rlang.r-lib.org/reference/as_function.html" class="external-link">lambda</a> function notation.</p></li>
 </ul></dd>
 
 
 <dt id="arg-labels">labels<a class="anchor" aria-label="anchor" href="#arg-labels"></a></dt>
-<dd><p>One of:</p><ul><li><p><code>NULL</code> for no labels</p></li>
+<dd><p>One of the options below. Please note that when <code>labels</code> is a
+vector, it is highly recommended to also set the <code>breaks</code> argument as a
+vector to protect against unintended mismatches.</p><ul><li><p><code>NULL</code> for no labels</p></li>
 <li><p><code>waiver()</code> for the default labels computed by the
 transformation object</p></li>
 <li><p>A character vector giving labels (must be same length as <code>breaks</code>)</p></li>
@@ -156,7 +159,7 @@ position, width)</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>
