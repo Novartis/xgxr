@@ -14,6 +14,9 @@ CHANGES IN VERSION 1.1.6
     o added regression tests for the above
     o DESCRIPTION: ggplot2 dependency now declares the minimum version (>= 3.3.0) that
       the package already required
+    o xgx_check_data: removed the hyperlink to the IntiQuan dataset preparation table,
+      whose TLS certificate expired, so the URL check no longer flags it.  The
+      attribution itself is unchanged.
 
 CHANGES IN VERSION 1.1.5
 ------------------------

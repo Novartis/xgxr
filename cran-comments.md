@@ -13,8 +13,8 @@ developed but never submitted, so this submission also carries those changes.
 * local: macOS 14.4.1 (aarch64-apple-darwin20), R 4.5.3, ggplot2 4.0.2
 * GitHub Actions: macOS-latest (R release), Windows-latest (R release),
   Ubuntu-latest (R devel, release, oldrel-1)
-* win-builder R-devel (via devtools::check_win_devel()): 0 errors | 0 warnings |
-  0 notes
+* win-builder R-devel (via devtools::check_win_devel()), R Under development
+  (unstable) (2026-07-30 r90327 ucrt): 0 errors | 0 warnings | 0 notes
 
 ## R CMD check results
 
@@ -24,24 +24,19 @@ The note comes from the URL check in `checking CRAN incoming feasibility`:
 
 ```
 Found the following (possibly) invalid URLs:
-  URL: https://iqrtools.intiquan.com/doc/book/analysis-dataset-preparation.html
-    From: man/xgx_check_data.Rd
-    Status: Error
-    Message: libcurl error code 60:
-        SSL certificate problem: unable to get local issuer certificate
-        (Status without verification: OK)
   URL: https://stackoverflow.com/a/23816416
     From: man/xgx_annotate_status_png.Rd
     Status: 403
     Message: Forbidden
 ```
 
-Both URLs are valid and reachable in a browser:
+The page is public; stackoverflow.com returns 403 to clients that do not
+present a browser user agent.
 
-* stackoverflow.com returns 403 to non-browser clients; the page is public.
-* iqrtools.intiquan.com serves an incomplete certificate chain, so libcurl
-  cannot build the trust path. The check itself reports "Status without
-  verification: OK", i.e. the page is served correctly.
+An earlier version of this submission also linked to
+iqrtools.intiquan.com from `man/xgx_check_data.Rd`. The wildcard
+certificate for that host expired on 2026-07-31, so that URL has been
+removed rather than submitted with a known-failing link.
 
 ## Downstream dependencies
 
